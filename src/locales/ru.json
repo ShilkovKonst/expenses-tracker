@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "titleFull": "Трекер расходов",
+    "description": "Отслеживайте свои расходы"
+  },
+  "body": {
+    "header": {
+      "title": "Трекер расходов"
+    },
+    "form": {
+      "title": "Создать / обновить",
+      "labelMonth": "Месяц",
+      "selectMonth": "Выберите месяц",
+      "valueMonth": {
+        "january": "январь",
+        "february": "февраль",
+        "march": "март",
+        "april": "апрель",
+        "may": "май",
+        "june": "июнь",
+        "july": "июль",
+        "august": "август",
+        "september": "сентябрь",
+        "october": "октябрь",
+        "november": "ноябрь",
+        "december": "декабрь"
+      },
+      "createMonth": "Создать / обновить",
+      "clearMonth": "Очистить месяц",
+      "expenses": "Расходы",
+      "expensesTitle": "Название",
+      "expensesType": "Тип",
+      "expensesAmount": "Сумма",
+      "expensesRemove": "Удалить",
+      "expensesAdd": "+ Добавить расход",
+      "labelYear": "Год"
+    }
+  }
+}

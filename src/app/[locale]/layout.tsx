@@ -1,0 +1,49 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "../globals.css";
+import { Locale, t } from "@/locales/locale";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: t(locale as Locale, "meta.titleFull"),
+    description: t(locale as Locale, "meta.description"),
+  };
+}
+
+export default async function RootLayout({
+  params,
+  children,
+}: Readonly<{
+  params: Promise<{ locale: string }>;
+  children: React.ReactNode;
+}>) {
+  const { locale } = await params;
+  return (
+    <html lang={locale}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white `}
+      >
+        <header className="bg-blue-950 text-white p-8 text-center rounded-t-xl">
+          <h1 className="m-0 text-4xl font-bold">Expense Tracker</h1>
+        </header>
+        {children}
+        <footer className=""></footer>
+      </body>
+    </html>
+  );
+}

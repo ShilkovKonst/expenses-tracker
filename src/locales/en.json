@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "titleFull": "Expenses tracker",
+    "description": "Track your costs"
+  },
+  "body": {
+    "header": {
+      "title": "Expense Tracker"
+    },
+    "form": {
+      "title": "Create / Update",
+      "labelMonth": "Month",
+      "selectMonth": "Select Month",
+      "valueMonth": {
+        "january": "january",
+        "february": "february",
+        "march": "march",
+        "april": "april",
+        "may": "may",
+        "june": "june",
+        "july": "july",
+        "august": "august",
+        "september": "september",
+        "october": "october",
+        "november": "november",
+        "december": "december"
+      },
+      "createMonth": "Create / Update",
+      "clearMonth": "Clear Month",
+      "expenses": "Expenses",
+      "expensesTitle": "Title",
+      "expensesType": "Type",
+      "expensesAmount": "Amount",
+      "expensesRemove": "Remove",
+      "expensesAdd": "+ Add Expense",
+      "labelYear": "Year"
+    }
+  }
+}

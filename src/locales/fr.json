@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "titleFull": "Suivi des dépenses",
+    "description": "Suivez vos dépenses"
+  },
+  "body": {
+    "header": {
+      "title": "Suivi des dépenses"
+    },
+    "form": {
+      "title": "Créer / Mettre à jour",
+      "labelMonth": "Mois",
+      "selectMonth": "Sélectionner un mois",
+      "valueMonth": {
+        "january": "janvier",
+        "february": "février",
+        "march": "mars",
+        "april": "avril",
+        "may": "mai",
+        "june": "juin",
+        "july": "juillet",
+        "august": "août",
+        "september": "septembre",
+        "october": "octobre",
+        "november": "novembre",
+        "december": "décembre"
+      },
+      "createMonth": "Créer / Mettre à jour",
+      "clearMonth": "Effacer le mois",
+      "expenses": "Dépenses",
+      "expensesTitle": "Titre",
+      "expensesType": "Type",
+      "expensesAmount": "Montant",
+      "expensesRemove": "Supprimer",
+      "expensesAdd": "+ Ajouter une dépense",
+      "labelYear": "Année"
+    }
+  }
+}
