@@ -8,7 +8,7 @@
       "title": "Expense Tracker"
     },
     "form": {
-      "title": "Create / Update",
+      "title": "Edit your expenses",
       "labelMonth": "Month",
       "selectMonth": "Select Month",
       "valueMonth": {
@@ -30,6 +30,10 @@
       "expenses": "Expenses",
       "expensesTitle": "Title",
       "expensesType": "Type",
+      "expensesTagTitle": "Select an expense tag or create your own",
+      "expensesTagHome": "home",
+      "expensesTagCustomTitle": "Enter your custom tag",
+      "selectExpensesTag": "Select tag",
       "expensesAmount": "Amount",
       "expensesRemove": "Remove",
       "expensesAdd": "+ Add Expense",

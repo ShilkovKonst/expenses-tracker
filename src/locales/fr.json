@@ -8,7 +8,7 @@
       "title": "Suivi des dépenses"
     },
     "form": {
-      "title": "Créer / Mettre à jour",
+      "title": "Modifiez vos dépenses",
       "labelMonth": "Mois",
       "selectMonth": "Sélectionner un mois",
       "valueMonth": {
@@ -30,6 +30,10 @@
       "expenses": "Dépenses",
       "expensesTitle": "Titre",
       "expensesType": "Type",
+      "expensesTagTitle": "Sélectionnez une étiquette de dépense ou créez la vôtre",
+      "expensesTagHome": "maison",
+      "expensesTagCustomTitle": "Saisissez votre étiquette personnalisée",
+      "selectExpensesTag": "Sélectionnez une étiquette",
       "expensesAmount": "Montant",
       "expensesRemove": "Supprimer",
       "expensesAdd": "+ Ajouter une dépense",

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { getMonthById } from "@/lib/utils/monthHelper";
+import { getMonthById, initEmptyMonths } from "@/lib/utils/monthHelper";
 import { Locale, t } from "@/locales/locale";
 import {
   CostFormType,
@@ -18,6 +18,9 @@ import { CURRENT_YEAR, MONTHS } from "@/constants";
 const MainBlock = () => {
   const { locale } = useParams<{ locale: Locale }>();
 
+  const [expenseTag, setExpenseTag] = useState<string>("home");
+  const [customTag, setCustomTag] = useState<string>("");
+  const [expenseTags, setExpenseTags] = useState<string[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<MonthIdType | "">("");
   const [costs, setCosts] = useState<CostFormType[]>([]);
   const [isFormUpdated, setIsFormUpdated] = useState<boolean>(false);
@@ -25,12 +28,21 @@ const MainBlock = () => {
     years: [],
     total: 0,
   });
+  useEffect(() => {
+    if (localStorage) {
+      const raw = localStorage.getItem("expenseTags");
+      if (!raw) localStorage.setItem("expenseTags", JSON.stringify(["home"]));
+      const tags: string[] = raw ? JSON.parse(raw) : ["home"];
+      setExpenseTags(tags);
+    }
+  }, []);
 
   useEffect(() => {
-    const raw = localStorage.getItem("expensesForm");
+    const raw = localStorage.getItem(`expenses-${expenseTag}`);
     setFormData(raw ? JSON.parse(raw) : { years: [], total: 0 });
     setIsFormUpdated(false);
-  }, [isFormUpdated]);
+    setSelectedMonth("");
+  }, [isFormUpdated, expenseTag]);
 
   useEffect(() => {
     if (!selectedMonth) {
@@ -70,6 +82,19 @@ const MainBlock = () => {
     setCosts(newCosts);
   };
 
+  const handleCustomTagChange = (custom: string) => {
+    setCustomTag(custom);
+  };
+
+  const handleCustomTagAdd = () => {
+    if (customTag) {
+      const newTags = [...expenseTags, customTag];
+      localStorage.setItem("expenseTags", JSON.stringify(newTags));
+      setExpenseTags(newTags);
+      setCustomTag("");
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedMonth) return;
@@ -79,36 +104,35 @@ const MainBlock = () => {
     const newMonth: MonthFormType = {
       title: month as Months,
       costs: costs,
-      total: costs.reduce((acc, c) => acc + c.total, 0),
+      totalCosts: costs.reduce((acc, c) => acc + c.total, 0),
+      budget: 0,
     };
 
     let currentYear = formData.years.find((y) => y.year === CURRENT_YEAR);
     if (!currentYear) {
-      const emptyMonths: Record<MonthIdType, MonthFormType> = {} as Record<
-        MonthIdType,
-        MonthFormType
-      >;
-      for (let i = 1 as MonthIdType; i <= 12; i++) {
-        emptyMonths[i] = { title: getMonthById(i), costs: [], total: 0 };
-      }
+      const emptyMonths = initEmptyMonths();
       currentYear = {
         year: CURRENT_YEAR,
         months: emptyMonths,
-        total: 0,
+        totalYearCosts: 0,
+        yearBudget: 0,
       };
     }
 
-    currentYear.months[selectedMonth] = newMonth;
-    currentYear.total = Object.values(currentYear.months).reduce(
-      (acc, m) => acc + m.total,
-      0
-    );
+    currentYear = {
+      ...currentYear,
+      months: { ...currentYear.months, [selectedMonth]: newMonth },
+      totalYearCosts: Object.values(currentYear.months).reduce(
+        (acc, m) => acc + m.totalCosts,
+        0
+      ),
+    };
 
     const updatedYears = [
       ...formData.years.filter((y) => y.year !== CURRENT_YEAR),
       currentYear,
     ];
-    const total = updatedYears.reduce((acc, y) => acc + y.total, 0);
+    const total = updatedYears.reduce((acc, y) => acc + y.totalYearCosts, 0);
     const newFormData: FormType = {
       years: updatedYears,
       total: total,
@@ -116,16 +140,61 @@ const MainBlock = () => {
 
     setFormData(newFormData);
 
-    localStorage.setItem("expensesForm", JSON.stringify(newFormData));
+    localStorage.setItem(`expenses-${expenseTag}`, JSON.stringify(newFormData));
     setIsFormUpdated(true);
     alert("Saved!");
   };
 
   return (
     <div className="font-sans pb-7 border-2 border-blue-100 rounded-b-lg bg-blue-50 p-6 mb-7">
-      <h2 className="text-xl font-semibold text-blue-950 mb-5 border-b-2 border-blue-400 pb-2">
-        {t(locale, `body.form.title`)}
-      </h2>
+      <div className="flex justify-between items-center w-full border-b-2 border-blue-400 pb-2">
+        <h2 className="text-4xl font-semibold text-blue-950 my-auto">
+          {t(locale, `body.form.title`)}
+        </h2>
+        <div className="">
+          <p className="text-sm mb-2">
+            {t(locale, `body.form.expensesTagTitle`)}
+          </p>
+          <div className="flex flex-col gap-2 justify-center items-start">
+            <select
+              id="monthSelect"
+              className="w-full px-2 py-1 border-2 border-blue-100 rounded-md text-sm transition-colors duration-200 bg-white"
+              required
+              value={expenseTag}
+              onChange={(e) => setExpenseTag(e.target.value)}
+            >
+              {expenseTags.map((tag, i) => (
+                <option className={``} key={i} value={tag}>
+                  {tag === "home"
+                    ? t(locale, `body.form.expensesTagHome`)
+                    : tag}
+                </option>
+              ))}
+            </select>
+            <div className="w-full flex justify-between gap-3 items-center">
+              <input
+                className="w-full px-2 py-1 border-2 border-blue-100 rounded-md text-sm transition-colors duration-200 bg-white"
+                placeholder={t(locale, `body.form.expensesTagCustomTitle`)}
+                type="text"
+                value={customTag}
+                onChange={(e) => handleCustomTagChange(e.target.value)}
+              />
+              <button
+                className="text-lg font-bold px-2 py-1 bg-green-200 hover:bg-green-300 transition-colors duration-200 ease-in-out rounded"
+                onClick={handleCustomTagAdd}
+              >
+                &#10004;
+              </button>
+              <button
+                className="text-lg font-bold px-2 py-1 bg-red-200 hover:bg-red-300 transition-colors duration-200 ease-in-out rounded"
+                onClick={() => {}}
+              >
+                &#10006;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <form onSubmit={handleSubmit} id="monthForm">
         <div className="flex gap-4 mb-4 items-end">
           <div className="flex-1 *:capitalize">
@@ -169,7 +238,7 @@ const MainBlock = () => {
           </div>
           <MonthButton
             title={t(locale, `body.form.createMonth`)}
-            style="bg-blue-400 hover:bg-blue-500"
+            style="bg-green-400 hover:bg-green-500"
             isSubmit={true}
           />
           <MonthButton
