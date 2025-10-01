@@ -20,12 +20,16 @@
 }
 
 body {
+  min-width: 460px;
   box-sizing: border-box;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   margin: 0;
   padding: 20px;
   min-height: 100vh;
+  @media (max-width: 640px) {
+    padding: 0;
+  }
 }
 
 .container {

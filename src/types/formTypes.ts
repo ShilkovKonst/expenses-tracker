@@ -1,26 +1,25 @@
 export type FormType = {
-  years: YearFormType[];
-  total: number;
+  years: Record<number, YearFormType>;
+  totalCosts: number;
 };
 
 export type YearFormType = {
-  year: number;
   months: Record<MonthIdType, MonthFormType>;
-  totalYearCosts: number;
+  yearCosts: number;
   yearBudget: number;
 };
 
 export type MonthFormType = {
   title: Months;
   costs: CostFormType[];
-  totalCosts: number;
+  monthCosts: number;
   budget: number;
 };
 
 export type CostFormType = {
   title: string;
   type: string;
-  total: number;
+  amount: number;
 };
 
 export type Months =

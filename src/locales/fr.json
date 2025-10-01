@@ -37,6 +37,9 @@
       "expensesAmount": "Montant",
       "expensesRemove": "Supprimer",
       "expensesAdd": "+ Ajouter une dépense",
+      "accordionAddCost": "Ajouter une dépense",
+      "accordionRemoveCost": "Supprimer",
+      "accordionUpdateCost": "Mettre à jour",
       "labelYear": "Année"
     }
   }

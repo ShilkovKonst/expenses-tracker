@@ -37,6 +37,9 @@
       "expensesAmount": "Сумма",
       "expensesRemove": "Удалить",
       "expensesAdd": "+ Добавить расход",
+      "accordionAddCost": "Добавить расход",
+      "accordionRemoveCost": "Удалить",
+      "accordionUpdateCost": "Обновить",
       "labelYear": "Год"
     }
   }

@@ -37,6 +37,9 @@
       "expensesAmount": "Amount",
       "expensesRemove": "Remove",
       "expensesAdd": "+ Add Expense",
+      "accordionAddCost": "Add Expense",
+      "accordionRemoveCost": "Remove",
+      "accordionUpdateCost": "Update",
       "labelYear": "Year"
     }
   }

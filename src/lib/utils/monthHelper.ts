@@ -36,7 +36,7 @@ export function initEmptyMonths(): Record<MonthIdType, MonthFormType> {
     emptyMonths[i] = {
       title: getMonthById(i),
       costs: [],
-      totalCosts: 0,
+      monthCosts: 0,
       budget: 0,
     };
   }
