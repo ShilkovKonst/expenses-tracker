@@ -49,7 +49,7 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
   return (
     <div className="mt-6">
       <h3 className="font-semibold text-blue-900">
-        {t(locale, `body.form.expenses`)}
+        {t(locale, `body.form.costs`)}
       </h3>
 
       {costs.map((cost, index) => (
@@ -60,7 +60,7 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
           {[
             {
               name: "title",
-              title: t(locale, `body.form.expensesTitle`),
+              title: t(locale, `body.form.costType`),
               id: "costTitleInput" + index,
               value: cost.title,
               handleChange: handleCostChange,
@@ -68,7 +68,7 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
             },
             {
               name: "type",
-              title: t(locale, `body.form.expensesType`),
+              title: t(locale, `body.form.costDescription`),
               id: "costTypeInput" + index,
               value: cost.type,
               handleChange: handleCostChange,
@@ -76,7 +76,7 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
             },
             {
               name: "amount",
-              title: t(locale, `body.form.expensesAmount`),
+              title: t(locale, `body.form.costAmount`),
               id: "costAmountInput" + index,
               value: cost.amount,
               handleChange: handleCostChange,
@@ -105,7 +105,7 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
           <CostButton
             dataType=""
             dataUpdate=""
-            title={t(locale, `body.form.expensesRemove`)}
+            title={t(locale, `body.form.costRemove`)}
             style="bg-red-200 hover:bg-red-300"
             handleClick={() => handleRemoveCost(index)}
           />
@@ -115,7 +115,7 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
         <CostButton
           dataType=""
           dataUpdate=""
-          title={t(locale, `body.form.expensesAdd`)}
+          title={t(locale, `body.form.costAdd`)}
           style="bg-blue-200 hover:bg-blue-300"
           handleClick={handleAddCost}
         />

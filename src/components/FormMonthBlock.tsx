@@ -2,19 +2,19 @@
 import { Locale, t } from "@/locales/locale";
 import FormSelectBlock from "./FormSelectBlock";
 import MonthButton from "./MonthButton";
-import { CURRENT_YEAR, MONTHS } from "@/constants";
+import { CURRENT_YEAR, MONTHS } from "@/lib/constants";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { CostFormType, MonthIdType } from "@/types/formTypes";
+import { CostFormType, MonthIdType, TagType } from "@/types/formTypes";
 import TagsBlock from "./TagsBlock";
 
 type FormMonthBlockProps = {
   locale: Locale;
   selectedMonth: MonthIdType | "";
   setSelectedMonth: Dispatch<SetStateAction<MonthIdType | "">>;
-  selectedTag: string;
-  setSelectedTag: Dispatch<SetStateAction<string>>;
-  expenseTags: string[];
-  setExpenseTags: Dispatch<SetStateAction<string[]>>;
+  selectedTag: TagType;
+  setSelectedTag: Dispatch<SetStateAction<TagType>>;
+  costTags: TagType[];
+  setCostTags: Dispatch<SetStateAction<TagType[]>>;
   setCosts: Dispatch<SetStateAction<CostFormType[]>>;
 };
 
@@ -24,8 +24,8 @@ const FormMonthBlock: React.FC<FormMonthBlockProps> = ({
   setSelectedMonth,
   selectedTag,
   setSelectedTag,
-  expenseTags,
-  setExpenseTags,
+  costTags,
+  setCostTags,
   setCosts,
 }) => {
   const handleSetMonth = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -40,11 +40,11 @@ const FormMonthBlock: React.FC<FormMonthBlockProps> = ({
   return (
     <div className="pt-2">
       <h3 className="text-blue-900 mb-1 font-bold text-lg uppercase text-center">
-        {t(locale, `body.form.labelYear`)} : {CURRENT_YEAR},{" "}
-        {t(locale, `body.form.expenses`)} :{" "}
-        {selectedTag === "home"
-          ? t(locale, `body.form.expensesTagHome`)
-          : selectedTag}
+        {t(locale, `body.form.labels.year`)} : {CURRENT_YEAR},{" "}
+        {t(locale, `body.form.costs`)} :{" "}
+        {selectedTag.type === "home"
+          ? t(locale, `body.form.costsTagHome`)
+          : selectedTag.type}
       </h3>
       <div className="flex gap-4 mb-4 sm:justify-between lg:justify-evenly items-center">
         <div className="flex flex-col gap-4 items-start justify-center">
@@ -55,7 +55,7 @@ const FormMonthBlock: React.FC<FormMonthBlockProps> = ({
             withLabel={true}
             value={selectedMonth}
             options={MONTHS}
-            titleLable={"labelMonth"}
+            titleLable={"labels.month"}
             titleOptionsInit="selectMonth"
             titleOptions="valueMonth"
             onChange={(e) => handleSetMonth(e)}
@@ -76,13 +76,13 @@ const FormMonthBlock: React.FC<FormMonthBlockProps> = ({
           </div>
         </div>
 
-        <TagsBlock
+        {/* <TagsBlock
           locale={locale}
           selectedTag={selectedTag}
           setSelectedTag={setSelectedTag}
-          expenseTags={expenseTags}
-          setExpenseTags={setExpenseTags}
-        />
+          costTags={costTags}
+          setCostTags={setCostTags}
+        /> */}
       </div>
     </div>
   );

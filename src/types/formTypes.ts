@@ -1,3 +1,8 @@
+export type TagType = {
+  type: string;
+  withBudget?: boolean;
+};
+
 export type FormType = {
   years: Record<number, YearFormType>;
   totalCosts: number;
@@ -5,20 +10,22 @@ export type FormType = {
 
 export type YearFormType = {
   months: Record<MonthIdType, MonthFormType>;
-  yearCosts: number;
-  yearBudget: number;
+  costs: number;
+  budget?: number;
+  balance?: number;
 };
 
 export type MonthFormType = {
   title: Months;
   costs: CostFormType[];
   monthCosts: number;
-  budget: number;
+  budget?: number;
+  balance?: number;
 };
 
 export type CostFormType = {
-  title: string;
   type: string;
+  description: string;
   amount: number;
 };
 

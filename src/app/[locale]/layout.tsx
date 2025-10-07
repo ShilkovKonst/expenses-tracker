@@ -36,7 +36,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white relative p-0 md:py-5 md:px-5 lg:px-10 xl:px-20`}
       >
         <header className="bg-blue-950 text-white p-8 text-center rounded-t-xl">
           <h1 className="m-0 text-4xl font-bold">

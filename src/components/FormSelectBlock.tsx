@@ -29,7 +29,7 @@ const FormSelectBlock: React.FC<FormSelectBlockPropsType> = ({
   withLabel,
 }) => {
   return (
-    <div className="flex gap-2 justify-between items-center w-full">
+    <div className="flex gap-2 justify-between items-center w-full col-span-2">
       {withLabel && (
         <label
           className="block font-bold text-blue-900 mb-1 text-lg uppercase"
@@ -58,7 +58,7 @@ const FormSelectBlock: React.FC<FormSelectBlockPropsType> = ({
             {withLabel
               ? t(locale, `body.form.${titleOptions}.${o}`)
               : o === "home"
-              ? t(locale, `body.form.expensesTagHome`)
+              ? t(locale, `body.form.costsTagHome`)
               : o}
           </option>
         ))}

@@ -22,8 +22,8 @@ export function deepEqualFormData(a: FormType, b: FormType): boolean {
 }
 
 function deepEqualYear(a: YearFormType, b: YearFormType): boolean {
-  if (a.yearCosts !== b.yearCosts) return false;
-  if (a.yearBudget !== b.yearBudget) return false;
+  if (a.costs !== b.costs) return false;
+  if (a.budget !== b.budget) return false;
 
   const monthsA = Object.keys(a.months);
   const monthsB = Object.keys(b.months);

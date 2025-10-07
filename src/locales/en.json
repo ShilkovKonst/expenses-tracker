@@ -1,15 +1,17 @@
 {
   "meta": {
-    "titleFull": "Expenses tracker",
+    "titleFull": "Costs tracker",
     "description": "Track your costs"
   },
   "body": {
     "header": {
-      "title": "Expense Tracker"
+      "title": "Cost Tracker"
+    },
+    "modal": {
+      "checkBoxTip": "Calculate balance with provided budget or just calculate costs?"
     },
     "form": {
-      "title": "Edit your expenses",
-      "labelMonth": "Month",
+      "title": "Edit your costs",
       "selectMonth": "Select Month",
       "valueMonth": {
         "january": "january",
@@ -25,22 +27,31 @@
         "november": "november",
         "december": "december"
       },
+      "labels": {
+        "year": "Year",
+        "month": "Month",
+        "budget": "Budget",
+        "costs": "Costs",
+        "balance": "Balance"
+      },
       "createMonth": "Create / Update",
       "clearMonth": "Clear Month",
-      "expenses": "Expenses",
-      "expensesTitle": "Title",
-      "expensesType": "Type",
-      "expensesTagTitle": "Select an expense tag or create your own",
-      "expensesTagHome": "home",
-      "expensesTagCustomTitle": "Enter your custom tag",
-      "selectExpensesTag": "Select tag",
-      "expensesAmount": "Amount",
-      "expensesRemove": "Remove",
-      "expensesAdd": "+ Add Expense",
-      "accordionAddCost": "Add Expense",
+      "costs": "Costs",
+      "costsTagTitle": "Select an cost tag or create your own",
+      "costsTagFormTitle": "create your own tag",
+      "costsTagHome": "home",
+      "costsTagCustomTitle": "Enter your custom tag",
+      "selectCostsTag": "Select tag",
+      "accordionExpandCosts": "Details",
+      "costType": "Type",
+      "costDescription": "Description",
+      "costAmount": "Amount",
+      "costRemove": "Remove",
+      "costAdd": "+ Add Cost",
+      "accordionAddCost": "+ cost",
+      "accordionAddBudget": "+ budget",
       "accordionRemoveCost": "Remove",
-      "accordionUpdateCost": "Update",
-      "labelYear": "Year"
+      "accordionUpdateCost": "Update"
     }
   }
 }

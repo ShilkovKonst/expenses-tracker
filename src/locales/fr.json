@@ -7,9 +7,11 @@
     "header": {
       "title": "Suivi des dépenses"
     },
+    "modal": {
+      "checkBoxTip": "Calculer le solde avec le budget fourni ou simplement calculer les coûts ?"
+    },
     "form": {
       "title": "Modifiez vos dépenses",
-      "labelMonth": "Mois",
       "selectMonth": "Sélectionner un mois",
       "valueMonth": {
         "january": "janvier",
@@ -25,22 +27,31 @@
         "november": "novembre",
         "december": "décembre"
       },
+      "labels": {
+        "year": "Année",
+        "month": "Mois",
+        "budget": "Budget",
+        "costs": "Coûts",
+        "balance": "Solde"
+      },
       "createMonth": "Créer / Mettre à jour",
       "clearMonth": "Effacer le mois",
-      "expenses": "Dépenses",
-      "expensesTitle": "Titre",
-      "expensesType": "Type",
-      "expensesTagTitle": "Sélectionnez une étiquette de dépense ou créez la vôtre",
-      "expensesTagHome": "maison",
-      "expensesTagCustomTitle": "Saisissez votre étiquette personnalisée",
-      "selectExpensesTag": "Sélectionnez une étiquette",
-      "expensesAmount": "Montant",
-      "expensesRemove": "Supprimer",
-      "expensesAdd": "+ Ajouter une dépense",
-      "accordionAddCost": "Ajouter une dépense",
+      "costs": "Dépenses",
+      "costsTagTitle": "Sélectionnez une étiquette de dépense ou créez la vôtre",
+      "costsTagFormTitle": "Créez vôtre étiquette",
+      "costsTagHome": "maison",
+      "costsTagCustomTitle": "Saisissez votre étiquette personnalisée",
+      "selectCostsTag": "Sélectionnez une étiquette",
+      "accordionExpandCosts": "Détail",
+      "costType": "Type",
+      "costDescription": "Description",
+      "costAmount": "Montant",
+      "costRemove": "Supprimer",
+      "costAdd": "+ Ajouter une dépense",
+      "accordionAddCost": "+ dépense",
+      "accordionAddBudget": "+ budget",
       "accordionRemoveCost": "Supprimer",
-      "accordionUpdateCost": "Mettre à jour",
-      "labelYear": "Année"
+      "accordionUpdateCost": "Mettre à jour"
     }
   }
 }

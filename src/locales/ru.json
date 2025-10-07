@@ -7,9 +7,11 @@
     "header": {
       "title": "Трекер расходов"
     },
+    "modal": {
+      "checkBoxTip": "Calculate balance with provided budget or just calculate costs?"
+    },
     "form": {
       "title": "Редактировать ваши расходы",
-      "labelMonth": "Месяц",
       "selectMonth": "Выберите месяц",
       "valueMonth": {
         "january": "январь",
@@ -25,22 +27,31 @@
         "november": "ноябрь",
         "december": "декабрь"
       },
+      "labels": {
+        "year": "Год",
+        "month": "Месяц",
+        "budget": "Бюджет",
+        "costs": "Расходы",
+        "balance": "Баланс"
+      },
       "createMonth": "Создать / обновить",
       "clearMonth": "Очистить месяц",
-      "expenses": "Расходы",
-      "expensesTitle": "Название",
-      "expensesType": "Тип",
-      "expensesTagTitle": "Выберите тэг расходов или задайте свой",
-      "expensesTagHome": "домашние",
-      "expensesTagCustomTitle": "Введите свой тэг",
-      "selectExpensesTag": "Выберите тэг",
-      "expensesAmount": "Сумма",
-      "expensesRemove": "Удалить",
-      "expensesAdd": "+ Добавить расход",
+      "costs": "Расходы",
+      "costsTagTitle": "Выберите тэг расходов из списка или создайте свой",
+      "costsTagFormTitle": "Создать новый",
+      "costsTagHome": "домашние",
+      "costsTagCustomTitle": "Введите свой тэг",
+      "selectCostsTag": "Выберите тэг",
+      "accordionExpandCosts": "Детализация",
+      "costType": "Тип",
+      "costDescription": "Описание",
+      "costAmount": "Сумма",
+      "costRemove": "Удалить",
+      "costAdd": "Добавить расход",
       "accordionAddCost": "Добавить расход",
+      "accordionAddBudget": "Задать бюджет",
       "accordionRemoveCost": "Удалить",
-      "accordionUpdateCost": "Обновить",
-      "labelYear": "Год"
+      "accordionUpdateCost": "Обновить"
     }
   }
 }

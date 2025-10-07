@@ -2,6 +2,7 @@ import { CostFormType, FormType } from "@/types/formTypes";
 import React, { Dispatch, MouseEvent, SetStateAction, TouchEvent } from "react";
 import { Locale } from "@/locales/locale";
 import AccordionYearBlock from "./AccordionYearBlock";
+import { transformElement } from "@/lib/utils/transformElement";
 
 type AccordionBlockPropsType = {
   formData: FormType;
@@ -19,8 +20,6 @@ const AccordionBlock: React.FC<AccordionBlockPropsType> = ({
   const handleClick = (e: MouseEvent | TouchEvent) => {
     const target = e.target as HTMLElement;
     const type = target.getAttribute("data-type");
-		console.log(target)
-		console.log(type)
     if (target instanceof HTMLElement) {
       if (type === "year") {
         transformElement(target, "data-year");
@@ -58,29 +57,3 @@ const AccordionBlock: React.FC<AccordionBlockPropsType> = ({
 };
 
 export default AccordionBlock;
-
-function transformElement(element: HTMLElement, attribute: string) {
-  const id = element.getAttribute(attribute);
-  if (id) {
-    const subElement = document.getElementById(id);
-    if (subElement) {
-      const computedHeight = parseFloat(getComputedStyle(subElement).height);
-      if (computedHeight > 0) {
-        subElement.style.height = `${subElement.scrollHeight}px`;
-        requestAnimationFrame(() => {
-          subElement.style.height = "0";
-        });
-      } else {
-        subElement.style.height = "0";
-        requestAnimationFrame(() => {
-          subElement.style.height = `${subElement.scrollHeight}px`;
-        });
-        const handleTransitionEnd = () => {
-          subElement.style.height = "auto";
-          subElement.removeEventListener("transitionend", handleTransitionEnd);
-        };
-        subElement.addEventListener("transitionend", handleTransitionEnd);
-      }
-    }
-  }
-}
