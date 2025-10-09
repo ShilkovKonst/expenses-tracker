@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import AccordionCostBlock from "./AccordionCostBlock";
 import { t } from "@/locales/locale";
 import { CostFormType, MonthFormType } from "@/types/formTypes";
@@ -21,15 +20,6 @@ const AccordionMonthBlock: React.FC<AccordionMonthBlockPropsType> = ({
   setCosts,
 }) => {
   const { locale } = useGlobal();
-  const [bodyEl, setBodyEl] = useState(
-    document.getElementById(`${yearId}-${month.id}-body`)
-  );
-
-  useEffect(() => {
-    setBodyEl(document.getElementById(`${yearId}-${month.id}-body`));
-  }, [month]);
-
-  useEffect(() => {}, [bodyEl]);
 
   return (
     <div

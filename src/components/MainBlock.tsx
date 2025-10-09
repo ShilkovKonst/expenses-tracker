@@ -32,7 +32,15 @@ const MainBlock = () => {
   const [isFormUpdated, setIsFormUpdated] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormDataType>({
     id: "",
-    years: [] as YearFormType[],
+    years: [
+      {
+        id: CURRENT_YEAR,
+        months: initEmptyMonths(),
+        costs: 0,
+        budget: 0,
+        balance: 0,
+      },
+    ] as YearFormType[],
     totalCosts: 0,
   });
 
@@ -41,31 +49,16 @@ const MainBlock = () => {
 
   useEffect(() => {
     if (localStorage) {
-      const raw = localStorage.getItem("costTags");
-      if (!raw) localStorage.setItem("costTags", JSON.stringify(["home"]));
-      const tags: TagType[] = raw ? JSON.parse(raw) : ["home"];
+      const rawTags = localStorage.getItem("costTags");
+      if (!rawTags) localStorage.setItem("costTags", JSON.stringify(["home"]));
+      const tags: TagType[] = rawTags ? JSON.parse(rawTags) : ["home"];
       setCostTags(tags);
     }
   }, []);
 
   useEffect(() => {
-    console.log("test");
     const raw = localStorage.getItem(`costs-${selectedTag.type}`);
-    setFormData(
-      raw
-        ? JSON.parse(raw)
-        : {
-            years: {
-              [CURRENT_YEAR]: {
-                months: EMPTY_FORM_MONTHS,
-                costs: 0,
-                balance: 0,
-                budget: 0,
-              },
-            },
-            totalCosts: 0,
-          }
-    );
+    setFormData(raw ? JSON.parse(raw) : formData);
     setIsFormUpdated(false);
     setSelectedMonth("");
   }, [isFormUpdated, selectedTag]);
