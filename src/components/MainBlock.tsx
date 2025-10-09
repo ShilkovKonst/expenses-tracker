@@ -1,37 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { getMonthById, initEmptyMonths } from "@/lib/utils/monthHelper";
-import { Locale, t } from "@/locales/locale";
+import { t } from "@/locales/locale";
 import {
   CostFormType,
-  FormType,
+  FormDataType,
   MonthFormType,
   MonthIdType,
   Months,
   TagType,
   YearFormType,
 } from "@/types/formTypes";
-import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { CURRENT_YEAR, EMPTY_FORM_MONTHS } from "@/lib/constants";
-import FormCostsBlock from "./FormCostsBlock";
-import FormMonthBlock from "./FormMonthBlock";
 import AccordionBlock from "./AccordionBlock";
-import { ModalType } from "@/types/componentTypes";
 import ModalBlock from "./ModalFormBlock";
 import TagsBlock from "./TagsBlock";
+import { useGlobal } from "@/app/context/GlobalContext";
 
 const MainBlock = () => {
-  const { locale } = useParams<{ locale: Locale }>();
+  const { locale } = useGlobal();
 
-  const [selectedTag, setSelectedTag] = useState<TagType>({ type: "home" });
+  const [selectedTag, setSelectedTag] = useState<TagType>({
+    id: 0,
+    type: "home",
+  });
   const [costTags, setCostTags] = useState<TagType[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<MonthIdType | "">("");
   const [costs, setCosts] = useState<CostFormType[]>([]);
   const [monthBudget, setMonthBudget] = useState<number>(0);
   const [isFormUpdated, setIsFormUpdated] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormType>({
-    years: {} as Record<number, YearFormType>,
+  const [formData, setFormData] = useState<FormDataType>({
+    id: "",
+    years: [] as YearFormType[],
     totalCosts: 0,
   });
 
@@ -79,7 +80,7 @@ const MainBlock = () => {
     setCosts(
       month?.costs?.length > 0
         ? month?.costs
-        : [{ type: "", description: "", amount: 0 }]
+        : [{ id: 0, type: "", description: "", amount: 0 }]
     );
   }, [selectedMonth]);
 
@@ -87,26 +88,30 @@ const MainBlock = () => {
     e.preventDefault();
     if (!selectedMonth) return;
 
-    const month = getMonthById(selectedMonth)!;
+    const month = getMonthById(selectedMonth);
     const newMonth: MonthFormType = {
+      id: selectedMonth,
       title: month as Months,
       costs: costs,
-      monthCosts: costs.reduce((acc, c) => acc + c.amount, 0),
+      costsAmount: costs.reduce((acc, c) => acc + c.amount, 0),
       budget: monthBudget,
     };
 
     let currentYear = defineCurrentYearData(formData);
-    const updatedMonths = { ...currentYear.months, [selectedMonth]: newMonth };
+    const updatedMonths: MonthFormType[] = [
+      ...currentYear.months.filter((m) => m.id !== selectedMonth),
+      newMonth,
+    ];
     currentYear = {
       ...currentYear,
       months: updatedMonths,
       costs: Object.values(updatedMonths).reduce(
-        (acc, m) => acc + m.monthCosts,
+        (acc, m) => acc + m.costsAmount,
         0
       ),
     };
 
-    const newFormData = getNewFormData(formData, currentYear);
+    const newFormData = getNewFormData(selectedTag, formData, currentYear);
     setFormData(newFormData);
     localStorage.setItem(`costs-${selectedTag}`, JSON.stringify(newFormData));
 
@@ -115,7 +120,7 @@ const MainBlock = () => {
 
   return (
     <div className="font-sans pb-7 border-2 border-blue-100 rounded-b-lg bg-blue-50 p-6 mb-7">
-      {isModal && (
+      {/* {isModal && (
         <ModalBlock
           title={t(locale, "body.form.costsTagFormTitle")}
           inputPlaceholder={t(locale, `body.form.costsTagCustomTitle`)}
@@ -125,36 +130,31 @@ const MainBlock = () => {
           setIsModal={setIsModal}
           confirmClick={() => {}}
         />
-      )}
+      )} */}
       <div className="flex justify-between items-center w-full border-b-6 border-blue-400 pb-2">
         <h2 className="text-4xl font-semibold text-blue-950 my-auto">
           {t(locale, `body.form.title`)}
         </h2>
       </div>
       <TagsBlock
-        locale={locale}
         selectedTag={selectedTag}
         setSelectedTag={setSelectedTag}
         costTags={costTags}
         setCostTags={setCostTags}
       />
-      <AccordionBlock
-        formData={formData}
-        locale={locale}
-        costs={costs}
-        setCosts={setCosts}
-      />
+      <AccordionBlock formData={formData} costs={costs} setCosts={setCosts} />
     </div>
   );
 };
 
 export default MainBlock;
 
-function defineCurrentYearData(formData: FormType): YearFormType {
-  let currentYear = formData.years[CURRENT_YEAR];
+function defineCurrentYearData(formData: FormDataType): YearFormType {
+  let currentYear = formData.years.find((y) => y.id === CURRENT_YEAR);
   if (!currentYear) {
     const emptyMonths = initEmptyMonths();
     currentYear = {
+      id: CURRENT_YEAR,
       months: emptyMonths,
       costs: 0,
       budget: 0,
@@ -164,14 +164,16 @@ function defineCurrentYearData(formData: FormType): YearFormType {
 }
 
 function getNewFormData(
-  formData: FormType,
+  tag: TagType,
+  formData: FormDataType,
   currentYear: YearFormType
-): FormType {
-  const updatedYears = {
-    ...formData.years,
-    [CURRENT_YEAR]: currentYear,
-  };
-  const newFormData: FormType = {
+): FormDataType {
+  const updatedYears: YearFormType[] = [
+    ...formData.years.filter((y) => y.id !== currentYear.id),
+    currentYear,
+  ];
+  const newFormData: FormDataType = {
+    id: tag.type,
     years: updatedYears,
     totalCosts: Object.values(updatedYears).reduce(
       (acc, year) => acc + year.costs,

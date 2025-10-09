@@ -4,8 +4,8 @@ type CostButtonType = {
   icon: ReactNode | string;
   title: string;
   style: string;
-  dataType: string;
-  dataUpdate: string;
+  dataType?: string;
+  dataUpdate?: string;
   handleClick:
     | (() => void)
     | ((e: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void);

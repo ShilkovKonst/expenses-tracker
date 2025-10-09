@@ -1,0 +1,164 @@
+{
+  "id": "нюйи сюр сэн",
+  "years": [
+    {
+      "id": 2025,
+      "months": [
+        {
+          "id": 1,
+          "title": "january",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 2,
+          "title": "february",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 3,
+          "title": "march",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 4,
+          "title": "april",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 5,
+          "title": "may",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 6,
+          "title": "june",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 7,
+          "title": "july",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 8,
+          "title": "august",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 9,
+          "title": "september",
+          "costsAmount": 1231.68,
+          "budget": 0,
+          "costs": [
+            {
+              "id": 0,
+              "type": "амазон",
+              "description": "покупка птицы",
+              "amount": 48.95
+            },
+            {
+              "id": 1,
+              "type": "садовник",
+              "description": "12 - 5ч",
+              "amount": 0
+            },
+            {
+              "id": 2,
+              "type": "уборка",
+              "description": "13 - 5ч",
+              "amount": 70
+            },
+            {
+              "id": 3,
+              "type": "установка миле",
+              "description": "16 - 3ч",
+              "amount": 0
+            },
+            {
+              "id": 4,
+              "type": "уборка",
+              "description": "20 - 5ч",
+              "amount": 70
+            },
+            {
+              "id": 5,
+              "type": "установка миле",
+              "description": "22 - 2ч",
+              "amount": 20
+            },
+            {
+              "id": 6,
+              "type": "приезд Раду за мебелью",
+              "description": "26 - 1ч",
+              "amount": 0
+            },
+            {
+              "id": 7,
+              "type": "сборка мебели",
+              "description": "13 - 4ч",
+              "amount": 0
+            },
+            {
+              "id": 8,
+              "type": "амазон",
+              "description": "2 утюга + 5уп мусорных пакетов 140л",
+              "amount": 310.73
+            },
+            {
+              "id": 9,
+              "type": "зарплата",
+              "description": "400 + (5 + 5 + 3 + 5 + 2 + 1 + 4 + 1)*12",
+              "amount": 712
+            },
+            {
+              "id": 10,
+              "type": "забрал карту из банка",
+              "description": "1ч",
+              "amount": 0
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "title": "october",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 11,
+          "title": "november",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        },
+        {
+          "id": 12,
+          "title": "december",
+          "costsAmount": 0,
+          "budget": 0,
+          "costs": []
+        }
+      ],
+      "costs": 1231.68,
+      "budget": 0
+    }
+  ],
+  "totalCosts": 1231.68
+}

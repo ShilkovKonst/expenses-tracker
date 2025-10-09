@@ -27,16 +27,14 @@ export function getMonthIdByTitle<T extends Months>(title: T): MonthIdType {
   return Number(entry[0]) as MonthIdType;
 }
 
-export function initEmptyMonths(): Record<MonthIdType, MonthFormType> {
-  const emptyMonths: Record<MonthIdType, MonthFormType> = {} as Record<
-    MonthIdType,
-    MonthFormType
-  >;
+export function initEmptyMonths(): MonthFormType[] {
+  const emptyMonths: MonthFormType[] = [];
   for (let i = 1 as MonthIdType; i <= 12; i++) {
     emptyMonths[i] = {
+      id: i,
       title: getMonthById(i),
       costs: [],
-      monthCosts: 0,
+      costsAmount: 0,
       budget: 0,
     };
   }

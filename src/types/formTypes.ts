@@ -1,46 +1,56 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export type TagType = {
+  id: number;
   type: string;
   withBudget?: boolean;
 };
 
-export type FormType = {
-  years: Record<number, YearFormType>;
+export type FormDataType = {
+  id: string;
+  years: YearFormType[];
   totalCosts: number;
 };
 
 export type YearFormType = {
-  months: Record<MonthIdType, MonthFormType>;
+  id: number;
+  months: MonthFormType[];
   costs: number;
   budget?: number;
   balance?: number;
 };
 
-export type MonthFormType = {
-  title: Months;
-  costs: CostFormType[];
-  monthCosts: number;
-  budget?: number;
-  balance?: number;
-};
-
 export type CostFormType = {
+  id: number;
   type: string;
   description: string;
   amount: number;
 };
 
-export type Months =
-  | "january"
-  | "february"
-  | "march"
-  | "april"
-  | "may"
-  | "june"
-  | "july"
-  | "august"
-  | "september"
-  | "october"
-  | "november"
-  | "december";
+const MONTHS = {
+  1: "january",
+  2: "february",
+  3: "march",
+  4: "april",
+  5: "may",
+  6: "june",
+  7: "july",
+  8: "august",
+  9: "september",
+  10: "october",
+  11: "november",
+  12: "december",
+} as const;
 
-export type MonthIdType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type MonthIdType = keyof typeof MONTHS;
+export type Months = (typeof MONTHS)[MonthIdType];
+
+export type MonthFormType = {
+  [K in MonthIdType]: {
+    id: K;
+    title: Months;
+    costs: CostFormType[];
+    costsAmount: number;
+    budget?: number;
+    balance?: number;
+  };
+}[MonthIdType];

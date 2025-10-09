@@ -1,20 +1,21 @@
 "use client";
 import {
+  ChangeEvent,
   Dispatch,
   MouseEvent as ReactMouseEvent,
   SetStateAction,
   useState,
 } from "react";
 import TagButton from "./TagButton";
-import { Locale, t } from "@/locales/locale";
+import { t } from "@/locales/locale";
 import FormSelectBlock from "./FormSelectBlock";
 import { TagType } from "@/types/formTypes";
 import CostButton from "./CostButton";
 import { transformElement } from "@/lib/utils/transformElement";
 import { AddTag } from "@/lib/icons";
+import { useGlobal } from "@/app/context/GlobalContext";
 
 type TagsBlockPropsType = {
-  locale: Locale;
   selectedTag: TagType;
   setSelectedTag: Dispatch<SetStateAction<TagType>>;
   costTags: TagType[];
@@ -22,13 +23,14 @@ type TagsBlockPropsType = {
 };
 
 const TagsBlock: React.FC<TagsBlockPropsType> = ({
-  locale,
   selectedTag,
   setSelectedTag,
   costTags,
   setCostTags,
 }) => {
+  const { locale } = useGlobal();
   const [customTag, setCustomTag] = useState<TagType>({
+    id: costTags.length,
     type: "",
     withBudget: false,
   });
@@ -44,7 +46,7 @@ const TagsBlock: React.FC<TagsBlockPropsType> = ({
       const newTags = [...costTags, customTag];
       localStorage.setItem("costTags", JSON.stringify(newTags));
       setCostTags(newTags);
-      setCustomTag({ type: "" });
+      setCustomTag({ id: newTags.length, type: "", withBudget: false });
     }
   };
 
@@ -57,11 +59,16 @@ const TagsBlock: React.FC<TagsBlockPropsType> = ({
         const newTags = [...costTags.filter((t) => t !== customTag)];
         localStorage.setItem("costTags", JSON.stringify(newTags));
         setCostTags(newTags);
-        setCustomTag({ type: "" });
+        setCustomTag({ id: newTags.length, type: "", withBudget: false });
       } else {
-        setCustomTag({ type: "" });
+        setCustomTag({ ...customTag, type: "", withBudget: false });
       }
     }
+  };
+
+  const handleSelectTag = (e: ChangeEvent<HTMLSelectElement>) => {
+    const tag = costTags.find((t) => t.type === e.target.value);
+    if (tag) setSelectedTag(tag);
   };
   return (
     <div>
@@ -74,7 +81,7 @@ const TagsBlock: React.FC<TagsBlockPropsType> = ({
           value={selectedTag.type}
           options={costTags.map((t) => t.type)}
           withLabel={false}
-          onChange={(e) => setSelectedTag({ type: e.target.value })}
+          onChange={(e) => handleSelectTag(e)}
         />
         <CostButton
           icon={<AddTag style="h-7 w-7" />}

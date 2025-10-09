@@ -1,6 +1,7 @@
 import { ChangeEvent } from "react";
 
 type FormInputPropsType = {
+  name: string;
   title: string;
   styleLabel: string;
   styleInput: string;
@@ -13,6 +14,7 @@ type FormInputPropsType = {
 };
 
 const FormInputBlock: React.FC<FormInputPropsType> = ({
+  name,
   title,
   styleLabel,
   styleInput,
@@ -24,7 +26,7 @@ const FormInputBlock: React.FC<FormInputPropsType> = ({
   handleChange,
 }) => {
   return (
-    <div className="col-span-2">
+    <div className={`${name === "description" ? "col-span-2" : "col-span-1"} `}>
       <label
         className={`block font-semibold uppercase ${styleLabel}`}
         htmlFor={id}
