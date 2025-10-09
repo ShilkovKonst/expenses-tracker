@@ -27,9 +27,9 @@ const ModalBlock: React.FC<ConfirmationBlockProps> = ({
   cancelText,
   checkBoxTip,
 }) => {
-  const [customTag, setCustomTag] = useState<TagType>({ type: "" });
+  const [customTag, setCustomTag] = useState<TagType>({ id: 0, type: "" });
   const handleChange = (custom: string) => {
-    setCustomTag({ type: custom });
+    setCustomTag({ id: 0, type: custom });
   };
 
   const handleClick = (e: MouseEvent | TouchEvent) => {

@@ -22,29 +22,29 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
     [costs]
   );
 
-  const handleAddCost = () => {
-    setCosts([...costs, { title: "", type: "", amount: 0 }]);
-  };
+  // const handleAddCost = () => {
+  //   setCosts([...costs, { title: "", type: "", amount: 0 }]);
+  // };
 
   const handleRemoveCost = (i: number) => {
     setCosts((prev) => [...prev.slice(0, i), ...prev.slice(i + 1)]);
   };
 
-  const handleCostChange = (
-    index: number,
-    field: keyof CostFormType,
-    value: string
-  ) => {
-    const newCosts = [...costs];
-    if (field === "amount" && Number(value) >= 0) {
-      value = value.replace(/^0+(?=\d)/, "");
-      newCosts[index][field] = Number(value);
-    }
-    if (field !== "amount") {
-      newCosts[index][field] = value;
-    }
-    setCosts(newCosts);
-  };
+  // const handleCostChange = (
+  //   index: number,
+  //   field: keyof CostFormType,
+  //   value: string
+  // ) => {
+  //   const newCosts = [...costs];
+  //   if (field === "amount" && Number(value) >= 0) {
+  //     value = value.replace(/^0+(?=\d)/, "");
+  //     newCosts[index][field] = Number(value);
+  //   }
+  //   if (field !== "amount") {
+  //     newCosts[index][field] = value;
+  //   }
+  //   setCosts(newCosts);
+  // };
 
   return (
     <div className="mt-6">
@@ -52,7 +52,7 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
         {t(locale, `body.form.costs`)}
       </h3>
 
-      {costs.map((cost, index) => (
+      {/* {costs.map((cost, index) => (
         <div
           key={index}
           className="grid grid-cols-4 gap-4 items-end py-2 border-b border-blue-300"
@@ -110,15 +110,15 @@ const FormCostsBlock: React.FC<FormCostsBlockPropsType> = ({
             handleClick={() => handleRemoveCost(index)}
           />
         </div>
-      ))}
+      ))} */}
       <div className="flex gap-4 justify-between items-center">
-        <CostButton
+        {/* <CostButton
           dataType=""
           dataUpdate=""
           title={t(locale, `body.form.costAdd`)}
           style="bg-blue-200 hover:bg-blue-300"
           handleClick={handleAddCost}
-        />
+        /> */}
         <div>
           <p>Monthly costs: {monthCosts}</p>
         </div>

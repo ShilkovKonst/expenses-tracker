@@ -1,61 +1,61 @@
 import {
   CostFormType,
-  FormType,
+  FormDataType,
   MonthFormType,
   MonthIdType,
   YearFormType,
 } from "@/types/formTypes";
 
-export function deepEqualFormData(a: FormType, b: FormType): boolean {
-  if (a.totalCosts !== b.totalCosts) return false;
+// export function deepEqualFormData(a: FormType, b: FormType): boolean {
+//   if (a.totalCosts !== b.totalCosts) return false;
 
-  const yearsA = Object.keys(a.years);
-  const yearsB = Object.keys(b.years);
-  if (yearsA.length !== yearsB.length) return false;
+//   const yearsA = Object.keys(a.years);
+//   const yearsB = Object.keys(b.years);
+//   if (yearsA.length !== yearsB.length) return false;
 
-  for (const year of yearsA) {
-    if (!(year in b.years)) return false;
-    if (!deepEqualYear(a.years[+year], b.years[+year])) return false;
-  }
+//   for (const year of yearsA) {
+//     if (!(year in b.years)) return false;
+//     if (!deepEqualYear(a.years[+year], b.years[+year])) return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
-function deepEqualYear(a: YearFormType, b: YearFormType): boolean {
-  if (a.costs !== b.costs) return false;
-  if (a.budget !== b.budget) return false;
+// function deepEqualYear(a: YearFormType, b: YearFormType): boolean {
+//   if (a.costs !== b.costs) return false;
+//   if (a.budget !== b.budget) return false;
 
-  const monthsA = Object.keys(a.months);
-  const monthsB = Object.keys(b.months);
-  if (monthsA.length !== monthsB.length) return false;
+//   const monthsA = Object.keys(a.months);
+//   const monthsB = Object.keys(b.months);
+//   if (monthsA.length !== monthsB.length) return false;
 
-  for (const month of monthsA) {
-    if (!(month in b.months)) return false;
-    if (
-      !deepEqualMonth(
-        a.months[+month as MonthIdType],
-        b.months[+month as MonthIdType]
-      )
-    )
-      return false;
-  }
+//   for (const month of monthsA) {
+//     if (!(month in b.months)) return false;
+//     if (
+//       !deepEqualMonth(
+//         a.months[+month as MonthIdType],
+//         b.months[+month as MonthIdType]
+//       )
+//     )
+//       return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
-function deepEqualMonth(a: MonthFormType, b: MonthFormType): boolean {
-  if (a.monthCosts !== b.monthCosts) return false;
-  if (a.budget !== b.budget) return false;
+// function deepEqualMonth(a: MonthFormType, b: MonthFormType): boolean {
+//   if (a.monthCosts !== b.monthCosts) return false;
+//   if (a.budget !== b.budget) return false;
 
-  if (a.costs.length !== b.costs.length) return false;
+//   if (a.costs.length !== b.costs.length) return false;
 
-  for (let i = 0; i < a.costs.length; i++) {
-    if (!deepEqualCost(a.costs[i], b.costs[i])) return false;
-  }
+//   for (let i = 0; i < a.costs.length; i++) {
+//     if (!deepEqualCost(a.costs[i], b.costs[i])) return false;
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
-function deepEqualCost(a: CostFormType, b: CostFormType): boolean {
-  return a.title === b.title && a.type === b.type && a.amount === b.amount;
-}
+// function deepEqualCost(a: CostFormType, b: CostFormType): boolean {
+//   return a.title === b.title && a.type === b.type && a.amount === b.amount;
+// }
