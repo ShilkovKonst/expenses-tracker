@@ -40,7 +40,7 @@ const AccordionHeaderBlock: React.FC<AccordionDescriptionPropsType> = ({
         !isMonth && isSticky
           ? "bg-blue-200 border-blue-300 sticky top-0 z-20"
           : isMonth && isSticky
-          ? "bg-blue-100 border-blue-200 sticky top-10 md:top-11 lg:top-12 z-10"
+          ? "bg-blue-100 border-blue-200 border-t-0 sticky top-10 z-10"
           : "bg-blue-100 border-blue-200 "
       }`}
     >
@@ -50,9 +50,10 @@ const AccordionHeaderBlock: React.FC<AccordionDescriptionPropsType> = ({
         costs={costs}
         balance={balance}
         isSticky={isSticky}
+        isMonth={isMonth}
       />
       <div
-        className={`col-span-2 pr-2 gap-2 flex ${
+        className={`col-span-1 pr-2 gap-2 flex ${
           isSticky
             ? "flex-row justify-end items-center"
             : "flex-col justify-center items-end"

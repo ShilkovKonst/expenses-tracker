@@ -9,6 +9,7 @@ type AccordionDescriptionPropsType = {
   costs: number;
   balance: number;
   isSticky?: boolean;
+  isMonth?: boolean;
 };
 
 const AccordionDescriptionBlock: React.FC<AccordionDescriptionPropsType> = ({
@@ -17,21 +18,33 @@ const AccordionDescriptionBlock: React.FC<AccordionDescriptionPropsType> = ({
   costs,
   balance,
   isSticky,
+  isMonth,
 }) => {
-  const { locale } = useGlobal();
+  const { locale, selectedTag } = useGlobal();
   return (
     <div
       className={`${
-        !isSticky ? "grid-cols-2" : "grid-cols-4"
-      } pl-4 py-2 col-span-4 grid  md:grid-cols-4 gap-2 my-auto`}
+        !isSticky ? "grid-cols-2" : "grid-cols-5"
+      } pl-4 py-2 col-span-5 grid  md:grid-cols-5 gap-2 my-auto`}
     >
-      <div className="col-span-1 flex justify-start items-center">
+      <div
+        className={`${
+          !isMonth && isSticky ? "col-span-2" : "col-span-1"
+        }  flex justify-start items-center`}
+      >
         <h3
           className={`${
-            !isSticky ? "text-base" : "text-xs sm:text-sm md:text-base"
-          } font-bold text-blue-800 capitalize flex justify-start items-center`}
+            !isSticky ? "text-base" : "text-xs sm:text-sm"
+          } font-bold text-blue-800 capitalize flex flex-row justify-start items-center gap-1`}
         >
-          {labelMain}
+          {!isMonth && isSticky && (
+            <span className="max-w-20 truncate lg:max-w-max">
+              {selectedTag.type === "default"
+                ? t(locale, "body.form.costsTagDefault")
+                : selectedTag.type}
+            </span>
+          )}
+          <span>{labelMain}</span>
         </h3>
       </div>
       <div className="flex flex-col justify-center">
@@ -45,7 +58,7 @@ const AccordionDescriptionBlock: React.FC<AccordionDescriptionPropsType> = ({
         <span
           className={`${
             !isSticky ? "text-base " : "text-sm"
-          } font-bold text-green-600 text-base lg:text-lg`}
+          } font-bold text-green-600 text-sm`}
         >
           {budget}
         </span>
@@ -61,7 +74,7 @@ const AccordionDescriptionBlock: React.FC<AccordionDescriptionPropsType> = ({
         <span
           className={`${
             !isSticky ? "text-base " : "text-sm "
-          } font-bold text-red-600 text-base lg:text-lg`}
+          } font-bold text-red-600 text-sm`}
         >
           {costs}
         </span>
@@ -77,7 +90,7 @@ const AccordionDescriptionBlock: React.FC<AccordionDescriptionPropsType> = ({
         <span
           className={`${
             !isSticky ? "text-base " : "text-sm "
-          } font-bold text-red-500 text-base lg:text-lg`}
+          } font-bold text-red-500 text-sm`}
         >
           {balance}
         </span>

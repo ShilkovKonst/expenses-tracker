@@ -57,8 +57,8 @@ const FormSelectBlock: React.FC<FormSelectBlockPropsType> = ({
           >
             {withLabel
               ? t(locale, `body.form.${titleOptions}.${o}`)
-              : o === "home"
-              ? t(locale, `body.form.costsTagHome`)
+              : o === "default"
+              ? t(locale, `body.form.costsTagDefault`)
               : o}
           </option>
         ))}

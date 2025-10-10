@@ -12,19 +12,15 @@ import {
   YearFormType,
 } from "@/types/formTypes";
 import { FormEvent, useEffect, useState } from "react";
-import { CURRENT_YEAR, EMPTY_FORM_MONTHS } from "@/lib/constants";
+import { CURRENT_YEAR } from "@/lib/constants";
 import AccordionBlock from "./AccordionBlock";
 import ModalBlock from "./ModalFormBlock";
 import TagsBlock from "./TagsBlock";
 import { useGlobal } from "@/app/context/GlobalContext";
 
 const MainBlock = () => {
-  const { locale } = useGlobal();
+  const { locale, selectedTag } = useGlobal();
 
-  const [selectedTag, setSelectedTag] = useState<TagType>({
-    id: 0,
-    type: "home",
-  });
   const [costTags, setCostTags] = useState<TagType[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<MonthIdType | "">("");
   const [costs, setCosts] = useState<CostFormType[]>([]);
@@ -49,15 +45,16 @@ const MainBlock = () => {
 
   useEffect(() => {
     if (localStorage) {
-      const rawTags = localStorage.getItem("costTags");
-      if (!rawTags) localStorage.setItem("costTags", JSON.stringify(["home"]));
-      const tags: TagType[] = rawTags ? JSON.parse(rawTags) : ["home"];
+      const rawTags = localStorage.getItem("expenseTags");
+      if (!rawTags)
+        localStorage.setItem("expenseTags", JSON.stringify([selectedTag]));
+      const tags: TagType[] = rawTags ? JSON.parse(rawTags) : [selectedTag];
       setCostTags(tags);
     }
   }, []);
 
   useEffect(() => {
-    const raw = localStorage.getItem(`costs-${selectedTag.type}`);
+    const raw = localStorage.getItem(`${selectedTag.type}`);
     setFormData(raw ? JSON.parse(raw) : formData);
     setIsFormUpdated(false);
     setSelectedMonth("");
@@ -129,12 +126,7 @@ const MainBlock = () => {
           {t(locale, `body.form.title`)}
         </h2>
       </div>
-      <TagsBlock
-        selectedTag={selectedTag}
-        setSelectedTag={setSelectedTag}
-        costTags={costTags}
-        setCostTags={setCostTags}
-      />
+      <TagsBlock costTags={costTags} setCostTags={setCostTags} />
       <AccordionBlock formData={formData} costs={costs} setCosts={setCosts} />
     </div>
   );
