@@ -1,6 +1,8 @@
 "use client";
+import { CURRENT_YEAR } from "@/lib/constants";
+import { initEmptyMonths } from "@/lib/utils/monthHelper";
 import { Locale } from "@/locales/locale";
-import { TagType } from "@/types/formTypes";
+import { FormDataType, TagType, YearFormType } from "@/types/formTypes";
 import { useParams } from "next/navigation";
 import {
   createContext,
@@ -15,6 +17,8 @@ interface GlobalContextType {
   locale: Locale;
   selectedTag: TagType;
   setSelectedTag: Dispatch<SetStateAction<TagType>>;
+  formData: FormDataType;
+  setFormData: Dispatch<SetStateAction<FormDataType>>;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -23,6 +27,19 @@ export const GlobalContext = createContext<GlobalContextType | undefined>(
 
 export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
+  const [formData, setFormData] = useState<FormDataType>({
+    id: "default",
+    years: [
+      {
+        id: CURRENT_YEAR,
+        months: initEmptyMonths(),
+        costs: 0,
+        budget: 0,
+        balance: 0,
+      },
+    ] as YearFormType[],
+    totalCosts: 0,
+  });
   const [selectedTag, setSelectedTag] = useState<TagType>({
     id: 0,
     type: "default",
@@ -30,7 +47,9 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
   });
 
   return (
-    <GlobalContext.Provider value={{ locale, selectedTag, setSelectedTag }}>
+    <GlobalContext.Provider
+      value={{ locale, selectedTag, setSelectedTag, formData, setFormData }}
+    >
       {children}
     </GlobalContext.Provider>
   );

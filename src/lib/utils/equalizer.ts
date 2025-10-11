@@ -1,61 +1,31 @@
-import {
-  CostFormType,
-  FormDataType,
-  MonthFormType,
-  MonthIdType,
-  YearFormType,
-} from "@/types/formTypes";
+export function isEqual<T>(a: T, b: T): boolean {
+  if (a === b) return true;
 
-// export function deepEqualFormData(a: FormType, b: FormType): boolean {
-//   if (a.totalCosts !== b.totalCosts) return false;
+  if (
+    typeof a !== "object" ||
+    a === null ||
+    typeof b !== "object" ||
+    b === null
+  ) {
+    return false; // примитивы и null сравниваем напрямую
+  }
 
-//   const yearsA = Object.keys(a.years);
-//   const yearsB = Object.keys(b.years);
-//   if (yearsA.length !== yearsB.length) return false;
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!isEqual(a[i], b[i])) return false;
+    }
+    return true;
+  }
 
-//   for (const year of yearsA) {
-//     if (!(year in b.years)) return false;
-//     if (!deepEqualYear(a.years[+year], b.years[+year])) return false;
-//   }
+  const aKeys = Object.keys(a) as (keyof T)[];
+  const bKeys = Object.keys(b) as (keyof T)[];
+  if (aKeys.length !== bKeys.length) return false;
 
-//   return true;
-// }
+  for (const key of aKeys) {
+    if (!(key in b)) return false;
+    if (!isEqual(a[key], b[key])) return false;
+  }
 
-// function deepEqualYear(a: YearFormType, b: YearFormType): boolean {
-//   if (a.costs !== b.costs) return false;
-//   if (a.budget !== b.budget) return false;
-
-//   const monthsA = Object.keys(a.months);
-//   const monthsB = Object.keys(b.months);
-//   if (monthsA.length !== monthsB.length) return false;
-
-//   for (const month of monthsA) {
-//     if (!(month in b.months)) return false;
-//     if (
-//       !deepEqualMonth(
-//         a.months[+month as MonthIdType],
-//         b.months[+month as MonthIdType]
-//       )
-//     )
-//       return false;
-//   }
-
-//   return true;
-// }
-
-// function deepEqualMonth(a: MonthFormType, b: MonthFormType): boolean {
-//   if (a.monthCosts !== b.monthCosts) return false;
-//   if (a.budget !== b.budget) return false;
-
-//   if (a.costs.length !== b.costs.length) return false;
-
-//   for (let i = 0; i < a.costs.length; i++) {
-//     if (!deepEqualCost(a.costs[i], b.costs[i])) return false;
-//   }
-
-//   return true;
-// }
-
-// function deepEqualCost(a: CostFormType, b: CostFormType): boolean {
-//   return a.title === b.title && a.type === b.type && a.amount === b.amount;
-// }
+  return true;
+}

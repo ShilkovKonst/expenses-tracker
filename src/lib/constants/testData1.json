@@ -1,5 +1,5 @@
 {
-  "id": "home",
+  "id": "default",
   "years": [
     {
       "id": 2025,
@@ -33,12 +33,31 @@
           "budget": 0
         },
         { "id": 5, "title": "may", "costs": [], "costsAmount": 0, "budget": 0 },
-        { "id": 6, "title": "june", "costs": [], "costsAmount": 0, "budget": 0 },
-        { "id": 7, "title": "july", "costs": [], "costsAmount": 0, "budget": 0 },
+        {
+          "id": 6,
+          "title": "june",
+          "costs": [],
+          "costsAmount": 0,
+          "budget": 0
+        },
+        {
+          "id": 7,
+          "title": "july",
+          "costs": [],
+          "costsAmount": 0,
+          "budget": 0
+        },
         {
           "id": 8,
           "title": "august",
-          "costs": [],
+          "costs": [
+            {
+              "id": 0,
+              "description": "алди",
+              "type": "продукты",
+              "amount": 26.22
+            }
+          ],
           "costsAmount": 0,
           "budget": 0
         },

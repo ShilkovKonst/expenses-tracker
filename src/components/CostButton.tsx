@@ -10,6 +10,7 @@ type CostButtonType = {
     | (() => void)
     | ((e: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void);
   disabled?: boolean;
+  isExpand?: boolean;
 };
 
 const CostButton: React.FC<CostButtonType> = ({

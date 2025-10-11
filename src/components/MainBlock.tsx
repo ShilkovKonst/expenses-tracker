@@ -11,35 +11,18 @@ import {
   TagType,
   YearFormType,
 } from "@/types/formTypes";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CURRENT_YEAR } from "@/lib/constants";
-import AccordionBlock from "./AccordionBlock";
+import AccordionBlock from "./accordion/AccordionBlock";
 import ModalBlock from "./ModalFormBlock";
 import TagsBlock from "./TagsBlock";
 import { useGlobal } from "@/app/context/GlobalContext";
 
 const MainBlock = () => {
-  const { locale, selectedTag } = useGlobal();
+  const { locale, selectedTag, formData, setFormData } = useGlobal();
 
   const [costTags, setCostTags] = useState<TagType[]>([]);
-  const [selectedMonth, setSelectedMonth] = useState<MonthIdType | "">("");
-  const [costs, setCosts] = useState<CostFormType[]>([]);
   const [monthBudget, setMonthBudget] = useState<number>(0);
-  const [isFormUpdated, setIsFormUpdated] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormDataType>({
-    id: "",
-    years: [
-      {
-        id: CURRENT_YEAR,
-        months: initEmptyMonths(),
-        costs: 0,
-        budget: 0,
-        balance: 0,
-      },
-    ] as YearFormType[],
-    totalCosts: 0,
-  });
-
   const [isModal, setIsModal] = useState<boolean>(false);
   // const [modal, setModal] = useState<ModalType | null>(null);
 
@@ -56,60 +39,10 @@ const MainBlock = () => {
   useEffect(() => {
     const raw = localStorage.getItem(`${selectedTag.type}`);
     setFormData(raw ? JSON.parse(raw) : formData);
-    setIsFormUpdated(false);
-    setSelectedMonth("");
-  }, [isFormUpdated, selectedTag]);
-
-  useEffect(() => {
-    if (!selectedMonth) {
-      setCosts([]);
-      return;
-    }
-    const currentYear = formData.years[CURRENT_YEAR];
-    const month = currentYear?.months[selectedMonth];
-    setCosts(
-      month?.costs?.length > 0
-        ? month?.costs
-        : [{ id: 0, type: "", description: "", amount: 0 }]
-    );
-  }, [selectedMonth]);
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!selectedMonth) return;
-
-    const month = getMonthById(selectedMonth);
-    const newMonth: MonthFormType = {
-      id: selectedMonth,
-      title: month as Months,
-      costs: costs,
-      costsAmount: costs.reduce((acc, c) => acc + c.amount, 0),
-      budget: monthBudget,
-    };
-
-    let currentYear = defineCurrentYearData(formData);
-    const updatedMonths: MonthFormType[] = [
-      ...currentYear.months.filter((m) => m.id !== selectedMonth),
-      newMonth,
-    ];
-    currentYear = {
-      ...currentYear,
-      months: updatedMonths,
-      costs: Object.values(updatedMonths).reduce(
-        (acc, m) => acc + m.costsAmount,
-        0
-      ),
-    };
-
-    const newFormData = getNewFormData(selectedTag, formData, currentYear);
-    setFormData(newFormData);
-    localStorage.setItem(`costs-${selectedTag}`, JSON.stringify(newFormData));
-
-    setIsFormUpdated(true);
-  };
+  }, [selectedTag]);
 
   return (
-    <div className="font-sans pb-7 border-2 border-blue-100 rounded-b-lg bg-blue-50 p-6 mb-7">
+    <div className="font-sans pb-7 border-2 border-blue-100 rounded-b-lg bg-blue-50 p-2 md:p-6 mb-7">
       {/* {isModal && (
         <ModalBlock
           title={t(locale, "body.form.costsTagFormTitle")}
@@ -127,7 +60,7 @@ const MainBlock = () => {
         </h2>
       </div>
       <TagsBlock costTags={costTags} setCostTags={setCostTags} />
-      <AccordionBlock formData={formData} costs={costs} setCosts={setCosts} />
+      <AccordionBlock />
     </div>
   );
 };

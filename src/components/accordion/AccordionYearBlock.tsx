@@ -1,22 +1,16 @@
 "use client";
-import { CostFormType, MonthFormType, YearFormType } from "@/types/formTypes";
-import { Dispatch, SetStateAction } from "react";
+import { YearFormType } from "@/types/formTypes";
 import AccordionMonthBlock from "./AccordionMonthBlock";
 import AccordionHeaderBlock from "./AccordionHeaderBlock";
 
 type AccordionYearBlockPropsType = {
   formDataId: string;
   year: YearFormType;
-  costs: CostFormType[];
-  setCosts: Dispatch<SetStateAction<CostFormType[]>>;
-  activeMonth: MonthFormType | undefined;
 };
 
 const AccordionYearBlock: React.FC<AccordionYearBlockPropsType> = ({
   formDataId,
   year,
-  costs,
-  setCosts,
 }) => {
   return (
     <div
@@ -32,7 +26,6 @@ const AccordionYearBlock: React.FC<AccordionYearBlockPropsType> = ({
         expandDataType={year.id.toString()}
         isMonth={false}
         expandDisabled={false}
-        isSticky={false}
       />
       <div
         id={year.id.toString()}
@@ -40,13 +33,7 @@ const AccordionYearBlock: React.FC<AccordionYearBlockPropsType> = ({
         className="pl-4 transition-[height] duration-300 ease-in-out overflow-hidden w-full"
       >
         {year.months.map((month) => (
-          <AccordionMonthBlock
-            key={month.id}
-            yearId={year.id}
-            month={month}
-            costs={costs}
-            setCosts={setCosts}
-          />
+          <AccordionMonthBlock key={month.id} yearId={year.id} month={month} />
         ))}
         <div></div>
       </div>

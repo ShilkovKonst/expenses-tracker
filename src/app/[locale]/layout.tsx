@@ -40,7 +40,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white relative p-0 md:py-5 md:px-5 lg:px-10 xl:px-20`}
       >
         <GlobalProvider>
-          <header className="bg-blue-950 text-white p-8 text-center rounded-t-xl">
+          <header className="bg-blue-950 text-white p-2 md:p-8 text-center rounded-t-xl">
             <h1 className="m-0 text-4xl font-bold">
               {t(locale as Locale, "body.header.title")}
             </h1>

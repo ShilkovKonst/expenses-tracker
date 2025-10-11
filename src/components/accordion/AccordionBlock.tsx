@@ -1,13 +1,8 @@
 "use client";
-import {
-  CostFormType,
-  FormDataType,
-  MonthFormType,
-  YearFormType,
-} from "@/types/formTypes";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { MonthFormType, YearFormType } from "@/types/formTypes";
+import { useEffect, useRef, useState } from "react";
 import AccordionYearBlock from "./AccordionYearBlock";
-import AccordionHeaderBlock from "./AccordionHeaderBlock";
+import AccordionStickyHeader from "./AccordionStickyHeader";
 import { t } from "@/locales/locale";
 import { useGlobal } from "@/app/context/GlobalContext";
 import {
@@ -16,18 +11,8 @@ import {
   onScrollYearHelper,
 } from "@/lib/utils/onScrollHelper";
 
-type AccordionBlockPropsType = {
-  formData: FormDataType;
-  costs: CostFormType[];
-  setCosts: Dispatch<SetStateAction<CostFormType[]>>;
-};
-
-const AccordionBlock: React.FC<AccordionBlockPropsType> = ({
-  formData,
-  costs,
-  setCosts,
-}) => {
-  const { locale } = useGlobal();
+const AccordionBlock: React.FC = () => {
+  const { locale, formData } = useGlobal();
   const [activeMonth, setActiveMonth] = useState<MonthFormType | undefined>(
     undefined
   );
@@ -81,8 +66,7 @@ const AccordionBlock: React.FC<AccordionBlockPropsType> = ({
   return (
     <div className="w-full">
       {activeYear && (
-        <AccordionHeaderBlock
-          isSticky={true}
+        <AccordionStickyHeader
           isMonth={false}
           labelMain={activeYear.id.toString()}
           budget={activeYear?.budget ?? 0}
@@ -93,8 +77,7 @@ const AccordionBlock: React.FC<AccordionBlockPropsType> = ({
         />
       )}
       {activeMonth && (
-        <AccordionHeaderBlock
-          isSticky={true}
+        <AccordionStickyHeader
           isMonth={true}
           labelMain={t(locale, `body.form.valueMonth.${activeMonth.title}`)}
           budget={activeMonth?.budget ?? 0}
@@ -105,14 +88,7 @@ const AccordionBlock: React.FC<AccordionBlockPropsType> = ({
         />
       )}
       {formData.years.map((year, index) => (
-        <AccordionYearBlock
-          formDataId={formData.id}
-          key={index}
-          year={year}
-          costs={costs}
-          setCosts={setCosts}
-          activeMonth={activeMonth}
-        />
+        <AccordionYearBlock formDataId={formData.id} key={index} year={year} />
       ))}
     </div>
   );
