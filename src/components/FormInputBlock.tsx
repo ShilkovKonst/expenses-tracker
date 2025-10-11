@@ -6,7 +6,7 @@ type FormInputPropsType = {
   styleLabel: string;
   styleInput: string;
   id: string;
-  value: string | number;
+  value: string;
   type: "text" | "number";
   disabled: boolean;
   required: boolean;
@@ -37,7 +37,7 @@ const FormInputBlock: React.FC<FormInputPropsType> = ({
         id={id}
         className={`w-full border-2 border-blue-100 rounded-md transition-colors duration-200 ease-in-out bg-white ${styleInput}`}
         type={type}
-        value={value}
+        value={name === "amount" ? (value ? regexAmount(value) : "0") : value}
         onChange={(e) => handleChange(e)}
         disabled={disabled}
         required={required}
@@ -47,3 +47,9 @@ const FormInputBlock: React.FC<FormInputPropsType> = ({
 };
 
 export default FormInputBlock;
+
+function regexAmount(amount: string) {
+  const regex = /^0+/;
+  const processedAmount = amount.replace(regex, "");
+  return processedAmount.length === 0 ? "0" : processedAmount;
+}

@@ -36,7 +36,6 @@ const AccordionMonthBlock: React.FC<AccordionMonthBlockPropsType> = ({
       type: "",
       description: "",
     };
-    console.log(newCost);
     setCurrentMonth({
       ...currentMonth,
       costs: [...currentMonth.costs, newCost],

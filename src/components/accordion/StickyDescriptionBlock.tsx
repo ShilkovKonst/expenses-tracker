@@ -1,6 +1,6 @@
 import { AddBudget, ExpandIcon } from "@/lib/icons";
 import AccordionDescriptionBlock from "./AccordionDescriptionBlock";
-import CostButton from "./CostButton";
+import CostButton from "../CostButton";
 import { Locale, t } from "@/locales/locale";
 
 type AccordionDescriptionPropsType = {
@@ -30,7 +30,6 @@ const StickyDescriptionBlock: React.FC<AccordionDescriptionPropsType> = ({
         budget={budget}
         costs={costs}
         balance={balance}
-        isSticky={true}
       />
       <div className="col-span-2 pr-2 gap-2 flex flex-col justify-center items-end lg:flex-row lg:justify-end lg:items-center *:text-sm *:md:text-base">
         <CostButton

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { CostFormType } from "@/types/formTypes";
 import FormInputBlock from "../../FormInputBlock";
@@ -16,6 +15,7 @@ import { isEqual } from "@/lib/utils/equalizer";
 
 type AccordionCostFormBlockProps = {
   currentCost: CostFormType;
+  oldCost: CostFormType | undefined;
   setCurrentCost: Dispatch<SetStateAction<CostFormType>>;
   formId: string;
   handleUpdate: (
@@ -26,18 +26,13 @@ type AccordionCostFormBlockProps = {
 
 const AccordionCostFormBlock: React.FC<AccordionCostFormBlockProps> = ({
   currentCost,
+  oldCost,
   setCurrentCost,
   formId,
   handleUpdate,
 }) => {
   const { locale } = useGlobal();
-  const [oldCost, setOldCost] = useState<CostFormType | undefined>(undefined);
   const [undoDisabled, setUndoDisabled] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (!currentCost) return;
-    if (!oldCost) setOldCost(currentCost);
-  }, [currentCost]);
 
   useEffect(() => {
     setUndoDisabled(isEqual(currentCost, oldCost));
@@ -50,10 +45,7 @@ const AccordionCostFormBlock: React.FC<AccordionCostFormBlockProps> = ({
     if (!currentCost) return;
     setCurrentCost((cost) => ({
       ...cost,
-      [field]:
-        typeof value === "string" && field === "amount"
-          ? parseFloat(value)
-          : value,
+      [field]: value,
     }));
   };
 
@@ -97,7 +89,7 @@ const AccordionCostFormBlock: React.FC<AccordionCostFormBlockProps> = ({
           name={c.name}
           title={c.title}
           id={c.id}
-          value={c.value}
+          value={c.value.toString()}
           handleChange={(e) =>
             handleCostChange(c.name as keyof CostFormType, e.target.value)
           }

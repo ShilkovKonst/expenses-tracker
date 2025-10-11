@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { MouseEvent as ReactMouseEvent, useEffect, useState } from "react";
 import {
@@ -24,6 +25,12 @@ const AccordionCostBlock: React.FC<AccordionCostBlockPropsType> = ({
 }) => {
   const { locale, selectedTag, formData, setFormData } = useGlobal();
   const [currentCost, setCurrentCost] = useState<CostFormType>(cost);
+  const [oldCost, setOldCost] = useState<CostFormType | undefined>(undefined);
+
+  useEffect(() => {
+    if (!currentCost) return;
+    if (!oldCost) setOldCost(currentCost);
+  }, [currentCost]);
 
   useEffect(() => {
     if (!cost) return;
@@ -36,6 +43,11 @@ const AccordionCostBlock: React.FC<AccordionCostBlockPropsType> = ({
   ) => {
     e.preventDefault();
     if (!currentCost) return;
+    const processedCost = {
+      ...currentCost,
+      amount: Math.round(currentCost.amount * 100) / 100,
+    };
+
     const ids = yearMonthId.split("-");
 
     const currentYear = parseInt(ids[0]);
@@ -54,7 +66,7 @@ const AccordionCostBlock: React.FC<AccordionCostBlockPropsType> = ({
 
     const [updCosts, costsAmount] = updateItem(
       month.costs,
-      currentCost,
+      processedCost,
       (items) => items.reduce((sum, c) => sum + c.amount, 0),
       isDelete
     );
@@ -87,7 +99,7 @@ const AccordionCostBlock: React.FC<AccordionCostBlockPropsType> = ({
       totalCosts: yearsCostsAmount,
     };
     setFormData(newFormData);
-
+    setOldCost(isDelete ? undefined : processedCost);
     if (localStorage) {
       localStorage.setItem(selectedTag.type, JSON.stringify(newFormData));
     }
@@ -114,6 +126,7 @@ const AccordionCostBlock: React.FC<AccordionCostBlockPropsType> = ({
       </div>
       <AccordionCostFormBlock
         currentCost={currentCost}
+        oldCost={oldCost}
         setCurrentCost={setCurrentCost}
         handleUpdate={(e) => handleUpdateDelete(e, false)}
         formId={`${yearMonthId}-${currentCost.id}-${currentCost.type}-${currentCost.amount}`}
