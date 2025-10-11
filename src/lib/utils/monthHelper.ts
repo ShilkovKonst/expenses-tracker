@@ -30,7 +30,7 @@ export function getMonthIdByTitle<T extends Months>(title: T): MonthIdType {
 export function initEmptyMonths(): MonthFormType[] {
   const emptyMonths: MonthFormType[] = [];
   for (let i = 1 as MonthIdType; i <= 12; i++) {
-    emptyMonths[i] = {
+    emptyMonths[i - 1] = {
       id: i,
       title: getMonthById(i),
       costs: [],
