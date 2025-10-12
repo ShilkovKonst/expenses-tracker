@@ -1,44 +1,41 @@
 "use client";
 import { MouseEvent as RMouseEvent, useEffect, useState } from "react";
-import { CostFormType, MonthFormType } from "@/types/formTypes";
+import { Operation, Month } from "@/types/formTypes";
 import { useGlobal } from "@/app/context/GlobalContext";
 import { t } from "@/locales/locale";
-import AccordionHeaderBlock from "./AccordionHeaderBlock";
-import AccordionCostBlock from "./accordionCost/AccordionCostBlock";
+import HeaderBlock from "./HeaderBlock";
+import OperationBlock from "./operationBlockComponents/OperationBlock";
 
-type AccordionMonthBlockPropsType = {
+type MonthBlockProps = {
   yearId: number;
-  month: MonthFormType;
+  month: Month;
 };
 
-const AccordionMonthBlock: React.FC<AccordionMonthBlockPropsType> = ({
-  yearId,
-  month,
-}) => {
+const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
   const { locale } = useGlobal();
-  const [currentMonth, setCurrentMonth] = useState<MonthFormType>(month);
+  const [currentMonth, setCurrentMonth] = useState<Month>(month);
   const [isExpandDisabled, setIsExpandDisabled] = useState<boolean>(true);
 
   useEffect(() => {
-    if (!month) return;
     setCurrentMonth(month);
   }, [month]);
 
   useEffect(() => {
-    setIsExpandDisabled(currentMonth.costs.length === 0);
-  }, [currentMonth.costs]);
+    setIsExpandDisabled(currentMonth.operations?.length === 0);
+  }, [currentMonth.operations]);
 
   const handleAddCost = (e: RMouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    const newCost: CostFormType = {
-      id: currentMonth.costs.length,
-      amount: 0,
-      type: "",
+    const newOperations: Operation = {
+      id: currentMonth.operations.length,
+      type: "cost",
+      tags: [],
       description: "",
+      amount: 0,
     };
     setCurrentMonth({
       ...currentMonth,
-      costs: [...currentMonth.costs, newCost],
+      operations: [...currentMonth.operations, newOperations],
     });
   };
 
@@ -51,13 +48,11 @@ const AccordionMonthBlock: React.FC<AccordionMonthBlockPropsType> = ({
       data-year-id={yearId}
       className="month grid grid-cols-6 gap-2 w-full"
     >
-      <AccordionHeaderBlock
+      <HeaderBlock
         dataId={`${yearId}-${month.id}-header`}
         dataHeader={yearId.toString()}
         labelMain={`${t(locale, `body.form.valueMonth.${currentMonth.title}`)}`}
-        budget={currentMonth.budget ?? 0}
-        costs={currentMonth.costsAmount}
-        balance={currentMonth.balance ?? 0}
+        totalAmount={currentMonth.totalAmount}
         expandDataType={`${yearId}-${month.id}`}
         isMonth={true}
         expandDisabled={isExpandDisabled}
@@ -68,11 +63,11 @@ const AccordionMonthBlock: React.FC<AccordionMonthBlockPropsType> = ({
         style={{ height: 0 }}
         className="col-span-6 pl-4 transition-[height] duration-300 ease-in-out overflow-hidden w-full"
       >
-        {currentMonth.costs.map((cost, index) => (
-          <AccordionCostBlock
+        {currentMonth.operations.map((operation, index) => (
+          <OperationBlock
             key={index}
             yearMonthId={`${yearId}-${month.id}`}
-            cost={cost}
+            operation={operation}
           />
         ))}
         <div></div>
@@ -81,4 +76,4 @@ const AccordionMonthBlock: React.FC<AccordionMonthBlockPropsType> = ({
   );
 };
 
-export default AccordionMonthBlock;
+export default MonthBlock;

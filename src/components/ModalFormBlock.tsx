@@ -5,8 +5,8 @@ import {
   TouchEvent,
   useState,
 } from "react";
-import TagButton from "./TagButton";
-import { TagType } from "@/types/formTypes";
+import TagButton from "./buttonComponents/TagButton";
+import { DataType } from "@/types/formTypes";
 
 type ConfirmationBlockProps = {
   title: string;
@@ -27,9 +27,9 @@ const ModalBlock: React.FC<ConfirmationBlockProps> = ({
   cancelText,
   checkBoxTip,
 }) => {
-  const [customTag, setCustomTag] = useState<TagType>({ id: 0, type: "" });
+  const [customTag, setCustomTag] = useState<DataType>({ id: 0, title: "" });
   const handleChange = (custom: string) => {
-    setCustomTag({ id: 0, type: custom });
+    setCustomTag({ id: 0, title: custom });
   };
 
   const handleClick = (e: MouseEvent | TouchEvent) => {
@@ -75,29 +75,9 @@ const ModalBlock: React.FC<ConfirmationBlockProps> = ({
             className="w-full col-span-2 px-2 py-1 border-2 border-blue-100 rounded-md text-sm transition-colors duration-200 bg-white"
             placeholder={inputPlaceholder}
             type="text"
-            value={customTag.type}
+            value={customTag.title}
             onChange={(e) => handleChange(e.target.value)}
           />
-          <div
-            title={checkBoxTip}
-            className=" col-span-3 flex justify-start items-center gap-2"
-          >
-            <input
-              id="checkInput"
-              type="checkbox"
-              className="col-span-1"
-              checked={!!customTag.withBudget}
-              onChange={() => {
-                setCustomTag({
-                  ...customTag,
-                  withBudget: !customTag.withBudget,
-                });
-              }}
-            />
-            <label htmlFor="checkInput" className="col-span-2">
-              {} With buget?
-            </label>
-          </div>
 
           <TagButton
             id="confirm"

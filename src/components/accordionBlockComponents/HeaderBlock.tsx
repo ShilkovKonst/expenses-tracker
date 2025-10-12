@@ -1,12 +1,10 @@
 import { MouseEvent as RMouseEvent } from "react";
-import AccordionDescriptionBlock from "./AccordionDescriptionBlock";
-import AccordionHeaderButtonBlock from "./AccordionHeaderButtonBlock";
+import DescriptionBlock from "./DescriptionBlock";
+import HeaderButtonBlock from "./HeaderButtonBlock";
 
-type AccordionDescriptionPropsType = {
+type DescriptionPropsType = {
   labelMain: string;
-  budget: number;
-  costs: number;
-  balance: number;
+  totalAmount: number;
   expandDataType: string;
   expandDisabled: boolean;
   isMonth?: boolean;
@@ -15,11 +13,9 @@ type AccordionDescriptionPropsType = {
   handleAddCost?: (e: RMouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
-const AccordionHeaderBlock: React.FC<AccordionDescriptionPropsType> = ({
+const HeaderBlock: React.FC<DescriptionPropsType> = ({
   labelMain,
-  budget,
-  costs,
-  balance,
+  totalAmount,
   expandDataType,
   expandDisabled,
   isMonth,
@@ -36,14 +32,12 @@ const AccordionHeaderBlock: React.FC<AccordionDescriptionPropsType> = ({
         isMonth ? "bg-blue-100 border-blue-200" : "bg-blue-200 border-blue-300"
       }`}
     >
-      <AccordionDescriptionBlock
+      <DescriptionBlock
         labelMain={`${labelMain}`}
-        budget={budget}
-        costs={costs}
-        balance={balance}
+        totalAmount={totalAmount}
         isMonth={isMonth}
       />
-      <AccordionHeaderButtonBlock
+      <HeaderButtonBlock
         outerStyle="col-span-2"
         iconSize="h-4 w-4"
         buttonSize="h-6 w-8"
@@ -57,4 +51,4 @@ const AccordionHeaderBlock: React.FC<AccordionDescriptionPropsType> = ({
   );
 };
 
-export default AccordionHeaderBlock;
+export default HeaderBlock;

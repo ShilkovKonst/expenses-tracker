@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { CURRENT_YEAR } from "@/lib/constants";
 import { initEmptyMonths } from "@/lib/utils/monthHelper";
 import { Locale } from "@/locales/locale";
-import { FormDataType, TagType, YearFormType } from "@/types/formTypes";
+import { Data, DataType, Year } from "@/types/formTypes";
 import { useParams } from "next/navigation";
 import {
   createContext,
@@ -10,15 +11,18 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
 interface GlobalContextType {
   locale: Locale;
-  selectedTag: TagType;
-  setSelectedTag: Dispatch<SetStateAction<TagType>>;
-  formData: FormDataType;
-  setFormData: Dispatch<SetStateAction<FormDataType>>;
+  selectedType: DataType;
+  setSelectedType: Dispatch<SetStateAction<DataType>>;
+  data: Data;
+  setData: Dispatch<SetStateAction<Data>>;
+  operationTags: Set<string>;
+  setOperationTags: Dispatch<SetStateAction<Set<string>>>;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -27,28 +31,67 @@ export const GlobalContext = createContext<GlobalContextType | undefined>(
 
 export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
-  const [formData, setFormData] = useState<FormDataType>({
+  const [data, setData] = useState<Data>({
     id: "default",
     years: [
       {
         id: CURRENT_YEAR,
         months: initEmptyMonths(),
-        costs: 0,
-        budget: 0,
-        balance: 0,
+        totalAmount: 0,
       },
-    ] as YearFormType[],
-    totalCosts: 0,
+    ] as Year[],
+    totalAmount: 0,
   });
-  const [selectedTag, setSelectedTag] = useState<TagType>({
+  const [selectedType, setSelectedType] = useState<DataType>({
     id: 0,
-    type: "default",
-    withBudget: false,
+    title: "default",
   });
+  const [operationTags, setOperationTags] = useState<Set<string>>(
+    new Set([
+      "online",
+      "offline",
+      "bank transfer",
+      "card",
+      "cash",
+      "food",
+      "alcohol",
+      "goods",
+      "service",
+    ])
+  );
+
+  useEffect(() => {
+    if (localStorage) {
+      const raw = localStorage.getItem(`${selectedType.title}`);
+      setData(raw ? JSON.parse(raw) : data);
+    }
+  }, [selectedType]);
+
+  useEffect(() => {
+    if (localStorage) {
+      const raw = localStorage.getItem("operationTags");
+      if (!raw || !Array.isArray(JSON.parse(raw))) {
+        localStorage.setItem(
+          "operationTags",
+          JSON.stringify(operationTags.values().toArray())
+        );
+      } else {
+        setOperationTags(new Set(JSON.parse(raw)));
+      }
+    }
+  }, []);
 
   return (
     <GlobalContext.Provider
-      value={{ locale, selectedTag, setSelectedTag, formData, setFormData }}
+      value={{
+        locale,
+        selectedType,
+        setSelectedType,
+        data,
+        setData,
+        operationTags,
+        setOperationTags,
+      }}
     >
       {children}
     </GlobalContext.Provider>

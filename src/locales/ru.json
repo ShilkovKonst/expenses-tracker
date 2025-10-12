@@ -1,58 +1,56 @@
 {
   "meta": {
     "titleFull": "Трекер расходов",
-    "description": "Отслеживайте свои расходы"
+    "description": "Ответственное потребление - залог здорового бюджета"
   },
   "body": {
     "header": {
       "title": "Трекер расходов"
     },
     "modal": {
-      "checkBoxTip": "Calculate balance with provided budget or just calculate costs?"
+      "checkBoxTip": ""
     },
     "form": {
-      "title": "Редактировать ваши расходы",
-      "selectMonth": "Выберите месяц",
+      "title": "Следите за вашими операциями",
       "valueMonth": {
-        "january": "январь",
-        "february": "февраль",
-        "march": "март",
-        "april": "апрель",
-        "may": "май",
-        "june": "июнь",
-        "july": "июль",
-        "august": "август",
-        "september": "сентябрь",
-        "october": "октябрь",
-        "november": "ноябрь",
-        "december": "декабрь"
+        "january": "Январь",
+        "february": "Февраль",
+        "march": "Март",
+        "april": "Апрель",
+        "may": "Май",
+        "june": "Июнь",
+        "july": "Июль",
+        "august": "Август",
+        "september": "Сентябрь",
+        "october": "Октябрь",
+        "november": "Ноябрь",
+        "december": "Декабрь"
       },
       "labels": {
         "year": "Год",
         "month": "Месяц",
-        "budget": "Бюджет",
-        "costs": "Расходы",
-        "balance": "Баланс"
+        "operations": "Операции"
       },
-      "createMonth": "Создать / обновить",
-      "clearMonth": "Очистить месяц",
-      "costs": "Расходы",
-      "costsTagTitle": "Выберите тэг расходов из списка или создайте свой",
-      "costsTagFormTitle": "Создать новый",
-      "costsTagDefault": "базовый",
-      "costsTagCustomTitle": "Введите свой тэг",
-      "costsTagDouble": "Такой тэг уже есть, введите другое имя",
-      "selectCostsTag": "Выберите тэг",
-      "accordionExpandCosts": "Детализация",
-      "costType": "Тип",
-      "costDescription": "Описание",
-      "costAmount": "Сумма",
-      "costRemove": "Удалить",
-      "costAdd": "Добавить расход",
-      "accordionAddCost": "Добавить расход",
-      "accordionAddBudget": "Задать бюджет",
-      "accordionRemoveCost": "Удалить",
-      "accordionUpdateCost": "Обновить"
+      "data": {
+        "typeTitle": "Выберите тип данных из списка или создайте свой",
+        "typeCustomTitle": "Введите свой тип",
+        "typeFormTitle": "Создать новый",
+        "typeDefault": "базовый",
+        "typeDouble": "Такой тип уже есть, введите другое имя",
+        "typeSelect": "Выберите тэг"
+      },
+      "operations": {
+        "expand": "Детализация",
+        "type": "Тип",
+        "tags": "Тэги",
+        "description": "Описание",
+        "amount": "Сумма",
+        "remove": "Удалить",
+        "update": "Обновить",
+        "add": "Добавить",
+        "cost": "Расход",
+        "income": "Доход"
+      }
     }
   }
 }

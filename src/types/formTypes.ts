@@ -1,29 +1,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export type TagType = {
+export type DataType = {
   id: number;
-  type: string;
-  withBudget?: boolean;
+  title: string;
 };
 
-export type FormDataType = {
+export type Data = {
   id: string;
-  years: YearFormType[];
-  totalCosts: number;
+  years: Year[];
+  totalAmount: number;
 };
 
-export type YearFormType = {
+export type Year = {
   id: number;
-  months: MonthFormType[];
-  costs: number;
-  budget?: number;
-  balance?: number;
+  months: Month[];
+  totalAmount: number;
 };
 
-export type CostFormType = {
+export type Month = {
+  [K in MonthIdType]: {
+    id: K;
+    title: Months;
+    operations: Operation[];
+    totalAmount: number;
+  };
+}[MonthIdType];
+
+export type Operation = {
   id: number;
-  type: string;
+  type: "income" | "cost";
+  tags: string[];
   description: string;
   amount: number;
+  isIncome?: boolean;
 };
 
 const MONTHS = {
@@ -43,14 +51,3 @@ const MONTHS = {
 
 export type MonthIdType = keyof typeof MONTHS;
 export type Months = (typeof MONTHS)[MonthIdType];
-
-export type MonthFormType = {
-  [K in MonthIdType]: {
-    id: K;
-    title: Months;
-    costs: CostFormType[];
-    costsAmount: number;
-    budget?: number;
-    balance?: number;
-  };
-}[MonthIdType];

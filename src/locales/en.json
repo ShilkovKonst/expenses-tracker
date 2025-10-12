@@ -1,58 +1,56 @@
 {
   "meta": {
-    "titleFull": "Costs tracker",
-    "description": "Track your costs"
+    "titleFull": "Expense tracker",
+    "description": "Responsible spending is the key to a healthy budget"
   },
   "body": {
     "header": {
-      "title": "Cost Tracker"
+      "title": "Expense Tracker"
     },
     "modal": {
-      "checkBoxTip": "Calculate balance with provided budget or just calculate costs?"
+      "checkBoxTip": "Calculate the balance using the provided budget, or just calculate expenses?"
     },
     "form": {
-      "title": "Edit your costs",
-      "selectMonth": "Select Month",
+      "title": "Track your operations",
       "valueMonth": {
-        "january": "january",
-        "february": "february",
-        "march": "march",
-        "april": "april",
-        "may": "may",
-        "june": "june",
-        "july": "july",
-        "august": "august",
-        "september": "september",
-        "october": "october",
-        "november": "november",
-        "december": "december"
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
       },
       "labels": {
         "year": "Year",
         "month": "Month",
-        "budget": "Budget",
-        "costs": "Costs",
-        "balance": "Balance"
+        "operations": "Opérations"
       },
-      "createMonth": "Create / Update",
-      "clearMonth": "Clear Month",
-      "costs": "Costs",
-      "costsTagTitle": "Select an cost tag or create your own",
-      "costsTagFormTitle": "create your own tag",
-      "costsTagDefault": "default",
-      "costsTagCustomTitle": "Enter your custom tag",
-      "costsTagDouble": "This tag already exists, please enter a different name.",
-      "selectCostsTag": "Select tag",
-      "accordionExpandCosts": "Details",
-      "costType": "Type",
-      "costDescription": "Description",
-      "costAmount": "Amount",
-      "costRemove": "Remove",
-      "costAdd": "+ Add Cost",
-      "accordionAddCost": "+ cost",
-      "accordionAddBudget": "+ budget",
-      "accordionRemoveCost": "Remove",
-      "accordionUpdateCost": "Update"
+      "data": {
+        "typeTitle": "Select opertaion type or create your own",
+        "typeCustomTitle": "Enter your custom type's name",
+        "typeFormTitle": "Create your type",
+        "typeDefault": "default",
+        "typeDouble": "This type already exists, please enter a different name.",
+        "typeSelect": "Select type"
+      },
+      "operations": {
+        "expand": "Details",
+        "type": "Type",
+        "tags": "Tags",
+        "description": "Description",
+        "amount": "Amount",
+        "remove": "Remove",
+        "update": "Update",
+        "add": "Add",
+        "cost": "Cost",
+        "income": "Income"
+      }
     }
   }
 }

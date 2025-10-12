@@ -1,8 +1,8 @@
 "use client";
-import { MonthFormType, YearFormType } from "@/types/formTypes";
+import { Month, Year } from "@/types/formTypes";
 import { useEffect, useRef, useState } from "react";
-import AccordionYearBlock from "./AccordionYearBlock";
-import AccordionStickyHeader from "./AccordionStickyHeader";
+import YearBlock from "./YearBlock";
+import StickyHeader from "./StickyHeader";
 import { t } from "@/locales/locale";
 import { useGlobal } from "@/app/context/GlobalContext";
 import {
@@ -12,27 +12,23 @@ import {
 } from "@/lib/utils/onScrollHelper";
 
 const AccordionBlock: React.FC = () => {
-  const { locale, formData } = useGlobal();
-  const [activeMonth, setActiveMonth] = useState<MonthFormType | undefined>(
-    undefined
-  );
-  const [activeYear, setActiveYear] = useState<YearFormType | undefined>(
-    undefined
-  );
+  const { locale, data } = useGlobal();
+  const [activeMonth, setActiveMonth] = useState<Month | undefined>(undefined);
+  const [activeYear, setActiveYear] = useState<Year | undefined>(undefined);
   const [expandYearDataType, setExpandYearDataType] = useState<string>("");
   const [expandMonthDataType, setExpandMonthDataType] = useState<string>("");
 
-  const activeYearRef = useRef<YearFormType | undefined>(undefined);
-  const activeMonthRef = useRef<MonthFormType | undefined>(undefined);
+  const activeYearRef = useRef<Year | undefined>(undefined);
+  const activeMonthRef = useRef<Month | undefined>(undefined);
 
   useEffect(() => {
     const years = document.querySelectorAll<HTMLElement>(
-      `[data-year-body="${formData.id}"]`
+      `[data-year-body="${data.id}"]`
     );
 
     const onScroll = () => {
       const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
-        formData,
+        data,
         years,
         setExpandYearDataType
       );
@@ -53,7 +49,7 @@ const AccordionBlock: React.FC = () => {
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [formData]);
+  }, [data]);
 
   useEffect(() => {
     activeYearRef.current = activeYear;
@@ -66,29 +62,25 @@ const AccordionBlock: React.FC = () => {
   return (
     <div className="w-full">
       {activeYear && (
-        <AccordionStickyHeader
+        <StickyHeader
           isMonth={false}
           labelMain={activeYear.id.toString()}
-          budget={activeYear?.budget ?? 0}
-          costs={activeYear?.costs ?? 0}
-          balance={activeYear?.balance ?? 0}
+          totalAmount={activeYear?.totalAmount ?? 0}
           expandDataType={expandYearDataType}
           expandDisabled={false}
         />
       )}
       {activeMonth && (
-        <AccordionStickyHeader
+        <StickyHeader
           isMonth={true}
           labelMain={t(locale, `body.form.valueMonth.${activeMonth.title}`)}
-          budget={activeMonth?.budget ?? 0}
-          costs={activeMonth?.costsAmount ?? 0}
-          balance={activeMonth?.balance ?? 0}
+          totalAmount={activeMonth?.totalAmount ?? 0}
           expandDataType={expandMonthDataType}
-          expandDisabled={activeMonth?.costs?.length === 0}
+          expandDisabled={activeMonth?.operations?.length === 0}
         />
       )}
-      {formData.years.map((year, index) => (
-        <AccordionYearBlock formDataId={formData.id} key={index} year={year} />
+      {data.years.map((year, index) => (
+        <YearBlock dataId={data.id} key={index} year={year} />
       ))}
     </div>
   );

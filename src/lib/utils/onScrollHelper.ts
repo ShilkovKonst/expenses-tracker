@@ -1,18 +1,13 @@
-import {
-  FormDataType,
-  MonthFormType,
-  MonthIdType,
-  YearFormType,
-} from "@/types/formTypes";
+import { Data, Month, MonthIdType, Year } from "@/types/formTypes";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
 type OnScrollYearHelperOutput = {
-  newActiveYear: YearFormType | undefined;
+  newActiveYear: Year | undefined;
   activeYearBodyEl: HTMLElement | undefined;
 };
 
 export function onScrollYearHelper(
-  formData: FormDataType,
+  data: Data,
   years: NodeListOf<HTMLElement>,
   setExpandYearDataType: Dispatch<SetStateAction<string>>
 ): OnScrollYearHelperOutput {
@@ -23,14 +18,14 @@ export function onScrollYearHelper(
       throw new Error("Year element is missing id attribute");
     }
 
-    const year = formData.years.find((y) => y.id === parseInt(yearId));
+    const year = data.years.find((y) => y.id === parseInt(yearId));
     if (!year) {
       throw new Error(`Year with id ${yearId} not found in formData`);
     }
 
     const yearHeaderEl = yearBodyEl?.getElementsByClassName("header")[0];
     if (!yearBodyEl || !yearHeaderEl) {
-      throw new Error(`Year body ${formData.id} is missing or has no header`);
+      throw new Error(`Year body ${data.id} is missing or has no header`);
     }
 
     const rectYearBody = yearBodyEl.getBoundingClientRect();
@@ -46,10 +41,10 @@ export function onScrollYearHelper(
   return { newActiveYear: undefined, activeYearBodyEl: undefined };
 }
 
-type OnScrollMonthHelperOutput = { newActiveMonth: MonthFormType | undefined };
+type OnScrollMonthHelperOutput = { newActiveMonth: Month | undefined };
 export function onScrollMonthHelper(
   months: NodeListOf<HTMLElement>,
-  newActiveYear: YearFormType,
+  newActiveYear: Year,
   setExpandMonthDataType: Dispatch<SetStateAction<string>>
 ): OnScrollMonthHelperOutput {
   for (const monthBodyEl of months) {
@@ -77,7 +72,7 @@ export function onScrollMonthHelper(
   return { newActiveMonth: undefined };
 }
 
-export function onScrollSetter<T extends YearFormType | MonthFormType>(
+export function onScrollSetter<T extends Year | Month>(
   newActive: T | undefined,
   activeRef: RefObject<T | undefined>,
   setActive: Dispatch<SetStateAction<T | undefined>>

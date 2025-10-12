@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-type FormInputPropsType = {
+type FormInputProps = {
   name: string;
   title: string;
   styleLabel: string;
@@ -13,7 +13,7 @@ type FormInputPropsType = {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const FormInputBlock: React.FC<FormInputPropsType> = ({
+const FormInputBlock: React.FC<FormInputProps> = ({
   name,
   title,
   styleLabel,
@@ -37,6 +37,7 @@ const FormInputBlock: React.FC<FormInputPropsType> = ({
         id={id}
         className={`w-full border-2 border-blue-100 rounded-md transition-colors duration-200 ease-in-out bg-white ${styleInput}`}
         type={type}
+        name={name}
         value={name === "amount" ? (value ? regexAmount(value) : "0") : value}
         onChange={(e) => handleChange(e)}
         disabled={disabled}

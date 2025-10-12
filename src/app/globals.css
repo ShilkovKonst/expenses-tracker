@@ -20,7 +20,7 @@
 }
 
 body {
-  min-width: 440px;
+  min-width: 400px;
   box-sizing: border-box;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

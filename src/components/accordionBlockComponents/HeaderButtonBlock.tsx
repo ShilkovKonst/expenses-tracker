@@ -1,12 +1,12 @@
 "use client";
 import { useGlobal } from "@/app/context/GlobalContext";
-import { AddBudget, AddCost, ExpandIcon } from "@/lib/icons";
+import { AddCost, ExpandIcon } from "@/lib/icons";
 import { t } from "@/locales/locale";
-import CostButton from "../CostButton";
+import CostButton from "../buttonComponents/CostButton";
 import { transformElement } from "@/lib/utils/transformElement";
 import { MouseEvent as RMouseEvent } from "react";
 
-type AccordionHeaderButtonBlockProps = {
+type HeaderButtonBlockProps = {
   outerStyle: string;
   iconSize: string;
   buttonSize: string;
@@ -17,7 +17,7 @@ type AccordionHeaderButtonBlockProps = {
   handleAddCost?: (e: RMouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
-const AccordionHeaderButtonBlock: React.FC<AccordionHeaderButtonBlockProps> = ({
+const HeaderButtonBlock: React.FC<HeaderButtonBlockProps> = ({
   outerStyle,
   iconSize,
   buttonSize,
@@ -32,26 +32,18 @@ const AccordionHeaderButtonBlock: React.FC<AccordionHeaderButtonBlockProps> = ({
     <div
       className={`${outerStyle} pr-2 gap-2 flex flex-row justify-end items-center`}
     >
-      <div className={isMonth ? "flex gap-2 justify-between items-center" : ""}>
+      {isMonth && (
         <CostButton
-          icon={<AddBudget style={iconSize} />}
-          title={t(locale, `body.form.accordionAddBudget`)}
+          icon={<AddCost style={iconSize} />}
+          title={t(locale, `body.form.operations.add`)}
           style={`bg-blue-500 hover:bg-blue-400 ${buttonSize}`}
-          handleClick={() => {}}
+          handleClick={handleAddCost ? (e) => handleAddCost(e) : () => {}}
         />
-        {isMonth && (
-          <CostButton
-            icon={<AddCost style={iconSize} />}
-            title={t(locale, `body.form.accordionAddCost`)}
-            style={`bg-blue-500 hover:bg-blue-400 ${buttonSize}`}
-            handleClick={handleAddCost ? (e) => handleAddCost(e) : () => {}}
-          />
-        )}
-      </div>
+      )}
       <CostButton
         icon={<ExpandIcon style={iconSize} />}
         dataType={expandDataType}
-        title={t(locale, `body.form.accordionExpandCosts`)}
+        title={t(locale, `body.form.operations.expand`)}
         style={`bg-blue-400 hover:bg-blue-500 disabled:text-gray-600 disabled:bg-blue-300 disabled:hover:bg-blue-300 ${expandButtonSize}`}
         handleClick={(e) =>
           transformElement(e.target as HTMLElement, "data-type")
@@ -62,4 +54,4 @@ const AccordionHeaderButtonBlock: React.FC<AccordionHeaderButtonBlockProps> = ({
   );
 };
 
-export default AccordionHeaderButtonBlock;
+export default HeaderButtonBlock;

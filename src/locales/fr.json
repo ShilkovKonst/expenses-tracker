@@ -1,7 +1,7 @@
 {
   "meta": {
     "titleFull": "Suivi des dépenses",
-    "description": "Suivez vos dépenses"
+    "description": "La consommation responsable est la clé d'un budget sain"
   },
   "body": {
     "header": {
@@ -11,48 +11,46 @@
       "checkBoxTip": "Calculer le solde avec le budget fourni ou simplement calculer les coûts ?"
     },
     "form": {
-      "title": "Modifiez vos dépenses",
-      "selectMonth": "Sélectionner un mois",
+      "title": "Suivez vos opérations",
       "valueMonth": {
-        "january": "janvier",
-        "february": "février",
-        "march": "mars",
-        "april": "avril",
+        "january": "Janvier",
+        "february": "Février",
+        "march": "Mars",
+        "april": "Avril",
         "may": "mai",
-        "june": "juin",
-        "july": "juillet",
-        "august": "août",
-        "september": "septembre",
-        "october": "octobre",
-        "november": "novembre",
-        "december": "décembre"
+        "june": "Juin",
+        "july": "Juillet",
+        "august": "Août",
+        "september": "Septembre",
+        "october": "Octobre",
+        "november": "Novembre",
+        "december": "Décembre"
       },
       "labels": {
         "year": "Année",
         "month": "Mois",
-        "budget": "Budget",
-        "costs": "Coûts",
-        "balance": "Solde"
+        "operations": "Opérations"
       },
-      "createMonth": "Créer / Mettre à jour",
-      "clearMonth": "Effacer le mois",
-      "costs": "Dépenses",
-      "costsTagTitle": "Sélectionnez une étiquette de dépense ou créez la vôtre",
-      "costsTagFormTitle": "Créez vôtre étiquette",
-      "costsTagDefault": "défaut",
-      "costsTagCustomTitle": "Saisissez votre étiquette personnalisée",
-      "costsTagDouble": "Cette étiquette existe déjà, veuillez saisir un nom différent.",
-      "selectCostsTag": "Sélectionnez une étiquette",
-      "accordionExpandCosts": "Détail",
-      "costType": "Type",
-      "costDescription": "Description",
-      "costAmount": "Montant",
-      "costRemove": "Supprimer",
-      "costAdd": "+ Ajouter une dépense",
-      "accordionAddCost": "+ dépense",
-      "accordionAddBudget": "+ budget",
-      "accordionRemoveCost": "Supprimer",
-      "accordionUpdateCost": "Mettre à jour"
+      "data": {
+        "typeTitle": "Sélectionnez un type de données ou créez la vôtre",
+        "typeCustomTitle": "Saisissez le nom de votre type personnalisée",
+        "typeFormTitle": "Créez votre type",
+        "typeDefault": "défaut",
+        "typeDouble": "Cette type existe déjà, veuillez saisir un nom différent.",
+        "typeSelect": "Sélectionnez un type"
+      },
+      "operations": {
+        "expand": "Détail",
+        "type": "Type",
+        "tags": "Etiquette",
+        "description": "Description",
+        "amount": "Montant",
+        "remove": "Supprimer",
+        "update": "Mettre à jour",
+        "add": "Ajouter",
+        "cost": "Расход",
+        "income": "Revenu"
+      }
     }
   }
 }

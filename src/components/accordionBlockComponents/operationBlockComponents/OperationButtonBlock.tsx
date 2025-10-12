@@ -1,12 +1,12 @@
 "use client";
-import CostButton from "../../CostButton";
+import CostButton from "../../buttonComponents/CostButton";
 import { Delete, Update } from "@/lib/icons";
 import { useGlobal } from "@/app/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { transformElement } from "@/lib/utils/transformElement";
 import { MouseEvent as ReactMouseEvent } from "react";
 
-type AccordionCostButtonBlockProps = {
+type OperationButtonBlockProps = {
   outerStyle: string;
   iconSize: string;
   buttonSize: string;
@@ -17,7 +17,7 @@ type AccordionCostButtonBlockProps = {
   ) => void;
 };
 
-const AccordionCostButtonBlock: React.FC<AccordionCostButtonBlockProps> = ({
+const OperationButtonBlock: React.FC<OperationButtonBlockProps> = ({
   outerStyle,
   iconSize,
   buttonSize,
@@ -32,7 +32,7 @@ const AccordionCostButtonBlock: React.FC<AccordionCostButtonBlockProps> = ({
       <CostButton
         icon={<Update style={iconSize} />}
         dataType={expandDataType}
-        title={t(locale, `body.form.accordionUpdateCost`)}
+        title={t(locale, `body.form.operations.update`)}
         style={`bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
         handleClick={(e) =>
           transformElement(e.target as HTMLElement, "data-type")
@@ -42,7 +42,7 @@ const AccordionCostButtonBlock: React.FC<AccordionCostButtonBlockProps> = ({
         icon={<Delete style={iconSize} />}
         dataType={``}
         dataUpdate={``}
-        title={t(locale, `body.form.accordionRemoveCost`)}
+        title={t(locale, `body.form.operations.remove`)}
         style={`bg-red-400 hover:bg-red-500 ${buttonSize}`}
         handleClick={(e) => handleDelete(e, true)}
       />
@@ -50,4 +50,4 @@ const AccordionCostButtonBlock: React.FC<AccordionCostButtonBlockProps> = ({
   );
 };
 
-export default AccordionCostButtonBlock;
+export default OperationButtonBlock;

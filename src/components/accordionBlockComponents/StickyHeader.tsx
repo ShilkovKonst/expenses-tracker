@@ -1,23 +1,19 @@
 "use client";
 import { useGlobal } from "@/app/context/GlobalContext";
 import { t } from "@/locales/locale";
-import AccordionHeaderButtonBlock from "./AccordionHeaderButtonBlock";
+import HeaderButtonBlock from "./HeaderButtonBlock";
 
 type StickyHeaderProps = {
   labelMain: string;
-  budget: number;
-  costs: number;
-  balance: number;
+  totalAmount: number;
   expandDataType: string;
   isMonth: boolean;
   expandDisabled?: boolean;
 };
 
-const AccordionStickyHeader: React.FC<StickyHeaderProps> = ({
+const StickyHeader: React.FC<StickyHeaderProps> = ({
   labelMain,
-  budget,
-  costs,
-  balance,
+  totalAmount,
   expandDataType,
   isMonth,
   expandDisabled,
@@ -33,12 +29,10 @@ const AccordionStickyHeader: React.FC<StickyHeaderProps> = ({
       <div
         className={`grid-cols-5 pl-4 py-2 col-span-5 grid md:grid-cols-5 gap-2 my-auto`}
       >
-        <AccordionStickyDescH3Block label={labelMain} isMonth={isMonth} />
-        <AccordionStickyDescPBlock spanStyle="text-green-600" value={budget} />
-        <AccordionStickyDescPBlock spanStyle="text-red-600" value={costs} />
-        <AccordionStickyDescPBlock spanStyle="text-red-500" value={balance} />
+        <StickyDescH3Block label={labelMain} isMonth={isMonth} />
+        <StickyDescPBlock spanStyle="text-red-600" value={totalAmount} />
       </div>
-      <AccordionHeaderButtonBlock
+      <HeaderButtonBlock
         outerStyle="col-span-2"
         iconSize="h-4 w-4"
         buttonSize="h-6 w-8"
@@ -51,14 +45,14 @@ const AccordionStickyHeader: React.FC<StickyHeaderProps> = ({
   );
 };
 
-export default AccordionStickyHeader;
+export default StickyHeader;
 
-type AccordionStickyDescPBlockProps = {
+type StickyDescPBlockProps = {
   spanStyle: string;
   value: string | number;
 };
 
-const AccordionStickyDescPBlock: React.FC<AccordionStickyDescPBlockProps> = ({
+const StickyDescPBlock: React.FC<StickyDescPBlockProps> = ({
   spanStyle,
   value,
 }) => {
@@ -69,16 +63,16 @@ const AccordionStickyDescPBlock: React.FC<AccordionStickyDescPBlockProps> = ({
   );
 };
 
-type AccordionStickyDescH3BlockProps = {
+type StickyDescH3BlockProps = {
   isMonth?: boolean;
   label: string;
 };
 
-const AccordionStickyDescH3Block: React.FC<AccordionStickyDescH3BlockProps> = ({
+const StickyDescH3Block: React.FC<StickyDescH3BlockProps> = ({
   isMonth,
   label,
 }) => {
-  const { locale, selectedTag } = useGlobal();
+  const { locale, selectedType } = useGlobal();
   return (
     <div className={`col-span-2 flex justify-start items-center`}>
       <h3
@@ -86,9 +80,9 @@ const AccordionStickyDescH3Block: React.FC<AccordionStickyDescH3BlockProps> = ({
       >
         {!isMonth && (
           <span className="max-w-20 truncate lg:max-w-max">
-            {selectedTag.type === "default"
-              ? t(locale, "body.form.costsTagDefault")
-              : selectedTag.type}
+            {selectedType.title === "default"
+              ? t(locale, "body.form.data.typeDefault")
+              : selectedType.title}
           </span>
         )}
         <span>{label}</span>
