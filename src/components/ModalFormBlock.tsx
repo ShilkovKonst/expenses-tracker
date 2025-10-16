@@ -1,100 +1,101 @@
-import {
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
-  TouchEvent,
-  useState,
-} from "react";
-import TagButton from "./buttonComponents/TagButton";
-import { DataType } from "@/types/formTypes";
+"use client";
+import { Data, Month, Operation, Year } from "@/types/formTypes";
+import FormOperationBlock from "./formComponents/FormOperationBlock";
+import { useGlobal } from "@/app/context/GlobalContext";
+import { updateItem } from "@/lib/utils/updateDeleteHelper";
+import { useModal } from "@/app/context/ModalContext";
+import FormDeleteBlock from "./formComponents/FormDeleteBlock";
+import { CURRENT_YEAR } from "@/lib/constants";
 
-type ConfirmationBlockProps = {
-  title: string;
-  confirmClick: () => void;
-  setIsModal: Dispatch<SetStateAction<boolean>>;
-  inputPlaceholder: string;
-  confirmText: string;
-  cancelText: string;
-  checkBoxTip?: string;
-};
+const ModalFormBlock: React.FC = () => {
+  const { selectedType, data, setData } = useGlobal();
+  const { setIsModal, formModalBody, setFormModalBody } = useModal();
 
-const ModalBlock: React.FC<ConfirmationBlockProps> = ({
-  title,
-  confirmClick,
-  setIsModal,
-  inputPlaceholder,
-  confirmText,
-  cancelText,
-  checkBoxTip,
-}) => {
-  const [customTag, setCustomTag] = useState<DataType>({ id: 0, title: "" });
-  const handleChange = (custom: string) => {
-    setCustomTag({ id: 0, title: custom });
+  const handleClear = () => {
+    setFormModalBody(null);
+    setIsModal(false);
   };
 
-  const handleClick = (e: MouseEvent | TouchEvent) => {
-    e.preventDefault();
-    const target = e.target as HTMLElement;
-    const foreground = target.closest("#foreground");
-    const cancel = target.closest("#cancel");
-    const confirm = target.closest("#confirm");
-    const body = target.closest("#body");
+  const handleUpdateDelete = (operation: Operation, isDelete: boolean) => {
+    if (!formModalBody) return;
+    const { yearId, monthId } = formModalBody;
 
-    if (confirm) {
-      confirmClick();
-      setIsModal(false);
-      return;
+    const updOperation = {
+      ...operation,
+      amount: Math.round(operation.amount * 100) / 100,
+    };
+    const yearIdx = CURRENT_YEAR - yearId;
+    if (yearIdx < 0) return;
+    const year = data.years[yearIdx];
+    if (!monthId) return;
+    const month = data.years[yearIdx].months[monthId - 1];
+
+    const [updOperations, totalAmount] = updateItem(
+      month.operations,
+      updOperation,
+      (items) =>
+        items.reduce(
+          (sum, c) => (c.type === "income" ? sum + c.amount : sum - c.amount),
+          0
+        ),
+      isDelete
+    );
+    const updMonth: Month = {
+      ...month,
+      operations: updOperations,
+      totalAmount: totalAmount,
+    };
+
+    const [updMonths, monthTotalAmount] = updateItem(
+      year.months,
+      updMonth,
+      (items) => items.reduce((sum, m) => sum + m.totalAmount, 0)
+    );
+    const updYear: Year = {
+      ...year,
+      months: updMonths,
+      totalAmount: monthTotalAmount,
+    };
+
+    const [updYears, yearTotalAmount] = updateItem(
+      data.years,
+      updYear,
+      (items) => items.reduce((sum, y) => sum + y.totalAmount, 0)
+    );
+    const newFormData: Data = {
+      ...data,
+      id: data.id === selectedType.title ? data.id : selectedType.title,
+      years: updYears,
+      totalAmount: yearTotalAmount,
+    };
+    setData(newFormData);
+    if (localStorage) {
+      localStorage.setItem(selectedType.title, JSON.stringify(newFormData));
     }
-    if (cancel) {
-      setIsModal(false);
-      return;
-    }
-    if (body) {
-      return;
-    }
-    if (foreground) {
-      setIsModal(false);
-      return;
-    }
+    handleClear();
   };
 
   return (
     <div
       id="foreground"
-      onClick={(e) => handleClick(e)}
+      onClick={() => {}}
       className="fixed inset-0 bg-black/10 backdrop-blur-sm z-50 flex items-center justify-center"
     >
-      <div
-        id="body"
-        className="bg-white rounded-3xl p-8 text-center shadow-2xl max-w-md w-11/12 mx-4"
-      >
-        <h3 className="text-xl font-semibold mb-4">{title}</h3>
-        <form className="w-full grid grid-cols-2 gap-3 items-center">
-          <input
-            id="textInput"
-            className="w-full col-span-2 px-2 py-1 border-2 border-blue-100 rounded-md text-sm transition-colors duration-200 bg-white"
-            placeholder={inputPlaceholder}
-            type="text"
-            value={customTag.title}
-            onChange={(e) => handleChange(e.target.value)}
-          />
-
-          <TagButton
-            id="confirm"
-            title={confirmText}
-            style="bg-green-200 hover:bg-green-300 border-green-300 cols-span-1"
-            handleClick={() => {}}
-          />
-          <TagButton
-            id="cancel"
-            title={cancelText}
-            style="bg-red-200 hover:bg-red-300 border-red-300 cols-span-1"
-            handleClick={() => {}}
-          />
-        </form>
-      </div>
+      {formModalBody && (
+        <FormOperationBlock
+          handleUpdate={handleUpdateDelete}
+          handleClear={handleClear}
+          operation={formOperation.operation}
+        />
+      )}
+      {formModalBody && (
+        <FormDeleteBlock
+          handleDelete={handleUpdateDelete}
+          handleClear={handleClear}
+        />
+      )}
     </div>
   );
 };
 
-export default ModalBlock;
+export default ModalFormBlock;

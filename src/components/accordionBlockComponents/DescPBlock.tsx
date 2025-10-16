@@ -15,18 +15,20 @@ const DescPBlock: React.FC<DescPBlockProps> = ({
 }) => {
   return (
     <div className={`${outerStyle} flex flex-col justify-center`}>
-      <span className="text-xs text-gray-600 font-medium uppercase tracking-wide">
+      <span className="text-xs text-gray-600 font-medium uppercase tracking-wide ">
         {label}
       </span>
-      {Array.isArray(value) ? (
-        value.map((v) => (
-          <span key={v} className={`font-semibold ${spanStyle}`}>
-            {v}
-          </span>
-        ))
-      ) : (
-        <span className={`font-semibold ${spanStyle}`}>{value}</span>
-      )}
+      <div className="flex flex-wrap gap-1 justify-start items-center">
+        {Array.isArray(value) ? (
+          value.map((v) => (
+            <span key={v} className={`font-medium ${spanStyle} border px-1`}>
+              {v}
+            </span>
+          ))
+        ) : (
+          <span className={`font-semibold ${spanStyle}`}>{value}</span>
+        )}
+      </div>
     </div>
   );
 };

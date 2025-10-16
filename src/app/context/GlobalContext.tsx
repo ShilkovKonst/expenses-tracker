@@ -47,17 +47,7 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
     title: "default",
   });
   const [operationTags, setOperationTags] = useState<Set<string>>(
-    new Set([
-      "online",
-      "offline",
-      "bank transfer",
-      "card",
-      "cash",
-      "food",
-      "alcohol",
-      "goods",
-      "service",
-    ])
+    new Set(["card", "cash", "food", "alcohol", "goods", "service"])
   );
 
   useEffect(() => {

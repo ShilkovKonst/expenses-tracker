@@ -8,7 +8,12 @@
       "title": "Трекер расходов"
     },
     "modal": {
-      "checkBoxTip": ""
+      "labelTitleCreate": "",
+      "labelTitleUpdate": "",
+      "labelTitleDelete": "Вы уверены, что хотите удалить эту запись?",
+      "labelConfirm": "Подтвердить",
+      "labelDelete": "Удалить",
+      "labelCancel": "Отменить"
     },
     "form": {
       "title": "Следите за вашими операциями",
@@ -42,14 +47,25 @@
       "operations": {
         "expand": "Детализация",
         "type": "Тип",
-        "tags": "Тэги",
+        "labelTags": "Тэги",
         "description": "Описание",
         "amount": "Сумма",
         "remove": "Удалить",
         "update": "Обновить",
         "add": "Добавить",
         "cost": "Расход",
-        "income": "Доход"
+        "income": "Доход",
+        "tags": {
+          "online": "онлайн",
+          "offline": "офлайн",
+          "bankTransfer": "банк. перевод",
+          "card": "карта",
+          "cash": "наличные",
+          "food": "продукты",
+          "alcohol": "алкоголь",
+          "goods": "товары",
+          "service": "сервис"
+        }
       }
     }
   }

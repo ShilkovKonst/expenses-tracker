@@ -1,97 +1,72 @@
 "use client";
 import { Operation } from "@/types/formTypes";
-import FormInputBlock from "../../formComponents/FormInputBlock";
-import TagButton from "../../buttonComponents/TagButton";
+import FormInputBlock from "./FormInputBlock";
+import TagButton from "../buttonComponents/TagButton";
 import { useGlobal } from "@/app/context/GlobalContext";
 import { t } from "@/locales/locale";
-import {
-  ChangeEvent,
-  Dispatch,
-  MouseEvent as RMouseEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import { isEqual } from "@/lib/utils/equalizer";
+import { ChangeEvent, useState } from "react";
 import FormRadioBlock from "@/components/formComponents/FormRadioBlock";
 import FormTagsBlock from "@/components/formComponents/FormTagsBlock";
 
-type OperationFormBlockProps = {
-  currentOperation: Operation;
-  oldOperation: Operation | undefined;
-  setCurrentOperation: Dispatch<SetStateAction<Operation>>;
-  formId: string;
-  handleUpdate: (
-    e: RMouseEvent<HTMLButtonElement, MouseEvent>,
-    isDelete: boolean
-  ) => void;
+type FormOperationBlockProps = {
+  operation: Operation;
+  handleUpdate: (operation: Operation, isDelete: boolean) => void;
+  handleClear: () => void;
 };
 
-const OperationFormBlock: React.FC<OperationFormBlockProps> = ({
-  currentOperation,
-  oldOperation,
-  setCurrentOperation,
-  formId,
+const FormOperationBlock: React.FC<FormOperationBlockProps> = ({
+  operation,
   handleUpdate,
+  handleClear,
 }) => {
   const { locale } = useGlobal();
-  const [undoDisabled, setUndoDisabled] = useState<boolean>(true);
 
-  useEffect(() => {
-    setUndoDisabled(isEqual(currentOperation, oldOperation));
-  }, [oldOperation, currentOperation]);
+  const [currentOperation, setCurrentOperation] =
+    useState<Operation>(operation);
 
   const handleOperationChange = <K extends keyof Operation>(
     e: ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-    setCurrentOperation((operation) => ({
-      ...operation,
-      [name as K]: value as Operation[K],
-    }));
-  };
-
-  const handleClear = (e: RMouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    if (oldOperation) setCurrentOperation(oldOperation);
+    if (currentOperation)
+      setCurrentOperation({
+        ...currentOperation,
+        [name as K]: value as Operation[K],
+      });
   };
 
   const formFields = [
     {
       name: "type",
       title: t(locale, `body.form.operations.type`),
-      id: "operationTypeInput" + currentOperation.id,
-      value: currentOperation.type,
+      id: "operationTypeInput" + currentOperation?.id,
+      value: currentOperation?.type,
       type: "radio",
     },
     {
       name: "tags",
-      title: t(locale, `body.form.operations.tags`),
-      id: "operationTagsInput" + currentOperation.id,
-      value: currentOperation.tags,
+      title: t(locale, `body.form.operations.labelTags`),
+      id: "operationTagsInput" + currentOperation?.id,
+      value: currentOperation,
       type: "",
     },
     {
       name: "amount",
       title: t(locale, `body.form.operations.amount`),
-      id: "operationAmountInput" + currentOperation.id,
-      value: currentOperation.amount,
+      id: "operationAmountInput" + currentOperation?.id,
+      value: currentOperation?.amount,
       type: "number",
     },
     {
-      id: "operationDescInput" + currentOperation.id,
+      id: "operationDescInput" + currentOperation?.id,
       name: "description",
       title: t(locale, `body.form.operations.description`),
-      value: currentOperation.description,
+      value: currentOperation?.description,
       type: "text",
     },
   ];
   return (
-    <form
-      id={formId}
-      style={{ height: 0 }}
-      className="pl-2 grid grid-cols-2 gap-2 items-end transition-[height] duration-300 ease-in-out overflow-hidden "
-    >
+    <form className="bg-blue-50 p-3 rounded-lg grid grid-cols-2 gap-2 items-end transition-[height] duration-300 ease-in-out overflow-hidden z-100">
       {formFields.map((f, i) =>
         f.name === "type" ? (
           <FormRadioBlock
@@ -99,7 +74,6 @@ const OperationFormBlock: React.FC<OperationFormBlockProps> = ({
             id={f.id}
             labelRadio={f.title}
             name={f.name}
-            // value={"f.value.toString()"}
             value={f.value?.toString()}
             handleChange={handleOperationChange}
             styleLabel={"text-xs"}
@@ -108,11 +82,9 @@ const OperationFormBlock: React.FC<OperationFormBlockProps> = ({
         ) : f.name === "tags" ? (
           <FormTagsBlock
             key={i}
-            name={f.name}
             title={f.title}
-            id={f.id}
-            value={f.value as string[]}
-            handleChange={handleOperationChange}
+            operation={currentOperation}
+            setOperation={setCurrentOperation}
             styleLabel={"text-xs"}
             styleInput={"px-2 py-1 text-sm"}
           />
@@ -122,7 +94,6 @@ const OperationFormBlock: React.FC<OperationFormBlockProps> = ({
             name={f.name}
             title={f.title}
             id={f.id}
-            // value={"f.value.toString()"}
             value={f.value?.toString()}
             handleChange={handleOperationChange}
             type={f.type as "number" | "text"}
@@ -134,19 +105,18 @@ const OperationFormBlock: React.FC<OperationFormBlockProps> = ({
         )
       )}
       <TagButton
-        title="&#10004;"
+        title={t(locale, "body.modal.labelConfirm")}
         style="bg-green-300 hover:bg-green-400 border-green-400 cols-span-1"
-        handleClick={(e) => handleUpdate(e, false)}
+        handleClick={() => handleUpdate(currentOperation, false)}
       />
       <TagButton
-        title="&#10006;"
+        title={t(locale, "body.modal.labelCancel")}
         style="bg-red-300 hover:bg-red-400 border-red-400 cols-span-1 disabled:text-gray-600 disabled:bg-red-200 disabled:hover:bg-red-200 disabled:border-red-300"
-        handleClick={(e) => handleClear(e)}
-        disabled={undoDisabled}
+        handleClick={handleClear}
       />
       <div className="col-span-2"></div>
     </form>
   );
 };
 
-export default OperationFormBlock;
+export default FormOperationBlock;

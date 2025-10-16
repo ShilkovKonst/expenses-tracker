@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Locale, t } from "@/locales/locale";
 import { GlobalProvider } from "../context/GlobalContext";
+import { ModalProvider } from "../context/ModalContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,8 +41,10 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white relative flex justify-center w-full`}
       >
         <GlobalProvider>
-          {children}
-          <footer className=""></footer>
+          <ModalProvider>
+            {children}
+            <footer className=""></footer>
+          </ModalProvider>
         </GlobalProvider>
       </body>
     </html>

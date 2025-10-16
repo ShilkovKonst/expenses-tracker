@@ -66,7 +66,8 @@ const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
         {currentMonth.operations.map((operation, index) => (
           <OperationBlock
             key={index}
-            yearMonthId={`${yearId}-${month.id}`}
+            yearId={yearId}
+            monthId={month.id}
             operation={operation}
           />
         ))}

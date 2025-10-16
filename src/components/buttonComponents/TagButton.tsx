@@ -4,7 +4,7 @@ type TagButtonType = {
   style: string;
   title: string;
   id?: string;
-  handleClick: (e: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleClick: () => void;
   disabled?: boolean;
 };
 
@@ -17,9 +17,10 @@ const TagButton: React.FC<TagButtonType> = ({
 }) => {
   return (
     <button
+      type="button"
       id={id ?? ""}
       className={`text-sm font-bold px-2 py-1 ${style} border-2 transition-colors duration-300 ease-in-out rounded`}
-      onClick={(e) => handleClick(e)}
+      onClick={handleClick}
       disabled={disabled}
     >
       {title}

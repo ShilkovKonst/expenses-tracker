@@ -8,7 +8,12 @@
       "title": "Expense Tracker"
     },
     "modal": {
-      "checkBoxTip": "Calculate the balance using the provided budget, or just calculate expenses?"
+      "labelTitleCreate": "",
+      "labelTitleUpdate": "",
+      "labelTitleDelete": "Are you sure you want to delete this entry?",
+      "labelConfirm": "Confirm",
+      "labelDelete": "Delete",
+      "labelCancel": "Cancel"
     },
     "form": {
       "title": "Track your operations",
@@ -42,14 +47,25 @@
       "operations": {
         "expand": "Details",
         "type": "Type",
-        "tags": "Tags",
+        "labelTags": "Tags",
         "description": "Description",
         "amount": "Amount",
         "remove": "Remove",
         "update": "Update",
         "add": "Add",
         "cost": "Cost",
-        "income": "Income"
+        "income": "Income",
+        "tags": {
+          "online": "online",
+          "offline": "offline",
+          "bankTransfer": "bank transfer",
+          "card": "card",
+          "cash": "cash",
+          "food": "food",
+          "alcohol": "alcohol",
+          "goods": "goods",
+          "service": "service"
+        }
       }
     }
   }
