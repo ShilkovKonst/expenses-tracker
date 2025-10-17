@@ -1,5 +1,5 @@
 "use client";
-import { useGlobal } from "@/app/context/GlobalContext";
+import { useGlobal } from "@/context/GlobalContext";
 import DescH3Block from "./DescH3Block";
 import DescPBlock from "./DescPBlock";
 import { t } from "@/locales/locale";
@@ -17,12 +17,13 @@ const DescriptionBlock: React.FC<DescriptionProps> = ({
   const { locale } = useGlobal();
   return (
     <div
-      className={`grid-cols-2 pl-4 py-1 col-span-4 grid md:grid-cols-5 gap-1 my-auto`}
+      className={`col-span-4 grid grid-cols-2 pl-4 py-1 gap-1 my-auto`}
     >
       <DescH3Block label={labelMain} />
       <DescPBlock
+        outerStyle="flex flex-col md:flex-row justify-center items-start md:items-center md:gap-1"
         spanStyle="text-red-600 text-sm"
-        label={t(locale, `body.form.labels.operations`)}
+        label={`${t(locale, `body.form.labels.outcome`)}:`}
         value={totalAmount}
       />
     </div>

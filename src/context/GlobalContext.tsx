@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { CURRENT_YEAR } from "@/lib/constants";
+import { initEmptyTracker } from "@/lib/utils/initEmptyTracker";
 import { initEmptyMonths } from "@/lib/utils/monthHelper";
 import { Locale } from "@/locales/locale";
 import { Data, DataType, Year } from "@/types/formTypes";
@@ -31,17 +32,7 @@ export const GlobalContext = createContext<GlobalContextType | undefined>(
 
 export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
-  const [data, setData] = useState<Data>({
-    id: "default",
-    years: [
-      {
-        id: CURRENT_YEAR,
-        months: initEmptyMonths(),
-        totalAmount: 0,
-      },
-    ] as Year[],
-    totalAmount: 0,
-  });
+  const [data, setData] = useState<Data>(initEmptyTracker("default"));
   const [selectedType, setSelectedType] = useState<DataType>({
     id: 0,
     title: "default",
@@ -53,7 +44,7 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (localStorage) {
       const raw = localStorage.getItem(`${selectedType.title}`);
-      setData(raw ? JSON.parse(raw) : data);
+      setData(raw ? JSON.parse(raw) : initEmptyTracker(selectedType.title));
     }
   }, [selectedType]);
 
@@ -70,6 +61,10 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
       }
     }
   }, []);
+
+  useEffect(() => {
+    console.log("data", data)
+  }, [data]);
 
   return (
     <GlobalContext.Provider

@@ -10,7 +10,7 @@ type DescriptionPropsType = {
   isMonth?: boolean;
   dataId?: string;
   dataHeader?: string;
-  handleAddCost?: (e: RMouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleAddOperation?: () => void;
 };
 
 const HeaderBlock: React.FC<DescriptionPropsType> = ({
@@ -20,17 +20,15 @@ const HeaderBlock: React.FC<DescriptionPropsType> = ({
   expandDisabled,
   isMonth,
   dataId,
-  dataHeader,
-  handleAddCost,
+  dataHeader, handleAddOperation
 }) => {
   return (
     <div
       id={dataId}
       data-month-id={dataId}
       data-month-header={dataHeader}
-      className={`header col-span-6 grid grid-cols-6 gap-3 w-full border-2 ${
-        isMonth ? "bg-blue-100 border-blue-200" : "bg-blue-200 border-blue-300"
-      }`}
+      className={`header col-span-6 grid grid-cols-6 gap-3 w-full border-2 ${isMonth ? "bg-blue-100 border-blue-200" : "bg-blue-200 border-blue-300"
+        }`}
     >
       <DescriptionBlock
         labelMain={`${labelMain}`}
@@ -45,7 +43,7 @@ const HeaderBlock: React.FC<DescriptionPropsType> = ({
         isMonth={isMonth}
         expandDataType={expandDataType}
         expandDisabled={expandDisabled}
-        handleAddCost={handleAddCost}
+        handleAddOperation={handleAddOperation}
       />
     </div>
   );

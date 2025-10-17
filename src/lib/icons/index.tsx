@@ -7,7 +7,7 @@ export const AddIcon: React.FC<IconProps> = ({ style }) => {
       width="800px"
       height="800px"
       viewBox="0 0 24 24"
-      className={`${style} pointer-events-none`}
+      className={`${style} font-bold pointer-events-none`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

@@ -1,7 +1,7 @@
 "use client";
 import TagButton from "../buttonComponents/TagButton";
-import { useGlobal } from "@/app/context/GlobalContext";
-import { useModal } from "@/app/context/ModalContext";
+import { useGlobal } from "@/context/GlobalContext";
+import { useModal } from "@/context/ModalContext";
 import { t } from "@/locales/locale";
 import { Operation } from "@/types/formTypes";
 import OperationDescriptionBlock from "../accordionBlockComponents/operationBlockComponents/OperationDescriptionBlock";
@@ -16,21 +16,21 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
   handleClear,
 }) => {
   const { locale } = useGlobal();
-  const { formDelete } = useModal();
+  const { formModalBody } = useModal();
 
   const handleClick = () => {
-    if (formDelete?.operation) {
-      handleDelete(formDelete.operation, true);
+    if (formModalBody?.operation) {
+      handleDelete(formModalBody.operation, true);
     }
   };
 
   return (
-    <form className="bg-blue-50 p-3 rounded-lg">
-      <div>
+    <form className="form bg-blue-50 p-5 rounded-lg">
+      <div className="flex flex-col gap-2 justify-center items-center mb-3">
         <p className="text-lg text-center font-bold">
           {t(locale, "body.modal.labelTitleDelete")}
         </p>
-        {formDelete?.operation && (
+        {formModalBody?.operation && (
           <OperationDescriptionBlock
             labelOperationTags={`${t(
               locale,
@@ -44,10 +44,10 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
               locale,
               `body.form.operations.amount`
             )}: `}
-            operationType={formDelete?.operation.type}
-            operationTags={formDelete?.operation.tags}
-            operationDescription={formDelete?.operation.description}
-            operationAmount={formDelete?.operation.amount}
+            operationType={formModalBody?.operation.type}
+            operationTags={formModalBody?.operation.tags}
+            operationDescription={formModalBody?.operation.description}
+            operationAmount={formModalBody?.operation.amount}
           />
         )}
       </div>

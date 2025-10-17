@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import YearBlock from "./YearBlock";
 import StickyHeader from "./StickyHeader";
 import { t } from "@/locales/locale";
-import { useGlobal } from "@/app/context/GlobalContext";
+import { useGlobal } from "@/context/GlobalContext";
 import {
   onScrollMonthHelper,
   onScrollSetter,

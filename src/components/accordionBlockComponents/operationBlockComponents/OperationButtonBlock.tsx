@@ -1,15 +1,16 @@
 "use client";
 import CostButton from "../../buttonComponents/CostButton";
 import { Delete, Update } from "@/lib/icons";
-import { useGlobal } from "@/app/context/GlobalContext";
+import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
+import { ModalBodyType } from "@/context/ModalContext";
 
 type OperationButtonBlockProps = {
   outerStyle: string;
   iconSize: string;
   buttonSize: string;
   handleCallFormModal: (
-    type: "operationCrt" | "operationUpd" | "operationDel"
+    type: ModalBodyType
   ) => void;
 };
 
@@ -29,13 +30,13 @@ const OperationButtonBlock: React.FC<OperationButtonBlockProps> = ({
         icon={<Update style={iconSize} />}
         title={t(locale, `body.form.operations.update`)}
         style={`bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
-        handleClick={() => handleCallFormModal("operationUpd")}
+        handleClick={() => handleCallFormModal("udp")}
       />
       <CostButton
         icon={<Delete style={iconSize} />}
         title={t(locale, `body.form.operations.remove`)}
         style={`bg-red-400 hover:bg-red-500 ${buttonSize}`}
-        handleClick={() => handleCallFormModal("operationDel")}
+        handleClick={() => handleCallFormModal("del")}
       />
     </div>
   );

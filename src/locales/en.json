@@ -34,15 +34,16 @@
       "labels": {
         "year": "Year",
         "month": "Month",
-        "operations": "Opérations"
+        "operations": "Opérations",
+        "outcome": "Outcome"
       },
       "data": {
-        "typeTitle": "Select opertaion type or create your own",
-        "typeCustomTitle": "Enter your custom type's name",
-        "typeFormTitle": "Create your type",
+        "typeTitle": "Select tracker or create new",
+        "typeCustomTitle": "Enter your custom tracker's name",
+        "typeFormTitle": "Or create your custom tracker",
         "typeDefault": "default",
         "typeDouble": "This type already exists, please enter a different name.",
-        "typeSelect": "Select type"
+        "typeSelect": "Select tracker from the list"
       },
       "operations": {
         "expand": "Details",

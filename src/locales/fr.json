@@ -34,7 +34,8 @@
       "labels": {
         "year": "Année",
         "month": "Mois",
-        "operations": "Opérations"
+        "operations": "Opérations",
+        "outcome": "Résultat"
       },
       "data": {
         "typeTitle": "Sélectionnez un type de données ou créez la vôtre",

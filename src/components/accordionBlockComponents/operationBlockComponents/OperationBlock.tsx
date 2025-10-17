@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect, useState } from "react";
 import { Operation } from "@/types/formTypes";
 import OperationDescriptionBlock from "./OperationDescriptionBlock";
 import OperationButtonBlock from "./OperationButtonBlock";
 import { t } from "@/locales/locale";
-import { useGlobal } from "@/app/context/GlobalContext";
-import { ModalBodyType, useModal } from "@/app/context/ModalContext";
+import { useGlobal } from "@/context/GlobalContext";
+import { ModalBodyType, useModal } from "@/context/ModalContext";
 
 type OperationBlockProps = {
   yearId: number;
@@ -22,26 +21,13 @@ const OperationBlock: React.FC<OperationBlockProps> = ({
   const { locale } = useGlobal();
   const { setIsModal, setFormModalBody } = useModal();
 
-  const [currentOperation, setCurrentOperation] =
-    useState<Operation>(operation);
-  const [oldOperation, setOldOperation] = useState<Operation>(operation);
-
-  useEffect(() => {
-    setCurrentOperation(operation);
-  }, [operation]);
-
-  useEffect(() => {
-    if (!currentOperation) return;
-    if (!oldOperation) setOldOperation(currentOperation);
-  }, [currentOperation]);
-
   const handleCallFormModal = (modalType: ModalBodyType) => {
     setIsModal(true);
     setFormModalBody({
       type: modalType,
       yearId: yearId,
       monthId: monthId,
-      operation: currentOperation,
+      operation: operation,
     });
   };
 
@@ -58,10 +44,10 @@ const OperationBlock: React.FC<OperationBlockProps> = ({
             `body.form.operations.description`
           )}: `}
           labelOperationAmount={`${t(locale, `body.form.operations.amount`)}: `}
-          operationType={currentOperation.type}
-          operationTags={currentOperation.tags}
-          operationDescription={currentOperation.description}
-          operationAmount={currentOperation.amount}
+          operationType={operation.type}
+          operationTags={operation.tags}
+          operationDescription={operation.description}
+          operationAmount={operation.amount}
         />
         <OperationButtonBlock
           outerStyle={`col-span-1`}

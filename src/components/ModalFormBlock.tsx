@@ -1,11 +1,12 @@
 "use client";
 import { Data, Month, Operation, Year } from "@/types/formTypes";
 import FormOperationBlock from "./formComponents/FormOperationBlock";
-import { useGlobal } from "@/app/context/GlobalContext";
+import { useGlobal } from "@/context/GlobalContext";
 import { updateItem } from "@/lib/utils/updateDeleteHelper";
-import { useModal } from "@/app/context/ModalContext";
+import { useModal } from "@/context/ModalContext";
 import FormDeleteBlock from "./formComponents/FormDeleteBlock";
 import { CURRENT_YEAR } from "@/lib/constants";
+import { MouseEvent, TouchEvent } from "react";
 
 const ModalFormBlock: React.FC = () => {
   const { selectedType, data, setData } = useGlobal();
@@ -75,25 +76,38 @@ const ModalFormBlock: React.FC = () => {
     handleClear();
   };
 
+  const handleClick = (e: MouseEvent | TouchEvent) => {
+    const target = e.target as HTMLElement;
+    const form = target.closest(".form");
+    if (form) {
+      return;
+    }
+    const foreground = target.closest("#foreground");
+    if (foreground) {
+      handleClear();
+      return;
+    }
+  };
+
   return (
     <div
       id="foreground"
-      onClick={() => {}}
+      onClick={(e) => handleClick(e)}
       className="fixed inset-0 bg-black/10 backdrop-blur-sm z-50 flex items-center justify-center"
     >
-      {formModalBody && (
-        <FormOperationBlock
-          handleUpdate={handleUpdateDelete}
-          handleClear={handleClear}
-          operation={formOperation.operation}
-        />
-      )}
-      {formModalBody && (
-        <FormDeleteBlock
-          handleDelete={handleUpdateDelete}
-          handleClear={handleClear}
-        />
-      )}
+      {formModalBody &&
+        (formModalBody.type === "udp" || formModalBody.type === "crt" ? (
+          <FormOperationBlock
+            handleUpdate={handleUpdateDelete}
+            handleClear={handleClear}
+            operation={formModalBody.operation}
+          />)
+          : formModalBody.type === "del" ? (
+            <FormDeleteBlock
+              handleDelete={handleUpdateDelete}
+              handleClear={handleClear}
+            />
+          ) : (<></>))}
     </div>
   );
 };

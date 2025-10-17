@@ -1,5 +1,5 @@
 "use client";
-import { useGlobal } from "@/app/context/GlobalContext";
+import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderButtonBlock from "./HeaderButtonBlock";
 

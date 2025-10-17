@@ -2,7 +2,7 @@
 import { Operation } from "@/types/formTypes";
 import FormInputBlock from "./FormInputBlock";
 import TagButton from "../buttonComponents/TagButton";
-import { useGlobal } from "@/app/context/GlobalContext";
+import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { ChangeEvent, useState } from "react";
 import FormRadioBlock from "@/components/formComponents/FormRadioBlock";
@@ -66,7 +66,7 @@ const FormOperationBlock: React.FC<FormOperationBlockProps> = ({
     },
   ];
   return (
-    <form className="bg-blue-50 p-3 rounded-lg grid grid-cols-2 gap-2 items-end transition-[height] duration-300 ease-in-out overflow-hidden z-100">
+    <form className="form bg-blue-50 p-5 rounded-lg grid grid-cols-2 gap-2 z-100">
       {formFields.map((f, i) =>
         f.name === "type" ? (
           <FormRadioBlock

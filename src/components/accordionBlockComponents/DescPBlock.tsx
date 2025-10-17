@@ -14,7 +14,7 @@ const DescPBlock: React.FC<DescPBlockProps> = ({
   value,
 }) => {
   return (
-    <div className={`${outerStyle} flex flex-col justify-center`}>
+    <div className={`${outerStyle}`}>
       <span className="text-xs text-gray-600 font-medium uppercase tracking-wide ">
         {label}
       </span>

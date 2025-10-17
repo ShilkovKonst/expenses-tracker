@@ -22,13 +22,13 @@ const OperationDescriptionBlock: React.FC<OperationDescriptionBlockProps> = ({
   return (
     <div className="pl-4 py-2 col-span-5 grid grid-cols-4 gap-4 my-auto">
       <DescPBlock
-        outerStyle="col-span-1"
+        outerStyle="col-span-1 flex flex-col lg:flex-row lg:gap-1 justify-start items-start"
         spanStyle="text-xs"
         label={labelOperationTags}
         value={operationTags}
       />
       <DescPBlock
-        outerStyle="col-span-1"
+        outerStyle="col-span-1 flex flex-col lg:flex-row lg:gap-1 justify-start items-start"
         spanStyle={`${
           operationType === "income" ? "text-green-600" : "text-red-500"
         } text-xs truncate`}
@@ -36,7 +36,7 @@ const OperationDescriptionBlock: React.FC<OperationDescriptionBlockProps> = ({
         value={operationAmount}
       />
       <DescPBlock
-        outerStyle="col-span-2"
+        outerStyle="col-span-2 flex flex-col lg:flex-row lg:gap-1 justify-start items-start"
         spanStyle="text-xs"
         label={labelOperationDescription}
         value={operationDescription}

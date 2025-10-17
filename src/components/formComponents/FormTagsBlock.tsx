@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useGlobal } from "@/app/context/GlobalContext";
-import { AddIcon } from "@/lib/icons";
+import { useGlobal } from "@/context/GlobalContext";
+import { AddIcon, ExpandIcon } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { Operation } from "@/types/formTypes";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -69,13 +69,6 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
     }
   }, [currentTags]);
 
-  // useEffect(() => {
-  //   if (isReset) {
-  //     setCurrentTags(oldOperation?.tags ?? []);
-  //     setIsReset(false);
-  //   }
-  // }, [isReset]);
-
   return (
     <div className="col-span-2">
       <p className={`block font-semibold uppercase ${styleLabel}`}>
@@ -95,12 +88,12 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
         <button
           type="button"
           data-type="operationTags"
-          className="absolute top-1 right-1 w-5 bg-blue-400 hover:bg-blue-500 transition-colors duration-200 ease-in-out rounded-md cursor-pointer"
+          className="absolute top-0 right-0 h-7 w-7 bg-blue-400 hover:bg-blue-500 border-l-2 border-blue-100 transition-colors duration-200 ease-in-out rounded-r-sm cursor-pointer flex justify-center items-center"
           onClick={(e) =>
             transformElement(e.target as HTMLElement, "data-type")
           }
         >
-          <AddIcon style="h-5 w-5" />
+          <ExpandIcon style="h-5 w-5" />
         </button>
       </div>
       <div

@@ -3,7 +3,7 @@ import { ExpandIcon } from "@/lib/icons";
 import DescriptionBlock from "./DescriptionBlock";
 import CostButton from "../buttonComponents/CostButton";
 import { t } from "@/locales/locale";
-import { useGlobal } from "@/app/context/GlobalContext";
+import { useGlobal } from "@/context/GlobalContext";
 
 type DescriptionProps = {
   labelMain: string;
