@@ -5,9 +5,8 @@ import PersonnalisationBlock from "./PersonnalisationBlock"
 import { ChangeEvent, useEffect, useState } from "react"
 import { DataType } from "@/types/formTypes"
 
-type Props = {}
 
-const TrackerSettingsBlock = (props: Props) => {
+const TrackerSettingsBlock = () => {
   const { selectedType, setSelectedType } = useGlobal();
 
   const [dataTypes, setDataTypes] = useState<DataType[]>([]);
