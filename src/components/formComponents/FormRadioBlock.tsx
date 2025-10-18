@@ -20,13 +20,13 @@ const FormRadioBlock: React.FC<FormRadioProps> = ({
   handleChange,
 }) => {
   return (
-    <div className={`col-span-2 grid grid-cols-1`}>
+    <div className={`col-span-1 grid grid-cols-1 gap-2`}>
       <p className={`${styleLabel} font-semibold uppercase flex-1`}>
         {labelRadio}
       </p>
-      <div className="flex">
+      <div className="flex gap-2">
         {["income", "cost"].map((type, i) => (
-          <div key={i} className="flex items-center gap-1 m-1">
+          <div key={i} className="flex items-center">
             <input
               type="radio"
               id={`${id}-${type}`}

@@ -8,8 +8,8 @@
       "title": "Трекер расходов"
     },
     "modal": {
-      "labelTitleCreate": "",
-      "labelTitleUpdate": "",
+      "labelTitleCreate": "Создать новую запись",
+      "labelTitleUpdate": "Редактировать запись",
       "labelTitleDelete": "Вы уверены, что хотите удалить эту запись?",
       "labelConfirm": "Подтвердить",
       "labelDelete": "Удалить",

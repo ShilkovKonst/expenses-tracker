@@ -2,6 +2,7 @@
 
 type DescPBlockProps = {
   outerStyle?: string;
+  titleStyle?: string;
   spanStyle: string;
   label: string;
   value: string | number | (string | number)[];
@@ -9,18 +10,21 @@ type DescPBlockProps = {
 
 const DescPBlock: React.FC<DescPBlockProps> = ({
   outerStyle,
+  titleStyle,
   spanStyle,
   label,
   value,
 }) => {
   return (
     <div className={`${outerStyle}`}>
-      <span className="text-xs text-gray-600 font-medium uppercase tracking-wide ">
+      <p
+        className={`${titleStyle} text-xs text-gray-600 font-medium uppercase tracking-wide`}
+      >
         {label}
-      </span>
-      <div className="flex flex-wrap gap-1 justify-start items-center">
+      </p>
+      <p className="flex flex-wrap gap-1 justify-start items-center">
         {Array.isArray(value) ? (
-          value.map((v) => (
+          value.sort().map((v) => (
             <span key={v} className={`font-medium ${spanStyle} border px-1`}>
               {v}
             </span>
@@ -28,7 +32,7 @@ const DescPBlock: React.FC<DescPBlockProps> = ({
         ) : (
           <span className={`font-semibold ${spanStyle}`}>{value}</span>
         )}
-      </div>
+      </p>
     </div>
   );
 };

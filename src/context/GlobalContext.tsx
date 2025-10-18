@@ -1,10 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { CURRENT_YEAR } from "@/lib/constants";
 import { initEmptyTracker } from "@/lib/utils/initEmptyTracker";
-import { initEmptyMonths } from "@/lib/utils/monthHelper";
 import { Locale } from "@/locales/locale";
-import { Data, DataType, Year } from "@/types/formTypes";
+import { Data, DataType } from "@/types/formTypes";
 import { useParams } from "next/navigation";
 import {
   createContext,
@@ -38,7 +36,7 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
     title: "default",
   });
   const [operationTags, setOperationTags] = useState<Set<string>>(
-    new Set(["card", "cash", "food", "alcohol", "goods", "service"])
+    new Set(["card", "cash", "food", "clothes", "service"])
   );
 
   useEffect(() => {
@@ -63,7 +61,7 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    console.log("data", data)
+    console.log("data", data);
   }, [data]);
 
   return (

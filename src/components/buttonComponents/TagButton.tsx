@@ -1,5 +1,3 @@
-import { MouseEvent as ReactMouseEvent } from "react";
-
 type TagButtonType = {
   style: string;
   title: string;
@@ -19,7 +17,7 @@ const TagButton: React.FC<TagButtonType> = ({
     <button
       type="button"
       id={id ?? ""}
-      className={`text-sm font-bold px-2 py-1 ${style} border-2 transition-colors duration-300 ease-in-out rounded`}
+      className={`text-sm font-bold px-2 py-1 ${style} border-2 transition-colors duration-300 ease-in-out rounded cursor-pointer`}
       onClick={handleClick}
       disabled={disabled}
     >

@@ -1,18 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
-import { AddIcon, ExpandIcon } from "@/lib/icons";
-import { transformElement } from "@/lib/utils/transformElement";
+import { AddIcon } from "@/lib/icons";
 import { Operation } from "@/types/formTypes";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FormTagsButton from "./FormTagsButton";
+import { t } from "@/locales/locale";
 
 type FormTagsProps = {
   operation: Operation;
-  // oldOperation: Operation;
-  setOperation: Dispatch<SetStateAction<Operation>>;
-  // isReset: boolean;
-  // setIsReset: Dispatch<SetStateAction<boolean>>;
+  setOperation: Dispatch<SetStateAction<Operation | undefined>>;
   title: string;
   styleLabel: string;
   styleInput: string;
@@ -20,14 +17,11 @@ type FormTagsProps = {
 
 const FormTagsBlock: React.FC<FormTagsProps> = ({
   operation,
-  // oldOperation,
   setOperation,
-  // isReset,
-  // setIsReset,
   title,
   styleLabel,
 }) => {
-  const { operationTags } = useGlobal();
+  const { locale, operationTags, setOperationTags } = useGlobal();
 
   const [currentTags, setCurrentTags] = useState<string[]>(
     operation?.tags ?? []
@@ -35,6 +29,8 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
   const [filteredTags, setFilteredTags] = useState<string[]>(
     operationTags.values().toArray()
   );
+  const [newTag, setNewTag] = useState<string>("");
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleAddClick = (tag: string) => {
     if (currentTags.every((t) => t !== tag)) {
@@ -45,6 +41,16 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
   const handleRemoveClick = (tag: string) => {
     setCurrentTags([...currentTags.filter((t) => t !== tag)]);
   };
+
+  const handleAddNewTag = (newTag: string) => {
+    setCurrentTags([...currentTags, newTag]);
+    setOperationTags(new Set([...operationTags, newTag]));
+    setNewTag("");
+  };
+
+  useEffect(() => {
+    setIsDisabled(operationTags.has(newTag));
+  }, [newTag, operationTags]);
 
   useEffect(() => {
     setOperation({ ...operation, tags: currentTags });
@@ -75,7 +81,7 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
         {title} ({currentTags?.length})
       </p>
       <div
-        className={`relative pl-2 pr-7 min-h-8 w-full border-2 border-blue-100 rounded-md transition-colors duration-200 ease-in-out bg-white flex items-center gap-2`}
+        className={`px-2 min-h-8 w-full border-2 border-blue-100 rounded-md rounded-b-none transition-colors duration-200 ease-in-out bg-white flex items-center gap-2`}
       >
         {currentTags?.map((tag, i) => (
           <FormTagsButton
@@ -85,25 +91,39 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             style="bg-blue-300"
           />
         ))}
-        <button
-          type="button"
-          data-type="operationTags"
-          className="absolute top-0 right-0 h-7 w-7 bg-blue-400 hover:bg-blue-500 border-l-2 border-blue-100 transition-colors duration-200 ease-in-out rounded-r-sm cursor-pointer flex justify-center items-center"
-          onClick={(e) =>
-            transformElement(e.target as HTMLElement, "data-type")
-          }
-        >
-          <ExpandIcon style="h-5 w-5" />
-        </button>
       </div>
-      <div
-        id="operationTags"
-        style={{ height: 0 }}
-        className="mb-1 mt-2 w-full overflow-hidden px-2 transition-[height] duration-200 ease-in-out flex flex-wrap items-center gap-2"
-      >
-        {currentTags.every((t) => t !== "online" && t !== "offline") &&
-          filteredTags
-            .filter((t) => t === "online" || t === "offline")
+      <div className="p-2 border-t-0 border-2 border-blue-100 rounded-md rounded-t-none">
+        <div className="relative w-full overflow-hidden pb-2 transition-[height] duration-200 ease-in-out flex flex-wrap items-center gap-2">
+          {currentTags.every((t) => t !== "online" && t !== "offline") &&
+            filteredTags
+              .filter((t) => t === "online" || t === "offline")
+              .map((tag, i) => (
+                <FormTagsButton
+                  key={i}
+                  tag={tag}
+                  handleClick={() => handleAddClick(tag)}
+                  style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
+                />
+              ))}
+          {currentTags.every((t) => t !== "cash" && t !== "card") &&
+            filteredTags
+              .filter((t) => t === "card" || t === "cash")
+              .map((tag, i) => (
+                <FormTagsButton
+                  key={i}
+                  tag={tag}
+                  handleClick={() => handleAddClick(tag)}
+                  style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
+                />
+              ))}
+          {filteredTags
+            .filter(
+              (t) =>
+                t !== "online" &&
+                t !== "offline" &&
+                t !== "cash" &&
+                t !== "card"
+            )
             .map((tag, i) => (
               <FormTagsButton
                 key={i}
@@ -112,32 +132,31 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
                 style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
               />
             ))}
-        {currentTags.every((t) => t !== "cash" && t !== "card") &&
-          filteredTags
-            .filter((t) => t === "card" || t === "cash")
-            .map((tag, i) => (
-              <FormTagsButton
-                key={i}
-                tag={tag}
-                handleClick={() => handleAddClick(tag)}
-                style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
-              />
-            ))}
-        {filteredTags
-          .filter(
-            (t) =>
-              t !== "online" && t !== "offline" && t !== "cash" && t !== "card"
-          )
-          .map((tag, i) => (
-            <FormTagsButton
-              key={i}
-              tag={tag}
-              handleClick={() => handleAddClick(tag)}
-              style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
-            />
-          ))}
+        </div>
+        <div className="grid grid-cols-6 gap-2">
+          <input
+            className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 rounded-md text-xs"
+            placeholder={t(locale, `body.form.data.typeCustomTitle`)}
+            type="text"
+            value={newTag}
+            onChange={(e) => setNewTag(e.target.value)}
+          />
+          {isDisabled ? (
+            <p className="col-span-2 text-xs text-red-600 my-auto">
+              {t(locale, `body.form.data.typeDouble`)}
+            </p>
+          ) : (
+            <button
+              type="button"
+              className="col-span-2 ml-auto h-7 w-7 bg-green-400 hover:bg-green-500  transition-colors duration-200 ease-in-out rounded-sm cursor-pointer flex justify-center items-center"
+              onClick={() => handleAddNewTag(newTag)}
+              disabled={!newTag}
+            >
+              <AddIcon style="h-5 w-5" />
+            </button>
+          )}
+        </div>
       </div>
-      <div className="w-full border-t-2 border-blue-100" />
     </div>
   );
 };

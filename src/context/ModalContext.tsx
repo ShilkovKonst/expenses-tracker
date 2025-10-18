@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 
-export type ModalBodyType = "crt" | "del" | "udp";
+export type ModalBodyType = "crt" | "del" | "upd";
 
 export type FormModalBodyType = {
   type: ModalBodyType;

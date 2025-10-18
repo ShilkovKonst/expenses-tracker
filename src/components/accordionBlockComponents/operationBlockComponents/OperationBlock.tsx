@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Operation } from "@/types/formTypes";
 import OperationDescriptionBlock from "./OperationDescriptionBlock";
@@ -33,8 +32,9 @@ const OperationBlock: React.FC<OperationBlockProps> = ({
 
   return (
     <div className="cost grid gap-2 w-full">
-      <div className="grid grid-cols-6 gap-3 w-full bg-blue-50 hover:bg-blue-200 border-2 border-blue-100">
+      <div className="pl-4 pr-2 py-2 grid grid-cols-6 gap-2 w-full bg-blue-50 hover:bg-blue-200 border-2 border-blue-100">
         <OperationDescriptionBlock
+          outerStyle="col-span-5 grid grid-cols-4 gap-2 md:gap-4 my-auto"
           labelOperationTags={`${t(
             locale,
             `body.form.operations.labelTags`

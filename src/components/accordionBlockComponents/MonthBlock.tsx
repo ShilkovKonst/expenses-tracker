@@ -1,6 +1,6 @@
 "use client";
-import { MouseEvent as RMouseEvent, useEffect, useState } from "react";
-import { Operation, Month } from "@/types/formTypes";
+import { useEffect, useState } from "react";
+import { Month } from "@/types/formTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
@@ -14,25 +14,25 @@ type MonthBlockProps = {
 
 const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
   const { locale } = useGlobal();
-  const { setIsModal, setFormModalBody } = useModal()
+  const { setIsModal, setFormModalBody } = useModal();
 
   const [isExpandDisabled, setIsExpandDisabled] = useState<boolean>(true);
 
   const handleAddOperation = () => {
-    setIsModal(true)
+    setIsModal(true);
     setFormModalBody({
       type: "crt",
       yearId: yearId,
       monthId: month.id,
       operation: {
-        id: month.operations.length,
+        id: `${yearId}-${month.id}-${month.operations.length}`,
         type: "cost",
         tags: [],
         description: "",
         amount: 0,
-      }
-    })
-  }
+      },
+    });
+  };
 
   useEffect(() => {
     setIsExpandDisabled(month.operations?.length === 0);
@@ -60,7 +60,7 @@ const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
       <div
         id={`${yearId}-${month.id}`}
         style={{ height: 0 }}
-        className="col-span-6 grid gap-2 pl-4 transition-[height] duration-300 ease-in-out overflow-hidden w-full"
+        className="col-span-6 grid gap-2 pl-2 transition-[height] duration-300 ease-in-out overflow-hidden w-full"
       >
         {month.operations.map((operation, index) => (
           <OperationBlock

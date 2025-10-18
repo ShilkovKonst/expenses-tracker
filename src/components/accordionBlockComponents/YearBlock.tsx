@@ -25,7 +25,7 @@ const YearBlock: React.FC<YearBlockProps> = ({ dataId, year }) => {
       <div
         id={year.id.toString()}
         style={{ height: 0 }}
-        className="pl-4 transition-[height] duration-300 ease-in-out overflow-hidden w-full"
+        className="pl-2 transition-[height] duration-300 ease-in-out overflow-hidden w-full"
       >
         {year.months.map((month) => (
           <MonthBlock key={month.id} yearId={year.id} month={month} />

@@ -8,9 +8,9 @@
       "title": "Expense Tracker"
     },
     "modal": {
-      "labelTitleCreate": "",
-      "labelTitleUpdate": "",
-      "labelTitleDelete": "Are you sure you want to delete this entry?",
+      "labelTitleCreate": "Create new record",
+      "labelTitleUpdate": "Update record",
+      "labelTitleDelete": "Are you sure you want to delete this record?",
       "labelConfirm": "Confirm",
       "labelDelete": "Delete",
       "labelCancel": "Cancel"

@@ -1,6 +1,7 @@
 import DescPBlock from "../DescPBlock";
 
 type OperationDescriptionBlockProps = {
+  outerStyle: string;
   labelOperationTags: string;
   labelOperationDescription: string;
   labelOperationAmount: string;
@@ -11,6 +12,7 @@ type OperationDescriptionBlockProps = {
 };
 
 const OperationDescriptionBlock: React.FC<OperationDescriptionBlockProps> = ({
+  outerStyle,
   labelOperationTags,
   labelOperationDescription,
   labelOperationAmount,
@@ -20,7 +22,7 @@ const OperationDescriptionBlock: React.FC<OperationDescriptionBlockProps> = ({
   operationAmount,
 }) => {
   return (
-    <div className="pl-4 py-2 col-span-5 grid grid-cols-4 gap-4 my-auto">
+    <div className={outerStyle}>
       <DescPBlock
         outerStyle="col-span-1 flex flex-col lg:flex-row lg:gap-1 justify-start items-start"
         spanStyle="text-xs"

@@ -26,7 +26,7 @@ export type Month = {
 }[MonthIdType];
 
 export type Operation = {
-  id: number;
+  id: string;
   type: "income" | "cost";
   tags: string[];
   description: string;

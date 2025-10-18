@@ -24,13 +24,13 @@ const OperationButtonBlock: React.FC<OperationButtonBlockProps> = ({
 
   return (
     <div
-      className={`${outerStyle} pr-2 gap-2 flex flex-row justify-end items-center`}
+      className={`${outerStyle} gap-2 flex flex-col sm:flex-row justify-center sm:justify-end items-end sm:items-center`}
     >
       <CostButton
         icon={<Update style={iconSize} />}
         title={t(locale, `body.form.operations.update`)}
         style={`bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
-        handleClick={() => handleCallFormModal("udp")}
+        handleClick={() => handleCallFormModal("upd")}
       />
       <CostButton
         icon={<Delete style={iconSize} />}
