@@ -1,55 +1,51 @@
-"use client"
-import { useGlobal } from "@/context/GlobalContext"
-import DataTypesBlock from "./DataTypesBlock"
-import PersonnalisationBlock from "./PersonnalisationBlock"
-import { ChangeEvent, useEffect, useState } from "react"
-import { DataType } from "@/types/formTypes"
-
+"use client";
+import { useGlobal } from "@/context/GlobalContext";
+import DataTypesBlock from "./DataTypesBlock";
+import { useEffect, useState } from "react";
+import { TrackerType } from "@/types/formTypes";
 
 const TrackerSettingsBlock = () => {
   const { selectedType, setSelectedType } = useGlobal();
 
-  const [dataTypes, setDataTypes] = useState<DataType[]>([]);
-  const [customType, setCustomType] = useState<DataType>({
+  const [trackerTypes, setTrackerTypes] = useState<TrackerType[]>([]);
+  const [customType, setCustomType] = useState<TrackerType>({
     id: 0,
     title: "",
   });
 
   useEffect(() => {
     if (localStorage) {
-      const rawTypes = localStorage.getItem("dataTypes");
+      const rawTypes = localStorage.getItem("trackerTypes");
       if (!rawTypes)
-        localStorage.setItem("dataTypes", JSON.stringify([selectedType]));
-      const types: DataType[] = rawTypes
+        localStorage.setItem("trackerTypes", JSON.stringify([selectedType]));
+      const types: TrackerType[] = rawTypes
         ? JSON.parse(rawTypes)
         : [selectedType];
-      setDataTypes(types);
+      setTrackerTypes(types);
     }
   }, []);
 
   useEffect(() => {
     if (customType.id === 0)
-      setCustomType({ ...customType, id: dataTypes.length });
-  }, [dataTypes]);
+      setCustomType({ ...customType, id: trackerTypes.length });
+  }, [trackerTypes]);
 
-  const handleSelectType = (e: ChangeEvent<HTMLSelectElement>) => {
-    const type = dataTypes.find((t) => t.title === e.target.value);
-    if (type) setSelectedType(type);
+  const handleSelectType = (t: TrackerType) => {
+    const type = trackerTypes.find((tp) => tp.title === t.title);
+    if (type) setSelectedType(t);
   };
 
   return (
-    <div className="grid grico1 md:grid-cols-2 gap-2 border-b-6 border-blue-400 pb-2">
+    <div className="grid grid-cols-1 gap-2 border-b-6 border-blue-400 pb-2">
       <DataTypesBlock
-        dataTypes={dataTypes}
-        handleSelectType={handleSelectType} />
-      <PersonnalisationBlock
-        dataTypes={dataTypes}
-        setDataTypes={setDataTypes}
         customType={customType}
-        setCustomType={setCustomType} />
+        setCustomType={setCustomType}
+        trackerTypes={trackerTypes}
+        setTrackerTypes={setTrackerTypes}
+        handleSelectType={handleSelectType}
+      />
     </div>
+  );
+};
 
-  )
-}
-
-export default TrackerSettingsBlock
+export default TrackerSettingsBlock;

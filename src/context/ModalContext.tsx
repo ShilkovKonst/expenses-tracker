@@ -1,5 +1,5 @@
 "use client";
-import { Operation } from "@/types/formTypes";
+import { TrackerType, Record, RecordTag } from "@/types/formTypes";
 import {
   createContext,
   Dispatch,
@@ -15,12 +15,11 @@ export type FormModalBodyType = {
   type: ModalBodyType;
   yearId: number;
   monthId: number;
-  operation: Operation;
+  record: Record;
 };
-export type FormConfirmType = {
-  yearId: number;
-  monthId: number;
-  operation: Operation;
+export type SettingsModalBodyType = {
+  types: TrackerType[];
+  tags: RecordTag[];
 };
 
 interface ModalContextType {
@@ -28,6 +27,10 @@ interface ModalContextType {
   setIsModal: Dispatch<SetStateAction<boolean>>;
   formModalBody: FormModalBodyType | null;
   setFormModalBody: Dispatch<SetStateAction<FormModalBodyType | null>>;
+  isSettingsModal: boolean;
+  setIsSettingsModal: Dispatch<SetStateAction<boolean>>;
+  settingsModalBody: SettingsModalBodyType | null;
+  setSettingsModalBody: Dispatch<SetStateAction<SettingsModalBodyType | null>>;
 }
 
 export const ModalContext = createContext<ModalContextType | undefined>(
@@ -39,6 +42,9 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const [formModalBody, setFormModalBody] = useState<FormModalBodyType | null>(
     null
   );
+  const [isSettingsModal, setIsSettingsModal] = useState<boolean>(false);
+  const [settingsModalBody, setSettingsModalBody] =
+    useState<SettingsModalBodyType | null>(null);
 
   return (
     <ModalContext.Provider
@@ -47,6 +53,10 @@ export function ModalProvider({ children }: { children: ReactNode }) {
         setIsModal,
         formModalBody,
         setFormModalBody,
+        isSettingsModal,
+        setIsSettingsModal,
+        settingsModalBody,
+        setSettingsModalBody,
       }}
     >
       {children}

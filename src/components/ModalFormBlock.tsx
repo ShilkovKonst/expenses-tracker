@@ -1,22 +1,29 @@
 "use client";
-import { Data, Month, Operation, Year } from "@/types/formTypes";
-import FormOperationBlock from "./formComponents/FormOperationBlock";
+import { Tracker, Month, Record, Year } from "@/types/formTypes";
+import FormOperationBlock from "./formComponents/FormRecordBlock";
 import { useGlobal } from "@/context/GlobalContext";
 import { updateItem } from "@/lib/utils/updateDeleteHelper";
 import { useModal } from "@/context/ModalContext";
 import FormDeleteBlock from "./formComponents/FormDeleteBlock";
 import { CURRENT_YEAR } from "@/lib/constants";
+import SettingsBlock from "./settingsBlock/SettingsBlock";
 
 const ModalFormBlock: React.FC = () => {
-  const { selectedType, data, setData } = useGlobal();
-  const { setIsModal, formModalBody, setFormModalBody } = useModal();
+  const { selectedType, tracker, setTracker } = useGlobal();
+  const {
+    setIsModal,
+    formModalBody,
+    setFormModalBody,
+    settingsModalBody,
+    isSettingsModal,
+  } = useModal();
 
   const handleClear = () => {
     setFormModalBody(null);
     setIsModal(false);
   };
 
-  const handleUpdateDelete = (operation: Operation, isDelete: boolean) => {
+  const handleUpdateDelete = (operation: Record, isDelete: boolean) => {
     if (!formModalBody) return;
     const { yearId, monthId } = formModalBody;
 
@@ -26,9 +33,9 @@ const ModalFormBlock: React.FC = () => {
     };
     const yearIdx = CURRENT_YEAR - yearId;
     if (yearIdx < 0) return;
-    const year = data.years[yearIdx];
+    const year = tracker.years[yearIdx];
     if (!monthId) return;
-    const month = data.years[yearIdx].months[monthId - 1];
+    const month = tracker.years[yearIdx].months[monthId - 1];
 
     const [updOperations, totalAmount] = updateItem(
       month.operations,
@@ -58,19 +65,19 @@ const ModalFormBlock: React.FC = () => {
     };
 
     const [updYears, yearTotalAmount] = updateItem(
-      data.years,
+      tracker.years,
       updYear,
       (items) => items.reduce((sum, y) => sum + y.totalAmount, 0)
     );
-    const newFormData: Data = {
-      ...data,
-      id: data.id === selectedType.title ? data.id : selectedType.title,
+    const newTracker: Tracker = {
+      ...tracker,
+      id: tracker.id === selectedType.title ? tracker.id : selectedType.title,
       years: updYears,
       totalAmount: yearTotalAmount,
     };
-    setData(newFormData);
+    setTracker(newTracker);
     if (localStorage) {
-      localStorage.setItem(selectedType.title, JSON.stringify(newFormData));
+      localStorage.setItem(selectedType.title, JSON.stringify(newTracker));
     }
     handleClear();
   };
@@ -78,9 +85,9 @@ const ModalFormBlock: React.FC = () => {
   return (
     <div
       id="foreground"
-      className="fixed inset-0 bg-black/10 backdrop-blur-sm z-50 flex items-center justify-center"
+      className="fixed inset-0 bg-black/10 backdrop-blur-xs z-50 flex items-center justify-center"
     >
-      <div className="w-full md:w-3/4 lg:w-2/3 2xl:w-1/2">
+      <div className="w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 bg-blue-50 p-5 rounded-lg">
         {formModalBody &&
           (formModalBody.type === "upd" || formModalBody.type === "crt" ? (
             <FormOperationBlock
@@ -89,12 +96,14 @@ const ModalFormBlock: React.FC = () => {
             />
           ) : formModalBody.type === "del" ? (
             <FormDeleteBlock
+              deleteEntity="record"
               handleDelete={handleUpdateDelete}
               handleClear={handleClear}
             />
           ) : (
             <></>
           ))}
+        {isSettingsModal && <SettingsBlock handleClear={handleClear} />}
       </div>
     </div>
   );

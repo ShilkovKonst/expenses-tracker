@@ -1,21 +1,26 @@
-"use client"
+"use client";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
-import CostButton from "./buttonComponents/CostButton";
+import TopLevelButton from "./buttonComponents/TopLevelButton";
 import { AddTag } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { Dispatch, SetStateAction, useState } from "react";
-import TagButton from "./buttonComponents/TagButton";
-import { DataType } from "@/types/formTypes";
+import MidLevelButton from "./buttonComponents/MidLevelButton";
+import { TrackerType } from "@/types/formTypes";
 
 type PersonnalisationProps = {
-  dataTypes: DataType[]
-  setDataTypes: Dispatch<SetStateAction<DataType[]>>
-  customType: DataType
-  setCustomType: Dispatch<SetStateAction<DataType>>
-}
+  dataTypes: TrackerType[];
+  setDataTypes: Dispatch<SetStateAction<TrackerType[]>>;
+  customType: TrackerType;
+  setCustomType: Dispatch<SetStateAction<TrackerType>>;
+};
 
-const PersonnalisationBlock: React.FC<PersonnalisationProps> = ({ dataTypes, setDataTypes, customType, setCustomType }) => {
+const PersonnalisationBlock: React.FC<PersonnalisationProps> = ({
+  dataTypes,
+  setDataTypes,
+  customType,
+  setCustomType,
+}) => {
   const { locale } = useGlobal();
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -29,22 +34,20 @@ const PersonnalisationBlock: React.FC<PersonnalisationProps> = ({ dataTypes, set
     }
   };
 
-  const handleCustomTagAdd = (
-  ) => {
+  const handleCustomTagAdd = () => {
     if (customType) {
       const newTags = [...dataTypes, customType];
-      localStorage.setItem("dataTypes", JSON.stringify(newTags));
+      localStorage.setItem("trackerTypes", JSON.stringify(newTags));
       setDataTypes(newTags);
       setCustomType({ id: newTags.length, title: "" });
     }
   };
 
-  const handleCustomTagRemove = (
-  ) => {
+  const handleCustomTagRemove = () => {
     if (customType) {
       if (dataTypes.find((t) => t.title === customType.title.trim())) {
         const newTypes = [...dataTypes.filter((t) => t !== customType)];
-        localStorage.setItem("dataTypes", JSON.stringify(newTypes));
+        localStorage.setItem("trackerTypes", JSON.stringify(newTypes));
         setDataTypes(newTypes);
         setCustomType({ id: newTypes.length, title: "" });
       } else {
@@ -55,11 +58,14 @@ const PersonnalisationBlock: React.FC<PersonnalisationProps> = ({ dataTypes, set
 
   return (
     <div className="">
-      <h3 className="text-sm my-2">
-        {t(locale, `body.form.data.typeFormTitle`)}
+      <h3 className={`block font-semibold uppercase text-sm`}>
+        {t(locale, `body.peronnalisation.title`)}
       </h3>
+      <p className={`block font-semibold uppercase text-xs`}>
+        {t(locale, `body.peronnalisation.description`)}
+      </p>
 
-      <CostButton
+      <TopLevelButton
         icon={<AddTag style="h-7 w-7" />}
         dataType="form-custom-tag"
         dataUpdate=""
@@ -88,23 +94,24 @@ const PersonnalisationBlock: React.FC<PersonnalisationProps> = ({ dataTypes, set
             </p>
           )}
         </div>
-        <TagButton
+        <MidLevelButton
           title="&#10004;"
-          style={`border-green-300 col-span-2 ${isDisabled
-            ? "bg-green-100 text-gray-500"
-            : "bg-green-200 hover:bg-green-300 cursor-pointer"
-            }`}
+          style={`border-green-300 col-span-2 ${
+            isDisabled
+              ? "bg-green-100 text-gray-500"
+              : "bg-green-200 hover:bg-green-300 cursor-pointer"
+          }`}
           handleClick={handleCustomTagAdd}
           disabled={isDisabled}
         />
-        <TagButton
+        <MidLevelButton
           title="&#10006;"
           style="bg-red-200 hover:bg-red-300 border-red-300 col-span-2"
           handleClick={handleCustomTagRemove}
         />
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default PersonnalisationBlock
+export default PersonnalisationBlock;

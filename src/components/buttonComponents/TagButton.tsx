@@ -1,27 +1,24 @@
-type TagButtonType = {
+type TagButtonProps = {
+  tag: string;
   style: string;
-  title: string;
-  id?: string;
   handleClick: () => void;
   disabled?: boolean;
 };
 
-const TagButton: React.FC<TagButtonType> = ({
+const TagButton: React.FC<TagButtonProps> = ({
+  tag,
   style,
-  title,
-  id,
   handleClick,
   disabled,
 }) => {
   return (
     <button
       type="button"
-      id={id ?? ""}
-      className={`text-sm font-bold px-2 py-1 ${style} border-2 transition-colors duration-300 ease-in-out rounded cursor-pointer`}
       onClick={handleClick}
+      className={`tag h-5 text-xs text-center font-semibold px-2 rounded-lg my-auto cursor-pointer ${style}`}
       disabled={disabled}
     >
-      {title}
+      {tag}
     </button>
   );
 };

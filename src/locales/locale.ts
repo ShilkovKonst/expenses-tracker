@@ -27,7 +27,9 @@ export function t(
   if (typeof value !== "string") {
     throw new Error(`Translation key "${path}" is not a string`);
   }
-  return value.replace(/\{\{(.*?)\}\}/g, (_, v) =>
+  const result = value.replace(/\{\{(.*?)\}\}/g, (_, v) =>
     String(vars[v.trim()] ?? "")
   );
+
+  return result;
 }

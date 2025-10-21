@@ -1,7 +1,7 @@
 "use client";
-import { Operation } from "@/types/formTypes";
+import { Record } from "@/types/formTypes";
 import FormInputBlock from "./FormInputBlock";
-import TagButton from "../buttonComponents/TagButton";
+import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -11,39 +11,39 @@ import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { useModal } from "@/context/ModalContext";
 import { MONTHS } from "@/lib/constants";
 
-type FormOperationBlockProps = {
-  handleUpdate: (operation: Operation, isDelete: boolean) => void;
+type FormRecordBlockProps = {
+  handleUpdate: (operation: Record, isDelete: boolean) => void;
   handleClear: () => void;
 };
 
-const FormOperationBlock: React.FC<FormOperationBlockProps> = ({
+const FormRecordBlock: React.FC<FormRecordBlockProps> = ({
   handleUpdate,
   handleClear,
 }) => {
   const { locale } = useGlobal();
   const { formModalBody } = useModal();
 
-  const [currentOperation, setCurrentOperation] = useState<
-    Operation | undefined
-  >(undefined);
+  const [currentRecord, setCurrentRecord] = useState<Record | undefined>(
+    undefined
+  );
 
-  const handleOperationChange = <K extends keyof Operation>(
+  const handleOperationChange = <K extends keyof Record>(
     e: ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-    if (currentOperation)
-      setCurrentOperation({
-        ...currentOperation,
-        [name as K]: value as Operation[K],
+    if (currentRecord)
+      setCurrentRecord({
+        ...currentRecord,
+        [name as K]: value as Record[K],
       });
   };
 
   useEffect(() => {
-    if (formModalBody?.operation) setCurrentOperation(formModalBody.operation);
+    if (formModalBody?.record) setCurrentRecord(formModalBody.record);
   }, [formModalBody]);
 
   return (
-    <form className="form bg-blue-50 p-5 rounded-lg grid grid-cols-2 gap-2">
+    <form className="form grid grid-cols-2 gap-2">
       {formModalBody && (
         <>
           <p className="col-span-2 text-lg text-center font-bold mx-auto">
@@ -65,34 +65,34 @@ const FormOperationBlock: React.FC<FormOperationBlockProps> = ({
         </>
       )}
 
-      {currentOperation &&
+      {currentRecord &&
         [
           {
             name: "type",
             title: t(locale, `body.form.operations.type`),
-            id: "operationTypeInput" + currentOperation?.id,
-            value: currentOperation?.type,
+            id: "operationTypeInput" + currentRecord?.id,
+            value: currentRecord?.type,
             type: "radio",
           },
           {
             name: "tags",
             title: t(locale, `body.form.operations.labelTags`),
-            id: "operationTagsInput" + currentOperation?.id,
-            value: currentOperation,
+            id: "operationTagsInput" + currentRecord?.id,
+            value: currentRecord,
             type: "",
           },
           {
             name: "amount",
             title: t(locale, `body.form.operations.amount`),
-            id: "operationAmountInput" + currentOperation?.id,
-            value: currentOperation?.amount,
+            id: "operationAmountInput" + currentRecord?.id,
+            value: currentRecord?.amount,
             type: "number",
           },
           {
-            id: "operationDescInput" + currentOperation?.id,
+            id: "operationDescInput" + currentRecord?.id,
             name: "description",
             title: t(locale, `body.form.operations.description`),
-            value: currentOperation?.description,
+            value: currentRecord?.description,
             type: "text",
           },
         ].map((f, i) =>
@@ -111,8 +111,8 @@ const FormOperationBlock: React.FC<FormOperationBlockProps> = ({
             <FormTagsBlock
               key={i}
               title={f.title}
-              operation={currentOperation}
-              setOperation={setCurrentOperation}
+              record={currentRecord}
+              setRecord={setCurrentRecord}
               styleLabel={"text-xs"}
               styleInput={"px-2 py-1 text-sm"}
             />
@@ -132,14 +132,14 @@ const FormOperationBlock: React.FC<FormOperationBlockProps> = ({
             />
           )
         )}
-      {currentOperation && (
-        <TagButton
+      {currentRecord && (
+        <MidLevelButton
           title={t(locale, "body.modal.labelConfirm")}
           style="bg-green-300 hover:bg-green-400 border-green-400 cols-span-1 disabled:text-gray-600 disabled:bg-green-200 disabled:hover:bg-green-200 disabled:border-green-300"
-          handleClick={() => handleUpdate(currentOperation, false)}
+          handleClick={() => handleUpdate(currentRecord, false)}
         />
       )}
-      <TagButton
+      <MidLevelButton
         title={t(locale, "body.modal.labelCancel")}
         style="bg-blue-300 hover:bg-blue-400 border-blue-400 cols-span-1"
         handleClick={handleClear}
@@ -148,4 +148,4 @@ const FormOperationBlock: React.FC<FormOperationBlockProps> = ({
   );
 };
 
-export default FormOperationBlock;
+export default FormRecordBlock;

@@ -1,4 +1,3 @@
-import { MouseEvent as RMouseEvent } from "react";
 import DescriptionBlock from "./DescriptionBlock";
 import HeaderButtonBlock from "./HeaderButtonBlock";
 
@@ -20,15 +19,17 @@ const HeaderBlock: React.FC<DescriptionPropsType> = ({
   expandDisabled,
   isMonth,
   dataId,
-  dataHeader, handleAddOperation
+  dataHeader,
+  handleAddOperation,
 }) => {
   return (
     <div
       id={dataId}
       data-month-id={dataId}
       data-month-header={dataHeader}
-      className={`header col-span-6 grid grid-cols-6 gap-3 w-full border-2 ${isMonth ? "bg-blue-100 border-blue-200" : "bg-blue-200 border-blue-300"
-        }`}
+      className={`header col-span-6 grid grid-cols-6 gap-3 w-full border-2 ${
+        isMonth ? "bg-blue-100 border-blue-200" : "bg-blue-200 border-blue-300"
+      }`}
     >
       <DescriptionBlock
         labelMain={`${labelMain}`}

@@ -1,6 +1,6 @@
 import { MouseEvent as ReactMouseEvent, ReactNode } from "react";
 
-type CostButtonType = {
+type TopLevelButtonProps = {
   icon: ReactNode | string;
   title: string;
   style: string;
@@ -13,7 +13,7 @@ type CostButtonType = {
   isExpand?: boolean;
 };
 
-const CostButton: React.FC<CostButtonType> = ({
+const TopLevelButton: React.FC<TopLevelButtonProps> = ({
   icon,
   title,
   style,
@@ -37,4 +37,4 @@ const CostButton: React.FC<CostButtonType> = ({
   );
 };
 
-export default CostButton;
+export default TopLevelButton;

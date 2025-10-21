@@ -8,6 +8,7 @@ export function updateItem<T extends { id: number | string }>(
     ? items.filter((item) => item.id !== newItem.id)
     : [...items.filter((item) => item.id !== newItem.id), newItem];
   const agg = aggregate(updated);
+  console.log(updated)
   return [
     updated.sort((a, b) => compare(a.id, b.id)),
     Math.round(agg * 100) / 100,
@@ -17,5 +18,6 @@ export function updateItem<T extends { id: number | string }>(
 function compare(a: string | number, b: string | number): number {
   if (typeof a === "number" && typeof b === "number") return a - b;
   if (typeof a === "string" && typeof b === "string") return a.localeCompare(b);
+  console.log(typeof a, typeof b)
   throw new Error("types must be the same and either string or number");
 }

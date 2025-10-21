@@ -24,7 +24,7 @@ const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
       type: "crt",
       yearId: yearId,
       monthId: month.id,
-      operation: {
+      record: {
         id: `${yearId}-${month.id}-${month.operations.length}`,
         type: "cost",
         tags: [],

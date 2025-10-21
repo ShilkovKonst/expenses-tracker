@@ -10,10 +10,19 @@
     "modal": {
       "labelTitleCreate": "Créer nouvel enregistrement",
       "labelTitleUpdate": "Mettre à jour cet enregistrement",
-      "labelTitleDelete": "Etes-vous sûr de vouloir supprimer cet enregistrement ?",
+      "labelTitleDelete": "Etes-vous sûr de vouloir supprimer {{deleteEntity}} ?",
+      "deleteEntity": {
+        "record": "cet enregistrement",
+        "tag": "cette étiquette",
+        "tracker": "ce suivi"
+      },
       "labelConfirm": "Confirmer",
       "labelDelete": "Supprimer",
       "labelCancel": "Annuler"
+    },
+    "peronnalisation": {
+      "title": "Gestion des étiquettes et des suivis",
+      "description": "Ajoutez, supprimez et configurez vos suivis et étiquettes d'enregistrements."
     },
     "form": {
       "title": "Suivez vos opérations",
@@ -37,15 +46,18 @@
         "operations": "Opérations",
         "outcome": "Résultat"
       },
-      "data": {
+      "tracker": {
         "typeTitle": "Sélectionnez un type de données ou créez la vôtre",
-        "typeCustomTitle": "Saisissez le nom de votre type personnalisée",
+        "typeCustomTitle": "Saisir le nom de votre type personnalisé",
         "typeFormTitle": "Créez votre type",
         "typeDefault": "défaut",
-        "typeDouble": "Cette type existe déjà, veuillez saisir un nom différent.",
+        "typeDouble": "Ce nom existe déjà, veuillez saisir un nom différent.",
         "typeSelect": "Sélectionnez un type"
       },
       "operations": {
+        "tagTitle": "Sélectionnez des étiquette dans la liste ci-dessous ou ajoutez les vôtres",
+        "tagTitleEmpty": "La liste des étiquettes est vide. Ajoutez-en une nouvelle pour étiqueter les enregistrements.",
+        "tagCustomTitle": "Saisir le nom de votre étiquette personnalisée",
         "expand": "Détail",
         "type": "Type",
         "labelTags": "Etiquette",
@@ -57,14 +69,10 @@
         "cost": "Dépenses",
         "income": "Revenu",
         "tags": {
-          "online": "online",
-          "offline": "offline",
-          "bankTransfer": "virement bancaire",
           "card": "carte",
           "cash": "espèces",
           "food": "alimentation",
-          "alcohol": "alcool",
-          "goods": "marchandises",
+          "clothes": "vêtement",
           "service": "service"
         }
       }

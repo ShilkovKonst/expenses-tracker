@@ -10,10 +10,19 @@
     "modal": {
       "labelTitleCreate": "Создать новую запись",
       "labelTitleUpdate": "Редактировать запись",
-      "labelTitleDelete": "Вы уверены, что хотите удалить эту запись?",
+      "labelTitleDelete": "Вы уверены, что хотите удалить {{deleteEntity}}?",
+      "deleteEntity": {
+        "record": "эту запись",
+        "tag": "этот тэг",
+        "tracker": "этот трекер"
+      },
       "labelConfirm": "Подтвердить",
       "labelDelete": "Удалить",
       "labelCancel": "Отменить"
+    },
+    "peronnalisation": {
+      "title": "Управление тегами и трекерами",
+      "description": "Добавляйте, удаляйте и настраивайте свои трекеры и теги транзакций."
     },
     "form": {
       "title": "Следите за вашими операциями",
@@ -37,15 +46,18 @@
         "operations": "Операции",
         "outcome": "Результат"
       },
-      "data": {
+      "tracker": {
         "typeTitle": "Выберите тип данных из списка или создайте свой",
-        "typeCustomTitle": "Введите свой тип",
+        "typeCustomTitle": "Введите имя нового трекера",
         "typeFormTitle": "Создать новый",
         "typeDefault": "базовый",
-        "typeDouble": "Такой тип уже есть, введите другое имя",
-        "typeSelect": "Выберите тэг"
+        "typeDouble": "Такое имя уже есть, введите другое имя",
+        "typeSelect": "Выберите трекер"
       },
       "operations": {
+        "tagTitle": "Выберите тэги из списка ниже или добавьте свой",
+        "tagTitleEmpty": "Список тегов пуст. Добавьте тег для классификации операций.",
+        "tagCustomTitle": "Введите имя нового тэга",
         "expand": "Детализация",
         "type": "Тип",
         "labelTags": "Тэги",
@@ -57,14 +69,10 @@
         "cost": "Расход",
         "income": "Доход",
         "tags": {
-          "online": "онлайн",
-          "offline": "офлайн",
-          "bankTransfer": "банк. перевод",
           "card": "карта",
           "cash": "наличные",
           "food": "продукты",
-          "alcohol": "алкоголь",
-          "goods": "товары",
+          "clothes": "одежда",
           "service": "сервис"
         }
       }

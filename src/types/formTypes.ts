@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export type DataType = {
+export type RecordTag = {
+  tracker: string;
+  title: string;
+};
+
+export type TrackerType = {
   id: number;
   title: string;
 };
 
-export type Data = {
+export type Tracker = {
   id: string;
   years: Year[];
   totalAmount: number;
@@ -20,15 +25,15 @@ export type Month = {
   [K in MonthIdType]: {
     id: K;
     title: Months;
-    operations: Operation[];
+    operations: Record[];
     totalAmount: number;
   };
 }[MonthIdType];
 
-export type Operation = {
+export type Record = {
   id: string;
   type: "income" | "cost";
-  tags: string[];
+  tags: RecordTag[];
   description: string;
   amount: number;
   isIncome?: boolean;

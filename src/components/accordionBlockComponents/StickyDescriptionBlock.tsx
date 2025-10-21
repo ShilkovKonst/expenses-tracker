@@ -1,7 +1,7 @@
 "use client";
 import { ExpandIcon } from "@/lib/icons";
 import DescriptionBlock from "./DescriptionBlock";
-import CostButton from "../buttonComponents/CostButton";
+import TopLevelButton from "../buttonComponents/TopLevelButton";
 import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
 
@@ -27,7 +27,7 @@ const StickyDescriptionBlock: React.FC<DescriptionProps> = ({
         totalAmount={totalAmount}
       />
       <div className="col-span-2 pr-2 gap-2 flex flex-col justify-center items-end lg:flex-row lg:justify-end lg:items-center *:text-sm *:md:text-base">
-        <CostButton
+        <TopLevelButton
           icon={<ExpandIcon style="h-7 w-7" />}
           dataType={`${labelMain}`}
           dataUpdate=""

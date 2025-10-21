@@ -10,10 +10,19 @@
     "modal": {
       "labelTitleCreate": "Create new record",
       "labelTitleUpdate": "Update record",
-      "labelTitleDelete": "Are you sure you want to delete this record?",
+      "labelTitleDelete": "Are you sure you want to delete {{deleteEntity}}?",
+      "deleteEntity": {
+        "record": "this record",
+        "tag": "this tag",
+        "tracker": "this tracker"
+      },
       "labelConfirm": "Confirm",
       "labelDelete": "Delete",
       "labelCancel": "Cancel"
+    },
+    "peronnalisation": {
+      "title": "Tags and trackers management",
+      "description": "Add, remove, and configure your trackers and record tags."
     },
     "form": {
       "title": "Track your operations",
@@ -37,15 +46,18 @@
         "operations": "Opérations",
         "outcome": "Outcome"
       },
-      "data": {
+      "tracker": {
         "typeTitle": "Select tracker or create new",
         "typeCustomTitle": "Enter your custom tracker's name",
         "typeFormTitle": "Or create your custom tracker",
         "typeDefault": "default",
-        "typeDouble": "This type already exists, please enter a different name.",
+        "typeDouble": "This name already exists, please enter a different name.",
         "typeSelect": "Select tracker from the list"
       },
       "operations": {
+        "tagTitle": "Select tags from the list below or add your own",
+        "tagTitleEmpty": "Tag list is empty. Add a tag to label records.",
+        "tagCustomTitle": "Enter your custom tag's name",
         "expand": "Details",
         "type": "Type",
         "labelTags": "Tags",
@@ -57,14 +69,10 @@
         "cost": "Cost",
         "income": "Income",
         "tags": {
-          "online": "online",
-          "offline": "offline",
-          "bankTransfer": "bank transfer",
           "card": "card",
           "cash": "cash",
           "food": "food",
-          "alcohol": "alcohol",
-          "goods": "goods",
+          "clothes": "clothes",
           "service": "service"
         }
       }

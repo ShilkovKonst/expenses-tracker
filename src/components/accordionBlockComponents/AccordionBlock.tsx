@@ -12,7 +12,7 @@ import {
 } from "@/lib/utils/onScrollHelper";
 
 const AccordionBlock: React.FC = () => {
-  const { locale, data } = useGlobal();
+  const { locale, tracker } = useGlobal();
   const [activeMonth, setActiveMonth] = useState<Month | undefined>(undefined);
   const [activeYear, setActiveYear] = useState<Year | undefined>(undefined);
   const [expandYearDataType, setExpandYearDataType] = useState<string>("");
@@ -23,12 +23,12 @@ const AccordionBlock: React.FC = () => {
 
   useEffect(() => {
     const years = document.querySelectorAll<HTMLElement>(
-      `[data-year-body="${data.id}"]`
+      `[data-year-body="${tracker.id}"]`
     );
 
     const onScroll = () => {
       const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
-        data,
+        tracker,
         years,
         setExpandYearDataType
       );
@@ -49,7 +49,7 @@ const AccordionBlock: React.FC = () => {
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [data]);
+  }, [tracker]);
 
   useEffect(() => {
     activeYearRef.current = activeYear;
@@ -79,8 +79,8 @@ const AccordionBlock: React.FC = () => {
           expandDisabled={activeMonth?.operations?.length === 0}
         />
       )}
-      {data.years.map((year, index) => (
-        <YearBlock dataId={data.id} key={index} year={year} />
+      {tracker.years.map((year, index) => (
+        <YearBlock dataId={tracker.id} key={index} year={year} />
       ))}
     </div>
   );

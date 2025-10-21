@@ -7,7 +7,7 @@ export function isEqual<T>(a: T, b: T): boolean {
     typeof b !== "object" ||
     b === null
   ) {
-    return false; // примитивы и null сравниваем напрямую
+    return false;
   }
 
   if (Array.isArray(a) && Array.isArray(b)) {

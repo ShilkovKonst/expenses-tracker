@@ -2,7 +2,7 @@
 "use client";
 import { initEmptyTracker } from "@/lib/utils/initEmptyTracker";
 import { Locale } from "@/locales/locale";
-import { Data, DataType } from "@/types/formTypes";
+import { RecordTag, Tracker, TrackerType } from "@/types/formTypes";
 import { useParams } from "next/navigation";
 import {
   createContext,
@@ -16,12 +16,12 @@ import {
 
 interface GlobalContextType {
   locale: Locale;
-  selectedType: DataType;
-  setSelectedType: Dispatch<SetStateAction<DataType>>;
-  data: Data;
-  setData: Dispatch<SetStateAction<Data>>;
-  operationTags: Set<string>;
-  setOperationTags: Dispatch<SetStateAction<Set<string>>>;
+  selectedType: TrackerType;
+  setSelectedType: Dispatch<SetStateAction<TrackerType>>;
+  tracker: Tracker;
+  setTracker: Dispatch<SetStateAction<Tracker>>;
+  recordTags: RecordTag[];
+  setRecordTags: Dispatch<SetStateAction<RecordTag[]>>;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -30,39 +30,66 @@ export const GlobalContext = createContext<GlobalContextType | undefined>(
 
 export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
-  const [data, setData] = useState<Data>(initEmptyTracker("default"));
-  const [selectedType, setSelectedType] = useState<DataType>({
+  const [tracker, setTracker] = useState<Tracker>(initEmptyTracker("default"));
+  const [selectedType, setSelectedType] = useState<TrackerType>({
     id: 0,
     title: "default",
   });
-  const [operationTags, setOperationTags] = useState<Set<string>>(
-    new Set(["card", "cash", "food", "clothes", "service"])
-  );
+  const [recordTags, setRecordTags] = useState<RecordTag[]>([
+    { title: "card", tracker: selectedType.title },
+    { title: "cash", tracker: selectedType.title },
+    { title: "food", tracker: selectedType.title },
+    { title: "clothes", tracker: selectedType.title },
+    { title: "service", tracker: selectedType.title },
+  ]);
 
   useEffect(() => {
     if (localStorage) {
-      const raw = localStorage.getItem(`${selectedType.title}`);
-      setData(raw ? JSON.parse(raw) : initEmptyTracker(selectedType.title));
+      let raw = localStorage.getItem(selectedType.title);
+      const newTracker = initEmptyTracker(selectedType.title);
+      if (!raw) {
+        localStorage.setItem(selectedType.title, JSON.stringify(newTracker));
+        setTracker(newTracker);
+      } else setTracker(JSON.parse(raw));
+
+      raw = localStorage.getItem("trackerTypes");
+      if (!raw) {
+        localStorage.setItem(
+          "trackerTypes",
+          JSON.stringify({ id: 0, title: "default" })
+        );
+      } else {
+        const trackerTypes = JSON.parse(raw) as TrackerType[];
+        if (!trackerTypes.some((t) => t.title === selectedType.title)) {
+          localStorage.setItem(
+            "trackerTypes",
+            JSON.stringify([...trackerTypes, selectedType])
+          );
+        }
+      }
     }
   }, [selectedType]);
 
+  // useEffect(() => {
+  //   if (localStorage) {
+  //     localStorage.setItem("recordTags", JSON.stringify(recordTags));
+  //   }
+  // }, [recordTags]);
+
   useEffect(() => {
     if (localStorage) {
-      const raw = localStorage.getItem("operationTags");
-      if (!raw || !Array.isArray(JSON.parse(raw))) {
-        localStorage.setItem(
-          "operationTags",
-          JSON.stringify(operationTags.values().toArray())
-        );
+      const raw = localStorage.getItem("recordTags");
+      if (!raw) {
+        localStorage.setItem("recordTags", JSON.stringify(recordTags));
       } else {
-        setOperationTags(new Set(JSON.parse(raw)));
+        setRecordTags(JSON.parse(raw));
       }
     }
   }, []);
 
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("data", data);
+  // }, [data]);
 
   return (
     <GlobalContext.Provider
@@ -70,10 +97,10 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
         locale,
         selectedType,
         setSelectedType,
-        data,
-        setData,
-        operationTags,
-        setOperationTags,
+        tracker,
+        setTracker,
+        recordTags,
+        setRecordTags,
       }}
     >
       {children}

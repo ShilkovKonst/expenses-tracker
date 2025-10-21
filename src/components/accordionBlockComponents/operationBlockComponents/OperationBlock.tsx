@@ -1,5 +1,5 @@
 "use client";
-import { Operation } from "@/types/formTypes";
+import { Record } from "@/types/formTypes";
 import OperationDescriptionBlock from "./OperationDescriptionBlock";
 import OperationButtonBlock from "./OperationButtonBlock";
 import { t } from "@/locales/locale";
@@ -9,7 +9,7 @@ import { ModalBodyType, useModal } from "@/context/ModalContext";
 type OperationBlockProps = {
   yearId: number;
   monthId: number;
-  operation: Operation;
+  operation: Record;
 };
 
 const OperationBlock: React.FC<OperationBlockProps> = ({
@@ -26,10 +26,10 @@ const OperationBlock: React.FC<OperationBlockProps> = ({
       type: modalType,
       yearId: yearId,
       monthId: monthId,
-      operation: operation,
+      record: operation,
     });
   };
-
+  
   return (
     <div className="cost grid gap-2 w-full">
       <div className="pl-4 pr-2 py-2 grid grid-cols-6 gap-2 w-full bg-blue-50 hover:bg-blue-200 border-2 border-blue-100">
@@ -45,7 +45,7 @@ const OperationBlock: React.FC<OperationBlockProps> = ({
           )}: `}
           labelOperationAmount={`${t(locale, `body.form.operations.amount`)}: `}
           operationType={operation.type}
-          operationTags={operation.tags}
+          operationTags={operation.tags.map((t) => t.title)}
           operationDescription={operation.description}
           operationAmount={operation.amount}
         />

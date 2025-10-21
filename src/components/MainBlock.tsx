@@ -1,12 +1,10 @@
 "use client";
 import { t } from "@/locales/locale";
 import AccordionBlock from "./accordionBlockComponents/AccordionBlock";
-import DataTypesBlock from "./DataTypesBlock";
 import { useGlobal } from "@/context/GlobalContext";
 import ModalFormBlock from "./ModalFormBlock";
 import { useModal } from "@/context/ModalContext";
 import Header from "./Header";
-import PersonnalisationBlock from "./PersonnalisationBlock";
 import TrackerSettingsBlock from "./TrackerSettingsBlock";
 
 const MainBlock = () => {
