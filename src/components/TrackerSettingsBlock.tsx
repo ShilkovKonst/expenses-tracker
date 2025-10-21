@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
 import DataTypesBlock from "./DataTypesBlock";
@@ -38,10 +39,7 @@ const TrackerSettingsBlock = () => {
   return (
     <div className="grid grid-cols-1 gap-2 border-b-6 border-blue-400 pb-2">
       <DataTypesBlock
-        customType={customType}
-        setCustomType={setCustomType}
         trackerTypes={trackerTypes}
-        setTrackerTypes={setTrackerTypes}
         handleSelectType={handleSelectType}
       />
     </div>
