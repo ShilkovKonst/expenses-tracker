@@ -16,6 +16,8 @@ import {
 
 interface GlobalContextType {
   locale: Locale;
+  trackerTypes: TrackerType[];
+  setTrackerTypes: Dispatch<SetStateAction<TrackerType[]>>;
   selectedType: TrackerType;
   setSelectedType: Dispatch<SetStateAction<TrackerType>>;
   tracker: Tracker;
@@ -31,26 +33,47 @@ export const GlobalContext = createContext<GlobalContextType | undefined>(
 export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
   const [tracker, setTracker] = useState<Tracker>(initEmptyTracker("default"));
+  const [trackerTypes, setTrackerTypes] = useState<TrackerType[]>([]);
   const [selectedType, setSelectedType] = useState<TrackerType>({
     id: 0,
     title: "default",
   });
   const [recordTags, setRecordTags] = useState<RecordTag[]>([
-    { title: "card", tracker: selectedType.title },
-    { title: "cash", tracker: selectedType.title },
-    { title: "food", tracker: selectedType.title },
-    { title: "clothes", tracker: selectedType.title },
-    { title: "service", tracker: selectedType.title },
+    { tracker: "default", title: "card" },
+    { tracker: "default", title: "cash" },
+    { tracker: "default", title: "food" },
+    { tracker: "default", title: "clothes" },
+    { tracker: "default", title: "service" },
   ]);
 
   useEffect(() => {
     if (localStorage) {
-      let raw = localStorage.getItem(selectedType.title);
-      const newTracker = initEmptyTracker(selectedType.title);
+      const raw = localStorage.getItem("recordTags");
       if (!raw) {
-        localStorage.setItem(selectedType.title, JSON.stringify(newTracker));
-        setTracker(newTracker);
-      } else setTracker(JSON.parse(raw));
+        localStorage.setItem("recordTags", JSON.stringify(recordTags));
+      } else {
+        setRecordTags(JSON.parse(raw));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const type = trackerTypes.some((t) => t.title === selectedType.title);
+    console.log(trackerTypes)
+    if (trackerTypes.length > 0 && !type) {
+      setSelectedType(trackerTypes[0]);
+    }
+  }, [trackerTypes]);
+
+  useEffect(() => {
+    if (localStorage) {
+      let raw = localStorage.getItem(selectedType.title);
+      if (!raw) {
+        localStorage.setItem(selectedType.title, JSON.stringify(tracker));
+      } else {
+        const trackerParsed = JSON.parse(raw) as Tracker;
+        setTracker(trackerParsed);
+      }
 
       raw = localStorage.getItem("trackerTypes");
       if (!raw) {
@@ -70,31 +93,12 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
     }
   }, [selectedType]);
 
-  // useEffect(() => {
-  //   if (localStorage) {
-  //     localStorage.setItem("recordTags", JSON.stringify(recordTags));
-  //   }
-  // }, [recordTags]);
-
-  useEffect(() => {
-    if (localStorage) {
-      const raw = localStorage.getItem("recordTags");
-      if (!raw) {
-        localStorage.setItem("recordTags", JSON.stringify(recordTags));
-      } else {
-        setRecordTags(JSON.parse(raw));
-      }
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   console.log("data", data);
-  // }, [data]);
-
   return (
     <GlobalContext.Provider
       value={{
         locale,
+        trackerTypes,
+        setTrackerTypes,
         selectedType,
         setSelectedType,
         tracker,

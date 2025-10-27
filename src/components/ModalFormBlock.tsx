@@ -6,17 +6,12 @@ import { updateItem } from "@/lib/utils/updateDeleteHelper";
 import { useModal } from "@/context/ModalContext";
 import FormDeleteBlock from "./formComponents/FormDeleteBlock";
 import { CURRENT_YEAR } from "@/lib/constants";
-import SettingsBlock from "./settingsBlock/SettingsBlock";
+import SettingsBlock from "./settingsBlockComponents/SettingsBlock";
 
 const ModalFormBlock: React.FC = () => {
   const { selectedType, tracker, setTracker } = useGlobal();
-  const {
-    setIsModal,
-    formModalBody,
-    setFormModalBody,
-    settingsModalBody,
-    isSettingsModal,
-  } = useModal();
+  const { setIsModal, formModalBody, setFormModalBody, isSettingsModal } =
+    useModal();
 
   const handleClear = () => {
     setFormModalBody(null);

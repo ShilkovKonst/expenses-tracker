@@ -29,8 +29,6 @@ interface ModalContextType {
   setFormModalBody: Dispatch<SetStateAction<FormModalBodyType | null>>;
   isSettingsModal: boolean;
   setIsSettingsModal: Dispatch<SetStateAction<boolean>>;
-  settingsModalBody: SettingsModalBodyType | null;
-  setSettingsModalBody: Dispatch<SetStateAction<SettingsModalBodyType | null>>;
 }
 
 export const ModalContext = createContext<ModalContextType | undefined>(
@@ -43,8 +41,6 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     null
   );
   const [isSettingsModal, setIsSettingsModal] = useState<boolean>(false);
-  const [settingsModalBody, setSettingsModalBody] =
-    useState<SettingsModalBodyType | null>(null);
 
   return (
     <ModalContext.Provider
@@ -55,8 +51,6 @@ export function ModalProvider({ children }: { children: ReactNode }) {
         setFormModalBody,
         isSettingsModal,
         setIsSettingsModal,
-        settingsModalBody,
-        setSettingsModalBody,
       }}
     >
       {children}

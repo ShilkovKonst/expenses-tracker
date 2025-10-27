@@ -5,12 +5,12 @@ import DataTypesBlock from "./DataTypesBlock";
 import { useEffect, useState } from "react";
 import { TrackerType } from "@/types/formTypes";
 
-const TrackerSettingsBlock = () => {
-  const { selectedType, setSelectedType } = useGlobal();
+const TrackerBlock = () => {
+  const { selectedType, setSelectedType, trackerTypes, setTrackerTypes } =
+    useGlobal();
 
-  const [trackerTypes, setTrackerTypes] = useState<TrackerType[]>([]);
   const [customType, setCustomType] = useState<TrackerType>({
-    id: 0,
+    id: -1,
     title: "",
   });
 
@@ -27,7 +27,7 @@ const TrackerSettingsBlock = () => {
   }, []);
 
   useEffect(() => {
-    if (customType.id === 0)
+    if (customType.id === -1)
       setCustomType({ ...customType, id: trackerTypes.length });
   }, [trackerTypes]);
 
@@ -46,4 +46,4 @@ const TrackerSettingsBlock = () => {
   );
 };
 
-export default TrackerSettingsBlock;
+export default TrackerBlock;

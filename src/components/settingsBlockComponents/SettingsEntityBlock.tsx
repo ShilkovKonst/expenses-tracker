@@ -8,16 +8,18 @@ import {
   useState,
 } from "react";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
-import { AddIcon } from "@/lib/icons";
+import { AddIcon, Delete } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { t } from "@/locales/locale";
 import TagButton from "../buttonComponents/TagButton";
 import { RecordTag, TrackerType } from "@/types/formTypes";
 import { useGlobal } from "@/context/GlobalContext";
+import { RemoveType } from "./SettingsBlock";
+import LowLevelButton from "../buttonComponents/LowLevelButton";
 
-type Entity = TrackerType | RecordTag;
+export type Entity = TrackerType | RecordTag;
 
-type SettingsPartialProps<T extends Entity> = {
+type SettingsEntityProps<T extends Entity> = {
   isTrackerType: boolean;
   dataType: string;
   addIcon: ReactNode;
@@ -26,11 +28,13 @@ type SettingsPartialProps<T extends Entity> = {
   currentEntity?: T;
   newEntity: T;
   setNewEntity: Dispatch<SetStateAction<T>>;
+  expanded?: RemoveType;
+  setExpanded?: Dispatch<SetStateAction<RemoveType | undefined>>;
   handleSelect?: (entity: T) => void;
   handleAddNew: (e: RME<HTMLButtonElement, MouseEvent>, newEntity: T) => void;
 };
 
-const SettingsPartial = <T extends Entity>({
+const SettingsEntityBlock = <T extends Entity>({
   isTrackerType,
   dataType,
   addIcon,
@@ -38,10 +42,11 @@ const SettingsPartial = <T extends Entity>({
   allEntities,
   currentEntity,
   newEntity,
+  setExpanded,
   setNewEntity,
   handleSelect,
   handleAddNew,
-}: SettingsPartialProps<T>) => {
+}: SettingsEntityProps<T>) => {
   const { locale } = useGlobal();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
@@ -49,21 +54,33 @@ const SettingsPartial = <T extends Entity>({
     setIsDisabled(allEntities.some((tt) => tt.title === newEntity.title));
   }, [newEntity, allEntities]);
 
+  const handleRemove = (type: "tracker" | "tag", idx: number) => {
+    if (setExpanded) setExpanded({ type: type, idx: idx });
+  };
+
   return (
-    <div className="col-span-2 border-t-2 border-blue-100">
-      <div className="relative w-full pt-2 flex flex-wrap items-center gap-2">
+    <div className="col-span-2 grid grid-cols-2 border-t-2 border-blue-100">
+      <div className="col-span-2 w-full pt-2 flex flex-wrap items-center gap-6">
         {allEntities.map((entity, i) => (
-          <TagButton
-            key={i}
-            tag={entity.title}
-            handleClick={
-              isTrackerType && handleSelect
-                ? () => handleSelect(entity)
-                : () => {}
-            }
-            style={`h-7 ${tagStyle} transition-colors duration-200 ease-in-out`}
-            disabled={currentEntity && currentEntity.title === entity.title}
-          />
+          <div key={i} className="relative flex">
+            <TagButton
+              tag={entity.title}
+              handleClick={
+                isTrackerType && handleSelect
+                  ? () => handleSelect(entity)
+                  : () => {}
+              }
+              style={`h-7 ${tagStyle} transition-colors duration-200 ease-in-out rounded-r-none pr-6`}
+              disabled={currentEntity && currentEntity.title === entity.title}
+            />
+            <LowLevelButton
+              icon={<Delete style="h-5 w-5" />}
+              style="absolute top-0 -right-3 rounded-lg h-7 w-4 bg-red-300 hover:bg-red-400"
+              handleClick={() =>
+                handleRemove(isTrackerType ? "tracker" : "tag", i)
+              }
+            />
+          </div>
         ))}
         {allEntities.length === 0 && (
           <p className={`max-w-3/4 block font-medium text-xs text-gray-500`}>
@@ -74,7 +91,7 @@ const SettingsPartial = <T extends Entity>({
           icon={addIcon}
           title=""
           dataType={dataType}
-          style="bg-green-300 hover:bg-green-400 transition-colors duration-200 ease-in-out"
+          style="bg-green-400 hover:bg-green-500 transition-colors duration-200 ease-in-out"
           handleClick={(e) =>
             transformElement(e.target as HTMLElement, "data-type")
           }
@@ -98,7 +115,6 @@ const SettingsPartial = <T extends Entity>({
             setNewEntity({ ...newEntity, title: e.target.value })
           }
         />
-
         <TopLevelButton
           icon={<AddIcon style="w-5 h-5" />}
           dataType={dataType}
@@ -121,4 +137,4 @@ const SettingsPartial = <T extends Entity>({
   );
 };
 
-export default SettingsPartial;
+export default SettingsEntityBlock;

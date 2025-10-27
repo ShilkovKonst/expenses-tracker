@@ -3,6 +3,7 @@ type TagButtonProps = {
   style: string;
   handleClick: () => void;
   disabled?: boolean;
+  dataIndex?: string;
 };
 
 const TagButton: React.FC<TagButtonProps> = ({
@@ -10,6 +11,7 @@ const TagButton: React.FC<TagButtonProps> = ({
   style,
   handleClick,
   disabled,
+  dataIndex,
 }) => {
   return (
     <button
@@ -17,6 +19,7 @@ const TagButton: React.FC<TagButtonProps> = ({
       onClick={handleClick}
       className={`tag h-5 text-xs text-center font-semibold px-2 rounded-lg my-auto cursor-pointer ${style}`}
       disabled={disabled}
+      data-index={dataIndex}
     >
       {tag}
     </button>

@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import TagButton from "../buttonComponents/TagButton";
 import { t } from "@/locales/locale";
 import LowLevelButton from "../buttonComponents/LowLevelButton";
+import { AddIcon } from "@/lib/icons";
 
 type FormTagsProps = {
   record: Record;
@@ -23,7 +24,9 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
 }) => {
   const { locale, recordTags, setRecordTags, selectedType } = useGlobal();
 
-  const [currentTags, setCurrentTags] = useState<RecordTag[]>(record?.tags ?? []);
+  const [currentTags, setCurrentTags] = useState<RecordTag[]>(
+    record?.tags ?? []
+  );
   const [filteredTags, setFilteredTags] = useState<RecordTag[]>(
     recordTags.filter((t) => t.tracker === selectedType.title)
   );
@@ -138,8 +141,9 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             onChange={(e) => setNewTag({ ...newTag, title: e.target.value })}
           />
           <LowLevelButton
+            icon={<AddIcon style="w-5 h-5" />}
             handleClick={() => handleAddNewTag(newTag)}
-            style="col-span-2"
+            style="col-span-2 rounded-sm"
             disabled={isDisabled || newTag.title.length === 0}
           />
           {isDisabled && (
