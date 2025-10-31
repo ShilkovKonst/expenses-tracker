@@ -1,5 +1,5 @@
 "use client";
-import { TrackerType, Record, RecordTag } from "@/types/formTypes";
+import { TrackerName, Record, RecordTag } from "@/types/formTypes";
 import {
   createContext,
   Dispatch,
@@ -18,7 +18,7 @@ export type FormModalBodyType = {
   record: Record;
 };
 export type SettingsModalBodyType = {
-  types: TrackerType[];
+  types: TrackerName[];
   tags: RecordTag[];
 };
 

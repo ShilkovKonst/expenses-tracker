@@ -2,6 +2,7 @@
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderButtonBlock from "./HeaderButtonBlock";
+import { useModal } from "@/context/ModalContext";
 
 type StickyHeaderProps = {
   labelMain: string;
@@ -9,6 +10,9 @@ type StickyHeaderProps = {
   expandDataType: string;
   isMonth: boolean;
   expandDisabled?: boolean;
+  yearId?: number;
+  monthId?: number;
+  recordsLength?: number;
 };
 
 const StickyHeader: React.FC<StickyHeaderProps> = ({
@@ -17,7 +21,31 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
   expandDataType,
   isMonth,
   expandDisabled,
+  yearId,
+  monthId,
+  recordsLength,
 }) => {
+  const { setIsModal, setFormModalBody } = useModal();
+
+  const handleAddOperation = () => {
+    if (yearId && monthId && recordsLength) {
+      setIsModal(true);
+      setFormModalBody({
+        type: "crt",
+        yearId: yearId,
+        monthId: monthId,
+        record: {
+          id: `${yearId}-${monthId}-${recordsLength}`,
+          date: -1,
+          type: "cost",
+          tags: [],
+          description: "",
+          amount: 0,
+        },
+      });
+    }
+  };
+
   return (
     <div
       className={`header col-span-6 grid grid-cols-7 gap-2 w-full border-2 ${
@@ -40,6 +68,7 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
         expandDataType={expandDataType}
         expandDisabled={expandDisabled}
         isMonth={isMonth}
+        handleAddOperation={handleAddOperation}
       />
     </div>
   );
@@ -81,7 +110,7 @@ const StickyDescH3Block: React.FC<StickyDescH3BlockProps> = ({
         {!isMonth && (
           <span className="max-w-20 truncate lg:max-w-max">
             {selectedType.title === "default"
-              ? t(locale, "body.form.data.typeDefault")
+              ? t(locale, "body.form.tracker.typeDefault")
               : selectedType.title}
           </span>
         )}

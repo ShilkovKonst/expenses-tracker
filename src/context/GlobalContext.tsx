@@ -2,7 +2,7 @@
 "use client";
 import { initEmptyTracker } from "@/lib/utils/initEmptyTracker";
 import { Locale } from "@/locales/locale";
-import { RecordTag, Tracker, TrackerType } from "@/types/formTypes";
+import { RecordTag, Tracker, TrackerName } from "@/types/formTypes";
 import { useParams } from "next/navigation";
 import {
   createContext,
@@ -16,10 +16,10 @@ import {
 
 interface GlobalContextType {
   locale: Locale;
-  trackerTypes: TrackerType[];
-  setTrackerTypes: Dispatch<SetStateAction<TrackerType[]>>;
-  selectedType: TrackerType;
-  setSelectedType: Dispatch<SetStateAction<TrackerType>>;
+  trackerTypes: TrackerName[];
+  setTrackerTypes: Dispatch<SetStateAction<TrackerName[]>>;
+  selectedType: TrackerName;
+  setSelectedType: Dispatch<SetStateAction<TrackerName>>;
   tracker: Tracker;
   setTracker: Dispatch<SetStateAction<Tracker>>;
   recordTags: RecordTag[];
@@ -33,8 +33,8 @@ export const GlobalContext = createContext<GlobalContextType | undefined>(
 export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
   const [tracker, setTracker] = useState<Tracker>(initEmptyTracker("default"));
-  const [trackerTypes, setTrackerTypes] = useState<TrackerType[]>([]);
-  const [selectedType, setSelectedType] = useState<TrackerType>({
+  const [trackerTypes, setTrackerTypes] = useState<TrackerName[]>([]);
+  const [selectedType, setSelectedType] = useState<TrackerName>({
     id: 0,
     title: "default",
   });
@@ -59,17 +59,19 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const type = trackerTypes.some((t) => t.title === selectedType.title);
-    console.log(trackerTypes)
     if (trackerTypes.length > 0 && !type) {
       setSelectedType(trackerTypes[0]);
     }
   }, [trackerTypes]);
 
   useEffect(() => {
+    console.log(selectedType);
     if (localStorage) {
       let raw = localStorage.getItem(selectedType.title);
       if (!raw) {
-        localStorage.setItem(selectedType.title, JSON.stringify(tracker));
+        const newTracker = initEmptyTracker(selectedType.title);
+        localStorage.setItem(selectedType.title, JSON.stringify(newTracker));
+        setTracker(newTracker);
       } else {
         const trackerParsed = JSON.parse(raw) as Tracker;
         setTracker(trackerParsed);
@@ -82,7 +84,7 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
           JSON.stringify({ id: 0, title: "default" })
         );
       } else {
-        const trackerTypes = JSON.parse(raw) as TrackerType[];
+        const trackerTypes = JSON.parse(raw) as TrackerName[];
         if (!trackerTypes.some((t) => t.title === selectedType.title)) {
           localStorage.setItem(
             "trackerTypes",

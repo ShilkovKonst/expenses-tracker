@@ -1,6 +1,6 @@
 "use client";
 import { Tracker, Month, Record, Year } from "@/types/formTypes";
-import FormOperationBlock from "./formComponents/FormRecordBlock";
+import RecordForm from "./accordionBlockComponents/recordBlockComponents/RecordForm";
 import { useGlobal } from "@/context/GlobalContext";
 import { updateItem } from "@/lib/utils/updateDeleteHelper";
 import { useModal } from "@/context/ModalContext";
@@ -9,7 +9,7 @@ import { CURRENT_YEAR } from "@/lib/constants";
 import SettingsBlock from "./settingsBlockComponents/SettingsBlock";
 
 const ModalFormBlock: React.FC = () => {
-  const { selectedType, tracker, setTracker } = useGlobal();
+  const { selectedType, recordTags, tracker, setTracker } = useGlobal();
   const { setIsModal, formModalBody, setFormModalBody, isSettingsModal } =
     useModal();
 
@@ -33,7 +33,7 @@ const ModalFormBlock: React.FC = () => {
     const month = tracker.years[yearIdx].months[monthId - 1];
 
     const [updOperations, totalAmount] = updateItem(
-      month.operations,
+      month.records,
       updOperation,
       (items) =>
         items.reduce(
@@ -44,7 +44,7 @@ const ModalFormBlock: React.FC = () => {
     );
     const updMonth: Month = {
       ...month,
-      operations: updOperations,
+      records: updOperations,
       totalAmount: totalAmount,
     };
 
@@ -73,6 +73,7 @@ const ModalFormBlock: React.FC = () => {
     setTracker(newTracker);
     if (localStorage) {
       localStorage.setItem(selectedType.title, JSON.stringify(newTracker));
+      localStorage.setItem("recordTags", JSON.stringify(recordTags));
     }
     handleClear();
   };
@@ -85,7 +86,7 @@ const ModalFormBlock: React.FC = () => {
       <div className="w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 bg-blue-50 p-5 rounded-lg">
         {formModalBody &&
           (formModalBody.type === "upd" || formModalBody.type === "crt" ? (
-            <FormOperationBlock
+            <RecordForm
               handleUpdate={handleUpdateDelete}
               handleClear={handleClear}
             />

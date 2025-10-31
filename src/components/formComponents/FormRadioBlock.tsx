@@ -1,8 +1,12 @@
+"use client";
+import { useGlobal } from "@/context/GlobalContext";
+import { t } from "@/locales/locale";
 import { ChangeEvent } from "react";
 
 type FormRadioProps = {
   labelRadio: string;
   name: string;
+  outerStyle: string;
   styleLabel: string;
   styleInput: string;
   id: string;
@@ -14,17 +18,19 @@ const FormRadioBlock: React.FC<FormRadioProps> = ({
   id,
   name,
   value,
+  outerStyle,
   labelRadio,
   styleLabel,
   styleInput,
   handleChange,
 }) => {
+  const { locale } = useGlobal();
   return (
-    <div className={`col-span-1 grid grid-cols-1 gap-2`}>
-      <p className={`${styleLabel} font-semibold uppercase flex-1`}>
-        {labelRadio}
-      </p>
-      <div className="flex gap-2">
+    <div
+      className={`${outerStyle} flex gap-2 justify-between sm:justify-start items-center`}
+    >
+      <p className={`${styleLabel} font-semibold uppercase`}>{labelRadio}</p>
+      <div className="flex gap-3">
         {["income", "cost"].map((type, i) => (
           <div key={i} className="flex items-center">
             <input
@@ -41,7 +47,7 @@ const FormRadioBlock: React.FC<FormRadioProps> = ({
               htmlFor={`${id}-${type}`}
               className={`${styleInput} text-xs font-medium text-gray-900 uppercase`}
             >
-              {type}
+              {`${t(locale, `body.form.labels.${type}`)}`}
             </label>
           </div>
         ))}

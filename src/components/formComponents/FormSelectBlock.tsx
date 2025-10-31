@@ -4,32 +4,51 @@ import { ChangeEvent } from "react";
 
 type FormSelectBlockPropsType = {
   id: string;
+  outerStyle: string;
+  titleStyle: string;
   style: string;
-  value: string | number;
-  options: string[];
+  label: string;
+  name: string;
+  value: number;
+  options: number[];
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
 
 const FormSelectBlock: React.FC<FormSelectBlockPropsType> = ({
   id,
+  outerStyle,
+  titleStyle,
   style,
+  label,
+  name,
   value,
   options,
   onChange,
 }) => {
   const { locale } = useGlobal();
   return (
-    <div className="flex gap-2 justify-between items-center w-full col-span-2">
+    <div
+      className={`${outerStyle} flex gap-2 justify-start items-center w-full`}
+    >
+      <p
+        className={`${titleStyle} text-xs font-medium uppercase tracking-wide`}
+      >
+        {label}
+      </p>
       <select
         id={id}
-        className={`w-full border-2 border-blue-100 rounded-md transition-colors duration-200 bg-white ${style}`}
+        className={`border-2 border-blue-100 focus:outline-blue-300 focus:border-blue-300 rounded-md text-sm bg-white ${style} w-full`}
         required
+        name={name}
         value={value}
         onChange={(e) => onChange(e)}
       >
+        <option value={-1}>
+          {t(locale, `body.form.operations.dateDefault`)}
+        </option>
         {options.map((o, i) => (
           <option key={i} value={o}>
-            {o === "default" ? t(locale, `body.form.data.typeDefault`) : o}
+            {o}
           </option>
         ))}
       </select>

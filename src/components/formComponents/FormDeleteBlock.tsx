@@ -4,9 +4,9 @@ import { useGlobal } from "@/context/GlobalContext";
 import { useModal } from "@/context/ModalContext";
 import { t } from "@/locales/locale";
 import { Record } from "@/types/formTypes";
-import OperationDescriptionBlock from "../accordionBlockComponents/operationBlockComponents/OperationDescriptionBlock";
 import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { MONTHS } from "@/lib/constants";
+import RecordDescriptionBlock from "../accordionBlockComponents/recordBlockComponents/RecordDescriptionBlock";
 
 type FormConfirmBlockProps = {
   deleteEntity: "record" | "tag" | "tracker";
@@ -49,24 +49,26 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
                 )}`}
               />
             </div>
-            <OperationDescriptionBlock
+            <RecordDescriptionBlock
               outerStyle="col-span-2 grid grid-cols-4 gap-4 my-auto"
-              labelOperationTags={`${t(
+              labelRecordTags={`${t(
                 locale,
                 `body.form.operations.labelTags`
               )}: `}
-              labelOperationDescription={`${t(
+              labelRecordDescription={`${t(
                 locale,
                 `body.form.operations.description`
               )}: `}
-              labelOperationAmount={`${t(
+              labelRecordAmount={`${t(
                 locale,
                 `body.form.operations.amount`
               )}: `}
-              operationType={formModalBody.record.type}
-              operationTags={formModalBody.record.tags.map((t) => t.title)}
-              operationDescription={formModalBody.record.description}
-              operationAmount={formModalBody.record.amount}
+              labelRecordDay={`${t(locale, `body.form.labels.date`)}: `}
+              recordType={formModalBody.record.type}
+              recordTags={formModalBody.record.tags.map((t) => t.title)}
+              recordDescription={formModalBody.record.description}
+              recordAmount={formModalBody.record.amount}
+              recordDay={formModalBody.record.day}
             />
           </>
         )}

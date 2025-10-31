@@ -43,8 +43,14 @@
       "labels": {
         "year": "Year",
         "month": "Month",
-        "operations": "Opérations",
-        "outcome": "Outcome"
+        "date": "Date",
+        "operations": "Records",
+        "outcome": "Outcome",
+        "income": "income",
+        "cost": "cost",
+        "withoutDate": "without date",
+        "withoutTags": "without tags",
+        "withoutDesc": "without description"
       },
       "tracker": {
         "typeTitle": "Select tracker or create new",
@@ -58,6 +64,7 @@
         "tagTitle": "Select tags from the list below or add your own",
         "tagTitleEmpty": "Tag list is empty. Add a tag to label records.",
         "tagCustomTitle": "Enter your custom tag's name",
+        "dateDefault": "Select a date (optional)",
         "expand": "Details",
         "type": "Type",
         "labelTags": "Tags",

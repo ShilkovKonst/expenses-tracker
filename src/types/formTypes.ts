@@ -4,7 +4,7 @@ export type RecordTag = {
   title: string;
 };
 
-export type TrackerType = {
+export type TrackerName = {
   id: number;
   title: string;
 };
@@ -25,7 +25,7 @@ export type Month = {
   [K in MonthIdType]: {
     id: K;
     title: Months;
-    operations: Record[];
+    records: Record[];
     totalAmount: number;
   };
 }[MonthIdType];
@@ -33,6 +33,7 @@ export type Month = {
 export type Record = {
   id: string;
   type: "income" | "cost";
+  date: number;
   tags: RecordTag[];
   description: string;
   amount: number;

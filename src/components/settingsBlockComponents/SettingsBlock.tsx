@@ -1,5 +1,5 @@
 "use client";
-import { TrackerType, RecordTag } from "@/types/formTypes";
+import { TrackerName, RecordTag } from "@/types/formTypes";
 import { FC, MouseEvent as RME, useEffect, useState } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
@@ -20,16 +20,16 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
     useGlobal();
   const { setIsSettingsModal } = useModal();
 
-  const [allTypes, setAllTypes] = useState<TrackerType[]>(trackerTypes);
-  const [currentType, setCurrentType] = useState<TrackerType>(trackerTypes[0]);
-  const [newType, setNewType] = useState<TrackerType>({ id: -1, title: "" });
+  const [allTypes, setAllTypes] = useState<TrackerName[]>(trackerTypes);
+  const [currentType, setCurrentType] = useState<TrackerName>(trackerTypes[0]);
+  const [newType, setNewType] = useState<TrackerName>({ id: -1, title: "" });
 
   const [allTags, setAllTags] = useState<RecordTag[]>(recordTags);
   const [typeTags, setTypeTags] = useState<RecordTag[]>([]);
   const [newTag, setNewTag] = useState<RecordTag>({ tracker: "", title: "" });
   const [expanded, setExpanded] = useState<RemoveType | undefined>();
 
-  const [removedTrackers, setRemovedTrackers] = useState<TrackerType[]>([]);
+  const [removedTrackers, setRemovedTrackers] = useState<TrackerName[]>([]);
 
   useEffect(() => {
     setTypeTags([...allTags.filter((t) => t.tracker === currentType.title)]);
@@ -41,7 +41,7 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
     setExpanded(undefined);
   };
 
-  const handleSelectType = (trackerType: TrackerType) => {
+  const handleSelectType = (trackerType: TrackerName) => {
     const type = allTypes.find((tt) => tt.title === trackerType.title);
     if (type) setCurrentType(trackerType);
     else throw new Error("type must be in types list");
@@ -49,7 +49,7 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
 
   const handleAddNewType = (
     e: RME<HTMLButtonElement, MouseEvent>,
-    newType: TrackerType
+    newType: TrackerName
   ) => {
     setAllTypes([...allTypes, { ...newType, id: allTypes.length }]);
     setNewType({ id: -1, title: "" });
@@ -122,7 +122,7 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
           {t(locale, `body.peronnalisation.description`)}
         </p>
       </div>
-      <SettingsEntityBlock<TrackerType>
+      <SettingsEntityBlock<TrackerName>
         addIcon={<AddTracker style="h-5 w-7" />}
         isTrackerType={true}
         dataType="form-new-type"

@@ -7,151 +7,210 @@
         {
           "id": 1,
           "title": "january",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 2,
           "title": "february",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 3,
           "title": "march",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 4,
           "title": "april",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 5,
           "title": "may",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 6,
           "title": "june",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 7,
           "title": "july",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 8,
           "title": "august",
-          "operations": [],
+          "records": [
+            {
+              "id": "2025-9-0",
+              "date": -1,
+              "type": "income",
+              "tags": [
+                { "tracker": "default", "title": "сейф" },
+                { "tracker": "default", "title": "на руках" }
+              ],
+              "description": "деньги в сейфе и на руках",
+              "amount": 4738
+            }
+          ],
           "totalAmount": 0
         },
         {
           "id": 9,
           "title": "september",
-          "operations": [
+          "records": [
             {
-              "id": 0,
-              "title": "амазон",
+              "id": "2025-9-0",
+              "date": 1,
               "type": "cost",
+              "tags": [
+                { "tracker": "default", "title": "амазон" },
+                { "tracker": "default", "title": "разное" }
+              ],
               "description": "покупка птицы",
-              "amount": 48.95
+              "amount": 39.94
             },
             {
-              "id": 1,
-              "title": "садовник",
+              "id": "2025-9-1",
+              "date": 12,
               "type": "cost",
-              "description": "12 - 5ч",
-              "amount": 0
+              "tags": [
+                { "tracker": "default", "title": "садовник" },
+                { "tracker": "default", "title": "доп время" }
+              ],
+              "description": "5ч * 12",
+              "amount": 60
             },
             {
-              "id": 2,
-              "title": "уборка",
+              "id": "2025-9-2",
+              "date": 13,
               "type": "cost",
-              "description": "13 - 5ч",
+              "tags": [{ "tracker": "default", "title": "уборка" }],
+              "description": "5ч * 14",
               "amount": 70
             },
             {
-              "id": 3,
-              "title": "установка миле",
+              "id": "2025-9-3",
+              "date": 13,
               "type": "cost",
-              "description": "16 - 3ч",
-              "amount": 0
+              "tags": [
+                { "tracker": "default", "title": "уборка" },
+                { "tracker": "default", "title": "доп время" }
+              ],
+              "description": "5ч * 12",
+              "amount": 60
             },
             {
-              "id": 4,
-              "title": "уборка",
+              "id": "2025-9-4",
+              "date": 16,
               "type": "cost",
-              "description": "20 - 5ч",
+              "tags": [{ "tracker": "default", "title": "доп время" }],
+              "description": "установка миле, 3ч * 12",
+              "amount": 36
+            },
+            {
+              "id": "2025-9-5",
+              "date": 20,
+              "type": "cost",
+              "tags": [{ "tracker": "default", "title": "уборка" }],
+              "description": "5ч * 14",
               "amount": 70
             },
             {
-              "id": 5,
-              "title": "установка миле",
+              "id": "2025-9-6",
+              "date": 20,
               "type": "cost",
-              "description": "22 - 2ч",
-              "amount": 20
+              "tags": [
+                { "tracker": "default", "title": "уборка" },
+                { "tracker": "default", "title": "доп время" }
+              ],
+              "description": "5ч * 12",
+              "amount": 60
             },
             {
-              "id": 6,
+              "id": "2025-9-7",
+              "date": 22,
+              "type": "cost",
+              "tags": [
+                { "tracker": "default", "title": "чаевые" },
+                { "tracker": "default", "title": "доп время" }
+              ],
+              "title": "установка миле",
+              "description": "2ч *12 + чаевые 20",
+              "amount": 44
+            },
+            {
+              "id": "2025-9-8",
+              "date": 22,
+              "type": "cost",
+              "tags": [{ "tracker": "default", "title": "доп время" }],
+              "title": "забрал карту из банка",
+              "description": "1ч * 12",
+              "amount": 12
+            },
+            {
+              "id": "2025-9-9",
+              "date": 26,
+              "type": "cost",
+              "tags": [{ "tracker": "default", "title": "доп время" }],
               "title": "приезд Раду за мебелью",
-              "type": "cost",
-              "description": "26 - 1ч",
-              "amount": 0
+              "description": "1ч *12",
+              "amount": 12
             },
             {
-              "id": 7,
+              "id": "2025-9-10",
+              "date": 13,
+              "type": "cost",
+              "tags": [{ "tracker": "default", "title": "доп время" }],
               "title": "сборка мебели",
-              "type": "cost",
-              "description": "13 - 4ч",
-              "amount": 0
+              "description": "4ч * 12",
+              "amount": 48
             },
             {
-              "id": 8,
-              "title": "амазон",
+              "id": "2025-9-11",
+              "date": 13,
               "type": "cost",
+              "tags": [{ "tracker": "default", "title": "амазон" }],
               "description": "2 утюга + 5уп мусорных пакетов 140л",
               "amount": 310.73
             },
             {
-              "id": 9,
+              "id": "2025-9-10",
+              "date": 13,
+              "type": "cost",
+              "tags": [{ "tracker": "default", "title": "зарплата" }],
               "title": "зарплата",
-              "type": "cost",
-              "description": "400 + (5 + 5 + 3 + 5 + 2 + 1 + 4 + 1)*12",
-              "amount": 712
-            },
-            {
-              "id": 10,
-              "title": "забрал карту из банка",
-              "type": "cost",
-              "description": "1ч",
-              "amount": 0
+              "description": "",
+              "amount": 400
             }
           ],
-          "totalAmount": 1231.68
+          "totalAmount": 0
         },
         {
           "id": 10,
           "title": "october",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 11,
           "title": "november",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
         {
           "id": 12,
           "title": "december",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         }
       ],

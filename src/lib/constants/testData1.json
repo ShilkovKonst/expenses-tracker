@@ -7,320 +7,404 @@
         {
           "id": 1,
           "title": "january",
-          "operations": [],
+          "records": [],
           "totalAmount": 0
         },
-        {
-          "id": 2,
-          "title": "february",
-          "operations": [],
-          "totalAmount": 0
-        },
-        {
-          "id": 3,
-          "title": "march",
-          "operations": [],
-          "totalAmount": 0
-        },
-        {
-          "id": 4,
-          "title": "april",
-          "operations": [],
-          "totalAmount": 0
-        },
-        { "id": 5, "title": "may", "operations": [], "totalAmount": 0 },
-        {
-          "id": 6,
-          "title": "june",
-          "operations": [],
-          "totalAmount": 0
-        },
-        {
-          "id": 7,
-          "title": "july",
-          "operations": [],
-          "totalAmount": 0
-        },
-        {
-          "id": 8,
-          "title": "august",
-          "operations": [
-            {
-              "id": 0,
-              "description": "алди",
-              "type": "cost",
-              "title": "продукты",
-              "amount": 26.22
-            }
-          ],
-          "totalAmount": 0
-        },
+        { "id": 2, "title": "february", "records": [], "totalAmount": 0 },
+        { "id": 3, "title": "march", "records": [], "totalAmount": 0 },
+        { "id": 4, "title": "april", "records": [], "totalAmount": 0 },
+        { "id": 5, "title": "may", "records": [], "totalAmount": 0 },
+        { "id": 6, "title": "june", "records": [], "totalAmount": 0 },
+        { "id": 7, "title": "july", "records": [], "totalAmount": 0 },
+        { "id": 8, "title": "august", "records": [], "totalAmount": 0 },
         {
           "id": 9,
           "title": "september",
-          "operations": [
+          "records": [
             {
-              "id": 0,
-              "description": "алди",
+              "id": "2025-1-0",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "алди" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "плановый поход в магазин",
               "amount": 26.22
             },
             {
-              "id": 1,
-              "description": "пикар",
+              "id": "2025-1-1",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "пикар" },
+                { "tracker": "default", "title": "заморозка" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "плановый поход в магазин",
               "amount": 12.4
             },
             {
-              "id": 2,
-              "description": "франпри",
+              "id": "2025-1-2",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "плановый поход в магазин",
               "amount": 43.84
             },
             {
-              "id": 3,
-              "description": "франпри",
+              "id": "2025-1-3",
+              "date": -1,
               "type": "cost",
-              "title": "мороженое",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "мороженое" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "плановый поход в магазин",
               "amount": 10
             },
             {
-              "id": 4,
-              "description": "г20",
+              "id": "2025-1-4",
+              "date": -1,
               "type": "cost",
-              "title": "алко",
+              "tags": [
+                { "tracker": "default", "title": "г20" },
+                { "tracker": "default", "title": "алко" }
+              ],
+              "description": "покупка бухла",
               "amount": 6.61
             },
             {
-              "id": 5,
-              "description": "г20",
+              "id": "2025-1-5",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "г20" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "плановый поход в магазин",
               "amount": 10.06
             },
             {
-              "id": 6,
-              "description": "леруа",
+              "id": "2025-1-6",
+              "date": -1,
               "type": "cost",
-              "title": "ремонт/прочее",
+              "tags": [
+                { "tracker": "default", "title": "леруа" },
+                { "tracker": "default", "title": "ремонт" },
+                { "tracker": "default", "title": "прочее" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "покупка всякой мелочевки для дома и мелкого ремонта",
               "amount": 63.77
             },
             {
-              "id": 7,
-              "description": "ашан",
+              "id": "2025-1-7",
+              "date": -1,
               "type": "cost",
-              "title": "алко",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "алко" }
+              ],
+              "description": "бухло",
               "amount": 24.36
             },
             {
-              "id": 8,
-              "description": "ашан",
+              "id": "2025-1-8",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 89.47
             },
             {
-              "id": 9,
-              "description": "алди",
+              "id": "2025-1-9",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "алди" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 47
             },
             {
-              "id": 10,
-              "description": "трюфо",
+              "id": "2025-1-10",
+              "date": -1,
               "type": "cost",
-              "title": "цветочное",
+              "tags": [
+                { "tracker": "default", "title": "трюфо" },
+                { "tracker": "default", "title": "цветочное" }
+              ],
+              "description": "удобрения/дренаж",
               "amount": 16.98
             },
             {
-              "id": 11,
-              "description": "франпри",
+              "id": "2025-1-11",
+              "date": -1,
               "type": "cost",
-              "title": "мороженое",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "продукты" },
+                { "tracker": "default", "title": "мороженое" }
+              ],
+              "description": "",
               "amount": 6
             },
             {
-              "id": 12,
-              "description": "франпри",
+              "id": "2025-1-12",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 25.85
             },
             {
-              "id": 13,
-              "description": "китаец",
+              "id": "2025-1-13",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "овощи" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "у китайца в галерее",
               "amount": 15.19
             },
             {
-              "id": 14,
-              "description": "ашан",
+              "id": "2025-1-14",
+              "date": -1,
               "type": "cost",
-              "title": "алко",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "алко" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 24.36
             },
             {
-              "id": 15,
-              "description": "ашан",
+              "id": "2025-1-15",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 110.57
             },
             {
-              "id": 16,
-              "description": "мясник",
+              "id": "2025-1-16",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "мясник" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "у мясника в галерее",
               "amount": 9.58
             },
             {
-              "id": 17,
-              "description": "алди",
+              "id": "2025-1-17",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "алди" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 40.89
             },
             {
-              "id": 18,
-              "description": "франпри",
+              "id": "2025-1-18",
+              "date": -1,
               "type": "cost",
-              "title": "мороженое",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "мороженое" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 6
             },
             {
-              "id": 19,
-              "description": "франпри",
+              "id": "2025-1-19",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 31.1
             },
             {
-              "id": 20,
-              "description": "франпри",
+              "id": "2025-1-20",
+              "date": -1,
               "type": "cost",
-              "title": "мороженое",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "мороженое" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 15
             },
             {
-              "id": 21,
-              "description": "франпри",
+              "id": "2025-1-21",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 23.13
             },
             {
-              "id": 22,
-              "description": "ашан",
+              "id": "2025-1-22",
+              "date": -1,
               "type": "cost",
-              "title": "алко",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "алко" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 18.27
             },
             {
-              "id": 23,
-              "description": "ашан",
+              "id": "2025-1-23",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 90.59
             },
             {
-              "id": 24,
-              "description": "алди",
+              "id": "2025-1-24",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "алди" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 27.02
             },
             {
-              "id": 25,
-              "description": "мясник",
+              "id": "2025-1-25",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "мясо" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "у мясника в галерее",
               "amount": 11.75
             },
             {
-              "id": 26,
-              "description": "русмаг",
+              "id": "2025-1-26",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "русмаг" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "армянский магазин",
               "amount": 47.41
             },
             {
-              "id": 27,
-              "description": "франпри",
+              "id": "2025-1-27",
+              "date": -1,
               "type": "cost",
-              "title": "мороженое",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "мороженое" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 10
             },
             {
-              "id": 28,
-              "description": "франпри",
+              "id": "2025-1-28",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "франпри" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 25.13
             },
             {
-              "id": 29,
-              "description": "ашан",
+              "id": "2025-1-29",
+              "date": -1,
               "type": "cost",
-              "title": "алко",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "алко" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 36.54
             },
             {
-              "id": 30,
-              "description": "ашан",
+              "id": "2025-1-30",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "ашан" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 55.19
             },
             {
-              "id": 31,
-              "description": "мясник",
+              "id": "2025-1-31",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "мясо" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "у мясника в галерее",
               "amount": 19.72
             },
             {
-              "id": 32,
-              "description": "алди",
+              "id": "2025-1-32",
+              "date": -1,
               "type": "cost",
-              "title": "продукты",
+              "tags": [
+                { "tracker": "default", "title": "алди" },
+                { "tracker": "default", "title": "продукты" }
+              ],
+              "description": "",
               "amount": 39.94
             }
           ],
-          "totalAmount": 1039.94
-        },
-        {
-          "id": 10,
-          "title": "october",
-          "operations": [
-            {
-              "description": "русмаг",
-              "type": "cost",
-              "title": "продукты",
-              "amount": 59
-            }
-          ],
-          "totalAmount": 59
-        },
-        {
-          "id": 11,
-          "title": "november",
-          "operations": [],
           "totalAmount": 0
         },
-        {
-          "id": 12,
-          "title": "december",
-          "operations": [],
-          "totalAmount": 0
-        }
+        { "id": 10, "title": "october", "records": [], "totalAmount": 0 },
+        { "id": 11, "title": "november", "records": [], "totalAmount": 0 },
+        { "id": 12, "title": "december", "records": [], "totalAmount": 0 }
       ],
-      "totalAmount": 1109.94
+      "totalAmount": 0
     }
   ],
-  "totalAmount": 1109.94
+  "totalAmount": 0
 }

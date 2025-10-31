@@ -3,6 +3,7 @@ import { ChangeEvent } from "react";
 type FormInputProps = {
   name: string;
   title: string;
+  outerStyle: string;
   styleLabel: string;
   styleInput: string;
   id: string;
@@ -11,11 +12,13 @@ type FormInputProps = {
   disabled: boolean;
   required: boolean;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  withoutLabel?: boolean;
 };
 
 const FormInputBlock: React.FC<FormInputProps> = ({
   name,
   title,
+  outerStyle,
   styleLabel,
   styleInput,
   id,
@@ -24,18 +27,21 @@ const FormInputBlock: React.FC<FormInputProps> = ({
   disabled,
   required,
   handleChange,
+  withoutLabel,
 }) => {
   return (
-    <div className={`${name === "description" ? "col-span-2" : "col-span-1"} `}>
-      <label
-        className={`block font-semibold uppercase ${styleLabel}`}
-        htmlFor={id}
-      >
-        {title}
-      </label>
+    <div className={`${outerStyle} `}>
+      {!withoutLabel && (
+        <label
+          className={`block font-semibold uppercase ${styleLabel}`}
+          htmlFor={id}
+        >
+          {title}
+        </label>
+      )}
       <input
         id={id}
-        className={`w-full border-2 border-blue-100 rounded-md transition-colors duration-200 ease-in-out bg-white ${styleInput}`}
+        className={`w-full border-2 border-blue-100 focus:outline-blue-300 rounded-md text-sm bg-white ${styleInput}`}
         type={type}
         name={name}
         value={name === "amount" ? (value ? regexAmount(value) : "0") : value}

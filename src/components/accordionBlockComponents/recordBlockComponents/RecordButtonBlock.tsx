@@ -5,14 +5,14 @@ import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { ModalBodyType } from "@/context/ModalContext";
 
-type OperationButtonBlockProps = {
+type RecordButtonBlockProps = {
   outerStyle: string;
   iconSize: string;
   buttonSize: string;
   handleCallFormModal: (type: ModalBodyType) => void;
 };
 
-const OperationButtonBlock: React.FC<OperationButtonBlockProps> = ({
+const RecordButtonBlock: React.FC<RecordButtonBlockProps> = ({
   outerStyle,
   iconSize,
   buttonSize,
@@ -40,4 +40,4 @@ const OperationButtonBlock: React.FC<OperationButtonBlockProps> = ({
   );
 };
 
-export default OperationButtonBlock;
+export default RecordButtonBlock;

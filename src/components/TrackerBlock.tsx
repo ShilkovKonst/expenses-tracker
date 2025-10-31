@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
-import DataTypesBlock from "./DataTypesBlock";
+import TrackerNamesBlock from "./TrackerNamesBlock";
 import { useEffect, useState } from "react";
-import { TrackerType } from "@/types/formTypes";
+import { TrackerName } from "@/types/formTypes";
 
 const TrackerBlock = () => {
   const { selectedType, setSelectedType, trackerTypes, setTrackerTypes } =
     useGlobal();
 
-  const [customType, setCustomType] = useState<TrackerType>({
+  const [customType, setCustomType] = useState<TrackerName>({
     id: -1,
     title: "",
   });
@@ -19,7 +19,7 @@ const TrackerBlock = () => {
       const rawTypes = localStorage.getItem("trackerTypes");
       if (!rawTypes)
         localStorage.setItem("trackerTypes", JSON.stringify([selectedType]));
-      const types: TrackerType[] = rawTypes
+      const types: TrackerName[] = rawTypes
         ? JSON.parse(rawTypes)
         : [selectedType];
       setTrackerTypes(types);
@@ -31,14 +31,14 @@ const TrackerBlock = () => {
       setCustomType({ ...customType, id: trackerTypes.length });
   }, [trackerTypes]);
 
-  const handleSelectType = (t: TrackerType) => {
+  const handleSelectType = (t: TrackerName) => {
     const type = trackerTypes.find((tp) => tp.title === t.title);
     if (type) setSelectedType(t);
   };
 
   return (
     <div className="grid grid-cols-1 gap-2 border-b-6 border-blue-400 pb-2">
-      <DataTypesBlock
+      <TrackerNamesBlock
         trackerTypes={trackerTypes}
         handleSelectType={handleSelectType}
       />

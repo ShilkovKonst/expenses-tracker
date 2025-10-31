@@ -33,9 +33,14 @@ export function initEmptyMonths(): Month[] {
     emptyMonths[i - 1] = {
       id: i,
       title: getMonthById(i),
-      operations: [],
+      records: [],
       totalAmount: 0,
     };
   }
   return emptyMonths;
+}
+
+export function getMonthDays(year: number, month: number): number[] {
+  const days = new Date(year, month , 0).getDate();
+  return Array.from({ length: days }, (_, i) => i + 1);
 }

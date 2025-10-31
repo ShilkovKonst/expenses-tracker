@@ -4,15 +4,16 @@ import { Month } from "@/types/formTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
-import OperationBlock from "./operationBlockComponents/OperationBlock";
+import RecordBlock from "./recordBlockComponents/RecordBlock";
 import { useModal } from "@/context/ModalContext";
+import { compare } from "@/lib/utils/updateDeleteHelper";
 
-type MonthBlockProps = {
+type MonthProps = {
   yearId: number;
   month: Month;
 };
 
-const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
+const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
   const { locale } = useGlobal();
   const { setIsModal, setFormModalBody } = useModal();
 
@@ -25,7 +26,8 @@ const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
       yearId: yearId,
       monthId: month.id,
       record: {
-        id: `${yearId}-${month.id}-${month.operations.length}`,
+        id: `${yearId}-${month.id}-${month.records.length}`,
+        date: -1,
         type: "cost",
         tags: [],
         description: "",
@@ -35,8 +37,8 @@ const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
   };
 
   useEffect(() => {
-    setIsExpandDisabled(month.operations?.length === 0);
-  }, [month.operations]);
+    setIsExpandDisabled(month.records?.length === 0);
+  }, [month.records]);
 
   return (
     <div
@@ -62,14 +64,18 @@ const MonthBlock: React.FC<MonthBlockProps> = ({ yearId, month }) => {
         style={{ height: 0 }}
         className="col-span-6 grid gap-2 pl-2 transition-[height] duration-300 ease-in-out overflow-hidden w-full"
       >
-        {month.operations.map((operation, index) => (
-          <OperationBlock
-            key={index}
-            yearId={yearId}
-            monthId={month.id}
-            operation={operation}
-          />
-        ))}
+        {month.records
+          .sort((a, b) =>
+            a.date !== b.date ? a.date - b.date : compare(a.id, b.id)
+          )
+          .map((record, index) => (
+            <RecordBlock
+              key={index}
+              yearId={yearId}
+              monthId={month.id}
+              record={record}
+            />
+          ))}
         <div></div>
       </div>
     </div>

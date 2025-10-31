@@ -43,11 +43,17 @@
       "labels": {
         "year": "Année",
         "month": "Mois",
+        "date": "Date",
         "operations": "Opérations",
-        "outcome": "Résultat"
+        "outcome": "Résultat",
+        "income": "revenu",
+        "cost": "coût",
+        "withoutDate": "sans date",
+        "withoutTags": "sans étiquettes",
+        "withoutDesc": "sans description"
       },
       "tracker": {
-        "typeTitle": "Sélectionnez un type de données ou créez la vôtre",
+        "typeTitle": "Sélectionnez un suivi ou créez la vôtre",
         "typeCustomTitle": "Saisir le nom de votre type personnalisé",
         "typeFormTitle": "Créez votre type",
         "typeDefault": "défaut",
@@ -58,6 +64,7 @@
         "tagTitle": "Sélectionnez des étiquette dans la liste ci-dessous ou ajoutez les vôtres",
         "tagTitleEmpty": "La liste des étiquettes est vide. Ajoutez-en une nouvelle pour étiqueter les enregistrements.",
         "tagCustomTitle": "Saisir le nom de votre étiquette personnalisée",
+        "dateDefault": "Sélectionnez une date (facultatif)",
         "expand": "Détail",
         "type": "Type",
         "labelTags": "Etiquette",

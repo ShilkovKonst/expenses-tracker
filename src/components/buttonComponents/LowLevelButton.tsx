@@ -16,7 +16,7 @@ const LowLevelButton: FC<LowLevelButtonProps> = ({
   return (
     <button
       type="button"
-      className={`mr-auto h-7 w-7 cursor-pointer flex justify-center items-center bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600 transition-colors duration-200 ease-in-out ${style}`}
+      className={`mr-auto cursor-pointer flex justify-center items-center bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600 transition-colors duration-200 ease-in-out ${style}`}
       onClick={handleClick}
       disabled={disabled}
     >

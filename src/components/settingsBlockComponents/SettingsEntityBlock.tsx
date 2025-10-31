@@ -12,12 +12,12 @@ import { AddIcon, Delete } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { t } from "@/locales/locale";
 import TagButton from "../buttonComponents/TagButton";
-import { RecordTag, TrackerType } from "@/types/formTypes";
+import { RecordTag, TrackerName } from "@/types/formTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { RemoveType } from "./SettingsBlock";
 import LowLevelButton from "../buttonComponents/LowLevelButton";
 
-export type Entity = TrackerType | RecordTag;
+export type Entity = TrackerName | RecordTag;
 
 type SettingsEntityProps<T extends Entity> = {
   isTrackerType: boolean;
@@ -75,7 +75,7 @@ const SettingsEntityBlock = <T extends Entity>({
             />
             <LowLevelButton
               icon={<Delete style="h-5 w-5" />}
-              style="absolute top-0 -right-3 rounded-lg h-7 w-4 bg-red-300 hover:bg-red-400"
+              style="absolute top-0 -right-3 rounded-lg h-7 w-7 bg-red-400 hover:bg-red-500"
               handleClick={() =>
                 handleRemove(isTrackerType ? "tracker" : "tag", i)
               }

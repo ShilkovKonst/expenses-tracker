@@ -15,7 +15,7 @@ export function updateItem<T extends { id: number | string }>(
   ];
 }
 
-function compare(a: string | number, b: string | number): number {
+export function compare(a: string | number, b: string | number): number {
   if (typeof a === "number" && typeof b === "number") return a - b;
   if (typeof a === "string" && typeof b === "string") return a.localeCompare(b);
   console.log(typeof a, typeof b)

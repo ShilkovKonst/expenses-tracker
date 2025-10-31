@@ -70,13 +70,16 @@ const AccordionBlock: React.FC = () => {
           expandDisabled={false}
         />
       )}
-      {activeMonth && (
+      {activeYear && activeMonth && (
         <StickyHeader
           isMonth={true}
           labelMain={t(locale, `body.form.valueMonth.${activeMonth.title}`)}
           totalAmount={activeMonth?.totalAmount ?? 0}
           expandDataType={expandMonthDataType}
-          expandDisabled={activeMonth?.operations?.length === 0}
+          expandDisabled={activeMonth?.records?.length === 0}
+          yearId={activeYear.id}
+          monthId={activeMonth.id}
+          recordsLength={activeMonth.records?.length}
         />
       )}
       {tracker.years.map((year, index) => (

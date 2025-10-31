@@ -7,6 +7,7 @@ import TagButton from "../buttonComponents/TagButton";
 import { t } from "@/locales/locale";
 import LowLevelButton from "../buttonComponents/LowLevelButton";
 import { AddIcon } from "@/lib/icons";
+import FormInputBlock from "./FormInputBlock";
 
 type FormTagsProps = {
   record: Record;
@@ -133,17 +134,26 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             ))}
         </div>
         <div className="grid grid-cols-6 gap-2">
-          <input
-            className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 rounded-md text-xs"
-            placeholder={t(locale, `body.form.operations.tagCustomTitle`)}
+          <FormInputBlock
+            id="tagInput"
+            name="tagInput"
+            title=""
             type="text"
             value={newTag.title}
-            onChange={(e) => setNewTag({ ...newTag, title: e.target.value })}
+            handleChange={(e) =>
+              setNewTag({ ...newTag, title: e.target.value })
+            }
+            outerStyle="col-span-4"
+            styleLabel=""
+            styleInput="focus:outline-blue-300"
+            withoutLabel={true}
+            required={false}
+            disabled={false}
           />
           <LowLevelButton
             icon={<AddIcon style="w-5 h-5" />}
             handleClick={() => handleAddNewTag(newTag)}
-            style="col-span-2 rounded-sm"
+            style="col-span-2 rounded-sm w-6 h-6 my-auto"
             disabled={isDisabled || newTag.title.length === 0}
           />
           {isDisabled && (

@@ -1,5 +1,5 @@
 "use client";
-import { TrackerType } from "@/types/formTypes";
+import { TrackerName } from "@/types/formTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import TagButton from "./buttonComponents/TagButton";
@@ -7,12 +7,12 @@ import TopLevelButton from "./buttonComponents/TopLevelButton";
 import { SettingsIcon } from "@/lib/icons";
 import { useModal } from "@/context/ModalContext";
 
-type DataTypesProps = {
-  trackerTypes: TrackerType[];
-  handleSelectType: (type: TrackerType) => void;
+type TrackerNamesProps = {
+  trackerTypes: TrackerName[];
+  handleSelectType: (type: TrackerName) => void;
 };
 
-const DataTypesBlock: React.FC<DataTypesProps> = ({
+const TrackerNamesBlock: React.FC<TrackerNamesProps> = ({
   trackerTypes,
   handleSelectType,
 }) => {
@@ -52,4 +52,4 @@ const DataTypesBlock: React.FC<DataTypesProps> = ({
   );
 };
 
-export default DataTypesBlock;
+export default TrackerNamesBlock;
