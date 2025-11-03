@@ -41,7 +41,7 @@ const FormInputBlock: React.FC<FormInputProps> = ({
       )}
       <input
         id={id}
-        className={`w-full border-2 border-blue-100 focus:outline-blue-300 rounded-md text-sm bg-white ${styleInput}`}
+        className={`w-full border-2 border-blue-100 focus:outline-blue-300 rounded-md text-sm bg-white pl-2 ${styleInput}`}
         type={type}
         name={name}
         value={name === "amount" ? (value ? regexAmount(value) : "0") : value}

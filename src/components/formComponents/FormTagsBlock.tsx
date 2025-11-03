@@ -38,7 +38,6 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleAddClick = (tag: RecordTag) => {
-    console.log(tag);
     if (currentTags.every((t) => t.title !== tag.title)) {
       setCurrentTags([...currentTags, tag]);
     }
@@ -58,7 +57,11 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
   };
 
   useEffect(() => {
-    setIsDisabled(recordTags.some((t) => t.title === newTag.title));
+    setIsDisabled(
+      recordTags.some(
+        (t) => t.tracker === selectedType.title && t.title === newTag.title
+      )
+    );
   }, [newTag, recordTags]);
 
   useEffect(() => {

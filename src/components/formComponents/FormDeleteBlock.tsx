@@ -6,7 +6,6 @@ import { t } from "@/locales/locale";
 import { Record } from "@/types/formTypes";
 import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { MONTHS } from "@/lib/constants";
-import RecordDescriptionBlock from "../accordionBlockComponents/recordBlockComponents/RecordDescriptionBlock";
 
 type FormConfirmBlockProps = {
   deleteEntity: "record" | "tag" | "tracker";
@@ -38,9 +37,9 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
       <div className="col-span-2 flex flex-col sm:flex-row gap-2 justify-center items-start mb-3">
         {formModalBody && (
           <>
-            <div className=" grid grid-cols-2 gap-2 sm:gap-0">
+            <div className="w-full grid grid-cols-2 gap-2">
               <DescPBlock
-                outerStyle="col-span-1 flex flex-col lg:flex-row lg:gap-1 justify-start items-start"
+                outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
                 spanStyle={`text-xs truncate`}
                 label={`${t(locale, `body.form.labels.year`)}: `}
                 value={`${formModalBody.yearId}, ${t(
@@ -48,27 +47,40 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
                   `body.form.valueMonth.${MONTHS[formModalBody.monthId - 1]}`
                 )}`}
               />
+              <DescPBlock
+                outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
+                spanStyle={`text-xs truncate`}
+                label={`${t(locale, `body.form.labels.date`)}: `}
+                value={
+                  formModalBody.record.date > -1
+                    ? formModalBody.record.date
+                    : t(locale, `body.form.labels.withoutDate`)
+                }
+              />
             </div>
-            <RecordDescriptionBlock
-              outerStyle="col-span-2 grid grid-cols-4 gap-4 my-auto"
-              labelRecordTags={`${t(
-                locale,
-                `body.form.operations.labelTags`
-              )}: `}
-              labelRecordDescription={`${t(
-                locale,
-                `body.form.operations.description`
-              )}: `}
-              labelRecordAmount={`${t(
-                locale,
-                `body.form.operations.amount`
-              )}: `}
-              labelRecordDay={`${t(locale, `body.form.labels.date`)}: `}
-              recordType={formModalBody.record.type}
-              recordTags={formModalBody.record.tags.map((t) => t.title)}
-              recordDescription={formModalBody.record.description}
-              recordAmount={formModalBody.record.amount}
-              recordDay={formModalBody.record.day}
+            <div className="w-full grid grid-cols-2 gap-2">
+              <DescPBlock
+                outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
+                spanStyle={`text-xs truncate ${
+                  formModalBody.record.type === "income"
+                    ? "text-green-600"
+                    : "text-red-500"
+                }`}
+                label={`${t(locale, `body.form.operations.amount`)}: `}
+                value={formModalBody.record.amount}
+              />
+              <DescPBlock
+                outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
+                spanStyle={`text-xs truncate`}
+                label={`${t(locale, `body.form.operations.labelTags`)}: `}
+                value={formModalBody.record.tags.map((t) => t.title)}
+              />
+            </div>
+            <DescPBlock
+              outerStyle="col-span-2 flex flex-row gap-2 justify-start items-start"
+              spanStyle={`text-xs truncate`}
+              label={`${t(locale, `body.form.operations.description`)}: `}
+              value={formModalBody.record.description}
             />
           </>
         )}
