@@ -4,6 +4,7 @@ import HeaderButtonBlock from "./HeaderButtonBlock";
 type DescriptionPropsType = {
   labelMain: string;
   totalAmount: number;
+  totalRecords: number;
   expandDataType: string;
   expandDisabled: boolean;
   isMonth?: boolean;
@@ -15,6 +16,7 @@ type DescriptionPropsType = {
 const HeaderBlock: React.FC<DescriptionPropsType> = ({
   labelMain,
   totalAmount,
+  totalRecords,
   expandDataType,
   expandDisabled,
   isMonth,
@@ -34,6 +36,7 @@ const HeaderBlock: React.FC<DescriptionPropsType> = ({
       <DescriptionBlock
         labelMain={`${labelMain}`}
         totalAmount={totalAmount}
+        totalRecords={totalRecords}
         isMonth={isMonth}
       />
       <HeaderButtonBlock

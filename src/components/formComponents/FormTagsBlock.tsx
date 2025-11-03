@@ -8,6 +8,7 @@ import { t } from "@/locales/locale";
 import LowLevelButton from "../buttonComponents/LowLevelButton";
 import { AddIcon } from "@/lib/icons";
 import FormInputBlock from "./FormInputBlock";
+import { compare } from "@/lib/utils/compareHelper";
 
 type FormTagsProps = {
   record: Record;
@@ -114,19 +115,8 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
       </div>
       <div className="p-2 border-t-0 border-2 border-blue-100 rounded-md rounded-t-none">
         <div className="relative w-full overflow-hidden pb-2 transition-[height] duration-200 ease-in-out flex flex-wrap items-center gap-2">
-          {currentTags.every((t) => t.title !== "cash" && t.title !== "card") &&
-            filteredTags
-              .filter((t) => t.title === "card" || t.title === "cash")
-              .map((tag, i) => (
-                <TagButton
-                  key={i}
-                  tag={tag.title}
-                  handleClick={() => handleAddClick(tag)}
-                  style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
-                />
-              ))}
           {filteredTags
-            .filter((t) => t.title !== "cash" && t.title !== "card")
+            .sort((a, b) => compare(a.title, b.title))
             .map((tag, i) => (
               <TagButton
                 key={i}
@@ -141,7 +131,6 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             id="tagInput"
             name="tagInput"
             title=""
-            type="text"
             value={newTag.title}
             handleChange={(e) =>
               setNewTag({ ...newTag, title: e.target.value })

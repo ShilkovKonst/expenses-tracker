@@ -8,7 +8,6 @@ type FormInputProps = {
   styleInput: string;
   id: string;
   value: string;
-  type: "text" | "number";
   disabled: boolean;
   required: boolean;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -23,7 +22,6 @@ const FormInputBlock: React.FC<FormInputProps> = ({
   styleInput,
   id,
   value,
-  type,
   disabled,
   required,
   handleChange,
@@ -42,7 +40,7 @@ const FormInputBlock: React.FC<FormInputProps> = ({
       <input
         id={id}
         className={`w-full border-2 border-blue-100 focus:outline-blue-300 rounded-md text-sm bg-white pl-2 ${styleInput}`}
-        type={type}
+        type={"text"}
         name={name}
         value={name === "amount" ? (value ? regexAmount(value) : "0") : value}
         onChange={(e) => handleChange(e)}

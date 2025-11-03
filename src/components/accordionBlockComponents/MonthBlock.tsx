@@ -6,7 +6,7 @@ import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
 import RecordBlock from "./recordBlockComponents/RecordBlock";
 import { useModal } from "@/context/ModalContext";
-import { compare } from "@/lib/utils/updateDeleteHelper";
+import { compare } from "@/lib/utils/compareHelper";
 
 type MonthProps = {
   yearId: number;
@@ -54,6 +54,7 @@ const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
         dataHeader={yearId.toString()}
         labelMain={`${t(locale, `body.form.valueMonth.${month.title}`)}`}
         totalAmount={month.totalAmount}
+        totalRecords={month.records.length}
         expandDataType={`${yearId}-${month.id}`}
         isMonth={true}
         expandDisabled={isExpandDisabled}

@@ -1,4 +1,5 @@
 "use client";
+import { compare } from "@/lib/utils/compareHelper";
 
 type DescPBlockProps = {
   outerStyle?: string;
@@ -24,11 +25,13 @@ const DescPBlock: React.FC<DescPBlockProps> = ({
       </p>
       <p className="flex flex-wrap gap-1 justify-start items-center">
         {Array.isArray(value) ? (
-          value.sort().map((v) => (
-            <span key={v} className={`font-medium ${spanStyle} border px-1`}>
-              {v}
-            </span>
-          ))
+          (value as string[])
+            .sort((a, b) => compare(a, b))
+            .map((v) => (
+              <span key={v} className={`font-medium ${spanStyle} border px-1`}>
+                {v}
+              </span>
+            ))
         ) : (
           <span className={`font-semibold ${spanStyle}`}>{value}</span>
         )}

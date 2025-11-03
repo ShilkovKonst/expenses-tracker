@@ -16,6 +16,7 @@ import { RecordTag, TrackerName } from "@/types/formTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { RemoveType } from "./SettingsBlock";
 import LowLevelButton from "../buttonComponents/LowLevelButton";
+import { compare } from "@/lib/utils/compareHelper";
 
 export type Entity = TrackerName | RecordTag;
 
@@ -61,27 +62,29 @@ const SettingsEntityBlock = <T extends Entity>({
   return (
     <div className="col-span-2 grid grid-cols-2 border-t-2 border-blue-100">
       <div className="col-span-2 w-full pt-2 flex flex-wrap items-center gap-6">
-        {allEntities.map((entity, i) => (
-          <div key={i} className="relative flex">
-            <TagButton
-              tag={entity.title}
-              handleClick={
-                isTrackerType && handleSelect
-                  ? () => handleSelect(entity)
-                  : () => {}
-              }
-              style={`h-7 ${tagStyle} transition-colors duration-200 ease-in-out rounded-r-none pr-6`}
-              disabled={currentEntity && currentEntity.title === entity.title}
-            />
-            <LowLevelButton
-              icon={<Delete style="h-5 w-5" />}
-              style="absolute top-0 -right-3 rounded-lg h-7 w-7 bg-red-400 hover:bg-red-500"
-              handleClick={() =>
-                handleRemove(isTrackerType ? "tracker" : "tag", i)
-              }
-            />
-          </div>
-        ))}
+        {allEntities
+          .sort((a, b) => compare(a.title, b.title))
+          .map((entity, i) => (
+            <div key={i} className="relative flex">
+              <TagButton
+                tag={entity.title}
+                handleClick={
+                  isTrackerType && handleSelect
+                    ? () => handleSelect(entity)
+                    : () => {}
+                }
+                style={`h-7 ${tagStyle} transition-colors duration-200 ease-in-out rounded-r-none pr-6`}
+                disabled={currentEntity && currentEntity.title === entity.title}
+              />
+              <LowLevelButton
+                icon={<Delete style="h-5 w-5" />}
+                style="absolute top-0 -right-3 rounded-lg h-7 w-7 bg-red-400 hover:bg-red-500"
+                handleClick={() =>
+                  handleRemove(isTrackerType ? "tracker" : "tag", i)
+                }
+              />
+            </div>
+          ))}
         {allEntities.length === 0 && (
           <p className={`max-w-3/4 block font-medium text-xs text-gray-500`}>
             {t(locale, `body.form.operations.tagTitleEmpty`)}
