@@ -57,7 +57,11 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
       <div
         className={`grid-cols-5 pl-4 py-2 col-span-5 grid md:grid-cols-5 gap-2 my-auto`}
       >
-        <StickyDescH3Block label={labelMain} isMonth={isMonth} />
+        <StickyDescH3Block
+          label={labelMain}
+          recordsLength={recordsLength}
+          isMonth={isMonth}
+        />
         <StickyDescPBlock spanStyle="text-red-600" value={totalAmount} />
       </div>
       <HeaderButtonBlock
@@ -76,29 +80,15 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
 
 export default StickyHeader;
 
-type StickyDescPBlockProps = {
-  spanStyle: string;
-  value: string | number;
-};
-
-const StickyDescPBlock: React.FC<StickyDescPBlockProps> = ({
-  spanStyle,
-  value,
-}) => {
-  return (
-    <div className={`flex flex-col justify-center`}>
-      <span className={`font-semibold text-sm ${spanStyle}`}>{value}</span>
-    </div>
-  );
-};
-
 type StickyDescH3BlockProps = {
   isMonth?: boolean;
+  recordsLength?: number;
   label: string;
 };
 
 const StickyDescH3Block: React.FC<StickyDescH3BlockProps> = ({
   isMonth,
+  recordsLength,
   label,
 }) => {
   const { locale, selectedType } = useGlobal();
@@ -114,8 +104,26 @@ const StickyDescH3Block: React.FC<StickyDescH3BlockProps> = ({
               : selectedType.title}
           </span>
         )}
-        <span>{label}</span>
+        <span>
+          {label} {recordsLength && `(${recordsLength})`}
+        </span>
       </h3>
+    </div>
+  );
+};
+
+type StickyDescPBlockProps = {
+  spanStyle: string;
+  value: string | number;
+};
+
+const StickyDescPBlock: React.FC<StickyDescPBlockProps> = ({
+  spanStyle,
+  value,
+}) => {
+  return (
+    <div className={`flex flex-col justify-center`}>
+      <span className={`font-semibold text-sm ${spanStyle}`}>{value}</span>
     </div>
   );
 };
