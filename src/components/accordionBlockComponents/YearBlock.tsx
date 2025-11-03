@@ -18,6 +18,9 @@ const YearBlock: React.FC<YearBlockProps> = ({ dataId, year }) => {
       <HeaderBlock
         labelMain={`${year.id}`}
         totalAmount={year?.totalAmount ?? 0}
+        totalRecords={year.months
+          .map((m) => m.records.length)
+          .reduce((acc, m) => acc + m, 0)}
         expandDataType={year.id.toString()}
         isMonth={false}
         expandDisabled={false}
