@@ -77,7 +77,7 @@ const RecordForm: React.FC<RecordFormProps> = ({
               value={currentRecord.type}
               handleChange={handleOperationChange}
               styleLabel={"text-xs"}
-              styleInput={"pl-1 py-1 text-sm"}
+              styleInput={"pl-1 py-1 text-xs"}
             />
           </div>
           <div className="col-span-2 grid grid-cols-2 gap-2 *:border-l *:border-b *:border-blue-200">
