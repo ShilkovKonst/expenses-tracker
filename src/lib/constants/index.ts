@@ -16,41 +16,41 @@ export const MONTHS: Months[] = [
 ];
 
 export const EMPTY_FORM_MONTHS: Month[] = [
-  { id: 1, title: "january", operations: [], totalAmount: 0 },
+  { id: 1, title: "january", records: [], totalAmount: 0 },
   {
     id: 2,
     title: "february",
-    operations: [],
+    records: [],
     totalAmount: 0,
   },
-  { id: 3, title: "march", operations: [], totalAmount: 0 },
-  { id: 4, title: "april", operations: [], totalAmount: 0 },
-  { id: 5, title: "may", operations: [], totalAmount: 0 },
-  { id: 6, title: "june", operations: [], totalAmount: 0 },
-  { id: 7, title: "july", operations: [], totalAmount: 0 },
-  { id: 8, title: "august", operations: [], totalAmount: 0 },
+  { id: 3, title: "march", records: [], totalAmount: 0 },
+  { id: 4, title: "april", records: [], totalAmount: 0 },
+  { id: 5, title: "may", records: [], totalAmount: 0 },
+  { id: 6, title: "june", records: [], totalAmount: 0 },
+  { id: 7, title: "july", records: [], totalAmount: 0 },
+  { id: 8, title: "august", records: [], totalAmount: 0 },
   {
     id: 9,
     title: "september",
-    operations: [],
+    records: [],
     totalAmount: 0,
   },
   {
     id: 10,
     title: "october",
-    operations: [],
+    records: [],
     totalAmount: 0,
   },
   {
     id: 11,
     title: "november",
-    operations: [],
+    records: [],
     totalAmount: 0,
   },
   {
     id: 12,
     title: "december",
-    operations: [],
+    records: [],
     totalAmount: 0,
   },
 ];
