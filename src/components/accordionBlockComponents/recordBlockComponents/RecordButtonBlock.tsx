@@ -27,7 +27,7 @@ const RecordButtonBlock: React.FC<RecordButtonBlockProps> = ({
       <TopLevelButton
         icon={<Update style={iconSize} />}
         title={t(locale, `body.form.operations.update`)}
-        style={`bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
+        style={`h-full sm:h-auto bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
         handleClick={() => handleCallFormModal("upd")}
       />
       <TopLevelButton

@@ -17,7 +17,7 @@ const DescPBlock: React.FC<DescPBlockProps> = ({
   value,
 }) => {
   return (
-    <div className={`${outerStyle} flex gap-2 justify-start items-center`}>
+    <div className={`${outerStyle}`}>
       <p
         className={`${titleStyle} text-xs text-gray-600 font-medium uppercase tracking-wide`}
       >

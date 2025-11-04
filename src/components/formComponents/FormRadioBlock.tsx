@@ -27,10 +27,10 @@ const FormRadioBlock: React.FC<FormRadioProps> = ({
   const { locale } = useGlobal();
   return (
     <div
-      className={`${outerStyle} flex gap-1 justify-between sm:justify-start items-center`}
+      className={`${outerStyle} flex gap-1 md:gap-3 justify-start items-center`}
     >
       <p className={`${styleLabel} font-semibold uppercase`}>{labelRadio}</p>
-      <div className="flex gap-1">
+      <div className="w-full flex justify-evenly gap-1 md:gap-2">
         {["income", "cost"].map((type, i) => (
           <div key={i} className={`flex items-center ${type === "income" ? "order-1" : "order-3"}`}>
             <input

@@ -56,3 +56,6 @@ export const EMPTY_FORM_MONTHS: Month[] = [
 ];
 
 export const CURRENT_YEAR = new Date().getFullYear();
+
+export const AMOUNT_REGEX = /^0+|[^\d.+\-*/=]+/ug;
+export const OP_REGEX = /\d+(?:\.\d+)?|[+\-*/]/g;

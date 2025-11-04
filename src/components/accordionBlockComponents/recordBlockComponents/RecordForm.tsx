@@ -12,6 +12,7 @@ import { useModal } from "@/context/ModalContext";
 import { MONTHS } from "@/lib/constants";
 import FormSelectBlock from "../../formComponents/FormSelectBlock";
 import { getMonthDays } from "@/lib/utils/monthHelper";
+import { calcExpression, regexAmount } from "@/lib/utils/recordAmountHelper";
 
 type RecordFormProps = {
   handleUpdate: (record: Record, isDelete: boolean) => void;
@@ -29,15 +30,24 @@ const RecordForm: React.FC<RecordFormProps> = ({
     undefined
   );
   const [currentYearMonth, setCurrentYearMonth] = useState<number[]>([]);
+  const [isCalcMode, setIsCalcMode] = useState<boolean>(false);
 
   const handleOperationChange = <K extends keyof Record>(
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    let regexValue = value;
+    if (name === "amount") {
+      regexValue = regexAmount(value);
+      if (regexValue.slice(1).match(/[+\-*\/]\d+/g) && !isCalcMode)
+        setIsCalcMode(true);
+      if (!regexValue.slice(1).match(/[+\-*\/]\d+/g) && isCalcMode)
+        setIsCalcMode(false);
+    }
     if (currentRecord)
       setCurrentRecord({
         ...currentRecord,
-        [name as K]: value as Record[K],
+        [name as K]: regexValue as Record[K],
       });
   };
 
@@ -47,6 +57,18 @@ const RecordForm: React.FC<RecordFormProps> = ({
       setCurrentYearMonth([formModalBody.yearId, formModalBody.monthId]);
     }
   }, [formModalBody]);
+
+  const handleCalcClick = (value: string) => {
+    if (currentRecord) {
+      const newAmount = calcExpression(value);
+      setCurrentRecord({ ...currentRecord, amount: newAmount });
+      setIsCalcMode(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log(isCalcMode);
+  }, [isCalcMode]);
 
   return (
     <form className="form grid grid-cols-2 gap-2">
@@ -96,13 +118,17 @@ const RecordForm: React.FC<RecordFormProps> = ({
               name={"amount"}
               title={`${t(locale, `body.form.operations.amount`)}:`}
               id={"operationAmountInput" + currentRecord?.id}
-              value={currentRecord.amount.toString()}
+              value={
+                currentRecord.amount ? currentRecord.amount?.toString() : "0"
+              }
               handleChange={handleOperationChange}
               disabled={false}
               required={true}
               outerStyle="flex gap-2 justify-start items-center py-1 pl-1"
               styleLabel={"text-xs"}
               styleInput={"px-2"}
+              isCalcMode={isCalcMode}
+              handleCalc={handleCalcClick}
             />
           </div>
           <FormTagsBlock
@@ -119,7 +145,7 @@ const RecordForm: React.FC<RecordFormProps> = ({
             value={currentRecord.description}
             handleChange={handleOperationChange}
             disabled={false}
-            required={true}
+            required={false}
             outerStyle="col-span-2"
             styleLabel={"text-xs"}
             styleInput={"px-2 text-sm"}

@@ -1,4 +1,5 @@
-import { ChangeEvent } from "react";
+import { regexAmount } from "@/lib/utils/recordAmountHelper";
+import { ChangeEvent, MouseEvent as RME } from "react";
 
 type FormInputProps = {
   name: string;
@@ -12,6 +13,8 @@ type FormInputProps = {
   required: boolean;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   withoutLabel?: boolean;
+  isCalcMode?: boolean;
+  handleCalc?: (value: string) => void;
 };
 
 const FormInputBlock: React.FC<FormInputProps> = ({
@@ -26,9 +29,16 @@ const FormInputBlock: React.FC<FormInputProps> = ({
   required,
   handleChange,
   withoutLabel,
+  isCalcMode,
+  handleCalc,
 }) => {
+  const handleClick = (e: RME<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    if (handleCalc) handleCalc(value);
+  };
+
   return (
-    <div className={`${outerStyle} `}>
+    <div className={`${outerStyle} relative`}>
       {!withoutLabel && (
         <label
           className={`block font-semibold uppercase ${styleLabel}`}
@@ -47,14 +57,16 @@ const FormInputBlock: React.FC<FormInputProps> = ({
         disabled={disabled}
         required={required}
       />
+      {isCalcMode && handleCalc && (
+        <button
+          onClick={handleClick}
+          className="absolute cursor-pointer top-2 right-1 rounded-sm h-4 w-4 bg-green-500 text-center flex justify-center items-center"
+        >
+          <p>=</p>
+        </button>
+      )}
     </div>
   );
 };
 
 export default FormInputBlock;
-
-function regexAmount(amount: string) {
-  const regex = /^0+/;
-  const processedAmount = amount.replace(regex, "");
-  return processedAmount.length === 0 ? "0" : processedAmount;
-}
