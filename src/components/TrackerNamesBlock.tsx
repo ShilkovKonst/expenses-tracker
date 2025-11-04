@@ -43,7 +43,7 @@ const TrackerNamesBlock: React.FC<TrackerNamesProps> = ({
         </div>
       </div>
       <TopLevelButton
-        icon={<SettingsIcon style="h-7 w-7" />}
+        icon={<SettingsIcon className="h-7 w-7" />}
         style="bg-blue-400 hover:bg-blue-500 col-span-2 md:col-span-1 h-9 w-9 mr-2"
         title=""
         handleClick={handleClick}

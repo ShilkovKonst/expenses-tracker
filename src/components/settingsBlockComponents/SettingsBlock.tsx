@@ -3,7 +3,7 @@ import { TrackerName, RecordTag } from "@/types/formTypes";
 import { FC, MouseEvent as RME, useEffect, useState } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
-import { AddIcon, AddTag, AddTracker, CloseIcon } from "@/lib/icons";
+import { AddIcon, AddTagIcon, AddTrackerIcon, CloseIcon } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { t } from "@/locales/locale";
 import MidLevelButton from "../buttonComponents/MidLevelButton";
@@ -109,7 +109,7 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
         />
       )}
       <TopLevelButton
-        icon={<CloseIcon style="h-7 w-7" />}
+        icon={<CloseIcon className="h-7 w-7" />}
         title=""
         style="absolute -top-3 -right-3 bg-blue-400 hover:bg-blue-500 col-span-2 md:col-span-1 h-9 w-9"
         handleClick={handleClearFinal}
@@ -123,7 +123,7 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
         </p>
       </div>
       <SettingsEntityBlock<TrackerName>
-        addIcon={<AddTracker style="h-5 w-7" />}
+        addIcon={<AddTrackerIcon className="h-5 w-7" />}
         isTrackerType={true}
         dataType="form-new-type"
         tagStyle="bg-blue-400 hover:bg-blue-500 border-2 border-r-0 border-dotted border-transparent disabled:border-blue-50 disabled:bg-blue-500 disabled:hover:bg-blue-500"
@@ -139,8 +139,8 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
       <SettingsEntityBlock<RecordTag>
         addIcon={
           <>
-            <AddIcon style="h-3 w-3" />
-            <AddTag style="h-5 w-5" />
+            <AddIcon className="h-3 w-3" />
+            <AddTagIcon className="h-5 w-5" />
           </>
         }
         isTrackerType={false}

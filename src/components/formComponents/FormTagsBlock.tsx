@@ -143,7 +143,7 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             disabled={false}
           />
           <LowLevelButton
-            icon={<AddIcon style="w-5 h-5" />}
+            icon={<AddIcon className="w-5 h-5" />}
             handleClick={() => handleAddNewTag(newTag)}
             style="col-span-2 rounded-sm w-6 h-6 my-auto"
             disabled={isDisabled || newTag.title.length === 0}

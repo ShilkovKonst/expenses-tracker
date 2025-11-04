@@ -33,14 +33,14 @@ const HeaderButtonBlock: React.FC<HeaderButtonBlockProps> = ({
     >
       {isMonth && handleAddOperation && (
         <TopLevelButton
-          icon={<AddIcon style={iconSize} />}
+          icon={<AddIcon className={iconSize} />}
           title={t(locale, `body.form.operations.add`)}
           style={`bg-blue-500 hover:bg-blue-400 ${buttonSize}`}
           handleClick={handleAddOperation}
         />
       )}
       <TopLevelButton
-        icon={<ExpandIcon style={iconSize} />}
+        icon={<ExpandIcon className={iconSize} />}
         dataType={expandDataType}
         title={t(locale, `body.form.operations.expand`)}
         style={`bg-blue-400 hover:bg-blue-500 disabled:text-gray-600 disabled:bg-blue-300 disabled:hover:bg-blue-300 ${expandButtonSize}`}

@@ -66,10 +66,6 @@ const RecordForm: React.FC<RecordFormProps> = ({
     }
   };
 
-  useEffect(() => {
-    console.log(isCalcMode);
-  }, [isCalcMode]);
-
   return (
     <form className="form grid grid-cols-2 gap-2">
       {formModalBody && (

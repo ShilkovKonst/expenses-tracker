@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
-import { AddIcon, Delete } from "@/lib/icons";
+import { AddIcon, DeleteIcon } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { t } from "@/locales/locale";
 import TagButton from "../buttonComponents/TagButton";
@@ -77,7 +77,7 @@ const SettingsEntityBlock = <T extends Entity>({
                 disabled={currentEntity && currentEntity.title === entity.title}
               />
               <LowLevelButton
-                icon={<Delete style="h-5 w-5" />}
+                icon={<DeleteIcon className="h-5 w-5" />}
                 style="absolute top-0 -right-3 rounded-lg h-7 w-7 bg-red-400 hover:bg-red-500"
                 handleClick={() =>
                   handleRemove(isTrackerType ? "tracker" : "tag", i)
@@ -119,7 +119,7 @@ const SettingsEntityBlock = <T extends Entity>({
           }
         />
         <TopLevelButton
-          icon={<AddIcon style="w-5 h-5" />}
+          icon={<AddIcon className="w-5 h-5" />}
           dataType={dataType}
           title=""
           handleClick={(e: RME<HTMLButtonElement, MouseEvent>) =>
