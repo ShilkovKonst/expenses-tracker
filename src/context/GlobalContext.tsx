@@ -65,7 +65,6 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
   }, [trackerTypes]);
 
   useEffect(() => {
-    console.log(selectedType);
     if (localStorage) {
       let raw = localStorage.getItem(selectedType.title);
       if (!raw) {

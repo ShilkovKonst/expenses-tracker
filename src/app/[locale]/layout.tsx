@@ -4,6 +4,7 @@ import "../globals.css";
 import { Locale, t } from "@/locales/locale";
 import { GlobalProvider } from "../../context/GlobalContext";
 import { ModalProvider } from "../../context/ModalContext";
+import { BASE_URL } from "@/lib/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,12 +19,49 @@ const geistMono = Geist_Mono({
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  // params: Promise<{ locale: string }>;
+  params: { locale: string };
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale } = params;
+  const localeMap: Record<string, string> = {
+    en: "en_US",
+    fr: "fr_FR",
+    ru: "ru_RU",
+  };
+
   return {
-    title: t(locale as Locale, "meta.titleFull"),
+    title: {
+      default: t(locale as Locale, "meta.titleFull"),
+      template: `%s | ${t(locale as Locale, "meta.titleFull")}`,
+    },
     description: t(locale as Locale, "meta.description"),
+    metadataBase: new URL(BASE_URL),
+    alternates: {
+      canonical: `${BASE_URL}/`,
+      languages: {
+        en: `${BASE_URL}/en/`,
+        fr: `${BASE_URL}/fr/`,
+        ru: `${BASE_URL}/ru/`,
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title: t(locale as Locale, "meta.titleFull"),
+      description: t(locale as Locale, "meta.description"),
+      url: BASE_URL,
+      siteName: t(locale as Locale, "meta.titleFull"),
+      locale: localeMap[locale],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t(locale as Locale, "meta.titleFull"),
+      description: t(locale as Locale, "meta.description"),
+      creator: "@yourhandle",
+    },
   };
 }
 
