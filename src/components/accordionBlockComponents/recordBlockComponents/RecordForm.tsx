@@ -79,7 +79,7 @@ const RecordForm: React.FC<RecordFormProps> = ({
         <>
           <div className="col-span-2 grid grid-cols-2 gap-2 *:border-l *:border-b *:border-blue-200">
             <DescPBlock
-              outerStyle="*:text-black *:font-semibold pl-1"
+              outerStyle="flex flex-row items-center gap-2 *:text-black *:font-semibold pl-1"
               spanStyle={`text-xs truncate`}
               label={`${t(locale, `body.form.labels.year`)}: `}
               value={`${currentYearMonth[0]}, ${t(

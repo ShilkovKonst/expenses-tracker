@@ -126,7 +126,7 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
         addIcon={<AddTrackerIcon className="h-5 w-7" />}
         isTrackerType={true}
         dataType="form-new-type"
-        tagStyle="bg-blue-400 hover:bg-blue-500 border-2 border-r-0 border-dotted border-transparent disabled:border-blue-50 disabled:bg-blue-500 disabled:hover:bg-blue-500"
+        tagStyle="bg-blue-400 hover:bg-blue-500 disabled:bg-green-500 disabled:hover:bg-green-500"
         allEntities={allTypes}
         newEntity={newType}
         currentEntity={currentType}
