@@ -1,4 +1,4 @@
-import { Tracker, Month, MonthIdType, Year } from "@/types/formTypes";
+import { Month, MonthIdType, Year } from "@/types/formTypes";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
 type OnScrollYearHelperOutput = {
@@ -7,25 +7,25 @@ type OnScrollYearHelperOutput = {
 };
 
 export function onScrollYearHelper(
-  tracker: Tracker,
-  years: NodeListOf<HTMLElement>,
+  years: Year[],
+  yearNodes: NodeListOf<HTMLElement>,
   setExpandYearDataType: Dispatch<SetStateAction<string>>
 ): OnScrollYearHelperOutput {
-  for (const yearBodyEl of years) {
+  for (const yearBodyEl of yearNodes) {
     const yearId = yearBodyEl.getAttribute("data-year-id");
 
     if (!yearId) {
       throw new Error("Year element is missing id attribute");
     }
 
-    const year = tracker.years.find((y) => y.id === parseInt(yearId));
+    const year = years.find((y) => y.id === parseInt(yearId));
     if (!year) {
       throw new Error(`Year with id ${yearId} not found in formData`);
     }
 
     const yearHeaderEl = yearBodyEl?.getElementsByClassName("header")[0];
     if (!yearBodyEl || !yearHeaderEl) {
-      throw new Error(`Year body ${tracker.id} is missing or has no header`);
+      throw new Error(`Year body is missing or has no header`);
     }
 
     const rectYearBody = yearBodyEl.getBoundingClientRect();

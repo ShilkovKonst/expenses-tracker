@@ -1,22 +1,15 @@
 "use client";
 import { TrackerName } from "@/types/formTypes";
 import { useGlobal } from "@/context/GlobalContext";
-import { t } from "@/locales/locale";
-import TagButton from "./buttonComponents/TagButton";
 import TopLevelButton from "./buttonComponents/TopLevelButton";
 import { SettingsIcon } from "@/lib/icons";
 import { useModal } from "@/context/ModalContext";
 
-type TrackerNamesProps = {
-  trackerTypes: TrackerName[];
-  handleSelectType: (type: TrackerName) => void;
-};
+// type TrackerNamesProps = {
+// };
 
-const TrackerNamesBlock: React.FC<TrackerNamesProps> = ({
-  trackerTypes,
-  handleSelectType,
-}) => {
-  const { locale, selectedType } = useGlobal();
+const TrackerNamesBlock: React.FC = () => {
+  const { locale } = useGlobal();
   const { setIsSettingsModal, setIsModal } = useModal();
 
   const handleClick = () => {
@@ -26,7 +19,7 @@ const TrackerNamesBlock: React.FC<TrackerNamesProps> = ({
 
   return (
     <div className=" border-t-0 border-l-0 border-2 border-blue-100 flex justify-between items-start gap-2">
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <h3 className={`block font-semibold uppercase text-sm`}>
           {t(locale, `body.form.tracker.typeTitle`)}
         </h3>
@@ -37,11 +30,10 @@ const TrackerNamesBlock: React.FC<TrackerNamesProps> = ({
               tag={type.title}
               handleClick={() => handleSelectType(type)}
               style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out disabled:bg-green-500 disabled:hover:bg-green-500"
-              disabled={selectedType && selectedType.title === type.title}
             />
           ))}
         </div>
-      </div>
+      </div> */}
       <TopLevelButton
         icon={<SettingsIcon className="h-7 w-7" />}
         style="bg-blue-400 hover:bg-blue-500 col-span-2 md:col-span-1 h-9 w-9 mr-2"

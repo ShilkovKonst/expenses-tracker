@@ -3,13 +3,15 @@ import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { useGlobal } from "@/context/GlobalContext";
 import { useModal } from "@/context/ModalContext";
 import { t } from "@/locales/locale";
-import { Record } from "@/types/formTypes";
+import { MonthRecord } from "@/types/formTypes";
 import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { MONTHS } from "@/lib/constants";
+import { useTracker } from "@/context/TrackerContext";
+// import { MONTHS } from "@/lib/constants";
 
 type FormConfirmBlockProps = {
   deleteEntity: "record" | "tag" | "tracker";
-  handleDelete: (record: Record, isDelete: boolean) => void;
+  handleDelete: (record: MonthRecord, isDelete: boolean) => void;
   handleClear: () => void;
 };
 
@@ -19,6 +21,7 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
   handleClear,
 }) => {
   const { locale } = useGlobal();
+  const { trackerTags } = useTracker();
   const { formModalBody } = useModal();
 
   const handleClick = () => {
@@ -44,7 +47,7 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
                 label={`${t(locale, `body.form.labels.year`)}: `}
                 value={`${formModalBody.yearId}, ${t(
                   locale,
-                  `body.form.valueMonth.${MONTHS[formModalBody.monthId - 1]}`
+                  `body.form.valueMonth.${MONTHS[formModalBody.monthId]}`
                 )}`}
               />
               <DescPBlock
@@ -69,12 +72,14 @@ const FormDeleteBlock: React.FC<FormConfirmBlockProps> = ({
                 label={`${t(locale, `body.form.operations.amount`)}: `}
                 value={formModalBody.record.amount}
               />
-              <DescPBlock
-                outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
-                spanStyle={`text-xs truncate`}
-                label={`${t(locale, `body.form.operations.labelTags`)}: `}
-                value={formModalBody.record.tags.map((t) => t.title)}
-              />
+              {trackerTags && (
+                <DescPBlock
+                  outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
+                  spanStyle={`text-xs truncate`}
+                  label={`${t(locale, `body.form.operations.labelTags`)}: `}
+                  value={formModalBody.record.tags.map((t) => trackerTags[t])}
+                />
+              )}
             </div>
             <DescPBlock
               outerStyle="col-span-2 flex flex-row gap-2 justify-start items-start"

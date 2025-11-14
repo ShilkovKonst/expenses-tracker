@@ -21,8 +21,8 @@
       "labelCancel": "Cancel"
     },
     "peronnalisation": {
-      "title": "Tags and trackers management",
-      "description": "Add, remove, and configure your trackers and record tags."
+      "title": "Tags management",
+      "description": "Add, remove, and configure your record tags."
     },
     "form": {
       "title": "Track your operations",
@@ -53,7 +53,8 @@
         "withoutDesc": "without description"
       },
       "tracker": {
-        "typeTitle": "Select tracker or create new",
+        "idsTitle": "Select tracker from the list below",
+        "loadTitle": "Load tracker from a file",
         "typeCustomTitle": "Enter your custom tracker's name",
         "typeFormTitle": "Or create your custom tracker",
         "typeDefault": "default",

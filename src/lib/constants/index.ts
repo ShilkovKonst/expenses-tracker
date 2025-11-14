@@ -1,19 +1,19 @@
-import { Month, Months } from "@/types/formTypes";
+import { Month } from "@/types/formTypes";
 
-export const MONTHS: Months[] = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
+export const MONTHS: Record<number, string> = {
+  1: "january",
+  2: "february",
+  3: "march",
+  4: "april",
+  5: "may",
+  6: "june",
+  7: "july",
+  8: "august",
+  9: "september",
+  10: "october",
+  11: "november",
+  12: "december",
+};
 
 export const EMPTY_FORM_MONTHS: Month[] = [
   { id: 1, title: "january", records: [], totalAmount: 0 },
@@ -58,5 +58,5 @@ export const EMPTY_FORM_MONTHS: Month[] = [
 export const BASE_URL = "https://expenses-tracker-shilkov.vercel.app/";
 export const CURRENT_YEAR = new Date().getFullYear();
 
-export const AMOUNT_REGEX = /^0+|[^\d.+\-*/=]+/g;
-export const OP_REGEX = /\d+(?:\.\d+)?|[+\-*/]/g;
+export const AMOUNT_REGEX = /^0+|[^\d.+\-*/=]+|[^\d]+$/g;
+export const OP_REGEX = /(?:\d+\.\d+|\d+\.|\.\d+|\d+)|[+\-*/]/g;

@@ -1,21 +1,21 @@
 "use client";
-import { Record } from "@/types/formTypes";
-import FormInputBlock from "../../formComponents/FormInputBlock";
-import MidLevelButton from "../../buttonComponents/MidLevelButton";
+import { MonthRecord } from "@/types/formTypes";
+import FormInputBlock from "./FormInputBlock";
+import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { ChangeEvent, useEffect, useState } from "react";
 import FormRadioBlock from "@/components/formComponents/FormRadioBlock";
 import FormTagsBlock from "@/components/formComponents/FormTagsBlock";
-import DescPBlock from "../DescPBlock";
+import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { useModal } from "@/context/ModalContext";
 import { MONTHS } from "@/lib/constants";
-import FormSelectBlock from "../../formComponents/FormSelectBlock";
+import FormSelectBlock from "./FormSelectBlock";
 import { getMonthDays } from "@/lib/utils/monthHelper";
-import { calcExpression, regexAmount } from "@/lib/utils/recordAmountHelper";
+import { calcExpression, trimLeadingZeros } from "@/lib/utils/recordAmountHelper";
 
 type RecordFormProps = {
-  handleUpdate: (record: Record, isDelete: boolean) => void;
+  handleUpdate: (record: MonthRecord, isDelete: boolean) => void;
   handleClear: () => void;
 };
 
@@ -26,28 +26,45 @@ const RecordForm: React.FC<RecordFormProps> = ({
   const { locale } = useGlobal();
   const { formModalBody } = useModal();
 
-  const [currentRecord, setCurrentRecord] = useState<Record | undefined>(
+  const [currentRecord, setCurrentRecord] = useState<MonthRecord | undefined>(
     undefined
   );
   const [currentYearMonth, setCurrentYearMonth] = useState<number[]>([]);
   const [isCalcMode, setIsCalcMode] = useState<boolean>(false);
 
-  const handleOperationChange = <K extends keyof Record>(
+  const handleOperationChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    let regexValue = value;
-    if (name === "amount") {
-      regexValue = regexAmount(value);
-      if (regexValue.slice(1).match(/[+\-*\/]\d+/g) && !isCalcMode)
-        setIsCalcMode(true);
-      if (!regexValue.slice(1).match(/[+\-*\/]\d+/g) && isCalcMode)
-        setIsCalcMode(false);
+    const key = name as keyof MonthRecord;
+    let normalizedValue: MonthRecord[keyof MonthRecord];
+
+    switch (key) {
+      case "id":
+      case "type":
+      case "description":
+        normalizedValue = value;
+        break;
+      case "date":
+        const parsed = Number(value);
+        normalizedValue = Number.isFinite(parsed) ? parsed : -1;
+        break;
+      case "amount":
+        normalizedValue = trimLeadingZeros(value);
+        const isExpr = /[+\-*\/]\d+/g.test(normalizedValue.slice(1));
+        setIsCalcMode(isExpr);
+        break;
+      case "tags":
+        normalizedValue = currentRecord ? currentRecord.tags : [];
+        break;
+      default:
+        return;
     }
+
     if (currentRecord)
       setCurrentRecord({
         ...currentRecord,
-        [name as K]: regexValue as Record[K],
+        [key]: normalizedValue,
       });
   };
 
@@ -84,7 +101,7 @@ const RecordForm: React.FC<RecordFormProps> = ({
               label={`${t(locale, `body.form.labels.year`)}: `}
               value={`${currentYearMonth[0]}, ${t(
                 locale,
-                `body.form.valueMonth.${MONTHS[currentYearMonth[1] - 1]}`
+                `body.form.valueMonth.${MONTHS[currentYearMonth[1]]}`
               )}`}
             />
             <FormRadioBlock

@@ -10,9 +10,12 @@ import {
   onScrollSetter,
   onScrollYearHelper,
 } from "@/lib/utils/onScrollHelper";
+import { useTracker } from "@/context/TrackerContext";
 
 const AccordionBlock: React.FC = () => {
-  const { locale, tracker } = useGlobal();
+  const { locale } = useGlobal();
+  const { trackerId, trackerYears } = useTracker();
+
   const [activeMonth, setActiveMonth] = useState<Month | undefined>(undefined);
   const [activeYear, setActiveYear] = useState<Year | undefined>(undefined);
   const [expandYearDataType, setExpandYearDataType] = useState<string>("");
@@ -22,34 +25,36 @@ const AccordionBlock: React.FC = () => {
   const activeMonthRef = useRef<Month | undefined>(undefined);
 
   useEffect(() => {
-    const years = document.querySelectorAll<HTMLElement>(
-      `[data-year-body="${tracker.id}"]`
-    );
-
-    const onScroll = () => {
-      const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
-        tracker,
-        years,
-        setExpandYearDataType
+    if (trackerYears) {
+      const years = document.querySelectorAll<HTMLElement>(
+        `[data-year-body="${trackerId}"]`
       );
-      onScrollSetter(newActiveYear, activeYearRef, setActiveYear);
 
-      if (activeYearBodyEl && newActiveYear) {
-        const months = activeYearBodyEl.querySelectorAll<HTMLElement>(
-          `[data-month-body="${newActiveYear.id}"]`
+      const onScroll = () => {
+        const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
+          trackerYears,
+          years,
+          setExpandYearDataType
         );
-        const { newActiveMonth } = onScrollMonthHelper(
-          months,
-          newActiveYear,
-          setExpandMonthDataType
-        );
-        onScrollSetter(newActiveMonth, activeMonthRef, setActiveMonth);
-      }
-    };
+        onScrollSetter(newActiveYear, activeYearRef, setActiveYear);
 
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [tracker]);
+        if (activeYearBodyEl && newActiveYear) {
+          const months = activeYearBodyEl.querySelectorAll<HTMLElement>(
+            `[data-month-body="${newActiveYear.id}"]`
+          );
+          const { newActiveMonth } = onScrollMonthHelper(
+            months,
+            newActiveYear,
+            setExpandMonthDataType
+          );
+          onScrollSetter(newActiveMonth, activeMonthRef, setActiveMonth);
+        }
+      };
+
+      window.addEventListener("scroll", onScroll);
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+  }, [trackerId, trackerYears]);
 
   useEffect(() => {
     activeYearRef.current = activeYear;
@@ -82,9 +87,10 @@ const AccordionBlock: React.FC = () => {
           recordsLength={activeMonth.records?.length}
         />
       )}
-      {tracker.years.map((year, index) => (
-        <YearBlock dataId={tracker.id} key={index} year={year} />
-      ))}
+      {trackerYears &&
+        trackerYears.map((year, index) => (
+          <YearBlock dataId={trackerId} key={index} year={year} />
+        ))}
     </div>
   );
 };

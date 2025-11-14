@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
-import { Record, RecordTag } from "@/types/formTypes";
+import { MonthRecord } from "@/types/formTypes";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import TagButton from "../buttonComponents/TagButton";
 import { t } from "@/locales/locale";
@@ -9,10 +9,11 @@ import LowLevelButton from "../buttonComponents/LowLevelButton";
 import { AddIcon } from "@/lib/icons";
 import FormInputBlock from "./FormInputBlock";
 import { compare } from "@/lib/utils/compareHelper";
+import { useTracker } from "@/context/TrackerContext";
 
 type FormTagsProps = {
-  record: Record;
-  setRecord: Dispatch<SetStateAction<Record | undefined>>;
+  record: MonthRecord;
+  setRecord: Dispatch<SetStateAction<MonthRecord | undefined>>;
   title: string;
   styleLabel: string;
   styleInput: string;
@@ -24,84 +25,72 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
   title,
   styleLabel,
 }) => {
-  const { locale, recordTags, setRecordTags, selectedType } = useGlobal();
+  const { locale } = useGlobal();
+  const { trackerTags, setTrackerTags } = useTracker();
 
-  const [currentTags, setCurrentTags] = useState<RecordTag[]>(
-    record?.tags ?? []
-  );
-  const [filteredTags, setFilteredTags] = useState<RecordTag[]>(
-    recordTags.filter((t) => t.tracker === selectedType.title)
-  );
-  const [newTag, setNewTag] = useState<RecordTag>({
-    tracker: selectedType.title,
-    title: "",
-  });
+  const [tags, setTags] = useState<Record<string, string>>();
+
+  const [recordTags, setRecordTags] = useState<string[]>(record?.tags);
+  const [newTag, setNewTag] = useState<string>("");
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const handleAddClick = (tag: RecordTag) => {
-    if (currentTags.every((t) => t.title !== tag.title)) {
-      setCurrentTags([...currentTags, tag]);
+  useEffect(() => {
+    if (trackerTags) {
+      setTags({ ...trackerTags });
     }
-  };
-
-  const handleRemoveClick = (tag: RecordTag) => {
-    setCurrentTags([...currentTags.filter((t) => t.title !== tag.title)]);
-  };
-
-  const handleAddNewTag = (newTag: RecordTag) => {
-    setCurrentTags([...currentTags, newTag]);
-    setRecordTags([...recordTags, newTag]);
-    setNewTag({
-      tracker: selectedType.title,
-      title: "",
-    });
-  };
+  }, [trackerTags]);
 
   useEffect(() => {
-    setIsDisabled(
-      recordTags.some(
-        (t) => t.tracker === selectedType.title && t.title === newTag.title
-      )
-    );
-  }, [newTag, recordTags]);
+    setNewTag("");
+    if (
+      tags &&
+      trackerTags &&
+      Object.values(tags).length !== Object.values(trackerTags).length
+    )
+      setTrackerTags({ ...tags });
+  }, [tags]);
 
   useEffect(() => {
-    setRecord({ ...record, tags: currentTags });
-    let tags = recordTags;
-    for (const tag of currentTags) {
-      if (tags.some((t) => t === tag))
-        tags = [...tags.filter((t) => t.title !== tag.title)];
-    }
-    setFilteredTags(tags.filter((t) => t.tracker === selectedType.title));
+    setIsDisabled(Object.values(tags ?? []).some((t) => t === newTag));
+  }, [newTag, tags]);
 
-    if (
-      currentTags.some((t) => t.title === "cash") &&
-      currentTags.some((t) => t.title === "card")
-    ) {
-      setCurrentTags([...currentTags.filter((t) => t.title !== "card")]);
+  useEffect(() => {
+    setRecord({ ...record, tags: recordTags });
+  }, [recordTags]);
+
+  // useEffect(() => {
+  //   console.log(record);
+  // }, [record]);
+
+  const handleAddClick = (id: string) => {
+    if (recordTags.every((t) => t !== id)) {
+      setRecordTags([...recordTags, id]);
     }
-    if (
-      currentTags.some((t) => t.title === "card") &&
-      currentTags.some((t) => t.title === "cash")
-    ) {
-      setCurrentTags([...currentTags.filter((t) => t.title !== "cash")]);
-    }
-  }, [currentTags]);
+  };
+
+  const handleRemoveClick = (id: string) => {
+    setRecordTags([...recordTags.filter((t) => t !== id)]);
+  };
+
+  const handleAddNewTag = (newTag: string) => {
+    setRecordTags([...recordTags, `t${Object.values(tags ?? []).length}`]);
+    setTags({ ...tags, [`t${Object.values(tags ?? []).length}`]: newTag });
+  };
 
   return (
     <div className="col-span-2">
       <p className={`block font-semibold uppercase ${styleLabel}`}>
-        {title} ({currentTags?.length})
+        {title} ({recordTags?.length})
       </p>
       <div
         className={`px-2 min-h-8 w-full border-2 border-blue-100 rounded-md rounded-b-none transition-colors duration-200 ease-in-out bg-white flex items-center gap-2`}
       >
-        {currentTags.length !== 0 ? (
-          currentTags?.map((tag, i) => (
+        {recordTags.length !== 0 ? (
+          recordTags?.map((id, i) => (
             <TagButton
-              handleClick={() => handleRemoveClick(tag)}
+              handleClick={() => handleRemoveClick(id)}
               key={i}
-              tag={tag.title}
+              tag={tags ? tags[id] ?? id : id}
               style="bg-blue-300"
             />
           ))
@@ -115,26 +104,28 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
       </div>
       <div className="p-2 border-t-0 border-2 border-blue-100 rounded-md rounded-t-none">
         <div className="relative w-full overflow-hidden pb-2 transition-[height] duration-200 ease-in-out flex flex-wrap items-center gap-2">
-          {filteredTags
-            .sort((a, b) => compare(a.title, b.title))
-            .map((tag, i) => (
-              <TagButton
-                key={i}
-                tag={tag.title}
-                handleClick={() => handleAddClick(tag)}
-                style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
-              />
-            ))}
+          {tags &&
+            Object.entries(tags)
+              .sort((a, b) => compare(a[1], b[1]))
+              .map(
+                (entry, i) =>
+                  recordTags.every((t) => t !== entry[0]) && (
+                    <TagButton
+                      key={i}
+                      tag={entry[1]}
+                      handleClick={() => handleAddClick(entry[0])}
+                      style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
+                    />
+                  )
+              )}
         </div>
         <div className="grid grid-cols-6 gap-2">
           <FormInputBlock
             id="tagInput"
             name="tagInput"
             title=""
-            value={newTag.title}
-            handleChange={(e) =>
-              setNewTag({ ...newTag, title: e.target.value })
-            }
+            value={newTag}
+            handleChange={(e) => setNewTag(e.target.value)}
             outerStyle="col-span-4"
             styleLabel=""
             styleInput="focus:outline-blue-300"
@@ -146,7 +137,7 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             icon={<AddIcon className="w-5 h-5" />}
             handleClick={() => handleAddNewTag(newTag)}
             style="col-span-2 rounded-sm w-6 h-6 my-auto"
-            disabled={isDisabled || newTag.title.length === 0}
+            disabled={isDisabled || newTag.length === 0}
           />
           {isDisabled && (
             <p className="col-span-6 text-xs text-red-600 my-auto">

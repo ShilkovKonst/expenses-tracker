@@ -1,5 +1,5 @@
 "use client";
-import { TrackerName, Record, RecordTag } from "@/types/formTypes";
+import { TrackerName, MonthRecord, RecordTag } from "@/types/formTypes";
 import {
   createContext,
   Dispatch,
@@ -15,7 +15,7 @@ export type FormModalBodyType = {
   type: ModalBodyType;
   yearId: number;
   monthId: number;
-  record: Record;
+  record: MonthRecord;
 };
 export type SettingsModalBodyType = {
   types: TrackerName[];

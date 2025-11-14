@@ -1,26 +1,12 @@
 import { Month, MonthIdType, Months } from "@/types/formTypes";
-
-export const year = {
-  1: "january",
-  2: "february",
-  3: "march",
-  4: "april",
-  5: "may",
-  6: "june",
-  7: "july",
-  8: "august",
-  9: "september",
-  10: "october",
-  11: "november",
-  12: "december",
-} as const;
+import { MONTHS } from "../constants";
 
 export function getMonthById<ID extends MonthIdType>(id: ID): Months {
-  return year[id];
+  return MONTHS[id];
 }
 
 export function getMonthIdByTitle<T extends Months>(title: T): MonthIdType {
-  const entry = Object.entries(year).find(([, v]) => v === title);
+  const entry = Object.entries(MONTHS).find(([, v]) => v === title);
   if (!entry) {
     throw new Error(`Month with title ${title} not found`);
   }
@@ -41,6 +27,6 @@ export function initEmptyMonths(): Month[] {
 }
 
 export function getMonthDays(year: number, month: number): number[] {
-  const days = new Date(year, month , 0).getDate();
+  const days = new Date(year, month, 0).getDate();
   return Array.from({ length: days }, (_, i) => i + 1);
 }

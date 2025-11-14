@@ -27,8 +27,8 @@ const DescPBlock: React.FC<DescPBlockProps> = ({
         {Array.isArray(value) ? (
           (value as string[])
             .sort((a, b) => compare(a, b))
-            .map((v) => (
-              <span key={v} className={`font-medium ${spanStyle} border px-1`}>
+            .map((v, i) => (
+              <span key={i} className={`font-medium ${spanStyle} border px-1`}>
                 {v}
               </span>
             ))

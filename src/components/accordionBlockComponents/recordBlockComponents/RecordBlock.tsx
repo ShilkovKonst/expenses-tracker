@@ -1,19 +1,21 @@
 "use client";
-import { Record } from "@/types/formTypes";
+import { MonthRecord } from "@/types/formTypes";
 import RecordDescriptionBlock from "./RecordDescriptionBlock";
 import RecordButtonBlock from "./RecordButtonBlock";
 import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
 import { ModalBodyType, useModal } from "@/context/ModalContext";
+import { useTracker } from "@/context/TrackerContext";
 
 type RecordProps = {
   yearId: number;
   monthId: number;
-  record: Record;
+  record: MonthRecord;
 };
 
 const RecordBlock: React.FC<RecordProps> = ({ yearId, monthId, record }) => {
   const { locale } = useGlobal();
+  const { trackerTags } = useTracker();
   const { setIsModal, setFormModalBody } = useModal();
 
   const handleCallFormModal = (modalType: ModalBodyType) => {
@@ -39,7 +41,13 @@ const RecordBlock: React.FC<RecordProps> = ({ yearId, monthId, record }) => {
           labelRecordAmount={`${t(locale, `body.form.operations.amount`)}: `}
           labelRecordDate={`${t(locale, `body.form.labels.date`)}: `}
           recordType={record.type}
-          recordTags={record.tags?.length > 0 ? record.tags.map((t) => t.title) : t(locale, "body.form.labels.withoutTags")}
+          recordTags={
+            record.tags?.length > 0
+              ? trackerTags
+                ? record.tags.map((t) => trackerTags[t])
+                : []
+              : t(locale, "body.form.labels.withoutTags")
+          }
           recordDescription={
             record.description.length > 0
               ? record.description

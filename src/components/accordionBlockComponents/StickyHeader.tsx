@@ -1,8 +1,7 @@
 "use client";
-import { useGlobal } from "@/context/GlobalContext";
-import { t } from "@/locales/locale";
 import HeaderButtonBlock from "./HeaderButtonBlock";
 import { useModal } from "@/context/ModalContext";
+import { useTracker } from "@/context/TrackerContext";
 
 type StickyHeaderProps = {
   labelMain: string;
@@ -35,7 +34,7 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
         yearId: yearId,
         monthId: monthId,
         record: {
-          id: `${yearId}-${monthId}-${recordsLength}`,
+          id: `${yearId}-${monthId}`,
           date: -1,
           type: "cost",
           tags: [],
@@ -91,18 +90,14 @@ const StickyDescH3Block: React.FC<StickyDescH3BlockProps> = ({
   recordsLength,
   label,
 }) => {
-  const { locale, selectedType } = useGlobal();
+  const { trackerId } = useTracker();
   return (
     <div className={`col-span-2 flex justify-start items-center`}>
       <h3
         className={`text-xs sm:text-sm font-bold text-blue-800 capitalize flex flex-row justify-start items-center gap-1`}
       >
         {!isMonth && (
-          <span className="max-w-20 truncate lg:max-w-max">
-            {selectedType.title === "default"
-              ? t(locale, "body.form.tracker.typeDefault")
-              : selectedType.title}
-          </span>
+          <span className="max-w-20 truncate lg:max-w-max">{trackerId}</span>
         )}
         <span>
           {label} {recordsLength && `(${recordsLength})`}

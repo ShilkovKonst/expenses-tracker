@@ -21,8 +21,8 @@
       "labelCancel": "Annuler"
     },
     "peronnalisation": {
-      "title": "Gestion des étiquettes et des suivis",
-      "description": "Ajoutez, supprimez et configurez vos suivis et étiquettes d'enregistrements."
+      "title": "Gestion des étiquettes",
+      "description": "Ajoutez, supprimez et configurez vos étiquettes d'enregistrements."
     },
     "form": {
       "title": "Suivez vos opérations",
@@ -53,7 +53,8 @@
         "withoutDesc": "sans description"
       },
       "tracker": {
-        "typeTitle": "Sélectionnez un suivi ou créez la vôtre",
+        "idsTitle": "Sélectionnez un suivi dans la liste ci-dessous",
+        "loadTitle": "Charger un suivi à partir d'un fichier",
         "typeCustomTitle": "Saisir le nom de votre type personnalisé",
         "typeFormTitle": "Créez votre type",
         "typeDefault": "défaut",

@@ -1,4 +1,4 @@
-import { regexAmount } from "@/lib/utils/recordAmountHelper";
+import { sanitizeAmountExpression } from "@/lib/utils/recordAmountHelper";
 import { ChangeEvent, MouseEvent as RME } from "react";
 
 type FormInputProps = {
@@ -52,7 +52,7 @@ const FormInputBlock: React.FC<FormInputProps> = ({
         className={`w-full border-2 border-blue-100 focus:outline-blue-300 rounded-md text-sm bg-white pl-2 ${styleInput}`}
         type={"text"}
         name={name}
-        value={name === "amount" ? (value ? regexAmount(value) : "0") : value}
+        value={name === "amount" ? sanitizeAmountExpression(value) : value}
         onChange={(e) => handleChange(e)}
         disabled={disabled}
         required={required}

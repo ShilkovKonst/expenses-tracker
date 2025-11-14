@@ -1,15 +1,16 @@
 "use client";
-import { Tracker, Month, Record, Year } from "@/types/formTypes";
-import RecordForm from "./accordionBlockComponents/recordBlockComponents/RecordForm";
-import { useGlobal } from "@/context/GlobalContext";
+import { Month, MonthRecord, Year } from "@/types/formTypes";
+import RecordForm from "./formComponents/RecordForm";
 import { updateItem } from "@/lib/utils/updateDeleteHelper";
 import { useModal } from "@/context/ModalContext";
 import FormDeleteBlock from "./formComponents/FormDeleteBlock";
 import { CURRENT_YEAR } from "@/lib/constants";
 import SettingsBlock from "./settingsBlockComponents/SettingsBlock";
+import { useTracker } from "@/context/TrackerContext";
 
 const ModalFormBlock: React.FC = () => {
-  const { selectedType, recordTags, tracker, setTracker } = useGlobal();
+  const { trackerMeta, trackerYears, setTrackerMeta, setTrackerYears } =
+    useTracker();
   const { setIsModal, formModalBody, setFormModalBody, isSettingsModal } =
     useModal();
 
@@ -18,23 +19,47 @@ const ModalFormBlock: React.FC = () => {
     setIsModal(false);
   };
 
-  const handleUpdateDelete = (operation: Record, isDelete: boolean) => {
+  const handleUpdateDelete = (record: MonthRecord, isDelete: boolean) => {
     if (!formModalBody) return;
-    const { yearId, monthId } = formModalBody;
+    if (!trackerMeta || !trackerYears) return;
 
-    const updOperation = {
-      ...operation,
-      amount: Math.round(operation.amount * 100) / 100,
-    };
+    const { yearId, monthId } = formModalBody;
+    if (!yearId || !monthId) return;
+
     const yearIdx = CURRENT_YEAR - yearId;
     if (yearIdx < 0) return;
-    const year = tracker.years[yearIdx];
-    if (!monthId) return;
-    const month = tracker.years[yearIdx].months[monthId - 1];
+    const year = trackerYears[yearIdx];
+    if (!year) return;
+    const month = year.months[monthId - 1];
+    if (!month) return;
 
-    const [updOperations, totalAmount] = updateItem(
+    const updRecord = {
+      ...record,
+    };
+
+    const oldRecord = month.records.find((r) => r.id === record.id);
+    const oldId = record.id;
+    if (
+      formModalBody.type === "crt" ||
+      (formModalBody.type === "upd" &&
+        oldRecord &&
+        oldRecord.date !== record.date)
+    ) {
+      const dateId = record.date === -1 ? 0 : record.date;
+      let count = 0;
+      while (
+        month.records.some(
+          (r) => r.id === `${yearId}-${monthId}-${dateId}-${count}`
+        )
+      )
+        ++count;
+      updRecord.id = `${yearId}-${monthId}-${dateId}-${count}`;
+    }
+
+    const [updRecords, totalAmount] = updateItem(
       month.records,
-      updOperation,
+      oldId,
+      updRecord,
       (items) =>
         items.reduce(
           (sum, c) => (c.type === "income" ? sum + c.amount : sum - c.amount),
@@ -44,12 +69,13 @@ const ModalFormBlock: React.FC = () => {
     );
     const updMonth: Month = {
       ...month,
-      records: updOperations,
+      records: updRecords,
       totalAmount: totalAmount,
     };
 
     const [updMonths, monthTotalAmount] = updateItem(
       year.months,
+      updMonth.id,
       updMonth,
       (items) => items.reduce((sum, m) => sum + m.totalAmount, 0)
     );
@@ -59,22 +85,11 @@ const ModalFormBlock: React.FC = () => {
       totalAmount: monthTotalAmount,
     };
 
-    const [updYears, yearTotalAmount] = updateItem(
-      tracker.years,
-      updYear,
-      (items) => items.reduce((sum, y) => sum + y.totalAmount, 0)
+    const [updYears] = updateItem(trackerYears, updYear.id, updYear, (items) =>
+      items.reduce((sum, y) => sum + y.totalAmount, 0)
     );
-    const newTracker: Tracker = {
-      ...tracker,
-      id: tracker.id === selectedType.title ? tracker.id : selectedType.title,
-      years: updYears,
-      totalAmount: yearTotalAmount,
-    };
-    setTracker(newTracker);
-    if (localStorage) {
-      localStorage.setItem(selectedType.title, JSON.stringify(newTracker));
-      localStorage.setItem("recordTags", JSON.stringify(recordTags));
-    }
+    setTrackerYears(updYears);
+    setTrackerMeta({ ...trackerMeta, updatedAt: new Date().toISOString() });
     handleClear();
   };
 

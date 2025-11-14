@@ -5,6 +5,7 @@ import { Locale, t } from "@/locales/locale";
 import { GlobalProvider } from "../../context/GlobalContext";
 import { ModalProvider } from "../../context/ModalContext";
 import { BASE_URL } from "@/lib/constants";
+import { TrackerProvider } from "@/context/TrackerContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,10 +20,9 @@ const geistMono = Geist_Mono({
 export async function generateMetadata({
   params,
 }: {
-  // params: Promise<{ locale: string }>;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const { locale } = params;
+  const { locale } = await params;
   const localeMap: Record<string, string> = {
     en: "en_US",
     fr: "fr_FR",
@@ -79,10 +79,12 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white relative flex justify-center w-full`}
       >
         <GlobalProvider>
-          <ModalProvider>
-            {children}
-            <footer className=""></footer>
-          </ModalProvider>
+          <TrackerProvider>
+            <ModalProvider>
+              {children}
+              <footer className=""></footer>
+            </ModalProvider>
+          </TrackerProvider>
         </GlobalProvider>
       </body>
     </html>
