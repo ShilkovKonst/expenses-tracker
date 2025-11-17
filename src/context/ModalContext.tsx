@@ -1,5 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
-import { TrackerName, MonthRecord, RecordTag } from "@/types/formTypes";
+import {
+  TrackerName,
+  MonthRecord,
+  RecordTag,
+  GlobalDataType,
+} from "@/types/formTypes";
 import {
   createContext,
   Dispatch,
@@ -9,10 +15,10 @@ import {
   useState,
 } from "react";
 
-export type ModalBodyType = "crt" | "del" | "upd";
+export type RecordModalType = "crt" | "del" | "upd";
 
-export type FormModalBodyType = {
-  type: ModalBodyType;
+export type ModalBodyType = {
+  type: RecordModalType;
   yearId: number;
   monthId: number;
   record: MonthRecord;
@@ -22,13 +28,20 @@ export type SettingsModalBodyType = {
   tags: RecordTag[];
 };
 
+export type ModalTypeType =
+  | ""
+  | "recordFormBlock"
+  | "mergeTrackerBlock"
+  | "settingsBlock";
+
 interface ModalContextType {
   isModal: boolean;
   setIsModal: Dispatch<SetStateAction<boolean>>;
-  formModalBody: FormModalBodyType | null;
-  setFormModalBody: Dispatch<SetStateAction<FormModalBodyType | null>>;
-  isSettingsModal: boolean;
-  setIsSettingsModal: Dispatch<SetStateAction<boolean>>;
+  modalBody: ModalBodyType | GlobalDataType | null;
+  setModalBody: Dispatch<SetStateAction<ModalBodyType | GlobalDataType | null>>;
+  modalType: ModalTypeType;
+  setModalType: Dispatch<SetStateAction<ModalTypeType>>;
+  handleClear: () => void;
 }
 
 export const ModalContext = createContext<ModalContextType | undefined>(
@@ -37,20 +50,25 @@ export const ModalContext = createContext<ModalContextType | undefined>(
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [isModal, setIsModal] = useState<boolean>(false);
-  const [formModalBody, setFormModalBody] = useState<FormModalBodyType | null>(
-    null
-  );
-  const [isSettingsModal, setIsSettingsModal] = useState<boolean>(false);
+  const [modalBody, setModalBody] = useState<ModalBodyType | GlobalDataType | null>(null);
+  const [modalType, setModalType] = useState<ModalTypeType>("");
+
+  const handleClear = () => {
+    isModal && setIsModal(false);
+    modalBody && setModalBody(null);
+    modalType && setModalType("");
+  };
 
   return (
     <ModalContext.Provider
       value={{
         isModal,
         setIsModal,
-        formModalBody,
-        setFormModalBody,
-        isSettingsModal,
-        setIsSettingsModal,
+        modalBody,
+        setModalBody,
+        modalType,
+        setModalType,
+        handleClear,
       }}
     >
       {children}

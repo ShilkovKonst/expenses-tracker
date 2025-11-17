@@ -6,7 +6,7 @@ import { buildFileName } from "@/lib/utils/trackerDataSetter";
 
 interface LocalFileManagerProps {
   onImport: (imported: GlobalDataType) => void;
-  validate?: (obj: unknown) => obj is GlobalDataType; // опциональная валидация
+  validate?: (obj: unknown) => obj is GlobalDataType;
 }
 
 const LocalFileManager: React.FC<LocalFileManagerProps> = ({
@@ -27,7 +27,6 @@ const LocalFileManager: React.FC<LocalFileManagerProps> = ({
         meta: { ...trackerMeta },
         tagsPool: { ...trackerTags },
         years: [...trackerYears],
-        // totalAmount: trackerData.totalAmount,
         totalAmount: trackerYears.reduce((acc, y) => acc + y.totalAmount, 0),
       });
   }, [trackerId, trackerMeta, trackerTags, trackerYears]);

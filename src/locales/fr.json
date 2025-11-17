@@ -55,6 +55,9 @@
       "tracker": {
         "idsTitle": "Sélectionnez un suivi dans la liste ci-dessous",
         "loadTitle": "Charger un suivi à partir d'un fichier",
+        "mergeTitle": "Le suivi {{trackerId}} figure déjà dans la liste des suivis enregistrés. Que souhaitez-vous faire ?",
+        "registeredDateTitle": "Dernière mise à jour du suivi enregistré :",
+        "importedDateTitle": "Dernière mise à jour du suivi importé :",
         "typeCustomTitle": "Saisir le nom de votre type personnalisé",
         "typeFormTitle": "Créez votre type",
         "typeDefault": "défaut",

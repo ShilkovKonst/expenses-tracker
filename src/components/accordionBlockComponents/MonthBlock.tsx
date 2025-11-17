@@ -15,13 +15,14 @@ type MonthProps = {
 
 const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
   const { locale } = useGlobal();
-  const { setIsModal, setFormModalBody } = useModal();
+  const { setIsModal, setModalBody, setModalType } = useModal();
 
   const [isExpandDisabled, setIsExpandDisabled] = useState<boolean>(true);
 
   const handleAddOperation = () => {
     setIsModal(true);
-    setFormModalBody({
+    setModalType("recordFormBlock");
+    setModalBody({
       type: "crt",
       yearId: yearId,
       monthId: month.id,

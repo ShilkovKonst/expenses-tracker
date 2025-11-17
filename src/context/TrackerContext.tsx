@@ -1,4 +1,5 @@
 "use client";
+import { TRACKER_IDS } from "@/lib/constants";
 import { GlobalDataType, Year } from "@/types/formTypes";
 import {
   createContext,
@@ -39,35 +40,25 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
   const [trackerTags, setTrackerTags] = useState<TrackerTags>(null);
   const [trackerYears, setTrackerYears] = useState<TrackerYears>(null);
 
-  // useEffect(() => {
-  //   if (localStorage) {
-  //     const raw = localStorage.getItem("trackerIds");
-  //     if (raw) {
-  //       const parsed = JSON.parse(raw) as string[];
-  //       const activeTrackerId = parsed[0];
-  //       const rawTracker = localStorage.getItem(activeTrackerId);
-  //       if (rawTracker) {
-  //         const parsedTracker = JSON.parse(rawTracker) as GlobalDataType;
-  //         setTrackerId(parsedTracker.id);
-  //         setTrackerMeta({ ...parsedTracker.meta });
-  //         setTrackerTags({ ...parsedTracker.tagsPool });
-  //         setTrackerYears({ ...parsedTracker.years });
-  //       }
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (localStorage) {
+      const raw = localStorage.getItem(TRACKER_IDS);
+      if (raw) {
+        const parsed: string[] = JSON.parse(raw) as string[];
+        const activeTrackerId = parsed[0];
+        const rawTracker = localStorage.getItem(activeTrackerId);
+        if (rawTracker) {
+          const parsedTracker: GlobalDataType = JSON.parse(rawTracker);
+          setTrackerId(parsedTracker.id);
+          setTrackerMeta({ ...parsedTracker.meta });
+          setTrackerTags({ ...parsedTracker.tagsPool });
+          setTrackerYears([...parsedTracker.years]);
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
-    console.log(
-      "id",
-      trackerId,
-      "meta",
-      trackerMeta,
-      "tags",
-      trackerTags,
-      "years",
-      trackerYears
-    );
     if (
       localStorage &&
       trackerId &&

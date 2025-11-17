@@ -5,18 +5,11 @@ import NewTrackerBlock from "./dataManager/NewTrackerBlock";
 import { useTracker } from "@/context/TrackerContext";
 import { GlobalDataType } from "@/types/formTypes";
 import { setParsedData } from "@/lib/utils/trackerDataSetter";
-import { useGlobal } from "@/context/GlobalContext";
 import RegisteredTrackersBlock from "./dataManager/RegisteredTrackersBlock";
 
 const TrackerBlock = () => {
-  const { trackerIds } = useGlobal();
-  const {
-    trackerMeta,
-    setTrackerId,
-    setTrackerMeta,
-    setTrackerTags,
-    setTrackerYears,
-  } = useTracker();
+  const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
+    useTracker();
   const [message, setMessage] = useState<string | null>(null);
 
   // const onMerge = (imported: GlobalDataType) => {
@@ -121,7 +114,10 @@ const TrackerBlock = () => {
         <NewTrackerBlock />
         <LoadTrackerBlock onImport={onImport} setMessage={setMessage} />
       </div>
-      <div className="grid-rows-2"></div>
+      <div className="grid-rows-2">
+        {/* settings block  */}
+        
+        </div>
       <RegisteredTrackersBlock />
       {message && <div className="text-sm text-gray-700 mt-2">{message}</div>}
     </div>

@@ -1,29 +1,27 @@
 "use client";
 import { Month, MonthRecord, Year } from "@/types/formTypes";
-import RecordForm from "./formComponents/RecordForm";
-import { updateItem } from "@/lib/utils/updateDeleteHelper";
-import { useModal } from "@/context/ModalContext";
-import FormDeleteBlock from "./formComponents/FormDeleteBlock";
-import { CURRENT_YEAR } from "@/lib/constants";
-import SettingsBlock from "./settingsBlockComponents/SettingsBlock";
+import ModalRecordForm from "./ModalRecordForm";
+import SettingsBlock from "../settingsBlockComponents/SettingsBlock";
+import ModalDeleteBlock from "./ModalDeleteBlock";
 import { useTracker } from "@/context/TrackerContext";
+import { useModal } from "@/context/ModalContext";
+import { useModalBody } from "@/hooks/useModalBody";
+import { updateItem } from "@/lib/utils/updateDeleteHelper";
+import { CURRENT_YEAR } from "@/lib/constants";
+import ModalMergeTrackerBlock from "./ModalMergeTrackerBlock";
 
-const ModalFormBlock: React.FC = () => {
+const ModalBlock = () => {
   const { trackerMeta, trackerYears, setTrackerMeta, setTrackerYears } =
     useTracker();
-  const { setIsModal, formModalBody, setFormModalBody, isSettingsModal } =
-    useModal();
+  const { modalType, handleClear } = useModal();
 
-  const handleClear = () => {
-    setFormModalBody(null);
-    setIsModal(false);
-  };
+  const { recordBody, globalBody } = useModalBody();
 
   const handleUpdateDelete = (record: MonthRecord, isDelete: boolean) => {
-    if (!formModalBody) return;
+    if (!recordBody) return;
     if (!trackerMeta || !trackerYears) return;
 
-    const { yearId, monthId } = formModalBody;
+    const { yearId, monthId, type } = recordBody;
     if (!yearId || !monthId) return;
 
     const yearIdx = CURRENT_YEAR - yearId;
@@ -33,17 +31,16 @@ const ModalFormBlock: React.FC = () => {
     const month = year.months[monthId - 1];
     if (!month) return;
 
-    const updRecord = {
+    const updRecord: MonthRecord = {
       ...record,
+      amount: Math.round(record.amount * 100) / 100,
     };
 
     const oldRecord = month.records.find((r) => r.id === record.id);
     const oldId = record.id;
     if (
-      formModalBody.type === "crt" ||
-      (formModalBody.type === "upd" &&
-        oldRecord &&
-        oldRecord.date !== record.date)
+      type === "crt" ||
+      (type === "upd" && oldRecord && oldRecord.date !== record.date)
     ) {
       const dateId = record.date === -1 ? 0 : record.date;
       let count = 0;
@@ -99,25 +96,23 @@ const ModalFormBlock: React.FC = () => {
       className="fixed inset-0 bg-black/10 backdrop-blur-xs z-50 flex items-center justify-center"
     >
       <div className="w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 bg-blue-50 p-5 rounded-lg">
-        {formModalBody &&
-          (formModalBody.type === "upd" || formModalBody.type === "crt" ? (
-            <RecordForm
-              handleUpdate={handleUpdateDelete}
-              handleClear={handleClear}
-            />
-          ) : formModalBody.type === "del" ? (
-            <FormDeleteBlock
+        {modalType === "recordFormBlock" &&
+          recordBody &&
+          (recordBody.type === "del" ? (
+            <ModalDeleteBlock
               deleteEntity="record"
               handleDelete={handleUpdateDelete}
-              handleClear={handleClear}
             />
           ) : (
-            <></>
+            <ModalRecordForm handleUpdate={handleUpdateDelete} />
           ))}
-        {isSettingsModal && <SettingsBlock handleClear={handleClear} />}
+        {modalType === "mergeTrackerBlock" && globalBody && (
+          <ModalMergeTrackerBlock />
+        )}
+        {modalType === "settingsBlock" && <SettingsBlock />}
       </div>
     </div>
   );
 };
 
-export default ModalFormBlock;
+export default ModalBlock;

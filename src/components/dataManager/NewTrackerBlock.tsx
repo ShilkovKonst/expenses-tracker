@@ -8,6 +8,7 @@ import { useGlobal } from "@/context/GlobalContext";
 import { setNewData } from "@/lib/utils/trackerDataSetter";
 import { useTracker } from "@/context/TrackerContext";
 import { GlobalDataType } from "@/types/formTypes";
+import { TRACKER_IDS } from "@/lib/constants";
 
 const NewTrackerBlock = () => {
   const { locale, trackerIds, setTrackerIds } = useGlobal();
@@ -44,7 +45,7 @@ const NewTrackerBlock = () => {
         trackerTags &&
         trackerYears
       ) {
-        let raw = localStorage.getItem("trackerIds");
+        let raw = localStorage.getItem(TRACKER_IDS);
         if (raw) {
           const localIds: string[] = JSON.parse(raw);
           if (localIds.some((id) => id === trackerId)) {
@@ -53,10 +54,10 @@ const NewTrackerBlock = () => {
             );
           }
           const newLocalIds = [...localIds, trackerId];
-          localStorage.setItem("trackerIds", JSON.stringify(newLocalIds));
+          localStorage.setItem(TRACKER_IDS, JSON.stringify(newLocalIds));
           setTrackerIds(newLocalIds);
         } else {
-          localStorage.setItem("trackerIds", JSON.stringify([trackerId]));
+          localStorage.setItem(TRACKER_IDS, JSON.stringify([trackerId]));
           setTrackerIds([trackerId]);
         }
 

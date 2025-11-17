@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
-import React from "react";
+import { useEffect } from "react";
 import TagButton from "../buttonComponents/TagButton";
 import { useTracker } from "@/context/TrackerContext";
 import { GlobalDataType } from "@/types/formTypes";
 
 const RegisteredTrackersBlock = () => {
-  const { locale, trackerIds } = useGlobal();
+  const { locale, trackerIds, setTrackerIds } = useGlobal();
   const {
     trackerId,
     setTrackerId,
@@ -15,6 +16,18 @@ const RegisteredTrackersBlock = () => {
     setTrackerMeta,
     setTrackerTags,
   } = useTracker();
+
+  useEffect(() => {
+    if (localStorage && trackerIds) {
+      for (const id of trackerIds) {
+        const tracker = localStorage.getItem(id);
+        if (!tracker) {
+          setTrackerIds([...trackerIds.filter((t) => t !== id)]);
+          break;
+        }
+      }
+    }
+  }, [trackerIds]);
 
   const handleClick = (id: string) => {
     if (localStorage) {

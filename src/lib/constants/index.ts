@@ -60,3 +60,5 @@ export const CURRENT_YEAR = new Date().getFullYear();
 
 export const AMOUNT_REGEX = /^0+|[^\d.+\-*/=]+|[^\d]+$/g;
 export const OP_REGEX = /(?:\d+\.\d+|\d+\.|\.\d+|\d+)|[+\-*/]/g;
+
+export const TRACKER_IDS = "trackerIds";

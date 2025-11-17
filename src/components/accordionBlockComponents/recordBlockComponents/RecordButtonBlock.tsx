@@ -3,13 +3,13 @@ import TopLevelButton from "../../buttonComponents/TopLevelButton";
 import { DeleteIcon, UpdateIcon } from "@/lib/icons";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
-import { ModalBodyType } from "@/context/ModalContext";
+import { RecordModalType } from "@/context/ModalContext";
 
 type RecordButtonBlockProps = {
   outerStyle: string;
   iconSize: string;
   buttonSize: string;
-  handleCallFormModal: (type: ModalBodyType) => void;
+  handleCallFormModal: (type: RecordModalType) => void;
 };
 
 const RecordButtonBlock: React.FC<RecordButtonBlockProps> = ({

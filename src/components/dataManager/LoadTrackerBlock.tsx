@@ -1,27 +1,36 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { GlobalDataType } from "@/types/formTypes";
+import { t } from "@/locales/locale";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
-import { LoadIcon } from "@/lib/icons";
-import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
+import { useModal } from "@/context/ModalContext";
+import { LoadIcon } from "@/lib/icons";
+import { validate } from "@/lib/utils/dataValidator";
+import { TRACKER_IDS } from "@/lib/constants";
+import { useModalBody } from "@/hooks/useModalBody";
 
 type LoadTrackerType = {
-  validate?: (obj: unknown) => obj is GlobalDataType;
   onImport: (imported: GlobalDataType) => void;
   setMessage: Dispatch<SetStateAction<string | null>>;
 };
 
-const LoadTrackerBlock = ({
-  validate,
-  onImport,
-  setMessage,
-}: LoadTrackerType) => {
-  const { locale } = useGlobal();
-  const { trackerMeta, trackerYears, setTrackerMeta, setTrackerYears } =
-    useTracker();
+const LoadTrackerBlock = ({ onImport, setMessage }: LoadTrackerType) => {
+  const { locale, setTrackerIds } = useGlobal();
+  const {
+    trackerId,
+    trackerMeta,
+    trackerTags,
+    trackerYears,
+    setTrackerId,
+    setTrackerMeta,
+    setTrackerTags,
+    setTrackerYears,
+  } = useTracker();
+  const { setIsModal, setModalType, setModalBody } = useModal();
+  const { globalBody } = useModalBody();
 
-  const [loadedId, setLoadedId] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -40,24 +49,18 @@ const LoadTrackerBlock = ({
     try {
       // можно добавить проверку mime-type: file.type === "application/json"
       const text: string = await file.text();
-      const parsed: GlobalDataType = JSON.parse(text);
-
-      // если передали валидатор — используем его; иначе доверяем и кастим
-      if (validate) {
-        if (!validate(parsed)) {
-          setMessage("❌ Файл не соответствует ожидаемой структуре.");
-          return;
-        }
-        // onImport(parsed);
-      } else {
-        // без валидации — осторожно
-        // onImport(parsed as GlobalDataType);
-        // сделать логику проверки импортируемого файла
-        // сделать модал с предложением слияния, замены или дубля при совпадении айли трекера с уже зарегистрированным
-        setLoadedId(parsed.id);
-        setIsLoaded(true);
+      const validated = validate(JSON.parse(text));
+      if (!validated.success) {
+        setMessage("❌ Файл не соответствует ожидаемой структуре.");
+        console.log(validated.message);
+        console.log(validated.path);
+        return;
       }
-      console.log(parsed);
+      setIsLoaded(true);
+      setModalBody(validated.data);
+      console.log("success");
+      // setLoadedTracker(parsed);
+      // onImport(parsed);
 
       setMessage(`✅ Импорт из "${file.name}" завершён.`);
     } catch (err) {
@@ -68,17 +71,39 @@ const LoadTrackerBlock = ({
     }
   };
 
+  // console.log(globalBody);
+  // console.log(isLoaded);
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && globalBody) {
+      console.log("isLoaded && globalBody");
       if (localStorage) {
-        const raw = localStorage.getItem(loadedId);
+        const raw = localStorage.getItem(TRACKER_IDS);
         if (raw) {
+          console.log("raw");
+          const parsed = JSON.parse(raw);
+          if (
+            Array.isArray(parsed) &&
+            !parsed.some((p) => p === globalBody.id)
+          ) {
+            console.log("raw");
+            const newParsed = [...parsed, globalBody.id];
+            localStorage.setItem(TRACKER_IDS, JSON.stringify(newParsed));
+            setTrackerIds(newParsed);
+          }
+        }
+        console.log("!raw");
+        const rawTracker = localStorage.getItem(globalBody.id);
+        if (rawTracker) {
+          // const parsedTracker = JSON.parse(rawTracker);
+          setIsModal(true);
+          setModalType("mergeTrackerBlock");
         } else {
+          console.log("!rawTracker");
         }
       }
       setIsLoaded(false);
     }
-  }, [isLoaded]);
+  }, [isLoaded, globalBody]);
 
   return (
     <div className="grid grid-cols-5 gap-2 w-full mt-2 overflow-hidden transition-[height] duration-300 ease-in-out">

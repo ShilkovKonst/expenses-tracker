@@ -14,7 +14,7 @@ type StickyHeaderProps = {
   recordsLength?: number;
 };
 
-const StickyHeader: React.FC<StickyHeaderProps> = ({
+const StickyHeader = ({
   labelMain,
   totalAmount,
   expandDataType,
@@ -23,13 +23,14 @@ const StickyHeader: React.FC<StickyHeaderProps> = ({
   yearId,
   monthId,
   recordsLength,
-}) => {
-  const { setIsModal, setFormModalBody } = useModal();
+}: StickyHeaderProps) => {
+  const { setIsModal, setModalType, setModalBody } = useModal();
 
   const handleAddOperation = () => {
     if (yearId && monthId && recordsLength) {
       setIsModal(true);
-      setFormModalBody({
+      setModalType("recordFormBlock");
+      setModalBody({
         type: "crt",
         yearId: yearId,
         monthId: monthId,

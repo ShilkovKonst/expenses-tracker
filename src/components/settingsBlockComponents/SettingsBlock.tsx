@@ -1,5 +1,5 @@
 "use client";
-import { FC, MouseEvent as RME, useEffect, useState } from "react";
+import { MouseEvent as RME, useEffect, useState } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
 import { AddIcon, AddTagIcon, CloseIcon } from "@/lib/icons";
@@ -11,12 +11,12 @@ import SettingsRemoveBlock from "./SettingsRemoveBlock";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 
-type SettingsBlockProps = { handleClear: () => void };
+// type SettingsBlockProps = { handleClear: () => void };
 
-const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
+const SettingsBlock = () => {
   const { locale } = useGlobal();
   const { trackerTags } = useTracker();
-  const { setIsSettingsModal } = useModal();
+  const { handleClear } = useModal();
 
   const [tags, setTags] = useState<Record<string, string>>();
   const [newTag, setNewTag] = useState<string>("");
@@ -30,7 +30,6 @@ const SettingsBlock: FC<SettingsBlockProps> = ({ handleClear }) => {
 
   const handleClearFinal = () => {
     handleClear();
-    setIsSettingsModal(false);
     setExpanded("");
   };
 

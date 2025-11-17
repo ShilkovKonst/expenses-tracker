@@ -1,6 +1,6 @@
 "use client";
 import { MonthRecord } from "@/types/formTypes";
-import FormInputBlock from "./FormInputBlock";
+import FormInputBlock from "../formComponents/FormInputBlock";
 import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
@@ -10,27 +10,29 @@ import FormTagsBlock from "@/components/formComponents/FormTagsBlock";
 import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { useModal } from "@/context/ModalContext";
 import { MONTHS } from "@/lib/constants";
-import FormSelectBlock from "./FormSelectBlock";
+import FormSelectBlock from "../formComponents/FormSelectBlock";
 import { getMonthDays } from "@/lib/utils/monthHelper";
-import { calcExpression, trimLeadingZeros } from "@/lib/utils/recordAmountHelper";
+import {
+  calcExpression,
+  trimLeadingZeros,
+} from "@/lib/utils/recordAmountHelper";
+import { useModalBody } from "@/hooks/useModalBody";
 
 type RecordFormProps = {
   handleUpdate: (record: MonthRecord, isDelete: boolean) => void;
-  handleClear: () => void;
 };
 
-const RecordForm: React.FC<RecordFormProps> = ({
-  handleUpdate,
-  handleClear,
-}) => {
+const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
   const { locale } = useGlobal();
-  const { formModalBody } = useModal();
+  const { handleClear } = useModal();
 
   const [currentRecord, setCurrentRecord] = useState<MonthRecord | undefined>(
     undefined
   );
   const [currentYearMonth, setCurrentYearMonth] = useState<number[]>([]);
   const [isCalcMode, setIsCalcMode] = useState<boolean>(false);
+
+  const { recordBody } = useModalBody();
 
   const handleOperationChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -50,6 +52,7 @@ const RecordForm: React.FC<RecordFormProps> = ({
         normalizedValue = Number.isFinite(parsed) ? parsed : -1;
         break;
       case "amount":
+        console.log(value, typeof value);
         normalizedValue = trimLeadingZeros(value);
         const isExpr = /[+\-*\/]\d+/g.test(normalizedValue.slice(1));
         setIsCalcMode(isExpr);
@@ -69,11 +72,11 @@ const RecordForm: React.FC<RecordFormProps> = ({
   };
 
   useEffect(() => {
-    if (formModalBody?.record) {
-      setCurrentRecord(formModalBody.record);
-      setCurrentYearMonth([formModalBody.yearId, formModalBody.monthId]);
+    if (recordBody) {
+      setCurrentRecord(recordBody.record);
+      setCurrentYearMonth([recordBody.yearId, recordBody.monthId]);
     }
-  }, [formModalBody]);
+  }, [recordBody]);
 
   const handleCalcClick = (value: string) => {
     if (currentRecord) {
@@ -85,9 +88,9 @@ const RecordForm: React.FC<RecordFormProps> = ({
 
   return (
     <form className="form grid grid-cols-2 gap-2">
-      {formModalBody && (
+      {recordBody && (
         <p className="col-span-2 text-lg text-center font-bold mx-auto">
-          {formModalBody.type === "upd"
+          {recordBody.type === "upd"
             ? t(locale, "body.modal.labelTitleUpdate")
             : t(locale, "body.modal.labelTitleCreate")}
         </p>

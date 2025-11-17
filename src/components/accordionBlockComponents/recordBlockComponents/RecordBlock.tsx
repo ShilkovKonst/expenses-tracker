@@ -4,7 +4,7 @@ import RecordDescriptionBlock from "./RecordDescriptionBlock";
 import RecordButtonBlock from "./RecordButtonBlock";
 import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
-import { ModalBodyType, useModal } from "@/context/ModalContext";
+import { RecordModalType, useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 
 type RecordProps = {
@@ -16,11 +16,12 @@ type RecordProps = {
 const RecordBlock: React.FC<RecordProps> = ({ yearId, monthId, record }) => {
   const { locale } = useGlobal();
   const { trackerTags } = useTracker();
-  const { setIsModal, setFormModalBody } = useModal();
+  const { setIsModal, setModalBody, setModalType } = useModal();
 
-  const handleCallFormModal = (modalType: ModalBodyType) => {
+  const handleCallFormModal = (modalType: RecordModalType) => {
     setIsModal(true);
-    setFormModalBody({
+    setModalType("recordFormBlock");
+    setModalBody({
       type: modalType,
       yearId: yearId,
       monthId: monthId,
