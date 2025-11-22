@@ -1,5 +1,5 @@
 type TagButtonProps = {
-  tag: string;
+  tag: string |number;
   style: string;
   handleClick: () => void;
   disabled?: boolean;

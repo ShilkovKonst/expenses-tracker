@@ -12,7 +12,7 @@ import { AddIcon, DeleteIcon } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { t } from "@/locales/locale";
 import TagButton from "../buttonComponents/TagButton";
-import { RecordTag, TrackerName } from "@/types/formTypes";
+import { RecordTag, TrackerName } from "@/lib/types/dataTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import LowLevelButton from "../buttonComponents/LowLevelButton";
 import { compare } from "@/lib/utils/compareHelper";

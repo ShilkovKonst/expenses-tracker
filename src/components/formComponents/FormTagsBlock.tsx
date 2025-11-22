@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
-import { MonthRecord } from "@/types/formTypes";
+import { MonthRecord } from "@/lib/types/dataTypes";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import TagButton from "../buttonComponents/TagButton";
 import { t } from "@/locales/locale";
@@ -10,6 +10,7 @@ import { AddIcon } from "@/lib/icons";
 import FormInputBlock from "./FormInputBlock";
 import { compare } from "@/lib/utils/compareHelper";
 import { useTracker } from "@/context/TrackerContext";
+import { createTag } from "@/idb/tagsCRUD";
 
 type FormTagsProps = {
   record: MonthRecord;
@@ -26,11 +27,11 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
   styleLabel,
 }) => {
   const { locale } = useGlobal();
-  const { trackerTags, setTrackerTags } = useTracker();
+  const { trackerId, trackerTags, setTrackerTags } = useTracker();
 
-  const [tags, setTags] = useState<Record<string, string>>();
+  const [tags, setTags] = useState<Record<number, string>>();
 
-  const [recordTags, setRecordTags] = useState<string[]>(record?.tags);
+  const [recordTags, setRecordTags] = useState<number[]>(record?.tags);
   const [newTag, setNewTag] = useState<string>("");
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
@@ -58,23 +59,21 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
     setRecord({ ...record, tags: recordTags });
   }, [recordTags]);
 
-  // useEffect(() => {
-  //   console.log(record);
-  // }, [record]);
-
-  const handleAddClick = (id: string) => {
+  const handleAddClick = (id: number) => {
     if (recordTags.every((t) => t !== id)) {
       setRecordTags([...recordTags, id]);
     }
   };
 
-  const handleRemoveClick = (id: string) => {
+  const handleRemoveClick = (id: number) => {
     setRecordTags([...recordTags.filter((t) => t !== id)]);
   };
 
-  const handleAddNewTag = (newTag: string) => {
-    setRecordTags([...recordTags, `t${Object.values(tags ?? []).length}`]);
-    setTags({ ...tags, [`t${Object.values(tags ?? []).length}`]: newTag });
+  const handleAddNewTag = async (newTag: string) => {
+    const newId = await createTag(trackerId, newTag);
+    
+    setRecordTags([...recordTags, newId]);
+    setTags({ ...tags, [newId]: newTag });
   };
 
   return (
@@ -109,11 +108,11 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
               .sort((a, b) => compare(a[1], b[1]))
               .map(
                 (entry, i) =>
-                  recordTags.every((t) => t !== entry[0]) && (
+                  recordTags.every((t) => t !== Number(entry[0])) && (
                     <TagButton
                       key={i}
                       tag={entry[1]}
-                      handleClick={() => handleAddClick(entry[0])}
+                      handleClick={() => handleAddClick(Number(entry[0]))}
                       style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
                     />
                   )

@@ -1,3 +1,4 @@
+import { intToDecimalString } from "@/lib/utils/amountHelper";
 import DescPBlock from "../DescPBlock";
 
 type RecordDescriptionBlockProps = {
@@ -42,7 +43,7 @@ const RecordDescriptionBlock: React.FC<RecordDescriptionBlockProps> = ({
             recordType === "income" ? "text-green-600" : "text-red-500"
           } text-xs truncate`}
           label={labelRecordAmount}
-          value={recordAmount}
+          value={intToDecimalString(recordAmount)}
         />
       </div>
 

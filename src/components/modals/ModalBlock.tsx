@@ -1,61 +1,41 @@
 "use client";
-import { Month, MonthRecord, Year } from "@/types/formTypes";
+import { Month, MonthRecord, Year } from "@/lib/types/dataTypes";
 import ModalRecordForm from "./ModalRecordForm";
 import SettingsBlock from "../settingsBlockComponents/SettingsBlock";
 import ModalDeleteBlock from "./ModalDeleteBlock";
 import { useTracker } from "@/context/TrackerContext";
 import { useModal } from "@/context/ModalContext";
 import { useModalBody } from "@/hooks/useModalBody";
-import { updateItem } from "@/lib/utils/updateDeleteHelper";
-import { CURRENT_YEAR } from "@/lib/constants";
-import ModalMergeTrackerBlock from "./ModalMergeTrackerBlock";
+import { updateObject, updateArray } from "@/lib/utils/updateDeleteHelper";
+import ModalImportTrackerBlock from "./ModalImportTrackerBlock";
+import { formatDatetoMeta } from "@/lib/utils/trackerDataSetter";
 
 const ModalBlock = () => {
   const { trackerMeta, trackerYears, setTrackerMeta, setTrackerYears } =
     useTracker();
   const { modalType, handleClear } = useModal();
 
-  const { recordBody, globalBody } = useModalBody();
+  const { recordBody, importTrackerBody } = useModalBody();
 
   const handleUpdateDelete = (record: MonthRecord, isDelete: boolean) => {
     if (!recordBody) return;
     if (!trackerMeta || !trackerYears) return;
 
-    const { yearId, monthId, type } = recordBody;
-    if (!yearId || !monthId) return;
+    if (!record) return;
 
-    const yearIdx = CURRENT_YEAR - yearId;
-    if (yearIdx < 0) return;
-    const year = trackerYears[yearIdx];
+    const year = trackerYears[record.year];
     if (!year) return;
-    const month = year.months[monthId - 1];
+
+    const month = year.months[record.month];
     if (!month) return;
 
     const updRecord: MonthRecord = {
       ...record,
-      amount: Math.round(record.amount * 100) / 100,
+      amount: record.amount,
     };
 
-    const oldRecord = month.records.find((r) => r.id === record.id);
-    const oldId = record.id;
-    if (
-      type === "crt" ||
-      (type === "upd" && oldRecord && oldRecord.date !== record.date)
-    ) {
-      const dateId = record.date === -1 ? 0 : record.date;
-      let count = 0;
-      while (
-        month.records.some(
-          (r) => r.id === `${yearId}-${monthId}-${dateId}-${count}`
-        )
-      )
-        ++count;
-      updRecord.id = `${yearId}-${monthId}-${dateId}-${count}`;
-    }
-
-    const [updRecords, totalAmount] = updateItem(
+    const { updated: updRecords, agg: totalAmount } = updateArray(
       month.records,
-      oldId,
       updRecord,
       (items) =>
         items.reduce(
@@ -70,9 +50,8 @@ const ModalBlock = () => {
       totalAmount: totalAmount,
     };
 
-    const [updMonths, monthTotalAmount] = updateItem(
+    const { updated: updMonths, agg: monthTotalAmount } = updateObject(
       year.months,
-      updMonth.id,
       updMonth,
       (items) => items.reduce((sum, m) => sum + m.totalAmount, 0)
     );
@@ -82,11 +61,12 @@ const ModalBlock = () => {
       totalAmount: monthTotalAmount,
     };
 
-    const [updYears] = updateItem(trackerYears, updYear.id, updYear, (items) =>
-      items.reduce((sum, y) => sum + y.totalAmount, 0)
-    );
+    const { updated: updYears } = updateObject(trackerYears, updYear);
     setTrackerYears(updYears);
-    setTrackerMeta({ ...trackerMeta, updatedAt: new Date().toISOString() });
+    setTrackerMeta({
+      ...trackerMeta,
+      updatedAt: formatDatetoMeta(new Date()),
+    });
     handleClear();
   };
 
@@ -106,8 +86,8 @@ const ModalBlock = () => {
           ) : (
             <ModalRecordForm handleUpdate={handleUpdateDelete} />
           ))}
-        {modalType === "mergeTrackerBlock" && globalBody && (
-          <ModalMergeTrackerBlock />
+        {modalType === "mergeTrackerBlock" && importTrackerBody && (
+          <ModalImportTrackerBlock />
         )}
         {modalType === "settingsBlock" && <SettingsBlock />}
       </div>

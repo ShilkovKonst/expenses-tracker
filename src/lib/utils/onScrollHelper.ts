@@ -1,4 +1,4 @@
-import { Month, MonthIdType, Year } from "@/types/formTypes";
+import { Month, MonthIdType, Year } from "@/lib/types/dataTypes";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
 type OnScrollYearHelperOutput = {
@@ -7,7 +7,7 @@ type OnScrollYearHelperOutput = {
 };
 
 export function onScrollYearHelper(
-  years: Year[],
+  years: Record<number, Year>,
   yearNodes: NodeListOf<HTMLElement>,
   setExpandYearDataType: Dispatch<SetStateAction<string>>
 ): OnScrollYearHelperOutput {
@@ -18,7 +18,7 @@ export function onScrollYearHelper(
       throw new Error("Year element is missing id attribute");
     }
 
-    const year = years.find((y) => y.id === parseInt(yearId));
+    const year = years[parseInt(yearId)];
     if (!year) {
       throw new Error(`Year with id ${yearId} not found in formData`);
     }
@@ -65,7 +65,7 @@ export function onScrollMonthHelper(
       if (dataMonth) {
         const monthId = parseInt(dataMonth) as MonthIdType;
         setExpandMonthDataType(`${newActiveYear.id}-${monthId}`);
-        return { newActiveMonth: newActiveYear.months[monthId - 1] };
+        return { newActiveMonth: newActiveYear.months[monthId] };
       }
     }
   }

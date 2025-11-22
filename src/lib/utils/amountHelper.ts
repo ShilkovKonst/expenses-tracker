@@ -1,4 +1,4 @@
-import { OP_REGEX } from "../constants";
+import { OP_REGEX } from "../../constants";
 
 export function trimLeadingZeros(num: string): string {
   if (/^0+$/.test(num)) {
@@ -71,7 +71,6 @@ export function sanitizeAmountExpression(raw: string): string {
 
 export function calcExpression(amount: string) {
   let tokens = [...amount.matchAll(OP_REGEX)].map((t) => t[0]);
-  console.log(tokens);
   if (!tokens) return NaN;
 
   /* operations executes strictly from left to right, no algebraic order of operations */
@@ -87,7 +86,7 @@ export function calcExpression(amount: string) {
     if (op === "*") result *= parseFloat(next);
     if (op === "/") result /= parseFloat(next);
   }
-  return Math.round(result * 100) / 100;
+  return result;
 }
 
 export function calcExpressionAlg(amount: string) {
@@ -118,7 +117,6 @@ export function calcExpressionAlg(amount: string) {
       stack.push(token);
     }
   }
-
   let result = parseFloat(stack[0]);
   for (let i = 1; i < stack.length; i += 2) {
     const op = stack[i];
@@ -126,5 +124,20 @@ export function calcExpressionAlg(amount: string) {
     if (op === "+") result += parseFloat(next);
     if (op === "-") result -= parseFloat(next);
   }
-  return result;
+  console.log(result);
+  return Math.round(result * 100);
+}
+
+export function intToDecimalString(amount: number) {
+  return (Math.round(amount) / 100).toFixed(2);
+}
+
+export function decimalToInputString(amount: number): string {
+  return (amount / 100).toString();
+}
+
+export function parseInputAmountToDecimal(value: string): number {
+  const num = Number(value);
+  if (isNaN(num)) return 0;
+  return Math.round(num * 100);
 }

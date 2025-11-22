@@ -25,7 +25,7 @@ const SettingsRemoveBlock = ({
     >
       <div className="mb-auto col-span-2 gap-2 mt-auto">
         <p className="text-lg text-center font-bold mx-auto">
-          {`${t(locale, "body.modal.labelTitleDelete", {
+          {`${t(locale, "body.modal.titleDelete", {
             deleteEntity: t(locale, `body.modal.deleteEntity.tag`),
           })} - ${entity}`}
         </p>

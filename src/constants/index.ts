@@ -1,4 +1,4 @@
-import { Month } from "@/types/formTypes";
+import { Month } from "@/lib/types/dataTypes";
 
 export const MONTHS: Record<number, string> = {
   1: "january",
@@ -62,3 +62,6 @@ export const AMOUNT_REGEX = /^0+|[^\d.+\-*/=]+|[^\d]+$/g;
 export const OP_REGEX = /(?:\d+\.\d+|\d+\.|\.\d+|\d+)|[+\-*/]/g;
 
 export const TRACKER_IDS = "trackerIds";
+export const METADATA_STORE = "MetadataStore";
+export const TAGS_STORE = "TagsStore";
+export const RECORDS_STORE = "RecordsStore";

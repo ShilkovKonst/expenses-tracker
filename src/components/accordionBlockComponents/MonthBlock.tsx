@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Month } from "@/types/formTypes";
+import { Month } from "@/lib/types/dataTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
@@ -24,11 +24,11 @@ const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
     setModalType("recordFormBlock");
     setModalBody({
       type: "crt",
-      yearId: yearId,
-      monthId: month.id,
       record: {
-        id: `${yearId}-${month.id}`,
-        date: -1,
+        id: 0,
+        year: yearId,
+        month: month.id,
+        day: -1,
         type: "cost",
         tags: [],
         description: "",
@@ -68,15 +68,10 @@ const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
       >
         {month.records
           .sort((a, b) =>
-            a.date !== b.date ? a.date - b.date : compare(a.id, b.id)
+            a.day !== b.day ? a.day - b.day : compare(a.id, b.id)
           )
           .map((record, index) => (
-            <RecordBlock
-              key={index}
-              yearId={yearId}
-              monthId={month.id}
-              record={record}
-            />
+            <RecordBlock key={index} record={record} />
           ))}
         <div></div>
       </div>

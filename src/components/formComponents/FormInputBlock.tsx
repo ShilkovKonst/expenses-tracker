@@ -1,4 +1,4 @@
-import { sanitizeAmountExpression } from "@/lib/utils/recordAmountHelper";
+import { sanitizeAmountExpression } from "@/lib/utils/amountHelper";
 import { ChangeEvent, MouseEvent as RME } from "react";
 
 type FormInputProps = {

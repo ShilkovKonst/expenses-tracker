@@ -1,5 +1,5 @@
 import { ModalBodyType } from "@/context/ModalContext";
-import { GlobalDataType } from "@/types/formTypes";
+import { GlobalDataType } from "@/lib/types/dataTypes";
 
 export type ValidationSuccess = {
   success: true;
@@ -24,35 +24,30 @@ export function validate(data: unknown): ValidationResult {
   if (!isObject(d.meta)) return fail("meta", "meta must be an object");
   if (!isObject(d.tagsPool))
     return fail("tagsPool", "tagsPool must be an object");
-  if (!Array.isArray(d.years)) return fail("years", "years must be an array");
+  if (!isObject(d.years)) return fail("years", "years must be an object");
   if (typeof d.totalAmount !== "number")
     return fail("totalAmount", "totalAmount must be a number");
 
   const meta = d.meta as Record<string, unknown>;
-  const allowedMetaKeys = ["createdAt", "updatedAt", "schemaVersion"];
+  const allowedMetaKeys = ["createdAt", "updatedAt"];
   for (const key of allowedMetaKeys) {
     if (!(key in meta))
       return fail(`meta.${key}`, `Missing required meta key '${key}'`);
   }
   if (Object.keys(meta).some((key) => !allowedMetaKeys.includes(key)))
     return fail("meta", "Meta contains unknown keys");
-  if (typeof meta.schemaVersion !== "number")
-    return fail("meta.schemaVersion", "schemaVersion must be a number");
   if (typeof meta.createdAt !== "string")
     return fail("meta.createdAt", "createdAt must be a string");
   if (typeof meta.updatedAt !== "string")
     return fail("meta.updatedAt", "updatedAt must be a string");
 
-  const tagsPool = d.tagsPool as Record<string, string>;
-  const tRegex = /^t\d+$/;
+  const tagsPool: Record<number, string> = d.tagsPool;
   for (const [key, value] of Object.entries(tagsPool)) {
-    if (!tRegex.test(key))
-      return fail(`tagsPool.${key}`, `Invalid tag key '${key}'`);
     if (typeof value !== "string")
       return fail(`tagsPool.${key}`, `Tag value must be string`);
   }
 
-  for (const year of d.years) {
+  for (const year of Object.values(d.years)) {
     if (typeof year.id !== "number")
       return fail("year.id", `Invalid year id '${year.id}'`);
     if (typeof year.totalAmount !== "number")
@@ -60,10 +55,10 @@ export function validate(data: unknown): ValidationResult {
         `year(${year.id}).totalAmount`,
         "totalAmount must be a number"
       );
-    if (!Array.isArray(year.months))
-      return fail(`year(${year.id}).months`, "months must be an array");
+    if (!isObject(year.months))
+      return fail(`year(${year.id}).months`, "months must be an object");
 
-    for (const month of year.months) {
+    for (const month of Object.values(year.months)) {
       if (typeof month.id !== "number")
         return fail(`month(${month.id}).id`, "id must be a number");
       if (typeof month.title !== "string")
@@ -77,14 +72,18 @@ export function validate(data: unknown): ValidationResult {
         );
 
       for (const record of month.records) {
-        const rPath = `record(${record.id})`;
+        const rPath = `record(${record.year}-${record.month}-${record.day})`;
 
-        if (typeof record.id !== "string")
-          return fail(`${rPath}.id`, "id must be a string");
+        if (typeof record.id !== "number")
+          return fail(`${rPath}.id`, "id must be a number");
         if (!["income", "cost"].includes(record.type))
           return fail(`${rPath}.type`, "type must be 'income' or 'cost'");
-        if (typeof record.date !== "number")
-          return fail(`${rPath}.date`, "date must be a number");
+        if (typeof record.day !== "number")
+          return fail(`${rPath}.day`, "date must be a number");
+        if (typeof record.month !== "number")
+          return fail(`${rPath}.month`, "month must be a number");
+        if (typeof record.year !== "number")
+          return fail(`${rPath}.year`, "year must be a number");
         if (typeof record.amount !== "number")
           return fail(`${rPath}.amount`, "amount must be a number");
         if (typeof record.description !== "string")
@@ -93,15 +92,10 @@ export function validate(data: unknown): ValidationResult {
           return fail(`${rPath}.tags`, "tags must be an array");
 
         for (const tag of record.tags) {
-          if (typeof tag !== "string")
+          if (typeof tag !== "number")
             return fail(
               `${rPath}.tags`,
-              `tag '${String(tag)}' is not a string`
-            );
-          if (!tRegex.test(tag))
-            return fail(
-              `${rPath}.tags`,
-              `tag '${tag}' does not match pattern ${tRegex}`
+              `tag '${String(tag)}' is not a number`
             );
           if (!(tag in tagsPool))
             return fail(

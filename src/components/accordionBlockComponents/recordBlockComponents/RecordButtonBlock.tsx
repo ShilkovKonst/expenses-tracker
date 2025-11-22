@@ -22,12 +22,12 @@ const RecordButtonBlock: React.FC<RecordButtonBlockProps> = ({
 
   return (
     <div
-      className={`${outerStyle} gap-2 flex flex-col sm:flex-row justify-center sm:justify-end items-end sm:items-center`}
+      className={`${outerStyle} gap-2 flex flex-col sm:flex-row justify-start sm:justify-end items-end sm:items-center`}
     >
       <TopLevelButton
         icon={<UpdateIcon className={iconSize} />}
         title={t(locale, `body.form.operations.update`)}
-        style={`h-full sm:h-auto bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
+        style={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
         handleClick={() => handleCallFormModal("upd")}
       />
       <TopLevelButton

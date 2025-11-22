@@ -1,7 +1,7 @@
-import { MONTHS } from "@/lib/constants";
+import { MONTHS } from "@/constants";
 
 export type RecordTag = {
-  id: string;
+  id: number;
   title: string;
 };
 
@@ -12,13 +12,13 @@ export type TrackerName = {
 
 export type Tracker = {
   id: string;
-  years: Year[];
+  years: Record<number, Year>;
   totalAmount: number;
 };
 
 export type Year = {
   id: number;
-  months: Month[];
+  months: Record<number, Month>;
   totalAmount: number;
 };
 
@@ -32,10 +32,12 @@ export type Month = {
 }[MonthIdType];
 
 export type MonthRecord = {
-  id: string;
+  id: number;
+  year: number;
+  month: number;
+  day: number;
   type: "income" | "cost";
-  date: number;
-  tags: string[];
+  tags: number[];
   description: string;
   amount: number;
 };
@@ -43,11 +45,12 @@ export type MonthRecord = {
 export type MonthIdType = keyof typeof MONTHS;
 export type Months = (typeof MONTHS)[MonthIdType];
 
+export type MetadataType = {
+  createdAt: string;
+  updatedAt: string;
+};
+
 export interface GlobalDataType extends Tracker {
-  meta: {
-    schemaVersion: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-  tagsPool: Record<string, string>;
+  meta: MetadataType;
+  tagsPool: Record<number, string>;
 }

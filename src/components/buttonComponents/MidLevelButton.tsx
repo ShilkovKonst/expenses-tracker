@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 type MidLevelButtonProps = {
   style: string;
-  title: string;
+  title: string | ReactNode;
   id?: string;
   handleClick: () => void;
   disabled?: boolean;

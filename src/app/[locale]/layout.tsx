@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Locale, t } from "@/locales/locale";
-import { GlobalProvider } from "../../context/GlobalContext";
-import { ModalProvider } from "../../context/ModalContext";
-import { BASE_URL } from "@/lib/constants";
+import TrackerBlock from "@/components/TrackerBlock";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { GlobalProvider } from "@/context/GlobalContext";
+import { ModalProvider } from "@/context/ModalContext";
 import { TrackerProvider } from "@/context/TrackerContext";
+import { BASE_URL } from "@/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,13 +79,17 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white relative flex justify-center w-full`}
+        className={`${geistSans.variable} ${geistMono.variable} w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 antialiased relative flex flex-col my-auto`}
       >
         <GlobalProvider>
           <TrackerProvider>
             <ModalProvider>
-              {children}
-              <footer className=""></footer>
+              <Header />
+              <main className="font-sans pb-7 border-2 border-blue-100 rounded-b-lg bg-blue-50/95 p-2 md:p-6 mb-7">
+                <TrackerBlock />
+                {children}
+              </main>
+              <Footer />
             </ModalProvider>
           </TrackerProvider>
         </GlobalProvider>

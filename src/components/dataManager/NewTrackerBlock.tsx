@@ -1,25 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { t } from "@/locales/locale";
 import React, { useEffect, useState } from "react";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
 import { AddIcon } from "@/lib/icons";
-import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
 import { setNewData } from "@/lib/utils/trackerDataSetter";
 import { useTracker } from "@/context/TrackerContext";
-import { GlobalDataType } from "@/types/formTypes";
-import { TRACKER_IDS } from "@/lib/constants";
+import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
 
 const NewTrackerBlock = () => {
   const { locale, trackerIds, setTrackerIds } = useGlobal();
   const {
     trackerId,
-    trackerMeta,
-    trackerTags,
-    trackerYears,
     setTrackerId,
-    setTrackerTags,
     setTrackerMeta,
+    setTrackerTags,
     setTrackerYears,
   } = useTracker();
 
@@ -37,44 +33,9 @@ const NewTrackerBlock = () => {
   }, [newTrackerId]);
 
   useEffect(() => {
-    if (isCreated) {
-      if (
-        localStorage &&
-        trackerId &&
-        trackerMeta &&
-        trackerTags &&
-        trackerYears
-      ) {
-        let raw = localStorage.getItem(TRACKER_IDS);
-        if (raw) {
-          const localIds: string[] = JSON.parse(raw);
-          if (localIds.some((id) => id === trackerId)) {
-            throw new Error(
-              `This '${trackerId}' tracker id already registered in application. Check add new tracker logic`
-            );
-          }
-          const newLocalIds = [...localIds, trackerId];
-          localStorage.setItem(TRACKER_IDS, JSON.stringify(newLocalIds));
-          setTrackerIds(newLocalIds);
-        } else {
-          localStorage.setItem(TRACKER_IDS, JSON.stringify([trackerId]));
-          setTrackerIds([trackerId]);
-        }
-
-        raw = localStorage.getItem(trackerId);
-        if (raw) {
-          throw new Error(
-            "Such tracker already registered in application. Check add new tracker logic"
-          );
-        }
-        const trackerObj: GlobalDataType = {
-          id: trackerId,
-          meta: trackerMeta,
-          tagsPool: trackerTags,
-          years: trackerYears,
-          totalAmount: trackerYears.reduce((acc, y) => acc + y.totalAmount, 0),
-        };
-        localStorage.setItem(trackerId, JSON.stringify(trackerObj));
+    if (isCreated && trackerId) {
+      if (localStorage) {
+        updateLocalTrackerIds(trackerId, setTrackerIds);
       }
       setIsCreated(false);
       setNewTrackerId("");

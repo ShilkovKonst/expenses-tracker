@@ -1,11 +1,11 @@
 "use client";
-import HeaderButtonBlock from "./HeaderButtonBlock";
+import HeaderButtonBlock from "../accordionBlockComponents/HeaderButtonBlock";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 
 type StickyHeaderProps = {
   labelMain: string;
-  totalAmount: number;
+  totalAmount: number |string;
   expandDataType: string;
   isMonth: boolean;
   expandDisabled?: boolean;
@@ -32,11 +32,11 @@ const StickyHeader = ({
       setModalType("recordFormBlock");
       setModalBody({
         type: "crt",
-        yearId: yearId,
-        monthId: monthId,
         record: {
-          id: `${yearId}-${monthId}`,
-          date: -1,
+          id: 0,
+          year: yearId,
+          month: monthId,
+          day: -1,
           type: "cost",
           tags: [],
           description: "",
@@ -55,7 +55,7 @@ const StickyHeader = ({
       }`}
     >
       <div
-        className={`grid-cols-5 pl-4 py-2 col-span-5 grid md:grid-cols-5 gap-2 my-auto`}
+        className={`grid-cols-5 pl-2 py-2 col-span-5 grid md:grid-cols-5 gap-2 my-auto`}
       >
         <StickyDescH3Block
           label={labelMain}

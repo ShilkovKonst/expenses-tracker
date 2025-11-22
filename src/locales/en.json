@@ -8,9 +8,9 @@
       "title": "Expense Tracker"
     },
     "modal": {
-      "labelTitleCreate": "Create new record",
-      "labelTitleUpdate": "Update record",
-      "labelTitleDelete": "Are you sure you want to delete {{deleteEntity}}?",
+      "titleCreate": "Create new record",
+      "titleUpdate": "Update record",
+      "titleDelete": "Are you sure you want to delete {{deleteEntity}}?",
       "deleteEntity": {
         "record": "this record",
         "tag": "this tag",
@@ -18,6 +18,10 @@
       },
       "labelConfirm": "Confirm",
       "labelDelete": "Delete",
+      "labelReplace": "Replace",
+      "descReplace": "All entries in the current tracker will be replaced with the entries from the imported tracker.",
+      "labelDouble": "Duplicate",
+      "descDouble": "A new tracker will be created with an updated identifier.",
       "labelCancel": "Cancel"
     },
     "peronnalisation": {
@@ -25,7 +29,7 @@
       "description": "Add, remove, and configure your record tags."
     },
     "form": {
-      "title": "Track your operations",
+      "title": "Active tracker",
       "valueMonth": {
         "january": "January",
         "february": "February",
@@ -55,7 +59,7 @@
       "tracker": {
         "idsTitle": "Select tracker from the list below",
         "loadTitle": "Load tracker from a file",
-        "mergeTitle": "Tracker {{trackerId}} is already in the list of registered trackers. What do you want to do?",
+        "mergeTitle": "Tracker '{{trackerId}}' is already in the list of registered trackers. What do you want to do?",
         "registeredDateTitle": "Last update of the registered tracker:",
         "importedDateTitle": "Last update of the imported tracker:",
         "typeCustomTitle": "Enter your custom tracker's name",

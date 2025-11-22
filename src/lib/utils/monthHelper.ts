@@ -1,5 +1,5 @@
-import { Month, MonthIdType, Months } from "@/types/formTypes";
-import { MONTHS } from "../constants";
+import { Month, MonthIdType, Months } from "@/lib/types/dataTypes";
+import { MONTHS } from "../../constants";
 
 export function getMonthById<ID extends MonthIdType>(id: ID): Months {
   return MONTHS[id];
@@ -13,7 +13,7 @@ export function getMonthIdByTitle<T extends Months>(title: T): MonthIdType {
   return Number(entry[0]) as MonthIdType;
 }
 
-export function initEmptyMonths(): Month[] {
+export function initEmptyMonths(): Record<number, Month> {
   const emptyMonths: Month[] = [];
   for (let i = 1 as MonthIdType; i <= 12; i++) {
     emptyMonths[i - 1] = {
@@ -23,7 +23,12 @@ export function initEmptyMonths(): Month[] {
       totalAmount: 0,
     };
   }
-  return emptyMonths;
+  const emptyMonthsObj: Record<number, Month> = {};
+  for (const m of emptyMonths) {
+    emptyMonthsObj[m.id] = m;
+  }
+
+  return emptyMonthsObj;
 }
 
 export function getMonthDays(year: number, month: number): number[] {

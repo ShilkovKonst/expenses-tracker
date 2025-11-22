@@ -1,5 +1,5 @@
 "use client";
-import { MonthRecord } from "@/types/formTypes";
+import { MonthRecord } from "@/lib/types/dataTypes";
 import RecordDescriptionBlock from "./RecordDescriptionBlock";
 import RecordButtonBlock from "./RecordButtonBlock";
 import { t } from "@/locales/locale";
@@ -8,12 +8,10 @@ import { RecordModalType, useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 
 type RecordProps = {
-  yearId: number;
-  monthId: number;
   record: MonthRecord;
 };
 
-const RecordBlock: React.FC<RecordProps> = ({ yearId, monthId, record }) => {
+const RecordBlock: React.FC<RecordProps> = ({ record }) => {
   const { locale } = useGlobal();
   const { trackerTags } = useTracker();
   const { setIsModal, setModalBody, setModalType } = useModal();
@@ -23,8 +21,6 @@ const RecordBlock: React.FC<RecordProps> = ({ yearId, monthId, record }) => {
     setModalType("recordFormBlock");
     setModalBody({
       type: modalType,
-      yearId: yearId,
-      monthId: monthId,
       record: record,
     });
   };
@@ -56,8 +52,8 @@ const RecordBlock: React.FC<RecordProps> = ({ yearId, monthId, record }) => {
           }
           recordAmount={record.amount}
           recordDate={
-            record.date > -1
-              ? record.date
+            record.day > -1
+              ? record.day
               : t(locale, "body.form.labels.withoutDate")
           }
         />

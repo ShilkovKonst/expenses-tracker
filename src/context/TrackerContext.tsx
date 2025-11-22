@@ -1,6 +1,10 @@
 "use client";
-import { TRACKER_IDS } from "@/lib/constants";
-import { GlobalDataType, Year } from "@/types/formTypes";
+import { TRACKER_IDS } from "@/constants";
+import { getMetadata } from "@/idb/metaCRUD";
+import { getAllRecords } from "@/idb/recordsCRUD";
+import { getAllTags } from "@/idb/tagsCRUD";
+import { MetadataType, Year } from "@/lib/types/dataTypes";
+import { populateYears } from "@/lib/utils/yearsTransformer";
 import {
   createContext,
   Dispatch,
@@ -11,13 +15,9 @@ import {
   useState,
 } from "react";
 
-export type TrackerYears = Year[] | null;
-export type TrackerMeta = {
-  schemaVersion: number;
-  createdAt: string;
-  updatedAt: string;
-} | null;
-export type TrackerTags = Record<string, string> | null;
+export type TrackerYears = Record<number, Year> | null;
+export type TrackerMeta = MetadataType | null;
+export type TrackerTags = Record<number, string> | null;
 
 interface TrackerContextType {
   trackerId: string;
@@ -46,49 +46,31 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
       if (raw) {
         const parsed: string[] = JSON.parse(raw) as string[];
         const activeTrackerId = parsed[0];
-        const rawTracker = localStorage.getItem(activeTrackerId);
-        if (rawTracker) {
-          const parsedTracker: GlobalDataType = JSON.parse(rawTracker);
-          setTrackerId(parsedTracker.id);
-          setTrackerMeta({ ...parsedTracker.meta });
-          setTrackerTags({ ...parsedTracker.tagsPool });
-          setTrackerYears([...parsedTracker.years]);
+        let cancelled = false;
+        async function getDataFromDB() {
+          if (!cancelled) {
+            const meta = await getMetadata(activeTrackerId);
+            const tags = await getAllTags(activeTrackerId);
+            const records = await getAllRecords(activeTrackerId);
+
+            if (meta && tags && records) {
+              const years = populateYears(records);
+              setTrackerId(activeTrackerId);
+              setTrackerMeta(meta);
+              setTrackerTags(tags);
+              setTrackerYears(years);
+            }
+          }
         }
+
+        getDataFromDB();
+
+        return () => {
+          cancelled = true;
+        };
       }
     }
   }, []);
-
-  useEffect(() => {
-    if (
-      localStorage &&
-      trackerId &&
-      trackerMeta &&
-      trackerTags &&
-      trackerYears
-    ) {
-      const raw = localStorage.getItem(trackerId);
-      if (raw) {
-        const parsedTracker: GlobalDataType = JSON.parse(raw);
-        const updTracker: GlobalDataType = {
-          ...parsedTracker,
-          meta: trackerMeta,
-          tagsPool: trackerTags,
-          years: trackerYears,
-          totalAmount: trackerYears.reduce((acc, y) => acc + y.totalAmount, 0),
-        };
-        localStorage.setItem(trackerId, JSON.stringify(updTracker));
-      } else {
-        const tracker: GlobalDataType = {
-          id: trackerId,
-          meta: trackerMeta,
-          tagsPool: trackerTags,
-          years: trackerYears,
-          totalAmount: trackerYears.reduce((acc, y) => acc + y.totalAmount, 0),
-        };
-        localStorage.setItem(trackerId, JSON.stringify(tracker));
-      }
-    }
-  }, [trackerId, trackerMeta, trackerTags, trackerYears]);
 
   return (
     <TrackerContext.Provider

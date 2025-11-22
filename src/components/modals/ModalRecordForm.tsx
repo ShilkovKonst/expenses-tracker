@@ -1,5 +1,5 @@
 "use client";
-import { MonthRecord } from "@/types/formTypes";
+import { MonthRecord } from "@/lib/types/dataTypes";
 import FormInputBlock from "../formComponents/FormInputBlock";
 import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { useGlobal } from "@/context/GlobalContext";
@@ -9,14 +9,19 @@ import FormRadioBlock from "@/components/formComponents/FormRadioBlock";
 import FormTagsBlock from "@/components/formComponents/FormTagsBlock";
 import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { useModal } from "@/context/ModalContext";
-import { MONTHS } from "@/lib/constants";
+import { MONTHS } from "@/constants";
 import FormSelectBlock from "../formComponents/FormSelectBlock";
 import { getMonthDays } from "@/lib/utils/monthHelper";
 import {
   calcExpression,
+  decimalToInputString,
+  parseInputAmountToDecimal,
   trimLeadingZeros,
-} from "@/lib/utils/recordAmountHelper";
+} from "@/lib/utils/amountHelper";
 import { useModalBody } from "@/hooks/useModalBody";
+import { createRecord, updateRecord } from "@/idb/recordsCRUD";
+import { useTracker } from "@/context/TrackerContext";
+import { updateMeta } from "@/lib/utils/updateDeleteHelper";
 
 type RecordFormProps = {
   handleUpdate: (record: MonthRecord, isDelete: boolean) => void;
@@ -25,11 +30,12 @@ type RecordFormProps = {
 const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
   const { locale } = useGlobal();
   const { handleClear } = useModal();
+  const { trackerId, trackerMeta, setTrackerMeta } = useTracker();
 
   const [currentRecord, setCurrentRecord] = useState<MonthRecord | undefined>(
     undefined
   );
-  const [currentYearMonth, setCurrentYearMonth] = useState<number[]>([]);
+  const [amountString, setAmountString] = useState<string>("0");
   const [isCalcMode, setIsCalcMode] = useState<boolean>(false);
 
   const { recordBody } = useModalBody();
@@ -42,21 +48,20 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
     let normalizedValue: MonthRecord[keyof MonthRecord];
 
     switch (key) {
-      case "id":
       case "type":
       case "description":
         normalizedValue = value;
         break;
-      case "date":
+      case "day":
         const parsed = Number(value);
         normalizedValue = Number.isFinite(parsed) ? parsed : -1;
         break;
       case "amount":
-        console.log(value, typeof value);
-        normalizedValue = trimLeadingZeros(value);
-        const isExpr = /[+\-*\/]\d+/g.test(normalizedValue.slice(1));
+        const trimmed = trimLeadingZeros(value);
+        setAmountString(trimmed);
+        const isExpr = /[+\-*\/]\d+/g.test(trimmed.slice(1));
         setIsCalcMode(isExpr);
-        break;
+        return;
       case "tags":
         normalizedValue = currentRecord ? currentRecord.tags : [];
         break;
@@ -64,25 +69,55 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
         return;
     }
 
-    if (currentRecord)
+    if (currentRecord) {
       setCurrentRecord({
         ...currentRecord,
         [key]: normalizedValue,
       });
+    }
   };
 
   useEffect(() => {
     if (recordBody) {
       setCurrentRecord(recordBody.record);
-      setCurrentYearMonth([recordBody.yearId, recordBody.monthId]);
+      setAmountString(decimalToInputString(recordBody.record.amount));
     }
   }, [recordBody]);
 
   const handleCalcClick = (value: string) => {
     if (currentRecord) {
       const newAmount = calcExpression(value);
-      setCurrentRecord({ ...currentRecord, amount: newAmount });
+      setAmountString(newAmount.toString());
       setIsCalcMode(false);
+    }
+  };
+
+  const handleUpdateClick = async () => {
+    if (recordBody && currentRecord) {
+      const updCurrentRecord: MonthRecord = {
+        ...currentRecord,
+        amount: parseInputAmountToDecimal(amountString),
+      };
+      if (recordBody.type === "crt") {
+        try {
+          const recordId = await createRecord(trackerId, updCurrentRecord);
+          updCurrentRecord.id = recordId;
+          if (trackerMeta)
+            await updateMeta(trackerId, trackerMeta, setTrackerMeta);
+        } catch {
+          throw new Error("'Create record' transaction failed!");
+        }
+      }
+      if (recordBody.type === "upd") {
+        try {
+          await updateRecord(trackerId, updCurrentRecord);
+          if (trackerMeta)
+            await updateMeta(trackerId, trackerMeta, setTrackerMeta);
+        } catch {
+          throw new Error("'Update record' transaction failed!");
+        }
+      }
+      handleUpdate(updCurrentRecord, false);
     }
   };
 
@@ -91,8 +126,8 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
       {recordBody && (
         <p className="col-span-2 text-lg text-center font-bold mx-auto">
           {recordBody.type === "upd"
-            ? t(locale, "body.modal.labelTitleUpdate")
-            : t(locale, "body.modal.labelTitleCreate")}
+            ? t(locale, "body.modal.titleUpdate")
+            : t(locale, "body.modal.titleCreate")}
         </p>
       )}
       {currentRecord && (
@@ -102,9 +137,9 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
               outerStyle="flex flex-row items-center gap-2 *:text-black *:font-semibold pl-1"
               spanStyle={`text-xs truncate`}
               label={`${t(locale, `body.form.labels.year`)}: `}
-              value={`${currentYearMonth[0]}, ${t(
+              value={`${currentRecord.year}, ${t(
                 locale,
-                `body.form.valueMonth.${MONTHS[currentYearMonth[1]]}`
+                `body.form.valueMonth.${MONTHS[currentRecord.month]}`
               )}`}
             />
             <FormRadioBlock
@@ -126,17 +161,15 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
               titleStyle=" *:text-black font-semibold"
               label={`${t(locale, `body.form.labels.date`)}: `}
               name="date"
-              value={currentRecord.date ?? -1}
-              options={getMonthDays(currentYearMonth[0], currentYearMonth[1])}
+              value={currentRecord.day ?? -1}
+              options={getMonthDays(currentRecord.year, currentRecord.month)}
               onChange={handleOperationChange}
             />
             <FormInputBlock
               name={"amount"}
               title={`${t(locale, `body.form.operations.amount`)}:`}
               id={"operationAmountInput" + currentRecord?.id}
-              value={
-                currentRecord.amount ? currentRecord.amount?.toString() : "0"
-              }
+              value={amountString ? amountString : "0"}
               handleChange={handleOperationChange}
               disabled={false}
               required={true}
@@ -169,7 +202,8 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
           <MidLevelButton
             title={t(locale, "body.modal.labelConfirm")}
             style="bg-green-300 hover:bg-green-400 border-green-400 cols-span-1 disabled:text-gray-600 disabled:bg-green-200 disabled:hover:bg-green-200 disabled:border-green-300"
-            handleClick={() => handleUpdate(currentRecord, false)}
+            // handleClick={() => handleUpdate(currentRecord, false)}
+            handleClick={handleUpdateClick}
           />
         </>
       )}

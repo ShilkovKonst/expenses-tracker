@@ -5,7 +5,7 @@ import {
   MonthRecord,
   RecordTag,
   GlobalDataType,
-} from "@/types/formTypes";
+} from "@/lib/types/dataTypes";
 import {
   createContext,
   Dispatch,
@@ -19,8 +19,6 @@ export type RecordModalType = "crt" | "del" | "upd";
 
 export type ModalBodyType = {
   type: RecordModalType;
-  yearId: number;
-  monthId: number;
   record: MonthRecord;
 };
 export type SettingsModalBodyType = {
@@ -50,7 +48,9 @@ export const ModalContext = createContext<ModalContextType | undefined>(
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [isModal, setIsModal] = useState<boolean>(false);
-  const [modalBody, setModalBody] = useState<ModalBodyType | GlobalDataType | null>(null);
+  const [modalBody, setModalBody] = useState<
+    ModalBodyType | GlobalDataType | null
+  >(null);
   const [modalType, setModalType] = useState<ModalTypeType>("");
 
   const handleClear = () => {

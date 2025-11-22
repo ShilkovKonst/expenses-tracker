@@ -1,12 +1,13 @@
 "use client";
 import { compare } from "@/lib/utils/compareHelper";
+import { ReactNode } from "react";
 
 type DescPBlockProps = {
   outerStyle?: string;
   titleStyle?: string;
   spanStyle: string;
   label: string;
-  value: string | number | (string | number)[];
+  value: string | number | (string | number)[] | ReactNode;
 };
 
 const DescPBlock: React.FC<DescPBlockProps> = ({

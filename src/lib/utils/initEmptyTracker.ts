@@ -1,5 +1,5 @@
-import { Year } from "@/types/formTypes";
-import { CURRENT_YEAR } from "../constants";
+import { Year } from "@/lib/types/dataTypes";
+import { CURRENT_YEAR } from "../../constants";
 import { initEmptyMonths } from "./monthHelper";
 
 export function initEmptyTracker(trackerType: string) {

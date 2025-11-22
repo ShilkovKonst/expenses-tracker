@@ -8,9 +8,9 @@
       "title": "Suivi des dépenses"
     },
     "modal": {
-      "labelTitleCreate": "Créer nouvel enregistrement",
-      "labelTitleUpdate": "Mettre à jour cet enregistrement",
-      "labelTitleDelete": "Etes-vous sûr de vouloir supprimer {{deleteEntity}} ?",
+      "titleCreate": "Créer nouvel enregistrement",
+      "titleUpdate": "Mettre à jour cet enregistrement",
+      "titleDelete": "Etes-vous sûr de vouloir supprimer {{deleteEntity}} ?",
       "deleteEntity": {
         "record": "cet enregistrement",
         "tag": "cette étiquette",
@@ -18,6 +18,10 @@
       },
       "labelConfirm": "Confirmer",
       "labelDelete": "Supprimer",
+      "labelReplace": "Remplacer",
+      "descReplace": "Toutes les entrées du suivi actuel seront remplacées par celles du suivi importé.",
+      "labelDouble": "Dupliquer",
+      "descDouble": "Un nouveau suivi sera créé avec un identifiant mis à jour.",
       "labelCancel": "Annuler"
     },
     "peronnalisation": {
@@ -25,7 +29,7 @@
       "description": "Ajoutez, supprimez et configurez vos étiquettes d'enregistrements."
     },
     "form": {
-      "title": "Suivez vos opérations",
+      "title": "Un suivi actif",
       "valueMonth": {
         "january": "Janvier",
         "february": "Février",
@@ -55,7 +59,7 @@
       "tracker": {
         "idsTitle": "Sélectionnez un suivi dans la liste ci-dessous",
         "loadTitle": "Charger un suivi à partir d'un fichier",
-        "mergeTitle": "Le suivi {{trackerId}} figure déjà dans la liste des suivis enregistrés. Que souhaitez-vous faire ?",
+        "mergeTitle": "Le suivi '{{trackerId}}' figure déjà dans la liste des suivis enregistrés. Que souhaitez-vous faire ?",
         "registeredDateTitle": "Dernière mise à jour du suivi enregistré :",
         "importedDateTitle": "Dernière mise à jour du suivi importé :",
         "typeCustomTitle": "Saisir le nom de votre type personnalisé",

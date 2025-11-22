@@ -1,5 +1,5 @@
 "use client";
-import { TRACKER_IDS } from "@/lib/constants";
+import { TRACKER_IDS } from "@/constants";
 import { Locale } from "@/locales/locale";
 import { useParams } from "next/navigation";
 import {
@@ -30,11 +30,14 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
     if (localStorage) {
       const raw = localStorage.getItem(TRACKER_IDS);
       if (raw) {
-        const localIds = JSON.parse(raw);
-        setTrackerIds(localIds);
+        setTrackerIds(JSON.parse(raw));
       }
     }
   }, []);
+
+  useEffect(() => {
+    console.log(trackerIds);
+  }, [trackerIds]);
 
   return (
     <GlobalContext.Provider

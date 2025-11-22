@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { GlobalDataType } from "@/types/formTypes";
 import { t } from "@/locales/locale";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import TopLevelButton from "../buttonComponents/TopLevelButton";
@@ -8,28 +7,22 @@ import { useTracker } from "@/context/TrackerContext";
 import { useModal } from "@/context/ModalContext";
 import { LoadIcon } from "@/lib/icons";
 import { validate } from "@/lib/utils/dataValidator";
-import { TRACKER_IDS } from "@/lib/constants";
 import { useModalBody } from "@/hooks/useModalBody";
+import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
+import { checkDBExists } from "@/idb/IDBManager";
+import { populateIDBFromFile } from "@/lib/utils/populateIDB";
+import { setParsedData } from "@/lib/utils/trackerDataSetter";
 
 type LoadTrackerType = {
-  onImport: (imported: GlobalDataType) => void;
   setMessage: Dispatch<SetStateAction<string | null>>;
 };
 
-const LoadTrackerBlock = ({ onImport, setMessage }: LoadTrackerType) => {
+const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
   const { locale, setTrackerIds } = useGlobal();
-  const {
-    trackerId,
-    trackerMeta,
-    trackerTags,
-    trackerYears,
-    setTrackerId,
-    setTrackerMeta,
-    setTrackerTags,
-    setTrackerYears,
-  } = useTracker();
+  const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
+    useTracker();
   const { setIsModal, setModalType, setModalBody } = useModal();
-  const { globalBody } = useModalBody();
+  const { importTrackerBody } = useModalBody();
 
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -58,7 +51,6 @@ const LoadTrackerBlock = ({ onImport, setMessage }: LoadTrackerType) => {
       }
       setIsLoaded(true);
       setModalBody(validated.data);
-      console.log("success");
       // setLoadedTracker(parsed);
       // onImport(parsed);
 
@@ -71,39 +63,42 @@ const LoadTrackerBlock = ({ onImport, setMessage }: LoadTrackerType) => {
     }
   };
 
-  // console.log(globalBody);
-  // console.log(isLoaded);
   useEffect(() => {
-    if (isLoaded && globalBody) {
-      console.log("isLoaded && globalBody");
-      if (localStorage) {
-        const raw = localStorage.getItem(TRACKER_IDS);
-        if (raw) {
-          console.log("raw");
-          const parsed = JSON.parse(raw);
-          if (
-            Array.isArray(parsed) &&
-            !parsed.some((p) => p === globalBody.id)
-          ) {
-            console.log("raw");
-            const newParsed = [...parsed, globalBody.id];
-            localStorage.setItem(TRACKER_IDS, JSON.stringify(newParsed));
-            setTrackerIds(newParsed);
+    if (isLoaded && importTrackerBody) {
+      let cancelled = false;
+
+      async function isDBExists() {
+        if (!cancelled) {
+          if (importTrackerBody) {
+            const isExists = await checkDBExists(importTrackerBody.id);
+            if (isExists) {
+              setIsModal(true);
+              setModalType("mergeTrackerBlock");
+            } else {
+              await populateIDBFromFile(importTrackerBody);
+              setParsedData(
+                importTrackerBody,
+                setTrackerId,
+                setTrackerMeta,
+                setTrackerTags,
+                setTrackerYears
+              );
+            }
           }
         }
-        console.log("!raw");
-        const rawTracker = localStorage.getItem(globalBody.id);
-        if (rawTracker) {
-          // const parsedTracker = JSON.parse(rawTracker);
-          setIsModal(true);
-          setModalType("mergeTrackerBlock");
-        } else {
-          console.log("!rawTracker");
-        }
+      }
+      
+      isDBExists();
+      if (localStorage) {
+        updateLocalTrackerIds(importTrackerBody.id, setTrackerIds);
       }
       setIsLoaded(false);
+
+      return () => {
+        cancelled = true;
+      };
     }
-  }, [isLoaded, globalBody]);
+  }, [isLoaded, importTrackerBody]);
 
   return (
     <div className="grid grid-cols-5 gap-2 w-full mt-2 overflow-hidden transition-[height] duration-300 ease-in-out">
