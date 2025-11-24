@@ -1,15 +1,15 @@
 "use client";
-import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { useGlobal } from "@/context/GlobalContext";
 import { useModal } from "@/context/ModalContext";
 import { t } from "@/locales/locale";
 import { MonthRecord } from "@/lib/types/dataTypes";
-import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { MONTHS } from "@/constants";
 import { useTracker } from "@/context/TrackerContext";
 import { useModalBody } from "@/hooks/useModalBody";
 import { deleteRecord } from "@/idb/recordsCRUD";
 import { updateMeta } from "@/lib/utils/updateDeleteHelper";
+import { MidLevelButton } from "../buttonComponents";
+import DescPBlock from "../descriptionComponents/DescPBlock";
 
 type ModalDeleteProps = {
   deleteEntity: "record" | "tag" | "tracker";
@@ -49,8 +49,8 @@ const ModalDeleteBlock = ({ deleteEntity, handleDelete }: ModalDeleteProps) => {
             <div className="w-full grid grid-cols-2 gap-2">
               <DescPBlock
                 outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
-                spanStyle={`text-xs truncate`}
-                label={`${t(locale, `body.form.labels.year`)}: `}
+                valueStyle={`font-semibold text-xs truncate`}
+                title={`${t(locale, `body.form.labels.year`)}: `}
                 value={`${recordBody.record.year}, ${t(
                   locale,
                   `body.form.valueMonth.${MONTHS[recordBody.record.month]}`
@@ -58,11 +58,11 @@ const ModalDeleteBlock = ({ deleteEntity, handleDelete }: ModalDeleteProps) => {
               />
               <DescPBlock
                 outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
-                spanStyle={`text-xs truncate`}
-                label={`${t(locale, `body.form.labels.date`)}: `}
+                valueStyle={`font-semibold text-xs truncate`}
+                title={`${t(locale, `body.form.labels.date`)}: `}
                 value={
                   recordBody.record.day > -1
-                    ? recordBody.record.day
+                    ? recordBody.record.day.toString()
                     : t(locale, `body.form.labels.withoutDate`)
                 }
               />
@@ -70,27 +70,27 @@ const ModalDeleteBlock = ({ deleteEntity, handleDelete }: ModalDeleteProps) => {
             <div className="w-full grid grid-cols-2 gap-2">
               <DescPBlock
                 outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
-                spanStyle={`text-xs truncate ${
+                valueStyle={`font-semibold text-xs truncate ${
                   recordBody.record.type === "income"
                     ? "text-green-600"
                     : "text-red-500"
                 }`}
-                label={`${t(locale, `body.form.operations.amount`)}: `}
-                value={recordBody.record.amount}
+                title={`${t(locale, `body.form.operations.amount`)}: `}
+                value={recordBody.record.amount.toString()}
               />
               {trackerTags && (
                 <DescPBlock
                   outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
-                  spanStyle={`text-xs truncate`}
-                  label={`${t(locale, `body.form.operations.labelTags`)}: `}
+                  valueStyle={`font-semibold text-xs truncate`}
+                  title={`${t(locale, `body.form.operations.labelTags`)}: `}
                   value={recordBody.record.tags.map((t) => trackerTags[t])}
                 />
               )}
             </div>
             <DescPBlock
               outerStyle="col-span-2 flex flex-row gap-2 justify-start items-start"
-              spanStyle={`text-xs truncate`}
-              label={`${t(locale, `body.form.operations.description`)}: `}
+              valueStyle={`font-semibold text-xs truncate`}
+              title={`${t(locale, `body.form.operations.description`)}: `}
               value={recordBody.record.description}
             />
           </>
@@ -98,12 +98,12 @@ const ModalDeleteBlock = ({ deleteEntity, handleDelete }: ModalDeleteProps) => {
       </div>
       <MidLevelButton
         title={t(locale, "body.modal.labelDelete")}
-        style="bg-red-300 hover:bg-red-400 border-red-400"
+        customStyle="bg-red-300 hover:bg-red-400 border-red-400"
         handleClick={handleDeleteClick}
       />
       <MidLevelButton
         title={t(locale, "body.modal.labelCancel")}
-        style="bg-blue-300 hover:bg-blue-400 border-blue-400"
+        customStyle="bg-blue-300 hover:bg-blue-400 border-blue-400"
         handleClick={handleClear}
       />
     </form>

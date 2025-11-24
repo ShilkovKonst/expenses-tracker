@@ -6,15 +6,21 @@ import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
 import { RecordModalType, useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
+import { useMemo } from "react";
 
 type RecordProps = {
   record: MonthRecord;
 };
 
-const RecordBlock: React.FC<RecordProps> = ({ record }) => {
+function RecordBlock({ record }: RecordProps) {
   const { locale } = useGlobal();
   const { trackerTags } = useTracker();
   const { setIsModal, setModalBody, setModalType } = useModal();
+
+  const recordTags = useMemo(() => {
+    if (!record.tags?.length) return [];
+    return trackerTags ? record.tags.map((t) => trackerTags[t]) : [];
+  }, [record.tags, trackerTags]);
 
   const handleCallFormModal = (modalType: RecordModalType) => {
     setIsModal(true);
@@ -39,10 +45,8 @@ const RecordBlock: React.FC<RecordProps> = ({ record }) => {
           labelRecordDate={`${t(locale, `body.form.labels.date`)}: `}
           recordType={record.type}
           recordTags={
-            record.tags?.length > 0
-              ? trackerTags
-                ? record.tags.map((t) => trackerTags[t])
-                : []
+            recordTags.length > 0
+              ? recordTags
               : t(locale, "body.form.labels.withoutTags")
           }
           recordDescription={
@@ -66,6 +70,6 @@ const RecordBlock: React.FC<RecordProps> = ({ record }) => {
       </div>
     </div>
   );
-};
+}
 
 export default RecordBlock;

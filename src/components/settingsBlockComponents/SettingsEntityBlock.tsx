@@ -7,28 +7,24 @@ import {
   useEffect,
   useState,
 } from "react";
-import TopLevelButton from "../buttonComponents/TopLevelButton";
 import { AddIcon, DeleteIcon } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { t } from "@/locales/locale";
-import TagButton from "../buttonComponents/TagButton";
 import { RecordTag, TrackerName } from "@/lib/types/dataTypes";
 import { useGlobal } from "@/context/GlobalContext";
-import LowLevelButton from "../buttonComponents/LowLevelButton";
 import { compare } from "@/lib/utils/compareHelper";
+import { LowLevelButton, TagButton, TopLevelButton } from "../buttonComponents";
 
 export type Entity = TrackerName | RecordTag;
 
 type SettingsEntityProps = {
   dataType: string;
   addIcon: ReactNode;
-  tagStyle: string;
   currentEntity?: RecordTag;
   recordTags: Record<string, string>;
   newEntity: string;
-  setNewEntity: Dispatch<SetStateAction<string>>;
-  expanded?: number;
   setExpanded?: Dispatch<SetStateAction<number>>;
+  setNewEntity: Dispatch<SetStateAction<string>>;
   handleAddNew: (
     e: RME<HTMLButtonElement, MouseEvent>,
     newEntity: string
@@ -38,11 +34,9 @@ type SettingsEntityProps = {
 const SettingsEntityBlock = ({
   dataType,
   addIcon,
-  tagStyle,
   currentEntity,
   recordTags,
   newEntity,
-  expanded,
   setExpanded,
   setNewEntity,
   handleAddNew,
@@ -68,12 +62,12 @@ const SettingsEntityBlock = ({
               <TagButton
                 tag={entity}
                 handleClick={() => {}}
-                style={`h-7 ${tagStyle} transition-colors duration-200 ease-in-out rounded-r-none pr-6`}
+                customStyle={`bg-blue-300 disabled:bg-blue-400 disabled:hover:bg-blue-400 pr-6 h-7 rounded-r-none`}
                 disabled={currentEntity && currentEntity.title === entity}
               />
               <LowLevelButton
                 icon={<DeleteIcon className="h-5 w-5" />}
-                style="absolute top-0 -right-3 rounded-lg h-7 w-7 bg-red-400 hover:bg-red-500"
+                customStyle="absolute top-0 -right-3 rounded-lg h-7 w-7 bg-red-400 hover:bg-red-500"
                 handleClick={() => handleRemove(i)}
               />
             </div>
@@ -85,9 +79,9 @@ const SettingsEntityBlock = ({
         )}
         <TopLevelButton
           icon={addIcon}
-          title=""
+          title="add new tag"
           dataType={dataType}
-          style="bg-green-400 hover:bg-green-500 transition-colors duration-200 ease-in-out"
+          customStyle="bg-green-400 hover:bg-green-500"
           handleClick={(e) =>
             transformElement(e.target as HTMLElement, "data-type")
           }
@@ -108,13 +102,11 @@ const SettingsEntityBlock = ({
         <TopLevelButton
           icon={<AddIcon className="w-5 h-5" />}
           dataType={dataType}
-          title=""
+          title="???"
           handleClick={(e: RME<HTMLButtonElement, MouseEvent>) =>
             handleAddNew(e, newEntity)
           }
-          style="col-span-1 mr-auto h-7 w-7 rounded-sm cursor-pointer flex justify-center items-center 
-                  bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600
-                  transition-colors duration-200 ease-in-out"
+          customStyle="mr-auto h-7 w-7 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
           disabled={isDisabled || newEntity === ""}
         />
         {isDisabled && (

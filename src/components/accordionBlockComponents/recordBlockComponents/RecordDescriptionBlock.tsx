@@ -1,5 +1,5 @@
+import DescPBlock from "@/components/descriptionComponents/DescPBlock";
 import { intToDecimalString } from "@/lib/utils/amountHelper";
-import DescPBlock from "../DescPBlock";
 
 type RecordDescriptionBlockProps = {
   outerStyle: string;
@@ -32,31 +32,30 @@ const RecordDescriptionBlock: React.FC<RecordDescriptionBlockProps> = ({
         {recordDate && (
           <DescPBlock
             outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
-            spanStyle={`text-xs truncate`}
-            label={`${labelRecordDate}`}
+            valueStyle={`font-semibold text-xs truncate`}
+            title={`${labelRecordDate}`}
             value={`${recordDate}`}
           />
         )}
         <DescPBlock
           outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"
-          spanStyle={`${
+          valueStyle={`font-semibold ${
             recordType === "income" ? "text-green-600" : "text-red-500"
           } text-xs truncate`}
-          label={labelRecordAmount}
+          title={labelRecordAmount}
           value={intToDecimalString(recordAmount)}
         />
       </div>
-
       <DescPBlock
         outerStyle="col-span-2 md:col-span-3 flex flex-row gap-2 justify-start items-start"
-        spanStyle="text-xs"
-        label={labelRecordTags}
+        valueStyle="font-semibold text-xs"
+        title={labelRecordTags}
         value={recordTags}
       />
       <DescPBlock
         outerStyle="col-span-4 md:col-span-3 flex flex-row gap-2 justify-start items-start"
-        spanStyle="text-xs"
-        label={labelRecordDescription}
+        valueStyle="font-semibold text-xs"
+        title={labelRecordDescription}
         value={recordDescription}
       />
     </div>

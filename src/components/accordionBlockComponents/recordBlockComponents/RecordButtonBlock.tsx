@@ -1,9 +1,9 @@
 "use client";
-import TopLevelButton from "../../buttonComponents/TopLevelButton";
 import { DeleteIcon, UpdateIcon } from "@/lib/icons";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { RecordModalType } from "@/context/ModalContext";
+import { TopLevelButton } from "@/components/buttonComponents";
 
 type RecordButtonBlockProps = {
   outerStyle: string;
@@ -27,13 +27,13 @@ const RecordButtonBlock: React.FC<RecordButtonBlockProps> = ({
       <TopLevelButton
         icon={<UpdateIcon className={iconSize} />}
         title={t(locale, `body.form.operations.update`)}
-        style={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
+        customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${buttonSize}`}
         handleClick={() => handleCallFormModal("upd")}
       />
       <TopLevelButton
         icon={<DeleteIcon className={iconSize} />}
         title={t(locale, `body.form.operations.remove`)}
-        style={`bg-red-400 hover:bg-red-500 ${buttonSize}`}
+        customStyle={`bg-red-400 hover:bg-red-500 ${buttonSize}`}
         handleClick={() => handleCallFormModal("del")}
       />
     </div>

@@ -6,7 +6,7 @@ import { useGlobal } from "@/context/GlobalContext";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import StickyBlock from "./stickyComponents/StickyBlock";
-import RegisteredTrackersBlock from "./dataManager/RegisteredTrackersBlock";
+import RegisteredTrackersBlock from "./trackerDataComponents/RegisteredTrackersBlock";
 
 const MainBlock = () => {
   const { locale, trackerIds } = useGlobal();

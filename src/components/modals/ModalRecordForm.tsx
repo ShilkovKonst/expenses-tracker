@@ -1,13 +1,11 @@
 "use client";
 import { MonthRecord } from "@/lib/types/dataTypes";
 import FormInputBlock from "../formComponents/FormInputBlock";
-import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { ChangeEvent, useEffect, useState } from "react";
 import FormRadioBlock from "@/components/formComponents/FormRadioBlock";
 import FormTagsBlock from "@/components/formComponents/FormTagsBlock";
-import DescPBlock from "../accordionBlockComponents/DescPBlock";
 import { useModal } from "@/context/ModalContext";
 import { MONTHS } from "@/constants";
 import FormSelectBlock from "../formComponents/FormSelectBlock";
@@ -22,6 +20,8 @@ import { useModalBody } from "@/hooks/useModalBody";
 import { createRecord, updateRecord } from "@/idb/recordsCRUD";
 import { useTracker } from "@/context/TrackerContext";
 import { updateMeta } from "@/lib/utils/updateDeleteHelper";
+import { MidLevelButton } from "../buttonComponents";
+import DescPBlock from "../descriptionComponents/DescPBlock";
 
 type RecordFormProps = {
   handleUpdate: (record: MonthRecord, isDelete: boolean) => void;
@@ -135,8 +135,8 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
           <div className="col-span-2 grid grid-cols-2 gap-2 *:border-l *:border-b *:border-blue-200">
             <DescPBlock
               outerStyle="flex flex-row items-center gap-2 *:text-black *:font-semibold pl-1"
-              spanStyle={`text-xs truncate`}
-              label={`${t(locale, `body.form.labels.year`)}: `}
+              valueStyle={`font-semibold text-xs truncate`}
+              title={`${t(locale, `body.form.labels.year`)}: `}
               value={`${currentRecord.year}, ${t(
                 locale,
                 `body.form.valueMonth.${MONTHS[currentRecord.month]}`
@@ -201,15 +201,14 @@ const RecordForm: React.FC<RecordFormProps> = ({ handleUpdate }) => {
           />
           <MidLevelButton
             title={t(locale, "body.modal.labelConfirm")}
-            style="bg-green-300 hover:bg-green-400 border-green-400 cols-span-1 disabled:text-gray-600 disabled:bg-green-200 disabled:hover:bg-green-200 disabled:border-green-300"
-            // handleClick={() => handleUpdate(currentRecord, false)}
+            customStyle="bg-green-300 hover:bg-green-400 border-green-400 disabled:text-gray-600 disabled:bg-green-200 disabled:hover:bg-green-200 disabled:border-green-300"
             handleClick={handleUpdateClick}
           />
         </>
       )}
       <MidLevelButton
         title={t(locale, "body.modal.labelCancel")}
-        style="bg-blue-300 hover:bg-blue-400 border-blue-400 cols-span-1"
+        customStyle="bg-blue-300 hover:bg-blue-400 border-blue-400"
         handleClick={handleClear}
       />
     </form>

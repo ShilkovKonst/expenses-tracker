@@ -1,17 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { t } from "@/locales/locale";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import TopLevelButton from "../buttonComponents/TopLevelButton";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { useModal } from "@/context/ModalContext";
 import { LoadIcon } from "@/lib/icons";
 import { validate } from "@/lib/utils/dataValidator";
-import { useModalBody } from "@/hooks/useModalBody";
 import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
 import { checkDBExists } from "@/idb/IDBManager";
 import { populateIDBFromFile } from "@/lib/utils/populateIDB";
 import { setParsedData } from "@/lib/utils/trackerDataSetter";
+import { TopLevelButton } from "../buttonComponents";
 
 type LoadTrackerType = {
   setMessage: Dispatch<SetStateAction<string | null>>;
@@ -22,9 +20,6 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
   const { setIsModal, setModalType, setModalBody } = useModal();
-  const { importTrackerBody } = useModalBody();
-
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -49,10 +44,26 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
         console.log(validated.path);
         return;
       }
-      setIsLoaded(true);
-      setModalBody(validated.data);
-      // setLoadedTracker(parsed);
-      // onImport(parsed);
+      
+      const data = validated.data;
+      const isExists = await checkDBExists(data.id);
+      if (isExists) {
+        setIsModal(true);
+        setModalBody(data);
+        setModalType("mergeTrackerBlock");
+      } else {
+        await populateIDBFromFile(data);
+        setParsedData(
+          data,
+          setTrackerId,
+          setTrackerMeta,
+          setTrackerTags,
+          setTrackerYears
+        );
+      }
+      if (localStorage) {
+        updateLocalTrackerIds(data.id, setTrackerIds);
+      }
 
       setMessage(`✅ Импорт из "${file.name}" завершён.`);
     } catch (err) {
@@ -63,43 +74,6 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
     }
   };
 
-  useEffect(() => {
-    if (isLoaded && importTrackerBody) {
-      let cancelled = false;
-
-      async function isDBExists() {
-        if (!cancelled) {
-          if (importTrackerBody) {
-            const isExists = await checkDBExists(importTrackerBody.id);
-            if (isExists) {
-              setIsModal(true);
-              setModalType("mergeTrackerBlock");
-            } else {
-              await populateIDBFromFile(importTrackerBody);
-              setParsedData(
-                importTrackerBody,
-                setTrackerId,
-                setTrackerMeta,
-                setTrackerTags,
-                setTrackerYears
-              );
-            }
-          }
-        }
-      }
-      
-      isDBExists();
-      if (localStorage) {
-        updateLocalTrackerIds(importTrackerBody.id, setTrackerIds);
-      }
-      setIsLoaded(false);
-
-      return () => {
-        cancelled = true;
-      };
-    }
-  }, [isLoaded, importTrackerBody]);
-
   return (
     <div className="grid grid-cols-5 gap-2 w-full mt-2 overflow-hidden transition-[height] duration-300 ease-in-out">
       <p className="col-span-4 text-sm">
@@ -109,17 +83,15 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
         icon={<LoadIcon className="w-5 h-5" />}
         title="Load file"
         handleClick={handleOpenFileDialog}
-        style="col-span-1 mr-auto h-7 w-7 rounded-sm cursor-pointer flex justify-center items-center 
-                  bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600
-                  transition-colors duration-200 ease-in-out"
+        customStyle="mr-auto h-7 w-7 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
       />
 
       <input
         ref={fileInputRef}
         type="file"
         accept="application/json"
-        hidden
         onChange={handleImport}
+        hidden
       />
     </div>
   );

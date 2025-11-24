@@ -35,9 +35,9 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(trackerIds);
-  }, [trackerIds]);
+  // useEffect(() => {
+  //   console.log(trackerIds);
+  // }, [trackerIds]);
 
   return (
     <GlobalContext.Provider

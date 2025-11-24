@@ -2,15 +2,21 @@
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
 import { MonthRecord } from "@/lib/types/dataTypes";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import TagButton from "../buttonComponents/TagButton";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { t } from "@/locales/locale";
-import LowLevelButton from "../buttonComponents/LowLevelButton";
 import { AddIcon } from "@/lib/icons";
 import FormInputBlock from "./FormInputBlock";
 import { compare } from "@/lib/utils/compareHelper";
 import { useTracker } from "@/context/TrackerContext";
 import { createTag } from "@/idb/tagsCRUD";
+import { LowLevelButton, TagButton } from "../buttonComponents";
 
 type FormTagsProps = {
   record: MonthRecord;
@@ -59,22 +65,35 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
     setRecord({ ...record, tags: recordTags });
   }, [recordTags]);
 
-  const handleAddClick = (id: number) => {
-    if (recordTags.every((t) => t !== id)) {
-      setRecordTags([...recordTags, id]);
-    }
-  };
+  const handleAddClick = useCallback(
+    (id: number) => {
+      if (recordTags.every((t) => t !== id)) {
+        setRecordTags([...recordTags, id]);
+      }
+    },
+    [recordTags, setRecordTags]
+  );
 
-  const handleRemoveClick = (id: number) => {
-    setRecordTags([...recordTags.filter((t) => t !== id)]);
-  };
+  const handleRemoveClick = useCallback(
+    (id: number) => {
+      setRecordTags([...recordTags.filter((t) => t !== id)]);
+    },
+    [recordTags, setRecordTags]
+  );
 
   const handleAddNewTag = async (newTag: string) => {
     const newId = await createTag(trackerId, newTag);
-    
+
     setRecordTags([...recordTags, newId]);
     setTags({ ...tags, [newId]: newTag });
   };
+
+  const tagsEntries = useMemo(() => {
+    if (!tags) return [];
+
+    const tEntries = Object.entries(tags).sort((a, b) => compare(a[1], b[1]));
+    return tEntries.filter((e) => recordTags.every((t) => t !== Number(e[0])));
+  }, [tags, recordTags]);
 
   return (
     <div className="col-span-2">
@@ -84,13 +103,14 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
       <div
         className={`px-2 min-h-8 w-full border-2 border-blue-100 rounded-md rounded-b-none transition-colors duration-200 ease-in-out bg-white flex items-center gap-2`}
       >
-        {recordTags.length !== 0 ? (
-          recordTags?.map((id, i) => (
+        {recordTags.length > 0 ? (
+          recordTags.map((id, i) => (
             <TagButton
-              handleClick={() => handleRemoveClick(id)}
               key={i}
+              id={id}
               tag={tags ? tags[id] ?? id : id}
-              style="bg-blue-300"
+              handleClick={handleRemoveClick}
+              customStyle="bg-blue-300"
             />
           ))
         ) : (
@@ -103,20 +123,15 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
       </div>
       <div className="p-2 border-t-0 border-2 border-blue-100 rounded-md rounded-t-none">
         <div className="relative w-full overflow-hidden pb-2 transition-[height] duration-200 ease-in-out flex flex-wrap items-center gap-2">
-          {tags &&
-            Object.entries(tags)
-              .sort((a, b) => compare(a[1], b[1]))
-              .map(
-                (entry, i) =>
-                  recordTags.every((t) => t !== Number(entry[0])) && (
-                    <TagButton
-                      key={i}
-                      tag={entry[1]}
-                      handleClick={() => handleAddClick(Number(entry[0]))}
-                      style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out"
-                    />
-                  )
-              )}
+          {tagsEntries.map((entry, i) => (
+            <TagButton
+              key={i}
+              id={Number(entry[0])}
+              tag={entry[1]}
+              handleClick={handleAddClick}
+              customStyle="bg-blue-300 hover:bg-blue-400"
+            />
+          ))}
         </div>
         <div className="grid grid-cols-6 gap-2">
           <FormInputBlock
@@ -134,8 +149,9 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
           />
           <LowLevelButton
             icon={<AddIcon className="w-5 h-5" />}
-            handleClick={() => handleAddNewTag(newTag)}
-            style="col-span-2 rounded-sm w-6 h-6 my-auto"
+            value={newTag}
+            handleClick={handleAddNewTag}
+            customStyle="col-span-2 w-6 h-6 my-auto rounded-sm"
             disabled={isDisabled || newTag.length === 0}
           />
           {isDisabled && (

@@ -1,13 +1,13 @@
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
-import TagButton from "../buttonComponents/TagButton";
 import { useTracker } from "@/context/TrackerContext";
 import { Year } from "@/lib/types/dataTypes";
 import { getMetadata } from "@/idb/metaCRUD";
 import { getAllTags } from "@/idb/tagsCRUD";
 import { getAllRecords } from "@/idb/recordsCRUD";
 import { populateYears } from "@/lib/utils/yearsTransformer";
+import { TagButton } from "../buttonComponents";
 
 const RegisteredTrackersBlock = () => {
   const { locale, trackerIds } = useGlobal();
@@ -45,7 +45,7 @@ const RegisteredTrackersBlock = () => {
               key={i}
               tag={id}
               handleClick={() => handleClick(id)}
-              style="bg-blue-300 hover:bg-blue-400 transition-colors duration-200 ease-in-out disabled:bg-green-500 disabled:hover:bg-green-500"
+              customStyle="bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500"
               disabled={trackerId === id}
             />
           ))}

@@ -5,7 +5,7 @@ import { useTracker } from "@/context/TrackerContext";
 
 type StickyHeaderProps = {
   labelMain: string;
-  totalAmount: number |string;
+  totalAmount: number | string;
   expandDataType: string;
   isMonth: boolean;
   expandDisabled?: boolean;
@@ -65,10 +65,6 @@ const StickyHeader = ({
         <StickyDescPBlock spanStyle="text-red-600" value={totalAmount} />
       </div>
       <HeaderButtonBlock
-        outerStyle="col-span-2"
-        iconSize="h-4 w-4"
-        buttonSize="h-6 w-8"
-        expandButtonSize="h-6 w-6"
         expandDataType={expandDataType}
         expandDisabled={expandDisabled}
         isMonth={isMonth}

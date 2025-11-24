@@ -8,6 +8,7 @@ export function updateLocalTrackerIds(
   const raw = localStorage.getItem(TRACKER_IDS);
   if (raw) {
     const parsed = JSON.parse(raw);
+    console.log(newTrackerId)
     if (Array.isArray(parsed) && parsed.every((p) => p !== newTrackerId)) {
       const newParsed = [...parsed, newTrackerId];
       localStorage.setItem(TRACKER_IDS, JSON.stringify(newParsed));

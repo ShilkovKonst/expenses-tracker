@@ -1,7 +1,7 @@
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
-import MidLevelButton from "../buttonComponents/MidLevelButton";
 import { t } from "@/locales/locale";
+import { MidLevelButton } from "../buttonComponents";
 
 type SettingsRemoveProps = {
   idx: string;
@@ -33,12 +33,12 @@ const SettingsRemoveBlock = ({
       <div className="col-span-2 grid grid-cols-2 gap-4 mt-auto">
         <MidLevelButton
           title={t(locale, "body.modal.labelDelete")}
-          style="bg-red-300 hover:bg-red-400 border-red-400 h-9"
+          customStyle="h-9 bg-red-300 hover:bg-red-400 border-red-400"
           handleClick={() => handleClick(idx)}
         />
         <MidLevelButton
           title={t(locale, "body.modal.labelCancel")}
-          style="bg-blue-300 hover:bg-blue-400 border-blue-400 h-9"
+          customStyle="h-9 bg-blue-300 hover:bg-blue-400 border-blue-400"
           handleClick={handleClear}
         />
       </div>

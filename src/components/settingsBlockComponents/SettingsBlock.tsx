@@ -1,17 +1,14 @@
 "use client";
 import { MouseEvent as RME, useEffect, useState } from "react";
 import { useGlobal } from "@/context/GlobalContext";
-import TopLevelButton from "../buttonComponents/TopLevelButton";
 import { AddIcon, AddTagIcon, CloseIcon } from "@/lib/icons";
 import { transformElement } from "@/lib/utils/transformElement";
 import { t } from "@/locales/locale";
-import MidLevelButton from "../buttonComponents/MidLevelButton";
 import SettingsEntityBlock from "./SettingsEntityBlock";
 import SettingsRemoveBlock from "./SettingsRemoveBlock";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
-
-// type SettingsBlockProps = { handleClear: () => void };
+import { MidLevelButton, TopLevelButton } from "../buttonComponents";
 
 const SettingsBlock = () => {
   const { locale } = useGlobal();
@@ -80,8 +77,8 @@ const SettingsBlock = () => {
       )}
       <TopLevelButton
         icon={<CloseIcon className="h-7 w-7" />}
-        title=""
-        style="absolute -top-3 -right-3 bg-blue-400 hover:bg-blue-500 col-span-2 md:col-span-1 h-9 w-9"
+        title="close settings"
+        customStyle="absolute -top-3 -right-3 col-span-2 md:col-span-1 h-9 w-9 bg-blue-400 hover:bg-blue-500"
         handleClick={handleClearFinal}
       />
       <div className="col-span-2 pr-7 border-double">
@@ -101,7 +98,6 @@ const SettingsBlock = () => {
             </>
           }
           dataType="form-new-tag"
-          tagStyle="bg-blue-300 disabled:bg-blue-400 disabled:hover:bg-blue-400"
           recordTags={tags}
           newEntity={newTag}
           setNewEntity={setNewTag}
@@ -112,12 +108,12 @@ const SettingsBlock = () => {
       <div className="col-span-2 grid grid-cols-2 gap-2 pt-2 border-t-2 border-blue-100">
         <MidLevelButton
           title={t(locale, "body.modal.labelConfirm")}
-          style="bg-green-300 hover:bg-green-400 border-green-400 cols-span-1 disabled:text-gray-600 disabled:bg-green-200 disabled:hover:bg-green-200 disabled:border-green-300"
+          customStyle="bg-green-300 hover:bg-green-400 border-green-400 cols-span-1 disabled:text-gray-600 disabled:bg-green-200 disabled:hover:bg-green-200 disabled:border-green-300"
           handleClick={handleUpdate}
         />
         <MidLevelButton
           title={t(locale, "body.modal.labelCancel")}
-          style="bg-blue-300 hover:bg-blue-400 border-blue-400 cols-span-1"
+          customStyle="bg-blue-300 hover:bg-blue-400 border-blue-400 cols-span-1"
           handleClick={handleClearFinal}
         />
       </div>

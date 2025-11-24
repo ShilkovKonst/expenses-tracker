@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import LoadTrackerBlock from "./dataManager/LoadTrackerBlock";
-import NewTrackerBlock from "./dataManager/NewTrackerBlock";
+import LoadTrackerBlock from "./trackerDataComponents/LoadTrackerBlock";
+import NewTrackerBlock from "./trackerDataComponents/NewTrackerBlock";
 
 const TrackerBlock = () => {
   const [message, setMessage] = useState<string | null>(null);

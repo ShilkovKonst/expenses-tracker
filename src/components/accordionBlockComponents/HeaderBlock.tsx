@@ -40,10 +40,6 @@ const HeaderBlock: React.FC<DescriptionPropsType> = ({
         isMonth={isMonth}
       />
       <HeaderButtonBlock
-        outerStyle="col-span-2"
-        iconSize="h-4 w-4"
-        buttonSize="h-6 w-8"
-        expandButtonSize="h-6 w-6"
         isMonth={isMonth}
         expandDataType={expandDataType}
         expandDisabled={expandDisabled}
