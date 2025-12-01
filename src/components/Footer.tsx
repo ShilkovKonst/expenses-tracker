@@ -2,6 +2,7 @@
 
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
+import Link from "next/link";
 
 const Footer = () => {
   const { locale } = useGlobal();
@@ -18,18 +19,18 @@ const Footer = () => {
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-4 text-xs md:text-sm text-blue-200">
-            <a href="#" className="hover:text-white transition-colors">
+            <Link href="#" className="hover:text-white transition-colors">
               {t(locale, "body.footer.about")}
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
+            </Link>
+            <Link href="#" className="hover:text-white transition-colors">
               {t(locale, "body.footer.confidentiality")}
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
+            </Link>
+            <Link href="#" className="hover:text-white transition-colors">
               {t(locale, "body.footer.conditions")}
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
+            </Link>
+            <Link href="#" className="hover:text-white transition-colors">
               {t(locale, "body.footer.contact")}
-            </a>
+            </Link>
           </div>
           <p className="text-xs text-blue-300 text-center md:text-right">
             {t(locale, "body.footer.author")}
