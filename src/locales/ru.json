@@ -1,30 +1,47 @@
 {
   "meta": {
-    "titleFull": "Трекер расходов",
+    "titleFull": "SpendObserver - трекер расходов",
     "description": "Ответственное потребление - залог здорового бюджета"
   },
   "body": {
     "header": {
-      "title": "Трекер расходов"
+      "title": "SpendObserver"
+    },
+    "footer": {
+      "title": "SpendObserver",
+      "copyright":"© 2025 Все права защищены",
+      "about": "О проекте",
+      "confidentiality":"Конфиденциальность",
+      "conditions": "Условия",
+      "contact": "Контакты", 
+      "author": "Шилков К.А"
+    },
+    "buttons": {
+      "save": "Экспорт данных",
+      "confirm": "Подтвердить",
+      "delete": "Удалить",
+      "replace": "Заменить",
+      "descReplace": "Все записи зарегистрированного трекера будут заменены на записи импортируемого трекера",
+      "double": "Дублировать",
+      "descDouble": "Будет создан новый трекер с обновленным идентификатором",
+      "cancel": "Отменить",
+      "close": "Закрыть",
+      "add": "Добавить",
+      "expand": "Детализация",
+      "update": "Обновить"
     },
     "modal": {
       "titleCreate": "Создать новую запись",
       "titleUpdate": "Редактировать запись",
       "titleDelete": "Вы уверены, что хотите удалить {{deleteEntity}}?",
+      "descDelete": "{{deleteEntity}} '{{deleteEntityId}}' будет полностью удален!",
       "deleteEntity": {
-        "record": "эту запись",
-        "tag": "этот тэг",
-        "tracker": "этот трекер"
-      },
-      "labelConfirm": "Подтвердить",
-      "labelDelete": "Удалить",
-      "labelReplace": "Заменить",
-      "descReplace": "Все записи зарегистрированного трекера будут заменены на записи импортируемого трекера",
-      "labelDouble": "Дублировать",
-      "descDouble": "Будет создан новый трекер с обновленным идентификатором",
-      "labelCancel": "Отменить"
+        "record": "запись",
+        "tag": "тэг",
+        "tracker": "трекер"
+      }
     },
-    "peronnalisation": {
+    "personnalisation": {
       "title": "Управление тегами",
       "description": "Добавляйте, удаляйте и настраивайте теги операций."
     },
@@ -73,14 +90,10 @@
         "tagTitleEmpty": "Список тегов пуст. Добавьте тег для классификации операций.",
         "tagCustomTitle": "Введите имя нового тэга",
         "dateDefault": "Выберите дату (опционально)",
-        "expand": "Детализация",
         "type": "Тип",
         "labelTags": "Тэги",
         "description": "Описание",
         "amount": "Сумма",
-        "remove": "Удалить",
-        "update": "Обновить",
-        "add": "Добавить",
         "cost": "Расход",
         "income": "Доход",
         "tags": {

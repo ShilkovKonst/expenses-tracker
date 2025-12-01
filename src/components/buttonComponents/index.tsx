@@ -1,11 +1,12 @@
 import { memo } from "react";
 import {
   BaseButtonProps,
-  LowLevelButtonProps,
-  MidLevelButtonProps,
+  IconButtonProps,
+  UtilButtonProps,
   SubmitButtonProps,
-  TagButtonProps,
-  TopLevelButtonProps,
+  ValidateButtonProps,
+  TextRoundedButtonProps,
+  LowLevelButtonProps,
 } from "./types";
 
 const BaseButton = ({
@@ -31,8 +32,8 @@ export const SubmitButton = memo(function SubmitButton({
 }: SubmitButtonProps) {
   return (
     <BaseButton
-      title={title}
       type="submit"
+      title={title}
       className={`${customStyle} p-1 rounded`}
       disabled={disabled}
     >
@@ -41,7 +42,7 @@ export const SubmitButton = memo(function SubmitButton({
   );
 });
 
-export const TopLevelButton = memo(function TopLevelButton({
+export const UtilButton = memo(function UtilButton({
   icon,
   title,
   customStyle,
@@ -49,36 +50,36 @@ export const TopLevelButton = memo(function TopLevelButton({
   dataUpdate,
   handleClick,
   disabled,
-}: TopLevelButtonProps) {
+}: UtilButtonProps) {
   return (
     <BaseButton
-      title={title}
-      data-type={dataType}
-      data-update={dataUpdate}
       type="button"
+      title={title}
       onClick={handleClick}
       className={`${customStyle} p-1 rounded`}
       disabled={disabled}
+      data-type={dataType}
+      data-update={dataUpdate}
     >
       {icon}
     </BaseButton>
   );
 });
 
-export const MidLevelButton = memo(function MidLevelButton({
+export const ValidateButton = memo(function ValidateButton({
   customStyle,
   title,
   content = title,
   id,
   handleClick,
   disabled,
-}: MidLevelButtonProps) {
+}: ValidateButtonProps) {
   return (
     <BaseButton
-      title={title}
       type="button"
+      title={title}
       id={id ?? ""}
-      className={`${customStyle} px-2 py-1 rounded text-sm font-bold border-2`}
+      className={`${customStyle} my-1 px-2 py-1 rounded text-sm font-bold border-2`}
       onClick={handleClick}
       disabled={disabled}
     >
@@ -106,24 +107,46 @@ export const LowLevelButton = memo(function LowLevelButton({
   );
 });
 
-export const TagButton = memo(function TagButton({
+export const IconButton = memo(function IconButton({
+  icon,
+  value,
+  title,
+  handleClick,
+  customStyle,
+  disabled,
+}: IconButtonProps) {
+  return (
+    <BaseButton
+      type="button"
+      title={title}
+      className={`${customStyle} mr-auto`}
+      onClick={() => handleClick(value)}
+      disabled={disabled}
+    >
+      {icon}
+    </BaseButton>
+  );
+});
+
+export const TextRoundedButton = memo(function TextRoundedButton({
   id,
-  tag,
+  value,
+  title,
   customStyle,
   handleClick,
   disabled,
   dataIndex,
-}: TagButtonProps) {
-  
+}: TextRoundedButtonProps) {
   return (
     <BaseButton
       type="button"
-      onClick={() => handleClick(id)}
+      title={title}
+      onClick={() => (handleClick && id ? handleClick(id) : {})}
       className={`tag ${customStyle} my-auto px-2 h-5 text-xs text-center font-semibold rounded-lg`}
       disabled={disabled}
       data-index={dataIndex}
     >
-      {tag}
+      {value}
     </BaseButton>
   );
 });

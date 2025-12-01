@@ -1,22 +1,24 @@
-import { createUpdateMetadata } from "@/idb/metaCRUD";
-import { GlobalDataType, MonthRecord } from "../types/dataTypes";
-import { batchAddRecords, batchAddTags } from "@/idb/IDBManager";
+import { createMetadata } from "@/idb/CRUD/metaCRUD";
+import { GlobalDataType } from "../types/dataTypes";
+import { batchAddRecords, batchAddTags } from "@/idb/massImportHelper";
 
-export async function populateIDBFromFile(data: GlobalDataType) {
-  await createUpdateMetadata(data.id, data.meta);
+export async function populateIDBFromFile(
+  data: GlobalDataType,
+  id: string = data.id
+) {
+  await createMetadata(id, data.meta);
 
-  const tags = Object.values(data.tagsPool);
-  await batchAddTags(data.id, tags);
+  const tags = Object.values(data.tags);
+  await batchAddTags(id, tags);
 
-  const allRecords: Omit<MonthRecord, "id">[] = [];
-  for (const y of Object.values(data.years)) {
-    for (const m of Object.values(y.months)) {
-      for (const r of m.records) {
+  const allRecords = Object.values(data.years).flatMap((year) =>
+    Object.values(year.months).flatMap((month) =>
+      month.records.map((r) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, ...rest } = r;
-        allRecords.push(rest);
-      }
-    }
-  }
-  await batchAddRecords(data.id, allRecords);
+        return rest;
+      })
+    )
+  );
+  await batchAddRecords(id, allRecords);
 }

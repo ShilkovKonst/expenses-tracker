@@ -15,7 +15,6 @@ function DescPBlock({
     if (!Array.isArray(value)) return value;
     return [...value].sort(compare);
   }, [value]);
-  
   return (
     <BasePBlock title={title} outerStyle={outerStyle} titleStyle={titleStyle}>
       {typeof processedValues === "string"

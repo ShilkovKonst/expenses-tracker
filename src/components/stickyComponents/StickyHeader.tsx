@@ -2,6 +2,10 @@
 import HeaderButtonBlock from "../accordionBlockComponents/HeaderButtonBlock";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
+import { createRecord } from "@/idb/CRUD/recordsCRUD";
+import { MonthRecord } from "@/lib/types/dataTypes";
+import Link from "next/link";
 
 type StickyHeaderProps = {
   labelMain: string;
@@ -24,30 +28,35 @@ const StickyHeader = ({
   monthId,
   recordsLength,
 }: StickyHeaderProps) => {
-  const { setIsModal, setModalType, setModalBody } = useModal();
+  const { openModal } = useModal();
+  const { trackerId } = useTracker();
 
   const handleAddOperation = () => {
     if (yearId && monthId && recordsLength) {
-      setIsModal(true);
-      setModalType("recordFormBlock");
-      setModalBody({
-        type: "crt",
-        record: {
-          id: 0,
-          year: yearId,
-          month: monthId,
-          day: -1,
-          type: "cost",
-          tags: [],
-          description: "",
-          amount: 0,
-        },
-      });
+      const newRecord: MonthRecord = {
+        id: -1,
+        year: yearId,
+        month: monthId,
+        day: -1,
+        type: "cost",
+        tags: [],
+        description: "",
+        amount: 0,
+      };
+      const onCreate = async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, ...partRecord } = newRecord;
+        const newId = await createRecord(trackerId, partRecord);
+        const updatedAt = await updateMetadata(trackerId);
+        return { id: newId, updatedAt };
+      };
+      openModal("record", { record: newRecord, onConfirm: onCreate });
     }
   };
 
   return (
-    <div
+    <Link
+      href={isMonth ? `#${yearId}-${monthId}-body` : `#${yearId}`}
       className={`header col-span-6 grid grid-cols-7 gap-2 w-full border-2 ${
         isMonth
           ? "bg-blue-100 border-blue-200 border-t-0 sticky top-10 z-10"
@@ -62,7 +71,12 @@ const StickyHeader = ({
           recordsLength={recordsLength}
           isMonth={isMonth}
         />
-        <StickyDescPBlock spanStyle="text-red-600" value={totalAmount} />
+        <StickyDescPBlock
+          spanStyle={
+            Number(totalAmount) >= 0 ? "text-green-600" : "text-red-600"
+          }
+          value={totalAmount}
+        />
       </div>
       <HeaderButtonBlock
         expandDataType={expandDataType}
@@ -70,7 +84,7 @@ const StickyHeader = ({
         isMonth={isMonth}
         handleAddOperation={handleAddOperation}
       />
-    </div>
+    </Link>
   );
 };
 

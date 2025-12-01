@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { RECORDS_STORE } from "@/constants";
-import { MonthRecord } from "../lib/types/dataTypes";
-import { performDBOperation } from "./IDBManager";
+import { MonthRecord } from "@/lib/types/dataTypes";
+import { performDBOperation } from "../IDBManager";
 
 export async function createRecord(
   trackerId: string,
@@ -65,7 +65,7 @@ export async function getAllRecords(trackerId: string): Promise<MonthRecord[]> {
   );
 }
 
-export async function updateRecord(
+export async function updateRecordById(
   trackerId: string,
   record: MonthRecord
 ): Promise<void> {
@@ -77,7 +77,7 @@ export async function updateRecord(
   );
 }
 
-export async function deleteRecord(
+export async function deleteRecordById(
   trackerId: string,
   recordId: number
 ): Promise<void> {

@@ -1,8 +1,13 @@
 "use client";
-import { METADATA_STORE, RECORDS_STORE, TAGS_STORE } from "@/constants";
-import { MonthRecord } from "@/lib/types/dataTypes";
+import {
+  METADATA_STORE,
+  MONTHS_STORE,
+  RECORDS_STORE,
+  TAGS_STORE,
+  YEARS_STORE,
+} from "@/constants";
 
-let dbInstance: IDBDatabase | null = null;
+export let dbInstance: IDBDatabase | null = null;
 
 export async function openDB(dbName: string): Promise<IDBDatabase> {
   if (dbInstance && dbInstance.name === dbName) {
@@ -18,10 +23,18 @@ export async function openDB(dbName: string): Promise<IDBDatabase> {
     const request = indexedDB.open(dbName);
 
     request.onerror = () => reject(request.error);
+
     request.onsuccess = () => {
-      dbInstance = request.result;
-      resolve(dbInstance);
+      const db = request.result;
+      db.onversionchange = () => {
+        dbInstance?.close();
+        dbInstance = null;
+      };
+
+      dbInstance = db;
+      resolve(db);
     };
+
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
 
@@ -34,6 +47,20 @@ export async function openDB(dbName: string): Promise<IDBDatabase> {
           keyPath: "id",
           autoIncrement: true,
         });
+      }
+
+      if (!db.objectStoreNames.contains(YEARS_STORE)) {
+        db.createObjectStore(YEARS_STORE, {
+          keyPath: "id",
+        });
+      }
+
+      if (!db.objectStoreNames.contains(MONTHS_STORE)) {
+        const store = db.createObjectStore(MONTHS_STORE, {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+        store.createIndex("by_year", "year", { unique: false });
       }
 
       if (!db.objectStoreNames.contains(RECORDS_STORE)) {
@@ -50,6 +77,32 @@ export async function openDB(dbName: string): Promise<IDBDatabase> {
   });
 }
 
+export async function deleteDB(dbName: string) {
+  return new Promise<void>((resolve, reject) => {
+    if (dbInstance && dbInstance.name === dbName) {
+      try {
+        dbInstance.close();
+      } catch {}
+      dbInstance = null;
+    }
+
+    const request = indexedDB.deleteDatabase(dbName);
+    request.onsuccess = () => resolve();
+    request.onerror = () =>
+      reject(
+        new Error(
+          `Failed to delete database ${dbName}: ${request.error?.message}`
+        )
+      );
+    request.onblocked = () =>
+      reject(
+        new Error(
+          `Cannot delete database ${dbName}: it's still open somewhere.`
+        )
+      );
+  });
+}
+
 export async function performDBOperation<T>(
   trackerId: string,
   storeName: string,
@@ -61,7 +114,6 @@ export async function performDBOperation<T>(
     const transaction = db.transaction([storeName], mode);
     const store = transaction.objectStore(storeName);
     const request = callback(store);
-
     request.onsuccess = () => resolve(request.result as T);
     request.onerror = () => reject(request.error);
     transaction.onerror = () => reject(transaction.error);
@@ -103,39 +155,5 @@ function checkDBExistsFallback(dbName: string): Promise<boolean> {
     request.onerror = () => {
       resolve(false);
     };
-  });
-}
-
-export async function batchAddTags(trackerId: string, tags: string[]) {
-  const db = await openDB(trackerId);
-  const tx = db.transaction(TAGS_STORE, "readwrite");
-  const store = tx.objectStore(TAGS_STORE);
-
-  for (const title of tags) {
-    store.add({ title });
-  }
-
-  await awaitTransaction(tx);
-}
-export async function batchAddRecords(
-  trackerId: string,
-  records: Omit<MonthRecord, "id">[]
-) {
-  const db = await openDB(trackerId);
-  const tx = db.transaction(RECORDS_STORE, "readwrite");
-  const store = tx.objectStore(RECORDS_STORE);
-
-  for (const r of records) {
-    store.add(r);
-  }
-
-  await awaitTransaction(tx);
-}
-
-function awaitTransaction(tx: IDBTransaction): Promise<void> {
-  return new Promise((resolve, reject) => {
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-    tx.onabort = () => reject(tx.error);
   });
 }

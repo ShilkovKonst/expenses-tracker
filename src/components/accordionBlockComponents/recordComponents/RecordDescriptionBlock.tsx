@@ -1,5 +1,5 @@
 import DescPBlock from "@/components/descriptionComponents/DescPBlock";
-import { intToDecimalString } from "@/lib/utils/amountHelper";
+import { decimalToInputString } from "@/lib/utils/amountHelper";
 
 type RecordDescriptionBlockProps = {
   outerStyle: string;
@@ -43,7 +43,7 @@ const RecordDescriptionBlock: React.FC<RecordDescriptionBlockProps> = ({
             recordType === "income" ? "text-green-600" : "text-red-500"
           } text-xs truncate`}
           title={labelRecordAmount}
-          value={intToDecimalString(recordAmount)}
+          value={decimalToInputString(recordAmount)}
         />
       </div>
       <DescPBlock

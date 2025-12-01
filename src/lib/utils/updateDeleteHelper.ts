@@ -1,8 +1,7 @@
-import { createUpdateMetadata } from "@/idb/metaCRUD";
-import { MetadataType } from "../types/dataTypes";
 import { Dispatch, SetStateAction } from "react";
-import { TrackerMeta } from "@/context/TrackerContext";
-import { formatDatetoMeta } from "./trackerDataSetter";
+import { TrackerMeta } from "../types/dataTypes";
+import { createMetadata, updateMetadata } from "@/idb/CRUD/metaCRUD";
+import { formatDatetoMeta } from "./dateParser";
 
 export function updateObject<T extends { id: number | string }>(
   items: Record<number | string, T>,
@@ -38,13 +37,112 @@ export function updateArray<T extends { id: number | string }>(
 
 export async function updateMeta(
   trackerId: string,
-  meta: MetadataType,
-  setTrackerMeta: Dispatch<SetStateAction<TrackerMeta>>
+  meta: TrackerMeta | null,
+  setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>
 ) {
-  const newMeta = {
-    ...meta,
-    updatedAt: formatDatetoMeta(new Date()),
-  };
-  await createUpdateMetadata(trackerId, newMeta);
+  let newMeta: TrackerMeta;
+  if (!meta) {
+    newMeta = {
+      createdAt: formatDatetoMeta(new Date()),
+      updatedAt: formatDatetoMeta(new Date()),
+    };
+    await createMetadata(trackerId, newMeta);
+  } else {
+    const updatedAt = await updateMetadata(trackerId);
+    newMeta = {
+      ...meta,
+      updatedAt,
+    };
+  }
   setTrackerMeta(newMeta);
 }
+
+// export const handleCreate = async (
+//   trackerId: string,
+//   newRecord: MonthRecord
+// ) => {
+//   const updNewRecord: MonthRecord = {
+//     ...newRecord,
+//     amount: parseInputAmountToDecimal(String(newRecord.amount)),
+//   };
+//   try {
+//     const recordId = await createRecord(trackerId, updNewRecord);
+//     updNewRecord.id = recordId;
+//   } catch {
+//     throw new Error("'Create record' transaction failed!");
+//   }
+// };
+
+// export const handleUpdate = async (trackerId: string, record: MonthRecord) => {
+//   const updRecord: MonthRecord = {
+//     ...record,
+//     amount: parseInputAmountToDecimal(String(record.amount)),
+//   };
+//   try {
+//     await updateRecordById(trackerId, updRecord.id, updRecord);
+//   } catch {
+//     throw new Error("'Create record' transaction failed!");
+//   }
+// };
+
+// export const handleDelete = async (trackerId: string, record: MonthRecord) => {
+//   try {
+//     await deleteRecordById(trackerId, record.id);
+//   } catch {
+//     throw new Error("'Delete record' transaction failed!");
+//   }
+// };
+
+// if (trackerMeta) await updateMeta(trackerId, trackerMeta, setTrackerMeta);
+// handleUpdate(updNewRecord, false);
+
+// const handleUpdateDelete = (record: MonthRecord, isDelete: boolean) => {
+//   if (!trackerMeta || !trackerYears) return;
+//   if (!record) return;
+
+//   const year = trackerYears[record.year];
+//   if (!year) return;
+
+//   const month = year.months[record.month];
+//   if (!month) return;
+
+//   const updRecord: MonthRecord = {
+//     ...record,
+//     amount: record.amount,
+//   };
+
+//   const { updated: updRecords, agg: totalAmount } = updateArray(
+//     month.records,
+//     updRecord,
+//     (items) =>
+//       items.reduce(
+//         (sum, c) => (c.type === "income" ? sum + c.amount : sum - c.amount),
+//         0
+//       ),
+//     isDelete
+//   );
+//   const updMonth: Month = {
+//     ...month,
+//     records: updRecords,
+//     totalAmount: totalAmount,
+//   };
+
+//   const { updated: updMonths, agg: monthTotalAmount } = updateObject(
+//     year.months,
+//     updMonth,
+//     (items) => items.reduce((sum, m) => sum + m.totalAmount, 0)
+//   );
+//   const updYear: Year = {
+//     ...year,
+//     months: updMonths,
+//     totalAmount: monthTotalAmount,
+//   };
+
+//   const { updated: updYears } = updateObject(trackerYears, updYear);
+//   setTrackerYears(updYears);
+//   setTrackerMeta({
+//     ...trackerMeta,
+//     updatedAt: formatDatetoMeta(new Date()),
+//   });
+//   handleClear();
+// };

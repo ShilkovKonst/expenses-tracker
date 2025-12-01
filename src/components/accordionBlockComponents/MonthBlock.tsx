@@ -1,12 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Month } from "@/lib/types/dataTypes";
+import { useCallback, useMemo } from "react";
+import { Month, MonthRecord } from "@/lib/types/dataTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
-import RecordBlock from "./recordBlockComponents/RecordBlock";
+import RecordBlock from "./recordComponents/RecordBlock";
 import { useModal } from "@/context/ModalContext";
 import { compare } from "@/lib/utils/compareHelper";
+import { createRecord } from "@/idb/CRUD/recordsCRUD";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
+import { useTracker } from "@/context/TrackerContext";
 
 type MonthProps = {
   yearId: number;
@@ -15,31 +18,34 @@ type MonthProps = {
 
 const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
   const { locale } = useGlobal();
-  const { setIsModal, setModalBody, setModalType } = useModal();
+  const { trackerId } = useTracker();
+  const { openModal } = useModal();
 
-  const [isExpandDisabled, setIsExpandDisabled] = useState<boolean>(true);
+  const handleAddOperation = useCallback(() => {
+    const newRecord: MonthRecord = {
+      id: -1,
+      year: yearId,
+      month: month.id,
+      day: -1,
+      type: "cost",
+      tags: [],
+      description: "",
+      amount: 0,
+    };
+    const onCreate = async (record: MonthRecord) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...partRecord } = record;
+      const newId = await createRecord(trackerId, partRecord);
+      const updatedAt = await updateMetadata(trackerId);
+      return { id: newId, updatedAt };
+    };
+    openModal("record", { record: newRecord, onConfirm: onCreate });
+  }, [month.id, openModal, trackerId, yearId]);
 
-  const handleAddOperation = () => {
-    setIsModal(true);
-    setModalType("recordFormBlock");
-    setModalBody({
-      type: "crt",
-      record: {
-        id: 0,
-        year: yearId,
-        month: month.id,
-        day: -1,
-        type: "cost",
-        tags: [],
-        description: "",
-        amount: 0,
-      },
-    });
-  };
-
-  useEffect(() => {
-    setIsExpandDisabled(month.records?.length === 0);
-  }, [month.records]);
+  const isExpandDisabled = useMemo(
+    () => month.records?.length === 0,
+    [month.records]
+  );
 
   return (
     <div

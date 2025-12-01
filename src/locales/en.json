@@ -1,30 +1,47 @@
 {
   "meta": {
-    "titleFull": "Expense tracker",
+    "titleFull": "SpendObserver - expense tracker",
     "description": "Responsible spending is the key to a healthy budget"
   },
   "body": {
     "header": {
-      "title": "Expense Tracker"
+      "title": "SpendObserver"
+    },
+    "footer": {
+      "title": "SpendObserver",
+      "copyright": "© 2025 All rights reserved",
+      "about": "About",
+      "confidentiality": "Confidentiality",
+      "conditions": "Conditions",
+      "contact": "Contact",
+      "author": "Konstantin Shilkov"
+    },
+    "buttons": {
+      "save": "Export data",
+      "confirm": "Confirm",
+      "delete": "Delete",
+      "replace": "Replace",
+      "descReplace": "All entries in the current tracker will be replaced with the entries from the imported tracker.",
+      "double": "Duplicate",
+      "descDouble": "A new tracker will be created with an updated identifier.",
+      "cancel": "Cancel",
+      "close": "Close",
+      "add": "Add",
+      "expand": "Details",
+      "update": "Update"
     },
     "modal": {
       "titleCreate": "Create new record",
       "titleUpdate": "Update record",
-      "titleDelete": "Are you sure you want to delete {{deleteEntity}}?",
+      "titleDelete": "Are you sure you want to delete this {{deleteEntity}}?",
+      "descDelete": "{{deleteEntity}} '{{deleteEntityId}}' will be completely removed!",
       "deleteEntity": {
-        "record": "this record",
-        "tag": "this tag",
-        "tracker": "this tracker"
-      },
-      "labelConfirm": "Confirm",
-      "labelDelete": "Delete",
-      "labelReplace": "Replace",
-      "descReplace": "All entries in the current tracker will be replaced with the entries from the imported tracker.",
-      "labelDouble": "Duplicate",
-      "descDouble": "A new tracker will be created with an updated identifier.",
-      "labelCancel": "Cancel"
+        "record": "record",
+        "tag": "tag",
+        "tracker": "tracker"
+      }
     },
-    "peronnalisation": {
+    "personnalisation": {
       "title": "Tags management",
       "description": "Add, remove, and configure your record tags."
     },
@@ -73,14 +90,10 @@
         "tagTitleEmpty": "Tag list is empty. Add a tag to label records.",
         "tagCustomTitle": "Enter your custom tag's name",
         "dateDefault": "Select a date (optional)",
-        "expand": "Details",
         "type": "Type",
         "labelTags": "Tags",
         "description": "Description",
         "amount": "Amount",
-        "remove": "Remove",
-        "update": "Update",
-        "add": "Add",
         "cost": "Cost",
         "income": "Income",
         "tags": {

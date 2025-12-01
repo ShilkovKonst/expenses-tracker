@@ -1,12 +1,14 @@
 "use client";
 import { MonthRecord } from "@/lib/types/dataTypes";
 import RecordDescriptionBlock from "./RecordDescriptionBlock";
-import RecordButtonBlock from "./RecordButtonBlock";
+import ButtonBlock from "@/components/accordionBlockComponents/recordComponents/ButtonBlock";
 import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
-import { RecordModalType, useModal } from "@/context/ModalContext";
+import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { useMemo } from "react";
+import { deleteRecordById, updateRecordById } from "@/idb/CRUD/recordsCRUD";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 
 type RecordProps = {
   record: MonthRecord;
@@ -14,20 +16,36 @@ type RecordProps = {
 
 function RecordBlock({ record }: RecordProps) {
   const { locale } = useGlobal();
-  const { trackerTags } = useTracker();
-  const { setIsModal, setModalBody, setModalType } = useModal();
+  const { trackerId, trackerTags } = useTracker();
+  const { openModal } = useModal();
 
   const recordTags = useMemo(() => {
     if (!record.tags?.length) return [];
     return trackerTags ? record.tags.map((t) => trackerTags[t]) : [];
   }, [record.tags, trackerTags]);
 
-  const handleCallFormModal = (modalType: RecordModalType) => {
-    setIsModal(true);
-    setModalType("recordFormBlock");
-    setModalBody({
-      type: modalType,
-      record: record,
+  const handleUpdate = () => {
+    const onUpdate = async (record: MonthRecord) => {
+      await updateRecordById(trackerId, record);
+      const updatedAt = await updateMetadata(trackerId);
+      return {
+        id: record.id,
+        updatedAt,
+      };
+    };
+    openModal("record", { record, onConfirm: onUpdate });
+  };
+
+  const handleDelete = () => {
+    const onDelete = async () => {
+      await deleteRecordById(trackerId, record.id);
+      const updatedAt = await updateMetadata(trackerId);
+      return { updatedAt, message: "" };
+    };
+    openModal("delete", {
+      entityType: "record",
+      entity: record,
+      onConfirm: onDelete,
     });
   };
 
@@ -61,11 +79,12 @@ function RecordBlock({ record }: RecordProps) {
               : t(locale, "body.form.labels.withoutDate")
           }
         />
-        <RecordButtonBlock
+        <ButtonBlock
           outerStyle={`col-span-1`}
           iconSize={"h-4 w-4"}
           buttonSize={"h-6 w-8"}
-          handleCallFormModal={handleCallFormModal}
+          handleUpdate={handleUpdate}
+          handleDelete={handleDelete}
         />
       </div>
     </div>

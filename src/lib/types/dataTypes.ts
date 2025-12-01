@@ -1,24 +1,17 @@
 import { MONTHS } from "@/constants";
 
-export type RecordTag = {
-  id: number;
-  title: string;
-};
-
-export type TrackerName = {
-  id: number;
-  title: string;
-};
+export type TrackerYears = Record<number, Year>;
+export type TrackerMonths = Record<number, Month>;
+export type TrackerTags = Record<number, string>;
 
 export type Tracker = {
   id: string;
-  years: Record<number, Year>;
   totalAmount: number;
 };
 
 export type Year = {
   id: number;
-  months: Record<number, Month>;
+  months: TrackerMonths;
   totalAmount: number;
 };
 
@@ -45,12 +38,13 @@ export type MonthRecord = {
 export type MonthIdType = keyof typeof MONTHS;
 export type Months = (typeof MONTHS)[MonthIdType];
 
-export type MetadataType = {
+export type TrackerMeta = {
   createdAt: string;
   updatedAt: string;
 };
 
 export interface GlobalDataType extends Tracker {
-  meta: MetadataType;
-  tagsPool: Record<number, string>;
+  meta: TrackerMeta;
+  tags: TrackerTags;
+  years: TrackerYears;
 }

@@ -128,15 +128,11 @@ export function calcExpressionAlg(amount: string) {
   return Math.round(result * 100);
 }
 
-export function intToDecimalString(amount: number) {
-  return (Math.round(amount) / 100).toFixed(2);
-}
-
 export function decimalToInputString(amount: number): string {
   return (amount / 100).toString();
 }
 
-export function parseInputAmountToDecimal(value: string): number {
+export function inputStringToDecimal(value: string): number {
   const num = Number(value);
   if (isNaN(num)) return 0;
   return Math.round(num * 100);

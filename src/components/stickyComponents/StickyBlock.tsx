@@ -10,7 +10,7 @@ import StickyHeader from "./StickyHeader";
 import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { t } from "@/locales/locale";
-import { intToDecimalString } from "@/lib/utils/amountHelper";
+import { decimalToInputString } from "@/lib/utils/amountHelper";
 
 const StickyBlock = () => {
   const { locale } = useGlobal();
@@ -70,7 +70,7 @@ const StickyBlock = () => {
         <StickyHeader
           isMonth={false}
           labelMain={activeYear.id.toString()}
-          totalAmount={intToDecimalString(activeYear.totalAmount)}
+          totalAmount={decimalToInputString(activeYear.totalAmount)}
           expandDataType={expandYearDataType}
           expandDisabled={false}
         />
@@ -79,7 +79,7 @@ const StickyBlock = () => {
         <StickyHeader
           isMonth={true}
           labelMain={t(locale, `body.form.valueMonth.${activeMonth.title}`)}
-          totalAmount={intToDecimalString(activeMonth.totalAmount)}
+          totalAmount={decimalToInputString(activeMonth.totalAmount)}
           expandDataType={expandMonthDataType}
           expandDisabled={activeMonth.records?.length === 0}
           yearId={activeYear.id}

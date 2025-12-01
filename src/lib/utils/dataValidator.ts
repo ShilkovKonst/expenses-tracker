@@ -1,4 +1,3 @@
-import { ModalBodyType } from "@/context/ModalContext";
 import { GlobalDataType } from "@/lib/types/dataTypes";
 
 export type ValidationSuccess = {
@@ -22,8 +21,7 @@ export function validate(data: unknown): ValidationResult {
 
   if (typeof d.id !== "string") return fail("id", "id must be a string");
   if (!isObject(d.meta)) return fail("meta", "meta must be an object");
-  if (!isObject(d.tagsPool))
-    return fail("tagsPool", "tagsPool must be an object");
+  if (!isObject(d.tags)) return fail("tags", "tags must be an object");
   if (!isObject(d.years)) return fail("years", "years must be an object");
   if (typeof d.totalAmount !== "number")
     return fail("totalAmount", "totalAmount must be a number");
@@ -41,8 +39,8 @@ export function validate(data: unknown): ValidationResult {
   if (typeof meta.updatedAt !== "string")
     return fail("meta.updatedAt", "updatedAt must be a string");
 
-  const tagsPool: Record<number, string> = d.tagsPool;
-  for (const [key, value] of Object.entries(tagsPool)) {
+  const tags: Record<number, string> = d.tags;
+  for (const [key, value] of Object.entries(tags)) {
     if (typeof value !== "string")
       return fail(`tagsPool.${key}`, `Tag value must be string`);
   }
@@ -97,7 +95,7 @@ export function validate(data: unknown): ValidationResult {
               `${rPath}.tags`,
               `tag '${String(tag)}' is not a number`
             );
-          if (!(tag in tagsPool))
+          if (!(tag in tags))
             return fail(
               `${rPath}.tags`,
               `tag '${tag}' does not exist in tagsPool`
@@ -127,10 +125,4 @@ export function tryValidate(json: string): ValidationResult {
     return fail("parse", "Invalid JSON format");
   }
   return validate(parsed);
-}
-
-export function isModalBodyType(
-  body: ModalBodyType | GlobalDataType | null
-): body is ModalBodyType {
-  return body !== null && "record" in body;
 }

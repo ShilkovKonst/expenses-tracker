@@ -1,17 +1,13 @@
 import { TAGS_STORE } from "@/constants";
-import { performDBOperation } from "./IDBManager";
-import { TrackerTags } from "@/context/TrackerContext";
-
-export type TagDBEntry = {
-  id: number;
-  title: string;
-};
+import { TrackerTags } from "@/lib/types/dataTypes";
+import { TagIDBType } from "../types";
+import { performDBOperation } from "../IDBManager";
 
 export async function createTag(
   trackerId: string,
   title: string
 ): Promise<number> {
-  const tagEntry: Omit<TagDBEntry, "id"> = { title };
+  const tagEntry: Omit<TagIDBType, "id"> = { title };
   return performDBOperation<number>(
     trackerId,
     TAGS_STORE,
@@ -21,7 +17,7 @@ export async function createTag(
 }
 
 export async function getAllTags(trackerId: string): Promise<TrackerTags> {
-  const tagsArray = await performDBOperation<TagDBEntry[]>(
+  const tagsArray = await performDBOperation<TagIDBType[]>(
     trackerId,
     TAGS_STORE,
     "readonly",
@@ -38,8 +34,8 @@ export async function getAllTags(trackerId: string): Promise<TrackerTags> {
 export async function getTagById(
   trackerId: string,
   tagId: number
-): Promise<TagDBEntry | undefined> {
-  return performDBOperation<TagDBEntry | undefined>(
+): Promise<TagIDBType | undefined> {
+  return performDBOperation<TagIDBType | undefined>(
     trackerId,
     TAGS_STORE,
     "readonly",
@@ -47,12 +43,12 @@ export async function getTagById(
   );
 }
 
-export async function updateTag(
+export async function updateTagById(
   trackerId: string,
   id: number,
   title: string
 ): Promise<number> {
-  const tagEntry: TagDBEntry = { id, title };
+  const tagEntry: TagIDBType = { id, title };
   return performDBOperation<number>(
     trackerId,
     TAGS_STORE,

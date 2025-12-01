@@ -1,30 +1,47 @@
 {
   "meta": {
-    "titleFull": "Suivi des dépenses",
+    "titleFull": "SpendObserver - suivi des dépenses",
     "description": "La consommation responsable est la clé d'un budget sain"
   },
   "body": {
     "header": {
-      "title": "Suivi des dépenses"
+      "title": "SpendObserver"
+    },
+    "footer": {
+      "title": "SpendObserver",
+      "copyright": "© 2025 Tous droits réservés",
+      "about": "A propos",
+      "confidentiality": "Confidentialité",
+      "conditions": "Conditions",
+      "contact": "Contact",
+      "author": "Konstantin Shilkov"
+    },
+    "buttons": {
+      "save": "Données d'exportation",
+      "confirm": "Confirmer",
+      "delete": "Supprimer",
+      "replace": "Remplacer",
+      "descReplace": "Toutes les entrées du suivi actuel seront remplacées par celles du suivi importé.",
+      "double": "Dupliquer",
+      "descDouble": "Un nouveau suivi sera créé avec un identifiant mis à jour.",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "add": "Ajouter",
+      "expand": "Détail",
+      "update": "Mettre à jour"
     },
     "modal": {
       "titleCreate": "Créer nouvel enregistrement",
       "titleUpdate": "Mettre à jour cet enregistrement",
       "titleDelete": "Etes-vous sûr de vouloir supprimer {{deleteEntity}} ?",
+      "descDelete": "{{deleteEntity}} '{{deleteEntityId}}' sera complètement supprimé!",
       "deleteEntity": {
         "record": "cet enregistrement",
         "tag": "cette étiquette",
         "tracker": "ce suivi"
-      },
-      "labelConfirm": "Confirmer",
-      "labelDelete": "Supprimer",
-      "labelReplace": "Remplacer",
-      "descReplace": "Toutes les entrées du suivi actuel seront remplacées par celles du suivi importé.",
-      "labelDouble": "Dupliquer",
-      "descDouble": "Un nouveau suivi sera créé avec un identifiant mis à jour.",
-      "labelCancel": "Annuler"
+      }
     },
-    "peronnalisation": {
+    "personnalisation": {
       "title": "Gestion des étiquettes",
       "description": "Ajoutez, supprimez et configurez vos étiquettes d'enregistrements."
     },
@@ -73,14 +90,10 @@
         "tagTitleEmpty": "La liste des étiquettes est vide. Ajoutez-en une nouvelle pour étiqueter les enregistrements.",
         "tagCustomTitle": "Saisir le nom de votre étiquette personnalisée",
         "dateDefault": "Sélectionnez une date (facultatif)",
-        "expand": "Détail",
         "type": "Type",
         "labelTags": "Etiquette",
         "description": "Description",
         "amount": "Montant",
-        "remove": "Supprimer",
-        "update": "Mettre à jour",
-        "add": "Ajouter",
         "cost": "Dépenses",
         "income": "Revenu",
         "tags": {

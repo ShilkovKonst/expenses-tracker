@@ -65,3 +65,5 @@ export const TRACKER_IDS = "trackerIds";
 export const METADATA_STORE = "MetadataStore";
 export const TAGS_STORE = "TagsStore";
 export const RECORDS_STORE = "RecordsStore";
+export const MONTHS_STORE = "MonthsStore";
+export const YEARS_STORE = "YearsStore";

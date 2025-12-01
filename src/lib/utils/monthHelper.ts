@@ -5,14 +5,6 @@ export function getMonthById<ID extends MonthIdType>(id: ID): Months {
   return MONTHS[id];
 }
 
-export function getMonthIdByTitle<T extends Months>(title: T): MonthIdType {
-  const entry = Object.entries(MONTHS).find(([, v]) => v === title);
-  if (!entry) {
-    throw new Error(`Month with title ${title} not found`);
-  }
-  return Number(entry[0]) as MonthIdType;
-}
-
 export function initEmptyMonths(): Record<number, Month> {
   const emptyMonths: Month[] = [];
   for (let i = 1 as MonthIdType; i <= 12; i++) {

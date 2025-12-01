@@ -1,77 +1,35 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 "use client";
-import {
-  TrackerName,
-  MonthRecord,
-  RecordTag,
-  GlobalDataType,
-} from "@/lib/types/dataTypes";
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import ModalRoot, { ModalMap } from "@/components/modals/ModalRoot";
+import { createContext, ReactNode, useContext, useState } from "react";
 
-export type RecordModalType = "crt" | "del" | "upd";
+export type ModalType = keyof ModalMap;
 
-export type ModalBodyType = {
-  type: RecordModalType;
-  record: MonthRecord;
-};
-export type SettingsModalBodyType = {
-  types: TrackerName[];
-  tags: RecordTag[];
+type ModalItem<T extends ModalType = ModalType> = {
+  type: T;
+  props: ModalMap[T];
 };
 
-export type ModalTypeType =
-  | ""
-  | "recordFormBlock"
-  | "mergeTrackerBlock"
-  | "settingsBlock";
+type ModalContextValue = {
+  modal: ModalItem | null;
+  openModal: <T extends ModalType>(type: T, props: ModalMap[T]) => void;
+  closeModal: () => void;
+};
 
-interface ModalContextType {
-  isModal: boolean;
-  setIsModal: Dispatch<SetStateAction<boolean>>;
-  modalBody: ModalBodyType | GlobalDataType | null;
-  setModalBody: Dispatch<SetStateAction<ModalBodyType | GlobalDataType | null>>;
-  modalType: ModalTypeType;
-  setModalType: Dispatch<SetStateAction<ModalTypeType>>;
-  handleClear: () => void;
-}
-
-export const ModalContext = createContext<ModalContextType | undefined>(
-  undefined
-);
+const ModalContext = createContext<ModalContextValue>(null!);
 
 export function ModalProvider({ children }: { children: ReactNode }) {
-  const [isModal, setIsModal] = useState<boolean>(false);
-  const [modalBody, setModalBody] = useState<
-    ModalBodyType | GlobalDataType | null
-  >(null);
-  const [modalType, setModalType] = useState<ModalTypeType>("");
+  const [modal, setModal] = useState<ModalItem | null>(null);
 
-  const handleClear = () => {
-    isModal && setIsModal(false);
-    modalBody && setModalBody(null);
-    modalType && setModalType("");
+  const openModal = <T extends ModalType>(type: T, props: ModalMap[T]) => {
+    setModal({ type, props });
   };
 
+  const closeModal = () => setModal(null);
+
   return (
-    <ModalContext.Provider
-      value={{
-        isModal,
-        setIsModal,
-        modalBody,
-        setModalBody,
-        modalType,
-        setModalType,
-        handleClear,
-      }}
-    >
+    <ModalContext.Provider value={{ modal, openModal, closeModal }}>
       {children}
+      <ModalRoot />
     </ModalContext.Provider>
   );
 }

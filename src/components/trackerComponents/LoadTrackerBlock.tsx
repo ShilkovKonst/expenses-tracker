@@ -1,3 +1,4 @@
+"use client";
 import { t } from "@/locales/locale";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { useGlobal } from "@/context/GlobalContext";
@@ -7,9 +8,10 @@ import { LoadIcon } from "@/lib/icons";
 import { validate } from "@/lib/utils/dataValidator";
 import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
 import { checkDBExists } from "@/idb/IDBManager";
-import { populateIDBFromFile } from "@/lib/utils/populateIDB";
-import { setParsedData } from "@/lib/utils/trackerDataSetter";
-import { TopLevelButton } from "../buttonComponents";
+import { createNPopulate } from "@/lib/utils/trackerDataSetter";
+import { IconButton } from "../buttonComponents";
+import { getMetadata } from "@/idb/CRUD/metaCRUD";
+import { GlobalDataType } from "@/lib/types/dataTypes";
 
 type LoadTrackerType = {
   setMessage: Dispatch<SetStateAction<string | null>>;
@@ -19,7 +21,7 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
   const { locale, setTrackerIds } = useGlobal();
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
-  const { setIsModal, setModalType, setModalBody } = useModal();
+  const { openModal } = useModal();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -44,17 +46,29 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
         console.log(validated.path);
         return;
       }
-      
+
       const data = validated.data;
       const isExists = await checkDBExists(data.id);
       if (isExists) {
-        setIsModal(true);
-        setModalBody(data);
-        setModalType("mergeTrackerBlock");
+        const oldTrackerMeta = await getMetadata(data.id);
+        if (oldTrackerMeta)
+          openModal("merge", {
+            importTrackerBody: data,
+            oldTrackerMeta,
+            onConfirm: (data: GlobalDataType) =>
+              createNPopulate(
+                data,
+                setTrackerIds,
+                setTrackerId,
+                setTrackerMeta,
+                setTrackerTags,
+                setTrackerYears
+              ),
+          });
       } else {
-        await populateIDBFromFile(data);
-        setParsedData(
+        await createNPopulate(
           data,
+          setTrackerIds,
           setTrackerId,
           setTrackerMeta,
           setTrackerTags,
@@ -74,12 +88,38 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
     }
   };
 
+  // async function createNPopulate(data: GlobalDataType) {
+  //   try {
+  //     await createTrackerUtil(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new Error("error createTrackerUtil");
+  //   }
+  //   if (localStorage) {
+  //     const trackersString = localStorage.getItem(TRACKER_IDS);
+  //     if (trackersString) {
+  //       const trackerList: string[] = JSON.parse(trackersString);
+  //       const newIds = [...trackerList, data.id];
+  //       localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
+  //       setTrackerIds(newIds)
+  //     }
+  //   }
+  //   setParsedData(
+  //     data,
+  //     setTrackerId,
+  //     setTrackerMeta,
+  //     setTrackerTags,
+  //     setTrackerYears
+  //   );
+  // }
+
   return (
     <div className="grid grid-cols-5 gap-2 w-full mt-2 overflow-hidden transition-[height] duration-300 ease-in-out">
       <p className="col-span-4 text-sm">
         {t(locale, `body.form.tracker.loadTitle`)}
       </p>
-      <TopLevelButton
+      <IconButton
+        value=""
         icon={<LoadIcon className="w-5 h-5" />}
         title="Load file"
         handleClick={handleOpenFileDialog}
