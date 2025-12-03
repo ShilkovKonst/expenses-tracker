@@ -1,4 +1,4 @@
-import { GlobalDataType, MonthRecord } from "@/lib/types/dataTypes";
+import { Tracker, MonthRecord } from "@/lib/types/dataTypes";
 import { populateIDBFromFile } from "@/lib/utils/populateIDB";
 import { deleteDB } from "../IDBManager";
 import {
@@ -20,7 +20,7 @@ import {
 import { updateMetadata } from "../CRUD/metaCRUD";
 
 export async function createTrackerUtil(
-  tracker: GlobalDataType,
+  tracker: Tracker,
   id: string = tracker.id
 ) {
   try {

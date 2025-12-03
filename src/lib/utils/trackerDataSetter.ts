@@ -1,6 +1,6 @@
 "use client";
 import {
-  GlobalDataType,
+  Tracker,
   TrackerMeta,
   TrackerTags,
   TrackerYears,
@@ -14,7 +14,7 @@ import { createTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { formatDatetoMeta } from "./dateParser";
 
 export function setParsedData(
-  data: GlobalDataType,
+  data: Tracker,
   setTrackerId: Dispatch<SetStateAction<string>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
@@ -55,7 +55,7 @@ export async function setNewData(
 }
 
 export async function createNPopulate(
-  data: GlobalDataType,
+  data: Tracker,
   setTrackerIds: Dispatch<SetStateAction<string[]>>,
   setTrackerId: Dispatch<SetStateAction<string>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,

@@ -1,9 +1,9 @@
 import { createMetadata } from "@/idb/CRUD/metaCRUD";
-import { GlobalDataType } from "../types/dataTypes";
+import { Tracker } from "../types/dataTypes";
 import { batchAddRecords, batchAddTags } from "@/idb/massImportHelper";
 
 export async function populateIDBFromFile(
-  data: GlobalDataType,
+  data: Tracker,
   id: string = data.id
 ) {
   await createMetadata(id, data.meta);

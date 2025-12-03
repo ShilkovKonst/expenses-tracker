@@ -11,7 +11,7 @@ import { checkDBExists } from "@/idb/IDBManager";
 import { createNPopulate } from "@/lib/utils/trackerDataSetter";
 import { IconButton } from "../buttonComponents";
 import { getMetadata } from "@/idb/CRUD/metaCRUD";
-import { GlobalDataType } from "@/lib/types/dataTypes";
+import { Tracker } from "@/lib/types/dataTypes";
 
 type LoadTrackerType = {
   setMessage: Dispatch<SetStateAction<string | null>>;
@@ -55,7 +55,7 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
           openModal("merge", {
             importTrackerBody: data,
             oldTrackerMeta,
-            onConfirm: (data: GlobalDataType) =>
+            onConfirm: (data: Tracker) =>
               createNPopulate(
                 data,
                 setTrackerIds,
@@ -88,7 +88,7 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
     }
   };
 
-  // async function createNPopulate(data: GlobalDataType) {
+  // async function createNPopulate(data: TrackerType) {
   //   try {
   //     await createTrackerUtil(data);
   //   } catch (error) {

@@ -6,6 +6,9 @@ export type TrackerTags = Record<number, string>;
 
 export type Tracker = {
   id: string;
+  meta: TrackerMeta;
+  tags: TrackerTags;
+  years: TrackerYears;
   totalAmount: number;
 };
 
@@ -42,9 +45,3 @@ export type TrackerMeta = {
   createdAt: string;
   updatedAt: string;
 };
-
-export interface GlobalDataType extends Tracker {
-  meta: TrackerMeta;
-  tags: TrackerTags;
-  years: TrackerYears;
-}

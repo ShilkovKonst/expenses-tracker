@@ -1,8 +1,8 @@
-import { GlobalDataType } from "@/lib/types/dataTypes";
+import { Tracker } from "@/lib/types/dataTypes";
 
 export type ValidationSuccess = {
   success: true;
-  data: GlobalDataType;
+  data: Tracker;
 };
 
 export type ValidationError = {
@@ -17,7 +17,7 @@ export function validate(data: unknown): ValidationResult {
   if (typeof data !== "object" || data === null)
     return fail("data", "Data is not an object or is null");
 
-  const d = data as Partial<GlobalDataType>;
+  const d = data as Partial<Tracker>;
 
   if (typeof d.id !== "string") return fail("id", "id must be a string");
   if (!isObject(d.meta)) return fail("meta", "meta must be an object");
@@ -105,7 +105,7 @@ export function validate(data: unknown): ValidationResult {
     }
   }
 
-  return { success: true, data: d as GlobalDataType };
+  return { success: true, data: d as Tracker };
 }
 
 const fail = (path: string, message: string): ValidationError => ({

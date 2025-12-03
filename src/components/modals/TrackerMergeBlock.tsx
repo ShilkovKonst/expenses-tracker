@@ -7,13 +7,13 @@ import { createNPopulate } from "@/lib/utils/trackerDataSetter";
 import DescDateBlock from "../descriptionComponents/DescDateBlock";
 import DescPBlock from "../descriptionComponents/DescPBlock";
 import { ValidateButton } from "../buttonComponents";
-import { GlobalDataType, TrackerMeta } from "@/lib/types/dataTypes";
+import { Tracker, TrackerMeta } from "@/lib/types/dataTypes";
 import { TRACKER_IDS } from "@/constants";
 import { useModal } from "@/context/ModalContext";
-import { parseMetaDate } from "@/lib/utils/dateParser";
+import { parseMetaToDate } from "@/lib/utils/dateParser";
 
 type TrackerMergeProps = {
-  importTrackerBody: GlobalDataType;
+  importTrackerBody: Tracker;
   oldTrackerMeta: TrackerMeta;
 };
 const TrackerMergeBlock = ({
@@ -26,8 +26,8 @@ const TrackerMergeBlock = ({
   const { closeModal } = useModal();
 
   const isOutdated = useMemo(() => {
-    const oldDate = parseMetaDate(oldTrackerMeta.updatedAt);
-    const newDate = parseMetaDate(importTrackerBody.meta.updatedAt);
+    const oldDate = parseMetaToDate(oldTrackerMeta.updatedAt);
+    const newDate = parseMetaToDate(importTrackerBody.meta.updatedAt);
     return oldDate > newDate;
   }, [oldTrackerMeta, importTrackerBody]);
 

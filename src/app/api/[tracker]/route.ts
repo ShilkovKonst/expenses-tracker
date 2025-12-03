@@ -1,4 +1,4 @@
-import { transformToGlobalData } from "@/idb/apiHelpers/formDataParsers";
+import { transformToTracker } from "@/idb/apiHelpers/formDataParsers";
 import { deleteDB } from "@/idb/IDBManager";
 import { populateIDBFromFile } from "@/lib/utils/populateIDB";
 import { NextRequest, NextResponse } from "next/server";
@@ -49,7 +49,7 @@ export async function DELETE(
 
 async function postTracker(tracker: string, form: FormData) {
   try {
-    const tracker = transformToGlobalData(form);
+    const tracker = transformToTracker(form);
     await populateIDBFromFile(tracker);
     return { tracker };
   } catch {

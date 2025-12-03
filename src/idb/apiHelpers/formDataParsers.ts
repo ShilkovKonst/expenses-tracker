@@ -1,5 +1,5 @@
 import {
-  GlobalDataType,
+  Tracker,
   MonthRecord,
   TrackerMeta,
   TrackerTags,
@@ -22,7 +22,7 @@ export function transformToTagTitle(form: FormData): string {
   return String(form.get("title")) ?? "";
 }
 
-export function transformToGlobalData(form: FormData): GlobalDataType {
+export function transformToTracker(form: FormData): Tracker {
   const metaString = form.get("meta");
   const tagsString = form.get("tags");
   const yearsString = form.get("years");

@@ -1,12 +1,7 @@
 import { ModalType, useModal } from "@/context/ModalContext";
 import ModalBase from "./ModalBase";
 import RecordForm from "./RecordCreateUpdateBlock";
-import {
-  GlobalDataType,
-  MonthRecord,
-  TrackerMeta,
-  Year,
-} from "@/lib/types/dataTypes";
+import { Tracker, MonthRecord, TrackerMeta, Year } from "@/lib/types/dataTypes";
 import SettingsBlock from "./SettingsBlock";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
@@ -45,9 +40,9 @@ export type ModalMap = {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   settings: {};
   merge: {
-    importTrackerBody: GlobalDataType;
+    importTrackerBody: Tracker;
     oldTrackerMeta: TrackerMeta;
-    onConfirm: (data: GlobalDataType) => Promise<void>;
+    onConfirm: (data: Tracker) => Promise<void>;
   };
 };
 
@@ -135,8 +130,26 @@ const DeleteModal = ({
   } = useTracker();
 
   const handleConfirm = async () => {
-    const { updatedAt } = await onConfirm();
-    if (trackerMeta) setTrackerMeta({ ...trackerMeta, updatedAt });
+    try {
+      const { updatedAt } = await onConfirm();
+      if (trackerMeta) setTrackerMeta({ ...trackerMeta, updatedAt });
+    } catch (err) {
+      console.error(err);
+      throw new Error(
+        `Something went wrong while deleting ${entityType} '${entity}'`
+      );
+    } finally {
+      if (entityType === "record") {
+        try {
+          const records = await getAllRecords(trackerId);
+          const years: Record<number, Year> = populateYears(records);
+          setTrackerYears(years);
+        } catch (err) {
+          console.error("Failed to refresh records after deletion:", err);
+        }
+      }
+    }
+
     if (entityType === "tracker") {
       if (localStorage) {
         const raw = localStorage.getItem(TRACKER_IDS);
@@ -152,11 +165,6 @@ const DeleteModal = ({
           );
         }
       }
-    }
-    if (entityType === "record") {
-      const records = await getAllRecords(trackerId);
-      const years: Record<number, Year> = populateYears(records);
-      setTrackerYears(years);
     }
     handleClose();
   };
