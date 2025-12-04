@@ -25,7 +25,8 @@ export async function createTrackerUtil(
 ) {
   try {
     await populateIDBFromFile(tracker, id);
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(
       `Something went wrong while creating new tracker '${tracker}'`
     );
@@ -35,7 +36,8 @@ export async function createTrackerUtil(
 export async function deleteTrackerUtil(tracker: string) {
   try {
     await deleteDB(tracker);
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(`Something went wrong while deleting tracker '${tracker}'`);
   }
 }
@@ -58,7 +60,8 @@ export async function getAllUtil(
       default:
         return;
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(
       `Internal server error while fetching '${entity}' for '${tracker}'`
     );
@@ -79,7 +82,8 @@ export async function getByIdUtil(
       default:
         return;
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(
       `Internal server error while fetching '${id}' of '${entity}' for '${tracker}'`
     );
@@ -116,7 +120,8 @@ export async function createUtil(
       default:
         return;
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(
       `Internal server error while creating ${entity} for ${tracker}`
     );
@@ -151,7 +156,8 @@ export async function updateByIdUtil(
       default:
         return;
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(
       `Something went wrong while updating '${id}' of '${entity}' for '${tracker}'`
     );
@@ -177,7 +183,8 @@ export async function deleteByIdUtil(
       default:
         return;
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error(
       `Internal server error while deleting ${id} from ${entity} for ${tracker}`
     );

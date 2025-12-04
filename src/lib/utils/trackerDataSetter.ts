@@ -73,9 +73,11 @@ export async function createNPopulate(
     const trackersString = localStorage.getItem(TRACKER_IDS);
     if (trackersString) {
       const trackerList: string[] = JSON.parse(trackersString);
-      const newIds = [...trackerList, id];
-      localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
-      setTrackerIds(newIds);
+      if (trackerList.every((t) => t !== id)) {
+        const newIds = [...trackerList, id];
+        localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
+        setTrackerIds(newIds);
+      }
     }
   }
   setParsedData(

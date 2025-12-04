@@ -60,11 +60,18 @@ const ActiveTrackerBlock = () => {
   };
 
   return (
-    <div className="w-full pb-2 flex justify-between items-center border-b-6 border-blue-400">
-      <h2 className="w-full text-xl md:text-2xl font-semibold text-blue-950 my-auto">
-        {t(locale, `body.form.title`)} - {trackerId}
-      </h2>
-      <div className={` gap-2 flex flex-row justify-between items-center`}>
+    <div className="w-full pb-2 flex justify-between gap-2 items-center border-b-6 border-blue-400">
+      <div className="text-xs md:text-sm font-semibold w-full flex flex-wrap gap-2 justify-between items-center">
+        <div className="text-blue-950">
+          <h2 className="underline">{t(locale, `body.form.title`)}:</h2>
+          <p>{trackerId}</p>
+        </div>
+        <div className="text-gray-700">
+          <p className="underline">Last update:</p>
+          <p>{trackerMeta?.updatedAt.replace("_", " ")}</p>
+        </div>
+      </div>
+      <div className={`gap-2 flex flex-row justify-between items-center`}>
         <UtilButton
           icon={<SaveIcon className={"w-4 h-4 md:w-6 md:h-6"} />}
           title={t(locale, `body.buttons.save`)}

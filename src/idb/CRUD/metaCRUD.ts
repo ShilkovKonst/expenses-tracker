@@ -7,7 +7,6 @@ export async function createMetadata(
   trackerId: string,
   metadata: TrackerMeta
 ): Promise<void> {
-  console.log("test createMetadata");
   return performDBOperation(trackerId, METADATA_STORE, "readwrite", (store) =>
     store.add(metadata, "meta")
   );

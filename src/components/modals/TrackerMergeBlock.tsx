@@ -11,35 +11,68 @@ import { Tracker, TrackerMeta } from "@/lib/types/dataTypes";
 import { TRACKER_IDS } from "@/constants";
 import { useModal } from "@/context/ModalContext";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
+import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 
 type TrackerMergeProps = {
   importTrackerBody: Tracker;
-  oldTrackerMeta: TrackerMeta;
+  oldTrackerMeta: TrackerMeta | null;
 };
 const TrackerMergeBlock = ({
   importTrackerBody,
   oldTrackerMeta,
 }: TrackerMergeProps) => {
   const { locale, setTrackerIds } = useGlobal();
-  const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
-    useTracker();
+  const {
+    trackerId,
+    setTrackerId,
+    setTrackerMeta,
+    setTrackerTags,
+    setTrackerYears,
+  } = useTracker();
   const { closeModal } = useModal();
 
   const isOutdated = useMemo(() => {
+    if (!oldTrackerMeta) return false;
     const oldDate = parseMetaToDate(oldTrackerMeta.updatedAt);
     const newDate = parseMetaToDate(importTrackerBody.meta.updatedAt);
     return oldDate > newDate;
   }, [oldTrackerMeta, importTrackerBody]);
 
   const oldDateTime = useMemo(() => {
-    return oldTrackerMeta.updatedAt.split("_");
+    return oldTrackerMeta?.updatedAt.split("_");
   }, [oldTrackerMeta]);
 
   const newDateTime = useMemo(() => {
     return importTrackerBody.meta.updatedAt.split("_");
   }, [importTrackerBody]);
 
-  const handleReplaceClick = () => {};
+  const handleReplaceClick = async () => {
+    try {
+      await deleteTrackerUtil(trackerId);
+    } catch (error) {
+      console.error(
+        `Something went wrong while deleting tracker '${trackerId}'`,
+        error
+      );
+    } finally {
+      try {
+        await createNPopulate(
+          importTrackerBody,
+          setTrackerIds,
+          setTrackerId,
+          setTrackerMeta,
+          setTrackerTags,
+          setTrackerYears
+        );
+      } catch (error) {
+        console.error(
+          `Something went wrong while creating tracker '${trackerId}'`,
+          error
+        );
+      }
+      closeModal();
+    }
+  };
 
   const handleDoubleClick = async () => {
     if (localStorage) {
@@ -69,16 +102,16 @@ const TrackerMergeBlock = ({
     <>
       <div className="col-span-2 flex flex-col sm:flex-row gap-2 justify-center items-start mb-3">
         <DescDateBlock
-          outerStyle="pr-6 col-span-1 grid grid-cols-3 gap-2"
+          outerStyle="col-span-1 grid grid-cols-3 gap-2"
           titleStyle="col-span-2 my-auto font-medium p-1"
-          valueStyle={`text-xs py-1 mb-auto`}
+          valueStyle={`pr-6 text-xs py-1 mb-auto`}
           title={`${t(locale, `body.form.tracker.registeredDateTitle`)} `}
-          value={`${oldDateTime[0]} ${oldDateTime[1]}`}
+          value={oldDateTime ? `${oldDateTime[0]} ${oldDateTime[1]}` : "It seems that registered data is corrupted"}
         />
         <DescDateBlock
-          outerStyle="relative pr-6 col-span-1 grid grid-cols-3 gap-2"
+          outerStyle="col-span-1 grid grid-cols-3 gap-2"
           titleStyle="col-span-2 my-auto font-medium p-1"
-          valueStyle={`text-xs mb-auto ${
+          valueStyle={`w-full relative pr-6 text-xs ${
             isOutdated ? "text-orange-700" : "text-green-700"
           }`}
           title={`${t(locale, `body.form.tracker.importedDateTitle`)} `}

@@ -19,12 +19,12 @@ function DescDateBlock({
       ) : isOutdated ? (
         <span className={`${valueStyle} font-medium p-1`}>
           {value}
-          <WarningIcon className="absolute top-0 bottom-0 right-0" />
+          <WarningIcon className="h-4 w-4 absolute top-[calc(50%-0.5rem)] bottom-0 right-0" />
         </span>
       ) : (
         <span className={`${valueStyle} font-medium p-1`}>
           {value}
-          <OkIcon className="absolute top-0 bottom-0 right-0" />
+          <OkIcon className="h-4 w-4 absolute top-[calc(50%-0.5rem)] bottom-0 right-0" />
         </span>
       )}
     </BasePBlock>

@@ -1,3 +1,4 @@
+"use client";
 import { ModalType, useModal } from "@/context/ModalContext";
 import ModalBase from "./ModalBase";
 import RecordForm from "./RecordCreateUpdateBlock";
@@ -41,7 +42,7 @@ export type ModalMap = {
   settings: {};
   merge: {
     importTrackerBody: Tracker;
-    oldTrackerMeta: TrackerMeta;
+    oldTrackerMeta: TrackerMeta | null;
     onConfirm: (data: Tracker) => Promise<void>;
   };
 };

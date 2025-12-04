@@ -49,9 +49,10 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
 
       const data = validated.data;
       const isExists = await checkDBExists(data.id);
+      console.log("isExists", isExists);
       if (isExists) {
         const oldTrackerMeta = await getMetadata(data.id);
-        if (oldTrackerMeta)
+        if (oldTrackerMeta) {
           openModal("merge", {
             importTrackerBody: data,
             oldTrackerMeta,
@@ -65,6 +66,21 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
                 setTrackerYears
               ),
           });
+        } else {
+          openModal("merge", {
+            importTrackerBody: data,
+            oldTrackerMeta: null,
+            onConfirm: (data: Tracker) =>
+              createNPopulate(
+                data,
+                setTrackerIds,
+                setTrackerId,
+                setTrackerMeta,
+                setTrackerTags,
+                setTrackerYears
+              ),
+          });
+        }
       } else {
         await createNPopulate(
           data,
