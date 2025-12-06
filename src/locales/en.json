@@ -30,6 +30,12 @@
       "expand": "Details",
       "update": "Update"
     },
+    "flash": {
+      "newTrackerAdded": "New tracker {{trackerId}} registered",
+      "TrackerLoaded": "Tracker {{trackerId}} uploaded",
+      "TrackerDeleted": "Tracker {{trackerId}} deleted",
+      "TrackerUpdated": "Tracker {{trackerId}} updated"
+    },
     "modal": {
       "titleCreate": "Create new record",
       "titleUpdate": "Update record",
@@ -75,6 +81,7 @@
       },
       "tracker": {
         "idsTitle": "Select tracker from the list below",
+        "idsTitleEmpty": "There are currently no registered trackers. To begin, please create a new one using the simple form or import an existing tracker.",
         "loadTitle": "Load tracker from a file",
         "mergeTitle": "Tracker '{{trackerId}}' is already in the list of registered trackers. What do you want to do?",
         "registeredDateTitle": "Last update of the registered tracker:",

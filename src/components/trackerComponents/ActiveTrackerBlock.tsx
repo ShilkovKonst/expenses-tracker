@@ -9,27 +9,40 @@ import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { TRACKER_IDS } from "@/constants";
 import { saveFiletoLocal, shareFile } from "@/lib/utils/fileContentHelper";
 import { useMemo } from "react";
+import { useFlash } from "@/context/FlashContext";
+import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 
 const ActiveTrackerBlock = () => {
+  return (
+    <div className="w-full pb-2 flex justify-between gap-2 items-center border-b-6 border-blue-400">
+      <ActiveTrackerData />
+    </div>
+  );
+};
+
+export default ActiveTrackerBlock;
+
+const ActiveTrackerData = () => {
   const { locale, setTrackerIds } = useGlobal();
   const { trackerId, trackerTags, trackerMeta, trackerYears } = useTracker();
   const { openModal } = useModal();
+  const { addFlash } = useFlash();
 
   const contentData = useMemo(
     () =>
       trackerId && trackerTags && trackerMeta && trackerYears
         ? {
-            id: trackerId,
-            meta: trackerMeta,
-            tags: trackerTags,
-            years: trackerYears,
-            totalAmount: trackerYears
-              ? Object.values(trackerYears).reduce(
-                  (acc, y) => acc + y.totalAmount,
-                  0
-                )
-              : 0,
-          }
+          id: trackerId,
+          meta: trackerMeta,
+          tags: trackerTags,
+          years: trackerYears,
+          totalAmount: trackerYears
+            ? Object.values(trackerYears).reduce(
+              (acc, y) => acc + y.totalAmount,
+              0
+            )
+            : 0,
+        }
         : null,
     [trackerId, trackerTags, trackerMeta, trackerYears]
   );
@@ -40,17 +53,25 @@ const ActiveTrackerBlock = () => {
 
   const handleRemove = () => {
     const onDelete = async () => {
-      await deleteTrackerUtil(trackerId);
-      if (localStorage) {
-        const raw = localStorage.getItem(TRACKER_IDS);
-        if (raw) {
-          const trackerIds: string[] = JSON.parse(raw);
-          const newIds = [...trackerIds.filter((id) => id !== trackerId)];
-          localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
-          setTrackerIds(newIds);
+      try {
+        await deleteTrackerUtil(trackerId);
+      } catch (error) {
+        console.log(error)
+        addFlash("error", getErrorMessage(error, `Something went wrong while deleting tracker ${trackerId}`))
+      } finally {
+        if (localStorage) {
+          const raw = localStorage.getItem(TRACKER_IDS);
+          if (raw) {
+            const trackerIds: string[] = JSON.parse(raw);
+            const newIds = [...trackerIds.filter((id) => id !== trackerId)];
+            localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
+            setTrackerIds(newIds);
+          }
         }
+        addFlash("success", `Tracker ${trackerId} has been deleted`)
+        return { updatedAt: "", message: "tracker was entirely deleted" };
       }
-      return { updatedAt: "", message: "tracker was entirely deleted" };
+
     };
     openModal("delete", {
       entityType: "tracker",
@@ -60,7 +81,7 @@ const ActiveTrackerBlock = () => {
   };
 
   return (
-    <div className="w-full pb-2 flex justify-between gap-2 items-center border-b-6 border-blue-400">
+    <>
       <div className="text-xs md:text-sm font-semibold w-full flex flex-wrap gap-2 justify-between items-center">
         <div className="text-blue-950">
           <h2 className="underline">{t(locale, `body.form.title`)}:</h2>
@@ -99,8 +120,6 @@ const ActiveTrackerBlock = () => {
           handleClick={handleRemove}
         />
       </div>
-    </div>
-  );
-};
-
-export default ActiveTrackerBlock;
+    </>
+  )
+}

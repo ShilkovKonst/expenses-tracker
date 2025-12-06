@@ -9,11 +9,11 @@
     },
     "footer": {
       "title": "SpendObserver",
-      "copyright":"© 2025 Все права защищены",
+      "copyright": "© 2025 Все права защищены",
       "about": "О проекте",
-      "confidentiality":"Конфиденциальность",
+      "confidentiality": "Конфиденциальность",
       "conditions": "Условия",
-      "contact": "Контакты", 
+      "contact": "Контакты",
       "author": "Шилков К.А"
     },
     "buttons": {
@@ -29,6 +29,12 @@
       "add": "Добавить",
       "expand": "Детализация",
       "update": "Обновить"
+    },
+    "flash": {
+      "newTrackerAdded": "Новый трекер {{trackerId}} зарегистрирован",
+      "TrackerLoaded": "Трекер {{trackerId}} загружен",
+      "TrackerDeleted": "Трекер {{trackerId}} удален",
+      "TrackerUpdated": "Трекер {{trackerId}} обновлен"
     },
     "modal": {
       "titleCreate": "Создать новую запись",
@@ -75,6 +81,7 @@
       },
       "tracker": {
         "idsTitle": "Выберите трекер из списка ниже",
+        "idsTitleEmpty": "Нет зарегистрированных трекеров. Чтобы начать работу, создайте новый с помощью простой формы или импортируйте существующий трекер.",
         "loadTitle": "Загрузите трекер из файла",
         "mergeTitle": "Трекер '{{trackerId}}' уже есть в списке зарегистрированных трекеров.",
         "registeredDateTitle": "Последнее обновление зарегистрированного трекера:",

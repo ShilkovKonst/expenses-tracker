@@ -7,9 +7,11 @@ import { setNewData } from "@/lib/utils/trackerDataSetter";
 import { useTracker } from "@/context/TrackerContext";
 import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
 import { SubmitButton } from "../buttonComponents";
+import { useFlash } from "@/context/FlashContext";
 
 const NewTrackerBlock = () => {
   const { locale, trackerIds, setTrackerIds } = useGlobal();
+  const { addFlash } = useFlash()
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
 
@@ -36,6 +38,7 @@ const NewTrackerBlock = () => {
       setTrackerYears
     );
     setNewTrackerId("");
+    addFlash("success", t(locale, "body.flash.newTrackerAdded", { trackerId: newTrackerId }))
   };
 
   return (

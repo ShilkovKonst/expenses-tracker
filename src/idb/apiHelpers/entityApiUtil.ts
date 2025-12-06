@@ -38,7 +38,7 @@ export async function deleteTrackerUtil(tracker: string) {
     await deleteDB(tracker);
   } catch (error) {
     console.error(error);
-    throw new Error(`Something went wrong while deleting tracker '${tracker}'`);
+    // throw new Error(`Something went wrong while deleting tracker '${tracker}'`);
   }
 }
 
