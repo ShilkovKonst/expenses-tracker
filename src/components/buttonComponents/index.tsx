@@ -119,7 +119,7 @@ export const IconButton = memo(function IconButton({
     <BaseButton
       type="button"
       title={title}
-      className={`${customStyle} mr-auto`}
+      className={`${customStyle}`}
       onClick={() => handleClick(value)}
       disabled={disabled}
     >

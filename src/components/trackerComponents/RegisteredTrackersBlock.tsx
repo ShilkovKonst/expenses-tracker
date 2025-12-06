@@ -32,7 +32,7 @@ const RegisteredTrackersBlock = () => {
         <h3 className={`block font-semibold uppercase text-sm`}>
           {t(locale, `body.form.tracker.idsTitle`)}
         </h3>
-        <div className="relative overflow-hidden pb-2 transition-[height] duration-200 ease-in-out flex flex-wrap justify-start items-center gap-2">
+        <div className="pt-2 transition-[height] duration-200 ease-in-out flex flex-wrap justify-start items-center gap-2">
           {trackerIds.map((id, i) => (
             <IconButton
               key={i}

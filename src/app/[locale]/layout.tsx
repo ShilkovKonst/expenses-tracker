@@ -4,11 +4,9 @@ import "../globals.css";
 import { Locale, t } from "@/locales/locale";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { GlobalProvider } from "@/context/GlobalContext";
-import { ModalProvider } from "@/context/ModalContext";
-import { TrackerProvider } from "@/context/TrackerContext";
 import { BASE_URL } from "@/constants";
 import NavBlock from "@/components/NavBlock";
+import { AppProviders } from "@/context/AppProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,16 +79,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-lvh w-full antialiased relative my-auto`}
       >
-        <GlobalProvider>
-          <TrackerProvider>
-            <ModalProvider>
-              <Header />
-              <NavBlock />
-              {children}
-              <Footer />
-            </ModalProvider>
-          </TrackerProvider>
-        </GlobalProvider>
+        <AppProviders>
+          <Header />
+          <NavBlock />
+          {children}
+          <Footer />
+        </AppProviders>
       </body>
     </html>
   );
