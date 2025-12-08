@@ -122,10 +122,6 @@
         "typeSelect": "Select tracker from the list"
       },
       "operations": {
-        "tagTitle": "Select tags from the list below or add your own",
-        "tagTitleEmpty": "Tag list is empty. Add a tag to label records.",
-        "tagCustomTitle": "Enter new tag's name",
-        "dateDefault": "Select a date (optional)",
         "type": "Type",
         "labelTags": "Tags",
         "description": "Description",
