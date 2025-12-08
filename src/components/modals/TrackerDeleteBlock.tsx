@@ -19,7 +19,7 @@ const TrackerDeleteBlock = ({ entityType, entity }: TrackerDeleteProps) => {
         title={`${t(locale, `body.modal.descDelete`, {
           deleteEntity: t(locale, `body.modal.deleteEntity.${entityType}`),
           deleteEntityId: entity.trackerId,
-        })}: `}
+        })}`}
         value={""}
       />
     </div>

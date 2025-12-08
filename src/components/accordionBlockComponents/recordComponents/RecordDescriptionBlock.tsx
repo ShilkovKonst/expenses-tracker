@@ -53,7 +53,7 @@ const RecordDescriptionBlock: React.FC<RecordDescriptionBlockProps> = ({
         value={recordTags}
       />
       <DescPBlock
-        outerStyle="col-span-4 md:col-span-3 flex flex-row gap-2 justify-start items-start"
+        outerStyle="col-span-4 md:col-span-3 flex flex-row gap-2 justify-start items-center"
         valueStyle="font-semibold text-xs"
         title={labelRecordDescription}
         value={recordDescription}

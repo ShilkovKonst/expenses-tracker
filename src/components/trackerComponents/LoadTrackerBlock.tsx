@@ -1,6 +1,6 @@
 "use client";
 import { t } from "@/locales/locale";
-import { Dispatch, SetStateAction, useRef } from "react";
+import { useRef } from "react";
 import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { useModal } from "@/context/ModalContext";
@@ -12,16 +12,15 @@ import { createNPopulate } from "@/lib/utils/trackerDataSetter";
 import { IconButton } from "../buttonComponents";
 import { getMetadata } from "@/idb/CRUD/metaCRUD";
 import { Tracker } from "@/lib/types/dataTypes";
+import { useFlash } from "@/context/FlashContext";
+import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 
-type LoadTrackerType = {
-  setMessage: Dispatch<SetStateAction<string | null>>;
-};
-
-const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
+const LoadTrackerBlock = () => {
   const { locale, setTrackerIds } = useGlobal();
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
   const { openModal } = useModal();
+  const { addFlash } = useFlash();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -39,9 +38,14 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
     try {
       // можно добавить проверку mime-type: file.type === "application/json"
       const text: string = await file.text();
-      const validated = validate(JSON.parse(text));
+      const validated = validate(JSON.parse(text), locale);
       if (!validated.success) {
-        setMessage("❌ Файл не соответствует ожидаемой структуре.");
+        addFlash(
+          "error",
+          `${t(locale, "body.flash.error.parseJson")}: ${validated.path} - ${
+            validated.message
+          }`
+        );
         console.log(validated.message);
         console.log(validated.path);
         return;
@@ -49,7 +53,6 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
 
       const data = validated.data;
       const isExists = await checkDBExists(data.id);
-      console.log("isExists", isExists);
       if (isExists) {
         const oldTrackerMeta = await getMetadata(data.id);
         if (oldTrackerMeta) {
@@ -95,51 +98,32 @@ const LoadTrackerBlock = ({ setMessage }: LoadTrackerType) => {
         updateLocalTrackerIds(data.id, setTrackerIds);
       }
 
-      setMessage(`✅ Импорт из "${file.name}" завершён.`);
+      addFlash(
+        "success",
+        `${t(locale, "body.flash.trackerLoaded", { fileName: file.name })}`
+      );
     } catch (err) {
       console.error("Import error:", err);
-      setMessage("❌ Ошибка при чтении или парсинге JSON-файла.");
+      addFlash(
+        "error",
+        getErrorMessage(err, t(locale, "body.flash.trackerLoadedError"))
+      );
     } finally {
       if (e.target) e.target.value = "";
     }
   };
 
-  // async function createNPopulate(data: TrackerType) {
-  //   try {
-  //     await createTrackerUtil(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw new Error("error createTrackerUtil");
-  //   }
-  //   if (localStorage) {
-  //     const trackersString = localStorage.getItem(TRACKER_IDS);
-  //     if (trackersString) {
-  //       const trackerList: string[] = JSON.parse(trackersString);
-  //       const newIds = [...trackerList, data.id];
-  //       localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
-  //       setTrackerIds(newIds)
-  //     }
-  //   }
-  //   setParsedData(
-  //     data,
-  //     setTrackerId,
-  //     setTrackerMeta,
-  //     setTrackerTags,
-  //     setTrackerYears
-  //   );
-  // }
-
   return (
-    <div className="grid grid-cols-5 gap-2 w-full mt-2 overflow-hidden transition-[height] duration-300 ease-in-out">
-      <p className="col-span-4 text-sm">
+    <div className="grid grid-cols-5 gap-2 w-full overflow-hidden transition-[height] duration-300 ease-in-out">
+      <p className="ml-0.5 col-span-4 text-sm flex items-center">
         {t(locale, `body.form.tracker.loadTitle`)}
       </p>
       <IconButton
         value=""
         icon={<LoadIcon className="w-5 h-5" />}
-        title="Load file"
+        title={t(locale, `body.buttons.load`)}
         handleClick={handleOpenFileDialog}
-        customStyle="mr-auto h-7 w-7 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
+        customStyle="ml-0.5 mr-auto h-7 w-7 rounded bg-green-400 hover:bg-green-500"
       />
 
       <input

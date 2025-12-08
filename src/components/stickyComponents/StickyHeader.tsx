@@ -14,8 +14,8 @@ type StickyHeaderProps = {
   expandDataType: string;
   isMonth: boolean;
   expandDisabled?: boolean;
-  yearId?: number;
-  monthId?: number;
+  yearId: number;
+  monthId?: number | undefined;
   recordsLength?: number;
 };
 

@@ -17,7 +17,7 @@ export const BasePBlock = ({
 };
 
 export function renderText(text: string, valueStyle = "") {
-  return <span className={`${valueStyle}`}>{text}</span>;
+  return <span className={`text-wrap ${valueStyle}`}>{text}</span>;
 }
 
 export function renderTextList(values: string[], valueStyle = "") {
@@ -27,15 +27,3 @@ export function renderTextList(values: string[], valueStyle = "") {
     </span>
   ));
 }
-
-// export function renderDate(
-//   value: string,
-//   isOutdated?: boolean,
-//   valueStyle = ""
-// ) {
-//   return values.map((v) => (
-//     <p key={v} className={`font-medium ${valueStyle} border px-1`}>
-//       {v}
-//     </p>
-//   ));
-// }

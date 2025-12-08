@@ -130,18 +130,23 @@ const RecordCreateUpdateBlock = ({
         styleLabel={""}
         styleInput={"px-2 py-1 text-sm"}
       />
-      <FormInputBlock
-        name={"description"}
-        title={t(locale, `body.form.operations.description`)}
-        id={"operationDescInput" + currentRecord?.id}
-        value={currentRecord.description}
-        handleChange={handleOperationChange}
-        disabled={false}
-        required={false}
-        outerStyle="col-span-2"
-        styleLabel={"text-xs"}
-        styleInput={"px-2 text-sm"}
-      />
+      <div className={`col-span-2 relative`}>
+        <label
+          className={`block font-semibold uppercase text-xs`}
+          htmlFor={`operationDescInput${currentRecord?.id}`}
+        >
+          {t(locale, `body.form.operations.description`)}
+        </label>
+        <input
+          id={`operationDescInput${currentRecord?.id}`}
+          name="description"
+          type="text"
+          value={currentRecord.description}
+          className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-blue-300 rounded-md text-xs"
+          placeholder={t(locale, `body.form.placeholders.newTag`)}
+          onChange={(e) => handleOperationChange(e)}
+        />
+      </div>
     </>
   );
 };

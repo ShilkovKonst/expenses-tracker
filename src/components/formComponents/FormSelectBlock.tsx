@@ -44,7 +44,7 @@ const FormSelectBlock: React.FC<FormSelectBlockPropsType> = ({
         onChange={(e) => onChange(e)}
       >
         <option value={-1}>
-          {t(locale, `body.form.operations.dateDefault`)}
+          {t(locale, `body.form.placeholders.recordDay`)}
         </option>
         {options.map((o, i) => (
           <option key={i} value={o}>

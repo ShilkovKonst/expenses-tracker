@@ -17,7 +17,10 @@
       "author": "Konstantin Shilkov"
     },
     "buttons": {
+      "create": "Create new tracker",
+      "load": "Import data",
       "save": "Export data",
+      "select": "Select active tracker",
       "confirm": "Confirm",
       "delete": "Delete",
       "replace": "Replace",
@@ -28,13 +31,32 @@
       "close": "Close",
       "add": "Add",
       "expand": "Details",
-      "update": "Update"
+      "update": "Update",
+      "popups": {
+        "addRecordTag": "Add tag to the record",
+        "removeRecordTag": "Remove tag from the record"
+      }
     },
     "flash": {
       "newTrackerAdded": "New tracker {{trackerId}} registered",
-      "TrackerLoaded": "Tracker {{trackerId}} uploaded",
-      "TrackerDeleted": "Tracker {{trackerId}} deleted",
-      "TrackerUpdated": "Tracker {{trackerId}} updated"
+      "trackerLoaded": "Tracker {{trackerId}} uploaded. Import of {{fileName}} finished.",
+      "trackerLoadedError": "Error reading or parsing JSON file.",
+      "trackerDeleted": "Tracker {{trackerId}} deleted",
+      "trackerUpdated": "Tracker {{trackerId}} updated",
+      "error": {
+        "parseJson": "The file data does not match the expected structure",
+        "validator": {
+          "number": "must be a number",
+          "string": "must be a string",
+          "object": "must be an object",
+          "array": "must be an array",
+          "meta": {
+            "keyAbsent": "Missing required meta key",
+            "keyUnknown": "Meta contains unknown keys (allowed keys: 'createdAt', 'updatedAt')"
+          },
+          "tag": "does not exist in tagsPool"
+        }
+      }
     },
     "modal": {
       "titleCreate": "Create new record",
@@ -79,6 +101,13 @@
         "withoutTags": "without tags",
         "withoutDesc": "without description"
       },
+      "placeholders": {
+        "recordDay": "Select a date (optional)",
+        "recordTags": "Select tags from the list below or add your own.",
+        "recordDesc": "Provide additional description of the record (optional)",
+        "tagsListEmpty": "Tag list is empty. Add a tag to label records.",
+        "newTag": "Enter tag's name"
+      },
       "tracker": {
         "idsTitle": "Select tracker from the list below",
         "idsTitleEmpty": "There are currently no registered trackers. To begin, please create a new one using the simple form or import an existing tracker.",
@@ -95,21 +124,14 @@
       "operations": {
         "tagTitle": "Select tags from the list below or add your own",
         "tagTitleEmpty": "Tag list is empty. Add a tag to label records.",
-        "tagCustomTitle": "Enter your custom tag's name",
+        "tagCustomTitle": "Enter new tag's name",
         "dateDefault": "Select a date (optional)",
         "type": "Type",
         "labelTags": "Tags",
         "description": "Description",
         "amount": "Amount",
         "cost": "Cost",
-        "income": "Income",
-        "tags": {
-          "card": "card",
-          "cash": "cash",
-          "food": "food",
-          "clothes": "clothes",
-          "service": "service"
-        }
+        "income": "Income"
       }
     }
   }

@@ -36,7 +36,6 @@ export async function populateTrackerContex(
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
   setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
 ) {
-  console.log(activeTrackerId)
   if (!activeTrackerId) {
     setTrackerId("");
     setTrackerMeta(null);
@@ -48,7 +47,6 @@ export async function populateTrackerContex(
   const meta = await getMetadata(activeTrackerId);
   const tags = await getAllTags(activeTrackerId);
   const records = await getAllRecords(activeTrackerId);
-  console.log(meta, tags, records)
   if (meta && tags && records) {
     const years: Record<number, Year> = populateYears(records);
     setTrackerId(activeTrackerId);

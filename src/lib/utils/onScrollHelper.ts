@@ -2,12 +2,12 @@ import { Month, MonthIdType, Year } from "@/lib/types/dataTypes";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
 type OnScrollYearHelperOutput = {
-  newActiveYear: Year | undefined;
+  newActiveYear: number | undefined;
   activeYearBodyEl: HTMLElement | undefined;
 };
 
 export function onScrollYearHelper(
-  years: Record<number, Year>,
+  // years: Record<number, Year>,
   yearNodes: NodeListOf<HTMLElement>,
   setExpandYearDataType: Dispatch<SetStateAction<string>>
 ): OnScrollYearHelperOutput {
@@ -18,10 +18,10 @@ export function onScrollYearHelper(
       throw new Error("Year element is missing id attribute");
     }
 
-    const year = years[parseInt(yearId)];
-    if (!year) {
-      throw new Error(`Year with id ${yearId} not found in formData`);
-    }
+    // const year = years[parseInt(yearId)];
+    // if (!year) {
+    //   throw new Error(`Year with id ${yearId} not found in formData`);
+    // }
 
     const yearHeaderEl = yearBodyEl?.getElementsByClassName("header")[0];
     if (!yearBodyEl || !yearHeaderEl) {
@@ -35,23 +35,23 @@ export function onScrollYearHelper(
 
     if (yearHeaderTrigger <= 0 && yearBodyTrigger > 10) {
       setExpandYearDataType(`${yearId}`);
-      return { newActiveYear: year, activeYearBodyEl: yearBodyEl };
+      return { newActiveYear: Number(yearId), activeYearBodyEl: yearBodyEl };
     }
   }
   return { newActiveYear: undefined, activeYearBodyEl: undefined };
 }
 
-type OnScrollMonthHelperOutput = { newActiveMonth: Month | undefined };
+type OnScrollMonthHelperOutput = { newActiveMonth: number | undefined };
 export function onScrollMonthHelper(
   months: NodeListOf<HTMLElement>,
-  newActiveYear: Year,
+  newActiveYear: number,
   setExpandMonthDataType: Dispatch<SetStateAction<string>>
 ): OnScrollMonthHelperOutput {
   for (const monthBodyEl of months) {
     const monthHeaderEl = monthBodyEl?.getElementsByClassName("header")[0];
     if (!monthBodyEl || !monthHeaderEl) {
       throw new Error(
-        `Month body ${newActiveYear.id} is missing or has no header`
+        `Month body ${newActiveYear} is missing or has no header`
       );
     }
 
@@ -64,8 +64,8 @@ export function onScrollMonthHelper(
       const dataMonth = monthBodyEl.getAttribute("data-month-id");
       if (dataMonth) {
         const monthId = parseInt(dataMonth) as MonthIdType;
-        setExpandMonthDataType(`${newActiveYear.id}-${monthId}`);
-        return { newActiveMonth: newActiveYear.months[monthId] };
+        setExpandMonthDataType(`${newActiveYear}-${monthId}`);
+        return { newActiveMonth: monthId };
       }
     }
   }

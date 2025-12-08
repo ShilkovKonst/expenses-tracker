@@ -48,7 +48,7 @@ const SettingsTagsBlock = () => {
           <div key={i} className="relative flex">
             <TextRoundedButton
               handleClick={() => console.log("create update tag logic")}
-              title={`update tag ${tag[0]} ${tag[1]}`}
+              title={`${t(locale, "body.buttons.update")} '${tag[1]}'`}
               value={tag[1]}
               id={Number(tag[0])}
               customStyle={`bg-blue-300 disabled:bg-blue-400 disabled:hover:bg-blue-400 pr-6 h-7 rounded-r-none`}
@@ -56,18 +56,17 @@ const SettingsTagsBlock = () => {
             <IconButton
               icon={<DeleteIcon className="h-5 w-5" />}
               value={tag[0]}
-              title={`open modal to delete tag ${tag[0]} ${tag[1]}`}
+              title={`${t(locale, "body.buttons.delete")} '${tag[1]}'`}
               customStyle="absolute top-0 -right-3 rounded-lg h-7 w-7 bg-red-400 hover:bg-red-500"
               handleClick={() => handleRemove(Number(tag[0]))}
             />
           </div>
         ))}
-      {!tagsArray ||
-        (tagsArray.length === 0 && (
-          <p className={`max-w-3/4 block font-medium text-xs text-gray-500`}>
-            {t(locale, `body.form.operations.tagTitleEmpty`)}
-          </p>
-        ))}
+      {(!tagsArray || tagsArray.length === 0) && (
+        <p className={`max-w-3/4 block font-medium text-xs`}>
+          {t(locale, `body.form.placeholders.tagsListEmpty`)}
+        </p>
+      )}
     </div>
   );
 };

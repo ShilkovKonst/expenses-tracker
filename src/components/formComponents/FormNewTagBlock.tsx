@@ -6,7 +6,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import FormInputBlock from "./FormInputBlock";
 import { IconButton } from "../buttonComponents";
 import { AddIcon } from "@/lib/icons";
 import { useGlobal } from "@/context/GlobalContext";
@@ -42,18 +41,14 @@ const FormNewTagBlock = ({ recordTags, setRecordTags }: FormNewTagProps) => {
 
   return (
     <div className={`grid grid-cols-6 gap-2`}>
-      <FormInputBlock
+      <input
         id="tagInput"
         name="tagInput"
-        title=""
+        type="text"
         value={newTag}
-        handleChange={(e) => setNewTag(e.target.value)}
-        outerStyle="col-span-4"
-        styleLabel=""
-        styleInput="focus:outline-blue-300"
-        withoutLabel={true}
-        required={false}
-        disabled={false}
+        className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-blue-300 rounded-md text-xs"
+        placeholder={t(locale, `body.form.placeholders.newTag`)}
+        onChange={(e) => setNewTag(e.target.value)}
       />
       <IconButton
         title={`create new tag`}

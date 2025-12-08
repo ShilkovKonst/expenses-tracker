@@ -68,7 +68,7 @@ const ActiveTrackerData = () => {
             setTrackerIds(newIds);
           }
         }
-        addFlash("success", `Tracker ${trackerId} has been deleted`)
+        addFlash("info", `Tracker ${trackerId} has been deleted`)
         return { updatedAt: "", message: "tracker was entirely deleted" };
       }
 

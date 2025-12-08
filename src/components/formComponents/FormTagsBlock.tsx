@@ -76,7 +76,7 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             <TextRoundedButton
               key={i}
               id={id}
-              title={`remove tag from record`}
+              title={t(locale, "body.buttons.popups.removeRecordTag")}
               value={trackerTags ? trackerTags[id] : "!error!"}
               handleClick={handleRemoveClick}
               customStyle="bg-blue-300"
@@ -86,7 +86,7 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
           <p
             className={`block font-medium text-sm text-gray-500 ${styleLabel}`}
           >
-            {t(locale, `body.form.operations.tagTitle`)}
+            {t(locale, `body.form.placeholders.recordTags`)}
           </p>
         )}
       </div>
@@ -94,7 +94,7 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
         <div className="relative w-full overflow-hidden pb-2 transition-[height] duration-200 ease-in-out flex flex-wrap items-center gap-2">
           {tagsEntries.map((entry, i) => (
             <TextRoundedButton
-              title={`add tag to the record`}
+              title={t(locale, "body.buttons.popups.addRecordTag")}
               key={i}
               id={Number(entry[0])}
               value={entry[1]}
@@ -103,6 +103,11 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
             />
           ))}
         </div>
+        {(!tagsEntries || tagsEntries.length === 0) && (
+          <p className={`font-medium text-xs`}>
+            {t(locale, `body.form.placeholders.tagsListEmpty`)}
+          </p>
+        )}
         <FormNewTagBlock
           recordTags={recordTags}
           setRecordTags={setRecordTags}

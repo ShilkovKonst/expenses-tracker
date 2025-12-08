@@ -2,7 +2,6 @@
 import { Month, Year } from "@/lib/types/dataTypes";
 import {
   onScrollMonthHelper,
-  onScrollSetter,
   onScrollYearHelper,
 } from "@/lib/utils/onScrollHelper";
 import React, { useEffect, useRef, useState } from "react";
@@ -32,22 +31,39 @@ const StickyBlock = () => {
 
       const onScroll = () => {
         const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
-          trackerYears,
           years,
           setExpandYearDataType
         );
-        onScrollSetter(newActiveYear, activeYearRef, setActiveYear);
+        if (newActiveYear) {
+          if (activeYearRef.current?.id !== newActiveYear) {
+            setActiveYear(trackerYears[newActiveYear]);
+          }
+        } else {
+          if (activeYearRef.current !== undefined) {
+            setActiveYear(undefined);
+          }
+        }
 
         if (activeYearBodyEl && newActiveYear) {
           const months = activeYearBodyEl.querySelectorAll<HTMLElement>(
-            `[data-month-body="${newActiveYear.id}"]`
+            `[data-month-body="${newActiveYear}"]`
           );
           const { newActiveMonth } = onScrollMonthHelper(
             months,
             newActiveYear,
             setExpandMonthDataType
           );
-          onScrollSetter(newActiveMonth, activeMonthRef, setActiveMonth);
+          if (newActiveMonth) {
+            if (activeMonthRef.current?.id !== newActiveMonth) {
+              setActiveMonth(
+                trackerYears[newActiveYear].months[newActiveMonth]
+              );
+            }
+          } else {
+            if (activeMonthRef.current !== undefined) {
+              setActiveMonth(undefined);
+            }
+          }
         }
       };
 
@@ -55,6 +71,18 @@ const StickyBlock = () => {
       return () => window.removeEventListener("scroll", onScroll);
     }
   }, [trackerId, trackerYears]);
+
+  useEffect(() => {
+    if (trackerYears) {
+      if (activeYear) {
+        setActiveYear(trackerYears[activeYear?.id]);
+      }
+      if (activeYear && activeMonth) {
+        setActiveMonth(trackerYears[activeYear?.id].months[activeMonth?.id]);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackerYears]);
 
   useEffect(() => {
     activeYearRef.current = activeYear;
@@ -69,6 +97,7 @@ const StickyBlock = () => {
       {activeYear && (
         <StickyHeader
           isMonth={false}
+          yearId={activeYear.id}
           labelMain={activeYear.id.toString()}
           totalAmount={decimalToInputString(activeYear.totalAmount)}
           expandDataType={expandYearDataType}

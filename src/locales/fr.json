@@ -17,7 +17,10 @@
       "author": "Konstantin Shilkov"
     },
     "buttons": {
-      "save": "Données d'exportation",
+      "create": "Créer un nouveau suivi",
+      "load": "Importer les données",
+      "save": "Exporter des données",
+      "select": "Selectionner un suivi actif",
       "confirm": "Confirmer",
       "delete": "Supprimer",
       "replace": "Remplacer",
@@ -28,13 +31,32 @@
       "close": "Fermer",
       "add": "Ajouter",
       "expand": "Détail",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "popups": {
+        "addRecordTag": "Ajouter l'étiquette à l'enregistrement",
+        "removeRecordTag": "Enlever l'étiquette de l'enregistrements"
+      }
     },
     "flash": {
       "newTrackerAdded": "Nouveau suivi {{trackerId}} enregistré",
-      "TrackerLoaded": "Le suivi {{trackerId}} a été téléchargé",
-      "TrackerDeleted": "Le suivi {{trackerId}} supprimé",
-      "TrackerUpdated": "Le suivi {{trackerId}} mis à jour"
+      "trackerLoaded": "Le suivi {{trackerId}} a été téléchargé. Importation de {{fileName}} terminée.",
+      "trackerLoadedError": "Erreur de lecture ou d'analyse du fichier JSON.",
+      "trackerDeleted": "Le suivi {{trackerId}} supprimé",
+      "trackerUpdated": "Le suivi {{trackerId}} mis à jour",
+      "error": {
+        "parseJson": "Les données du fichier ne correspondent pas à la structure attendue",
+        "validator": {
+          "number": "doit être un nombre",
+          "string": "doit être une chaîne de caractères",
+          "object": "doit être un objet",
+          "array": "doit être un tableau",
+          "meta": {
+            "keyAbsent": "Clé de méta-données requise manquante",
+            "keyUnknown": "Les méta-données contiennent des clés inconnues (clés autorisées: 'createdAt', 'updatedAt')"
+          },
+          "tag": "n'existe pas dans le pool de tags"
+        }
+      }
     },
     "modal": {
       "titleCreate": "Créer nouvel enregistrement",
@@ -79,6 +101,13 @@
         "withoutTags": "sans étiquettes",
         "withoutDesc": "sans description"
       },
+      "placeholders": {
+        "recordDay": "Sélectionnez une date (facultatif)",
+        "recordTags": "Sélectionnez des étiquette dans la liste ci-dessous ou ajoutez les vôtres.",
+        "recordDesc": "Fournir une description supplémentaire de l'enregistrement (facultatif)",
+        "tagsListEmpty": "La liste des étiquettes est vide. Ajoutez-en une nouvelle pour étiqueter les enregistrements.",
+        "newTag": "Saisir le nom de l'étiquette"
+      },
       "tracker": {
         "idsTitle": "Sélectionnez un suivi dans la liste ci-dessous",
         "idsTitleEmpty": "Aucun suivi n'est enregistré pour l'instant. Pour commencer, créez-en un à l'aide du formulaire simple ou importez un suivi existant.",
@@ -93,23 +122,12 @@
         "typeSelect": "Sélectionnez un type"
       },
       "operations": {
-        "tagTitle": "Sélectionnez des étiquette dans la liste ci-dessous ou ajoutez les vôtres",
-        "tagTitleEmpty": "La liste des étiquettes est vide. Ajoutez-en une nouvelle pour étiqueter les enregistrements.",
-        "tagCustomTitle": "Saisir le nom de votre étiquette personnalisée",
-        "dateDefault": "Sélectionnez une date (facultatif)",
         "type": "Type",
         "labelTags": "Etiquette",
         "description": "Description",
         "amount": "Montant",
         "cost": "Dépenses",
-        "income": "Revenu",
-        "tags": {
-          "card": "carte",
-          "cash": "espèces",
-          "food": "alimentation",
-          "clothes": "vêtement",
-          "service": "service"
-        }
+        "income": "Revenu"
       }
     }
   }

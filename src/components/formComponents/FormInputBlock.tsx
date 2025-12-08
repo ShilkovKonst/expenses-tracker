@@ -36,7 +36,7 @@ const FormInputBlock: React.FC<FormInputProps> = ({
     e.preventDefault();
     if (handleCalc) handleCalc(value);
   };
-
+  
   return (
     <div className={`${outerStyle} relative`}>
       {!withoutLabel && (
@@ -51,6 +51,7 @@ const FormInputBlock: React.FC<FormInputProps> = ({
         id={id}
         className={`w-full border-2 border-blue-100 focus:outline-blue-300 rounded-md text-sm bg-white pl-2 ${styleInput}`}
         type={"text"}
+        placeholder={withoutLabel && title ? title : ""}
         name={name}
         value={name === "amount" ? sanitizeAmountExpression(value) : value}
         onChange={(e) => handleChange(e)}
