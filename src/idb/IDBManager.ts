@@ -20,7 +20,7 @@ export async function openDB(dbName: string): Promise<IDBDatabase> {
   }
 
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName);
+    const request = indexedDB.open(dbName, 2);
 
     request.onerror = () => reject(request.error);
 
@@ -72,6 +72,20 @@ export async function openDB(dbName: string): Promise<IDBDatabase> {
         store.createIndex("by_year_month", ["year", "month"], {
           unique: false,
         });
+        store.createIndex("by_tags", "tags", {
+          unique: false,
+          multiEntry: true,
+        });
+      } else {
+        const tx = (event.target as IDBOpenDBRequest).transaction!;
+        const store = tx.objectStore(RECORDS_STORE);
+
+        if (!store.indexNames.contains("by_tags")) {
+          store.createIndex("by_tags", "tags", {
+            unique: false,
+            multiEntry: true,
+          });
+        }
       }
     };
   });

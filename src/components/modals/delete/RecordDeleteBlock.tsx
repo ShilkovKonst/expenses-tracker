@@ -3,7 +3,7 @@ import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { MONTHS } from "@/constants";
 import { useTracker } from "@/context/TrackerContext";
-import DescPBlock from "../descriptionComponents/DescPBlock";
+import DescPBlock from "../../descriptionComponents/DescPBlock";
 import { MonthRecord } from "@/lib/types/dataTypes";
 import { decimalToInputString } from "@/lib/utils/amountHelper";
 

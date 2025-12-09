@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
-import { ValidateButton } from "../buttonComponents";
+import { UtilButton, ValidateButton } from "../buttonComponents";
+import { CloseIcon } from "@/lib/icons";
 
 type Props = {
   title: string;
   desc?: string;
   sectionGridCols: number;
+  closeButtonTitle: string;
   cancelButtonTitle: string;
   onClose: () => void;
   children: ReactNode;
@@ -14,6 +16,7 @@ const ModalBase = ({
   title,
   desc,
   sectionGridCols,
+  closeButtonTitle,
   cancelButtonTitle,
   onClose,
   children,
@@ -27,6 +30,12 @@ const ModalBase = ({
       <form
         className={`relative w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 bg-blue-50 p-5 rounded-lg grid grid-cols-${sectionGridCols} gap-2`}
       >
+        <UtilButton
+          icon={<CloseIcon className="h-7 w-7" />}
+          title={closeButtonTitle}
+          customStyle="absolute top-3 right-3 col-span-2 md:col-span-1 h-9 w-9 bg-blue-400 hover:bg-blue-500"
+          handleClick={onClose}
+        />
         <h3
           className={`col-span-${sectionGridCols} text-lg font-bold text-center mx-auto`}
         >

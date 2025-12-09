@@ -1,7 +1,7 @@
-import { TAGS_STORE } from "@/constants";
-import { TrackerTags } from "@/lib/types/dataTypes";
+import { RECORDS_STORE, TAGS_STORE } from "@/constants";
+import { MonthRecord, TrackerTags } from "@/lib/types/dataTypes";
 import { TagIDBType } from "../types";
-import { performDBOperation } from "../IDBManager";
+import { openDB, performDBOperation } from "../IDBManager";
 
 export async function createTag(
   trackerId: string,
@@ -64,4 +64,35 @@ export async function deleteTagById(
   return performDBOperation<void>(trackerId, TAGS_STORE, "readwrite", (store) =>
     store.delete(tagId)
   );
+}
+
+export async function deleteTagByIdRecordsCleanup(
+  trackerId: string,
+  tagId: number
+): Promise<void> {
+  const db = await openDB(trackerId);
+
+  return new Promise((resolve, reject) => {
+    // Создаем транзакцию для обоих store
+    const tx = db.transaction([TAGS_STORE, RECORDS_STORE], "readwrite");
+
+    const tagStore = tx.objectStore(TAGS_STORE);
+    tagStore.delete(tagId);
+
+    const recordStore = tx.objectStore(RECORDS_STORE);
+    const index = recordStore.index("by_tags");
+    const request = index.getAll(tagId);
+    request.onsuccess = () => {
+      const affectedRecords: MonthRecord[] = request.result;
+      for (const record of affectedRecords) {
+        record.tags = record.tags.filter((id: number) => id !== tagId);
+        recordStore.put(record);
+      }
+    };
+
+    request.onerror = () => reject(request.error);
+
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
 }

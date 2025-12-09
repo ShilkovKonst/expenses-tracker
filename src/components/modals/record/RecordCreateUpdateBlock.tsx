@@ -1,16 +1,16 @@
 "use client";
 import { MonthRecord } from "@/lib/types/dataTypes";
-import FormInputBlock from "../formComponents/FormInputBlock";
+import FormInputBlock from "../../formComponents/FormInputBlock";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import FormRadioBlock from "@/components/formComponents/FormRadioBlock";
 import FormTagsBlock from "@/components/formComponents/FormTagsBlock";
 import { MONTHS } from "@/constants";
-import FormSelectBlock from "../formComponents/FormSelectBlock";
+import FormSelectBlock from "../../formComponents/FormSelectBlock";
 import { getMonthDays } from "@/lib/utils/monthHelper";
 import { calcExpression, trimLeadingZeros } from "@/lib/utils/amountHelper";
-import DescPBlock from "../descriptionComponents/DescPBlock";
+import DescPBlock from "../../descriptionComponents/DescPBlock";
 
 type RecordCreateUpdateProps = {
   currentRecord: MonthRecord;

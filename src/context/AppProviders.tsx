@@ -8,9 +8,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <GlobalProvider>
       <TrackerProvider>
-        <ModalProvider>
-          <FlashProvider>{children}</FlashProvider>
-        </ModalProvider>
+        <FlashProvider>
+          <ModalProvider>{children}</ModalProvider>
+        </FlashProvider>
       </TrackerProvider>
     </GlobalProvider>
   );

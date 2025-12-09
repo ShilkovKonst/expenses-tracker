@@ -1,6 +1,6 @@
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
-import DescPBlock from "../descriptionComponents/DescPBlock";
+import DescPBlock from "../../descriptionComponents/DescPBlock";
 import { t } from "@/locales/locale";
 
 type TrackerDeleteProps = {

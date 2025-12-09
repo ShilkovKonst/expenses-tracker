@@ -56,7 +56,10 @@
           },
           "tag": "n'existe pas dans le pool de tags"
         }
-      }
+      },
+      "newAdded": "Добавлено новое: {{entity}}",
+      "updated": "Обновлено: {{entity}} {{id}}",
+      "deleted": "Удалено: {{entity}} {{id}}"
     },
     "modal": {
       "titleCreate": "Créer nouvel enregistrement",

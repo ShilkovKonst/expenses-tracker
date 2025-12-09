@@ -1,5 +1,5 @@
 "use client";
-import DescPBlock from "../descriptionComponents/DescPBlock";
+import DescPBlock from "../../descriptionComponents/DescPBlock";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 

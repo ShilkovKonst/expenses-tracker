@@ -32,17 +32,17 @@ const ActiveTrackerData = () => {
     () =>
       trackerId && trackerTags && trackerMeta && trackerYears
         ? {
-          id: trackerId,
-          meta: trackerMeta,
-          tags: trackerTags,
-          years: trackerYears,
-          totalAmount: trackerYears
-            ? Object.values(trackerYears).reduce(
-              (acc, y) => acc + y.totalAmount,
-              0
-            )
-            : 0,
-        }
+            id: trackerId,
+            meta: trackerMeta,
+            tags: trackerTags,
+            years: trackerYears,
+            totalAmount: trackerYears
+              ? Object.values(trackerYears).reduce(
+                  (acc, y) => acc + y.totalAmount,
+                  0
+                )
+              : 0,
+          }
         : null,
     [trackerId, trackerTags, trackerMeta, trackerYears]
   );
@@ -55,10 +55,6 @@ const ActiveTrackerData = () => {
     const onDelete = async () => {
       try {
         await deleteTrackerUtil(trackerId);
-      } catch (error) {
-        console.log(error)
-        addFlash("error", getErrorMessage(error, `Something went wrong while deleting tracker ${trackerId}`))
-      } finally {
         if (localStorage) {
           const raw = localStorage.getItem(TRACKER_IDS);
           if (raw) {
@@ -68,10 +64,17 @@ const ActiveTrackerData = () => {
             setTrackerIds(newIds);
           }
         }
-        addFlash("info", `Tracker ${trackerId} has been deleted`)
-        return { updatedAt: "", message: "tracker was entirely deleted" };
+      } catch (error) {
+        console.log(error);
+        addFlash(
+          "error",
+          getErrorMessage(
+            error,
+            `Something went wrong while deleting tracker ${trackerId}`
+          )
+        );
       }
-
+      return { updatedAt: "", message: "tracker was entirely deleted" };
     };
     openModal("delete", {
       entityType: "tracker",
@@ -121,5 +124,5 @@ const ActiveTrackerData = () => {
         />
       </div>
     </>
-  )
-}
+  );
+};

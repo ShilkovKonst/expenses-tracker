@@ -4,7 +4,7 @@ import { DeleteIcon } from "@/lib/icons";
 import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
 import { compare } from "@/lib/utils/compareHelper";
-import { IconButton, TextRoundedButton } from "../buttonComponents";
+import { IconButton, TextRoundedButton } from "../../buttonComponents";
 import { useModal } from "@/context/ModalContext";
 import { deleteTagById, getAllTags } from "@/idb/CRUD/tagsCRUD";
 import { updateMetadata } from "@/idb/CRUD/metaCRUD";
