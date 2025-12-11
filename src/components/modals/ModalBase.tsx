@@ -28,16 +28,16 @@ const ModalBase = ({
       className="fixed w-full h-full inset-0 bg-black/10 backdrop-blur-xs z-50 flex items-center justify-center"
     >
       <form
-        className={`relative w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 bg-blue-50 p-5 rounded-lg grid grid-cols-${sectionGridCols} gap-2`}
+        className={`relative w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 bg-blue-50 p-3 rounded-lg grid grid-cols-${sectionGridCols} gap-2`}
       >
         <UtilButton
           icon={<CloseIcon className="h-7 w-7" />}
           title={closeButtonTitle}
-          customStyle="absolute top-3 right-3 col-span-2 md:col-span-1 h-9 w-9 bg-blue-400 hover:bg-blue-500"
+          customStyle="absolute top-3 right-3 col-span-2 md:col-span-1 h-8 w-8 bg-blue-400 hover:bg-blue-500"
           handleClick={onClose}
         />
         <h3
-          className={`col-span-${sectionGridCols} text-lg font-bold text-center mx-auto`}
+          className={`col-span-${sectionGridCols} min-h-9 text-lg font-bold text-center mx-8`}
         >
           {title}
         </h3>

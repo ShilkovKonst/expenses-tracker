@@ -32,6 +32,7 @@ const RecordCreateUpdateBlock = ({
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    console.log(name, value)
     const key = name as keyof MonthRecord;
     let normalizedValue: MonthRecord[keyof MonthRecord];
 
@@ -87,7 +88,7 @@ const RecordCreateUpdateBlock = ({
         />
         <FormRadioBlock
           outerStyle=" pl-1"
-          id={"operationTypeInput" + currentRecord?.id}
+          id={"type" + currentRecord?.id}
           labelRadio={`${t(locale, `body.form.operations.type`)}:`}
           name={"type"}
           value={currentRecord.type}

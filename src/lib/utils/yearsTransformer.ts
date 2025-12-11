@@ -1,5 +1,11 @@
 import { CURRENT_YEAR } from "@/constants";
-import { Month, MonthRecord, Year } from "../types/dataTypes";
+import {
+  createMonthId,
+  createYearId,
+  Month,
+  MonthRecord,
+  Year,
+} from "../types/dataTypes";
 import { getMonthById } from "./monthHelper";
 
 export function populateYears(allRecords: MonthRecord[]) {
@@ -30,7 +36,7 @@ export function populateYears(allRecords: MonthRecord[]) {
     years[CURRENT_YEAR] = populateEmptyYear();
   }
 
-  let monthId = 1;
+  let monthId = createMonthId(1);
   for (const y of Object.values(years)) {
     while (monthId <= 12) {
       if (!y.months[monthId]) {
@@ -45,7 +51,7 @@ export function populateYears(allRecords: MonthRecord[]) {
 
 function populateEmptyYear(): Year {
   return {
-    id: CURRENT_YEAR,
+    id: createYearId(CURRENT_YEAR),
     months: {},
     totalAmount: 0,
   };
@@ -53,7 +59,7 @@ function populateEmptyYear(): Year {
 
 function populateEmptyMonth(id: number, title: string): Month {
   return {
-    id: id,
+    id: createMonthId(id),
     title: title,
     records: [],
     totalAmount: 0,

@@ -1,4 +1,4 @@
-import { Month } from "@/lib/types/dataTypes";
+import { createMonthId, Month } from "@/lib/types/dataTypes";
 
 export const MONTHS: Record<number, string> = {
   1: "january",
@@ -16,39 +16,39 @@ export const MONTHS: Record<number, string> = {
 };
 
 export const EMPTY_FORM_MONTHS: Month[] = [
-  { id: 1, title: "january", records: [], totalAmount: 0 },
+  { id: createMonthId(1), title: "january", records: [], totalAmount: 0 },
   {
-    id: 2,
+    id: createMonthId(2),
     title: "february",
     records: [],
     totalAmount: 0,
   },
-  { id: 3, title: "march", records: [], totalAmount: 0 },
-  { id: 4, title: "april", records: [], totalAmount: 0 },
-  { id: 5, title: "may", records: [], totalAmount: 0 },
-  { id: 6, title: "june", records: [], totalAmount: 0 },
-  { id: 7, title: "july", records: [], totalAmount: 0 },
-  { id: 8, title: "august", records: [], totalAmount: 0 },
+  { id: createMonthId(3), title: "march", records: [], totalAmount: 0 },
+  { id: createMonthId(4), title: "april", records: [], totalAmount: 0 },
+  { id: createMonthId(5), title: "may", records: [], totalAmount: 0 },
+  { id: createMonthId(6), title: "june", records: [], totalAmount: 0 },
+  { id: createMonthId(7), title: "july", records: [], totalAmount: 0 },
+  { id: createMonthId(8), title: "august", records: [], totalAmount: 0 },
   {
-    id: 9,
+    id: createMonthId(9),
     title: "september",
     records: [],
     totalAmount: 0,
   },
   {
-    id: 10,
+    id: createMonthId(10),
     title: "october",
     records: [],
     totalAmount: 0,
   },
   {
-    id: 11,
+    id: createMonthId(11),
     title: "november",
     records: [],
     totalAmount: 0,
   },
   {
-    id: 12,
+    id: createMonthId(12),
     title: "december",
     records: [],
     totalAmount: 0,

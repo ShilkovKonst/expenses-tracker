@@ -1,5 +1,6 @@
 "use client";
 import {
+  createYearId,
   Tracker,
   TrackerMeta,
   TrackerTags,
@@ -12,6 +13,7 @@ import { CURRENT_YEAR, TRACKER_IDS } from "@/constants";
 import { initEmptyMonths } from "./monthHelper";
 import { createTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { formatDatetoMeta } from "./dateParser";
+import { YearId } from "../types/brand";
 
 export function setParsedData(
   data: Tracker,
@@ -40,9 +42,9 @@ export async function setNewData(
   };
   await createMetadata(newTrackerId, newMeta);
 
-  const newYears: Record<number, Year> = {
+  const newYears: Record<YearId, Year> = {
     [CURRENT_YEAR]: {
-      id: CURRENT_YEAR,
+      id: createYearId(CURRENT_YEAR),
       months: initEmptyMonths(),
       totalAmount: 0,
     },

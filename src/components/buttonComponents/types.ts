@@ -1,3 +1,4 @@
+import { TagId } from "@/lib/types/brand";
 import { ButtonHTMLAttributes, MouseEvent as RME, ReactNode } from "react";
 
 export type BaseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -55,7 +56,7 @@ export type TextRoundedButtonProps = {
   value: string | number;
   title: string;
   customStyle: string;
-  handleClick?: (id: number) => void;
+  handleClick?: (id: TagId) => void;
   disabled?: boolean;
   dataIndex?: string;
 };

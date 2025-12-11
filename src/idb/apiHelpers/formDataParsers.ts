@@ -4,17 +4,22 @@ import {
   TrackerMeta,
   TrackerTags,
   TrackerYears,
+  createRecordId,
+  createTagId,
+  createTrackerId,
+  createYearId,
+  createMonthId,
 } from "@/lib/types/dataTypes";
 export function transformToMonthRecord(form: FormData): MonthRecord {
   return {
-    id: Number(form.get("id")) ?? -1,
-    year: Number(form.get("year")) ?? -1,
-    month: Number(form.get("month")) ?? -1,
+    id: createRecordId(Number(form.get("id")) ?? -1),
+    year: createYearId(Number(form.get("year")) ?? -1),
+    month: createMonthId(Number(form.get("month")) ?? -1),
     day: Number(form.get("day")) ?? -1,
     type: (String(form.get("type")) as "cost" | "income") ?? "cost",
     description: String(form.get("description")) ?? "",
     amount: Number(form.get("amount")) ?? 0,
-    tags: form.getAll("tags").map(Number),
+    tags: form.getAll("tags").map((t) => createTagId(Number(t))),
   };
 }
 
@@ -27,7 +32,7 @@ export function transformToTracker(form: FormData): Tracker {
   const tagsString = form.get("tags");
   const yearsString = form.get("years");
   return {
-    id: String(form.get("id")) ?? "",
+    id: createTrackerId(String(form.get("id")) ?? ""),
     meta: metaString
       ? parseToMeta(metaString.toString())
       : {

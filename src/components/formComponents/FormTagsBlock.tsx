@@ -15,6 +15,7 @@ import { compare } from "@/lib/utils/compareHelper";
 import { useTracker } from "@/context/TrackerContext";
 import { TextRoundedButton } from "../buttonComponents";
 import FormNewTagBlock from "./FormNewTagBlock";
+import { TagId } from "@/lib/types/brand";
 
 type FormTagsProps = {
   record: MonthRecord;
@@ -33,14 +34,14 @@ const FormTagsBlock: React.FC<FormTagsProps> = ({
   const { locale } = useGlobal();
   const { trackerTags } = useTracker();
 
-  const [recordTags, setRecordTags] = useState<number[]>(record?.tags);
+  const [recordTags, setRecordTags] = useState<TagId[]>(record?.tags);
 
   useEffect(() => {
     setRecord({ ...record, tags: recordTags });
   }, [recordTags]);
 
   const handleAddClick = useCallback(
-    (id: number) => {
+    (id: TagId) => {
       if (recordTags.every((t) => t !== id)) {
         setRecordTags([...recordTags, id]);
       }

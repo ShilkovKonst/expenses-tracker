@@ -4,7 +4,7 @@ import { ModalMap } from "../ModalRoot";
 import { useTracker } from "@/context/TrackerContext";
 import { useFlash } from "@/context/FlashContext";
 import { useMemo, useState } from "react";
-import { MonthRecord, Year } from "@/lib/types/dataTypes";
+import { createRecordId, MonthRecord, Year } from "@/lib/types/dataTypes";
 import {
   decimalToInputString,
   inputStringToDecimal,
@@ -41,7 +41,7 @@ const RecordModal = ({
     };
     try {
       const { id, updatedAt } = await onConfirm(updRecord);
-      updRecord.id = id;
+      updRecord.id = createRecordId(id);
       if (trackerMeta) setTrackerMeta({ ...trackerMeta, updatedAt });
       const records = await getAllRecords(trackerId);
       const years: Record<number, Year> = populateYears(records);

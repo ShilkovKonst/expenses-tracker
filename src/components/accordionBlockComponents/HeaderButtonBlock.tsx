@@ -27,17 +27,17 @@ const HeaderButtonBlock: React.FC<HeaderButtonBlockProps> = ({
     >
       {isMonth && handleAddOperation && (
         <UtilButton
-          icon={<AddIcon className={"h-4 w-4"} />}
+          icon={<AddIcon className={"h-6 w-6 md:h-4 md:w-4"} />}
           title={t(locale, `body.buttons.add`)}
-          customStyle={`bg-blue-500 hover:bg-blue-400 h-6 w-8`}
+          customStyle={`bg-blue-500 hover:bg-blue-400 h-8 w-8 md:h-6 md:w-6`}
           handleClick={handleAddOperation}
         />
       )}
       {
         <UtilButton
-          icon={<ExpandIcon className={"h-4 w-4"} />}
+          icon={<ExpandIcon className={"h-6 w-6 md:h-4 md:w-4"} />}
           title={t(locale, `body.buttons.expand`)}
-          customStyle={`bg-blue-400 hover:bg-blue-500 disabled:text-gray-600 disabled:bg-blue-300 disabled:hover:bg-blue-300 h-6 w-6`}
+          customStyle={`bg-blue-400 hover:bg-blue-500 disabled:text-gray-600 disabled:bg-blue-300 disabled:hover:bg-blue-300 h-8 w-8 md:h-6 md:w-6`}
           handleClick={(e: RME<HTMLButtonElement, MouseEvent>) =>
             transformElement(e.target as HTMLElement, "data-type")
           }

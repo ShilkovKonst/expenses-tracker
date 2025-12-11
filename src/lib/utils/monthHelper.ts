@@ -1,4 +1,9 @@
-import { Month, MonthIdType, Months } from "@/lib/types/dataTypes";
+import {
+  createMonthId,
+  Month,
+  MonthIdType,
+  Months,
+} from "@/lib/types/dataTypes";
 import { MONTHS } from "../../constants";
 
 export function getMonthById<ID extends MonthIdType>(id: ID): Months {
@@ -9,7 +14,7 @@ export function initEmptyMonths(): Record<number, Month> {
   const emptyMonths: Month[] = [];
   for (let i = 1 as MonthIdType; i <= 12; i++) {
     emptyMonths[i - 1] = {
-      id: i,
+      id: createMonthId(i),
       title: getMonthById(i),
       records: [],
       totalAmount: 0,

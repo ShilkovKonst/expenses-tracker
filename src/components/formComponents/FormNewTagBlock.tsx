@@ -12,10 +12,12 @@ import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { useTracker } from "@/context/TrackerContext";
 import { createTag } from "@/idb/CRUD/tagsCRUD";
+import { TagId } from "@/lib/types/brand";
+import { createTagId } from "@/lib/types/dataTypes";
 
 type FormNewTagProps = {
-  recordTags?: number[];
-  setRecordTags?: Dispatch<SetStateAction<number[]>>;
+  recordTags?: TagId[];
+  setRecordTags?: Dispatch<SetStateAction<TagId[]>>;
 };
 
 const FormNewTagBlock = ({ recordTags, setRecordTags }: FormNewTagProps) => {
@@ -32,7 +34,8 @@ const FormNewTagBlock = ({ recordTags, setRecordTags }: FormNewTagProps) => {
   const handleAddNewTag = useCallback(
     async (newTag: string) => {
       const newId = await createTag(trackerId, newTag);
-      if (recordTags && setRecordTags) setRecordTags([...recordTags, newId]);
+      if (recordTags && setRecordTags)
+        setRecordTags([...recordTags, createTagId(newId)]);
       setTrackerTags({ ...trackerTags, [newId]: newTag });
       setNewTag("");
     },

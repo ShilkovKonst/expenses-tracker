@@ -97,29 +97,29 @@ const ActiveTrackerData = () => {
       </div>
       <div className={`gap-2 flex flex-row justify-between items-center`}>
         <UtilButton
-          icon={<SaveIcon className={"w-4 h-4 md:w-6 md:h-6"} />}
+          icon={<SaveIcon className={"w-6 h-6"} />}
           title={t(locale, `body.buttons.save`)}
-          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-6 h-6 md:w-8 md:h-8"}`}
+          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
           handleClick={() =>
             contentData && saveFiletoLocal<"tracker">(contentData)
           }
         />
         <UtilButton
-          icon={<ShareIcon className={"w-4 h-4 md:w-6 md:h-6"} />}
+          icon={<ShareIcon className={"w-6 h-6"} />}
           title={t(locale, `body.buttons.save`)}
-          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-6 h-6 md:w-8 md:h-8"}`}
+          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
           handleClick={() => contentData && shareFile<"tracker">(contentData)}
         />
         <UtilButton
-          icon={<SettingsIcon className={"w-4 h-4 md:w-6 md:h-6"} />}
+          icon={<SettingsIcon className={"w-6 h-6"} />}
           title={t(locale, `body.buttons.update`)}
-          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-6 h-6 md:w-8 md:h-8"}`}
+          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
           handleClick={handleSettings}
         />
         <UtilButton
-          icon={<DeleteIcon className={"w-4 h-4 md:w-6 md:h-6"} />}
+          icon={<DeleteIcon className={"w-6 h-6"} />}
           title={t(locale, `body.buttons.delete`)}
-          customStyle={`bg-red-400 hover:bg-red-500 ${"w-6 h-6 md:w-8 md:h-8"}`}
+          customStyle={`bg-red-400 hover:bg-red-500 ${"w-8 h-8"}`}
           handleClick={handleRemove}
         />
       </div>

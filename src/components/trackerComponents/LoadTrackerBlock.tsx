@@ -120,10 +120,10 @@ const LoadTrackerBlock = () => {
       </p>
       <IconButton
         value=""
-        icon={<LoadIcon className="w-5 h-5" />}
+        icon={<LoadIcon className="w-4 h-4" />}
         title={t(locale, `body.buttons.load`)}
         handleClick={handleOpenFileDialog}
-        customStyle="ml-0.5 mr-auto h-7 w-7 rounded bg-green-400 hover:bg-green-500"
+        customStyle="ml-0.5 mr-auto h-8 w-8 md:h-6 md:w-6 rounded bg-green-400 hover:bg-green-500"
       />
 
       <input

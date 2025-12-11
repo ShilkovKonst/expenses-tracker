@@ -1,13 +1,19 @@
-import { Month, MonthIdType, Year } from "@/lib/types/dataTypes";
+import {
+  createMonthId,
+  createYearId,
+  Month,
+  MonthIdType,
+  Year,
+} from "@/lib/types/dataTypes";
 import { Dispatch, RefObject, SetStateAction } from "react";
+import { MonthId, YearId } from "../types/brand";
 
 type OnScrollYearHelperOutput = {
-  newActiveYear: number | undefined;
+  newActiveYear: YearId | undefined;
   activeYearBodyEl: HTMLElement | undefined;
 };
 
 export function onScrollYearHelper(
-  // years: Record<number, Year>,
   yearNodes: NodeListOf<HTMLElement>,
   setExpandYearDataType: Dispatch<SetStateAction<string>>
 ): OnScrollYearHelperOutput {
@@ -17,11 +23,6 @@ export function onScrollYearHelper(
     if (!yearId) {
       throw new Error("Year element is missing id attribute");
     }
-
-    // const year = years[parseInt(yearId)];
-    // if (!year) {
-    //   throw new Error(`Year with id ${yearId} not found in formData`);
-    // }
 
     const yearHeaderEl = yearBodyEl?.getElementsByClassName("header")[0];
     if (!yearBodyEl || !yearHeaderEl) {
@@ -35,13 +36,16 @@ export function onScrollYearHelper(
 
     if (yearHeaderTrigger <= 0 && yearBodyTrigger > 10) {
       setExpandYearDataType(`${yearId}`);
-      return { newActiveYear: Number(yearId), activeYearBodyEl: yearBodyEl };
+      return {
+        newActiveYear: createYearId(Number(yearId)),
+        activeYearBodyEl: yearBodyEl,
+      };
     }
   }
   return { newActiveYear: undefined, activeYearBodyEl: undefined };
 }
 
-type OnScrollMonthHelperOutput = { newActiveMonth: number | undefined };
+type OnScrollMonthHelperOutput = { newActiveMonth: MonthId | undefined };
 export function onScrollMonthHelper(
   months: NodeListOf<HTMLElement>,
   newActiveYear: number,
@@ -65,7 +69,7 @@ export function onScrollMonthHelper(
       if (dataMonth) {
         const monthId = parseInt(dataMonth) as MonthIdType;
         setExpandMonthDataType(`${newActiveYear}-${monthId}`);
-        return { newActiveMonth: monthId };
+        return { newActiveMonth: createMonthId(monthId) };
       }
     }
   }

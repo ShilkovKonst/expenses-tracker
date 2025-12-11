@@ -4,7 +4,8 @@ import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
-import { MonthRecord } from "@/lib/types/dataTypes";
+import { MonthId, YearId } from "@/lib/types/brand";
+import { createRecordId, MonthRecord } from "@/lib/types/dataTypes";
 import Link from "next/link";
 import { useCallback } from "react";
 
@@ -14,8 +15,8 @@ type StickyHeaderProps = {
   expandDataType: string;
   isMonth: boolean;
   expandDisabled?: boolean;
-  yearId: number;
-  monthId?: number | undefined;
+  yearId: YearId;
+  monthId?: MonthId | undefined;
   recordsLength?: number;
 };
 
@@ -35,7 +36,7 @@ const StickyHeader = ({
   const handleAddOperation = useCallback(() => {
     if (yearId && monthId) {
       const newRecord: MonthRecord = {
-        id: -1,
+        id: createRecordId(-1),
         year: yearId,
         month: monthId,
         day: -1,

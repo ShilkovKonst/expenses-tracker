@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import { Month, MonthRecord } from "@/lib/types/dataTypes";
+import { createRecordId, Month, MonthRecord } from "@/lib/types/dataTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
@@ -10,9 +10,10 @@ import { compare } from "@/lib/utils/compareHelper";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
 import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { useTracker } from "@/context/TrackerContext";
+import { YearId } from "@/lib/types/brand";
 
 type MonthProps = {
-  yearId: number;
+  yearId: YearId;
   month: Month;
 };
 
@@ -23,7 +24,7 @@ const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
 
   const handleAddOperation = useCallback(() => {
     const newRecord: MonthRecord = {
-      id: -1,
+      id: createRecordId(-1),
       year: yearId,
       month: month.id,
       day: -1,

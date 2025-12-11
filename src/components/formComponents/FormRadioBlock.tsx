@@ -25,33 +25,49 @@ const FormRadioBlock: React.FC<FormRadioProps> = ({
   handleChange,
 }) => {
   const { locale } = useGlobal();
+
+  const radioId = (id: string, type: string) => `${id}-${type}`;
   return (
     <div
       className={`${outerStyle} flex gap-1 md:gap-3 justify-start items-center`}
     >
       <p className={`${styleLabel} font-semibold uppercase`}>{labelRadio}</p>
       <div className="w-full flex justify-evenly gap-1 md:gap-2">
-        {["income", "cost"].map((type, i) => (
-          <div key={i} className={`flex items-center ${type === "income" ? "order-1" : "order-3"}`}>
-            <input
-              type="radio"
-              id={`${id}-${type}`}
-              value={type}
-              name={name}
-              checked={value === type}
-              onChange={handleChange}
-              className="input-radio"
-              required
-            />
-            <label
-              htmlFor={`${id}-${type}`}
-              className={`${styleInput} font-light text-black uppercase`}
+        {["income", "cost"].map((type, i) => {
+          const inputId = radioId(id, type);
+          return (
+            <div
+              key={i}
+              className={`flex items-center cursor-pointer ${
+                type === "income" ? "order-1" : "order-3"
+              }`}
+              onClick={() => {
+                if (value !== type) {
+                  handleChange({
+                    target: { name, value: type },
+                  } as React.ChangeEvent<HTMLInputElement>);
+                }
+              }}
             >
-              {`${t(locale, `body.form.labels.${type}`)}`}
-            </label>
-          </div>
-        ))}
-        <div className="h-auto border-l border-blue-300 order-2"/>
+              <input
+                type="radio"
+                id={inputId}
+                value={type}
+                name={name}
+                checked={value === type}
+                readOnly
+                required
+              />
+              <label
+                htmlFor={inputId}
+                className={`${styleInput} font-light text-black uppercase pointer-events-none`}
+              >
+                {`${t(locale, `body.form.labels.${type}`)}`}
+              </label>
+            </div>
+          );
+        })}
+        <div className="h-auto border-l border-blue-300 order-2" />
       </div>
     </div>
   );

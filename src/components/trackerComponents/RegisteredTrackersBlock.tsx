@@ -10,7 +10,7 @@ const RegisteredTrackersBlock = () => {
 
   return (
     <section className="w-full col-span-3 flex gap-2">
-      <div className="border-b-6 border-blue-400 w-full pt-2 pb-2">
+      <div className="border-b-6 border-blue-400 w-full flex flex-col justify-between items-start gap-3 pb-3">
         {trackerIds.length > 0 ? (
           <RegisteredData locale={locale} trackerIds={trackerIds} />
         ) : (
@@ -52,7 +52,7 @@ const RegisteredData = ({ locale, trackerIds }: RegisteredDataProps) => {
       <h3 className={`block font-semibold uppercase text-sm`}>
         {t(locale, `body.form.tracker.idsTitle`)}
       </h3>
-      <div className="pt-2 transition-[height] duration-200 ease-in-out flex flex-wrap justify-start items-center gap-2">
+      <div className="flex flex-wrap justify-start items-center gap-2">
         {trackerIds.map((id, i) => (
           <IconButton
             key={i}

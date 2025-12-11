@@ -8,6 +8,7 @@ import {
   TextRoundedButtonProps,
   LowLevelButtonProps,
 } from "./types";
+import { createTagId } from "@/lib/types/dataTypes";
 
 const BaseButton = ({
   children,
@@ -141,7 +142,7 @@ export const TextRoundedButton = memo(function TextRoundedButton({
     <BaseButton
       type="button"
       title={title}
-      onClick={() => (handleClick && id ? handleClick(id) : {})}
+      onClick={() => (handleClick && id ? handleClick(createTagId(id)) : {})}
       className={`tag ${customStyle} my-auto px-2 h-5 text-xs text-center font-semibold rounded-lg`}
       disabled={disabled}
       data-index={dataIndex}

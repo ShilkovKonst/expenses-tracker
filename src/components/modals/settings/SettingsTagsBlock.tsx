@@ -9,6 +9,7 @@ import { useModal } from "@/context/ModalContext";
 import { deleteTagById, getAllTags } from "@/idb/CRUD/tagsCRUD";
 import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { useTracker } from "@/context/TrackerContext";
+import { createTagId } from "@/lib/types/dataTypes";
 
 const SettingsTagsBlock = () => {
   const { locale } = useGlobal();
@@ -27,7 +28,10 @@ const SettingsTagsBlock = () => {
       if (trackerTags)
         openModal("delete", {
           entityType: "tag",
-          entity: { id: idx, title: trackerTags[idx] },
+          entity: {
+            id: createTagId(idx),
+            title: trackerTags[createTagId(idx)],
+          },
           onConfirm: onDelete,
         });
     },

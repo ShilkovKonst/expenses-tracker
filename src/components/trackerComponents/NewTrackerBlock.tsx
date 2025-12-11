@@ -46,20 +46,20 @@ const NewTrackerBlock = () => {
 
   return (
     <form
-      className="relative grid grid-cols-5 w-full mt-2 transition-[height] duration-300 ease-in-out pb-2 overflow-visible"
+      className="relative grid grid-cols-5 w-full transition-[height] duration-300 ease-in-out overflow-visible"
       onSubmit={(e) => handleSubmit(e)}
     >
       <input
-        className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-blue-300 rounded-md text-xs"
+        className="col-span-4 w-full px-2 py-0.5 border-2 bg-white border-blue-100 focus:outline-blue-300 rounded-md text-xs"
         placeholder={t(locale, `body.form.tracker.typeCustomTitle`)}
         type="text"
         value={newTrackerId}
         onChange={(e) => setNewTrackerId(e.target.value)}
       />
       <SubmitButton
-        icon={<AddIcon className="w-5 h-5" />}
+        icon={<AddIcon className="w-6 h-6 md:h-4 md:w-4" />}
         title={t(locale, "body.buttons.create")}
-        customStyle="ml-2 mr-auto h-7 w-7 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
+        customStyle="ml-2 mr-auto h-8 w-8 md:h-6 md:w-6 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
         disabled={isDisabled}
       />
       {newTrackerId.trim() === "" ||
