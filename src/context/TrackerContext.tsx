@@ -1,5 +1,5 @@
 "use client";
-import { TRACKER_IDS } from "@/constants";
+import { TrackerId } from "@/lib/types/brand";
 import { TrackerMeta, TrackerTags, TrackerYears } from "@/lib/types/dataTypes";
 import { populateTrackerContex } from "@/lib/utils/updateLocalTrackerIds";
 import {
@@ -11,10 +11,11 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useGlobal } from "./GlobalContext";
 
 interface TrackerContextType {
-  trackerId: string;
-  setTrackerId: Dispatch<SetStateAction<string>>;
+  trackerId: TrackerId;
+  setTrackerId: Dispatch<SetStateAction<TrackerId>>;
   trackerMeta: TrackerMeta | null;
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>;
   trackerTags: TrackerTags | null;
@@ -28,39 +29,36 @@ export const TrackerContext = createContext<TrackerContextType | undefined>(
 );
 
 export function TrackerProvider({ children }: { children: ReactNode }) {
-  const [trackerId, setTrackerId] = useState<string>("");
+  const { allTrackersMeta } = useGlobal();
+  const [trackerId, setTrackerId] = useState<TrackerId>("" as TrackerId);
   const [trackerMeta, setTrackerMeta] = useState<TrackerMeta | null>(null);
   const [trackerTags, setTrackerTags] = useState<TrackerTags | null>(null);
   const [trackerYears, setTrackerYears] = useState<TrackerYears | null>(null);
 
   useEffect(() => {
-    if (localStorage) {
-      const raw = localStorage.getItem(TRACKER_IDS);
-      if (raw) {
-        const parsed: string[] = JSON.parse(raw) as string[];
-        const activeTrackerId = parsed[0];
-        let cancelled = false;
+    if (allTrackersMeta.length > 0) {
+      const activeTrackerId = allTrackersMeta[0].id;
+      let cancelled = false;
 
-        async function getDataFromDB() {
-          if (!cancelled) {
-            await populateTrackerContex(
-              activeTrackerId,
-              setTrackerId,
-              setTrackerMeta,
-              setTrackerTags,
-              setTrackerYears
-            );
-          }
+      async function getDataFromDB() {
+        if (!cancelled) {
+          await populateTrackerContex(
+            activeTrackerId,
+            setTrackerId,
+            setTrackerMeta,
+            setTrackerTags,
+            setTrackerYears
+          );
         }
-
-        getDataFromDB();
-
-        return () => {
-          cancelled = true;
-        };
       }
+
+      getDataFromDB();
+
+      return () => {
+        cancelled = true;
+      };
     }
-  }, []);
+  }, [allTrackersMeta]);
 
   return (
     <TrackerContext.Provider

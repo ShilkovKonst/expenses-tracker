@@ -1,16 +1,16 @@
 "use client";
-import { useGlobal } from "@/context/GlobalContext";
+import { loadTrackers, useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { t } from "@/locales/locale";
 import { useModal } from "@/context/ModalContext";
 import { UtilButton } from "../buttonComponents";
 import { DeleteIcon, SaveIcon, SettingsIcon, ShareIcon } from "@/lib/icons";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
-import { TRACKER_IDS } from "@/constants";
 import { saveFiletoLocal, shareFile } from "@/lib/utils/fileContentHelper";
 import { useMemo } from "react";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
+// import { getAllData } from "@/idb/massImportHelper";
 
 const ActiveTrackerBlock = () => {
   return (
@@ -23,7 +23,7 @@ const ActiveTrackerBlock = () => {
 export default ActiveTrackerBlock;
 
 const ActiveTrackerData = () => {
-  const { locale, setTrackerIds } = useGlobal();
+  const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
   const { trackerId, trackerTags, trackerMeta, trackerYears } = useTracker();
   const { openModal } = useModal();
   const { addFlash } = useFlash();
@@ -55,15 +55,7 @@ const ActiveTrackerData = () => {
     const onDelete = async () => {
       try {
         await deleteTrackerUtil(trackerId);
-        if (localStorage) {
-          const raw = localStorage.getItem(TRACKER_IDS);
-          if (raw) {
-            const trackerIds: string[] = JSON.parse(raw);
-            const newIds = [...trackerIds.filter((id) => id !== trackerId)];
-            localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
-            setTrackerIds(newIds);
-          }
-        }
+        await loadTrackers(setAllTrackersMeta, setIsLoading);
       } catch (error) {
         console.log(error);
         addFlash(
@@ -85,13 +77,13 @@ const ActiveTrackerData = () => {
 
   return (
     <>
-      <div className="text-xs md:text-sm font-semibold w-full flex flex-wrap gap-2 justify-between items-center">
-        <div className="text-blue-950">
+      <div className="text-xs font-semibold w-full flex flex-wrap gap-0 md:gap-2 justify-between items-start">
+        <div className="text-blue-950 flex flex-row gap-1 md:flex-col md:gap-0">
           <h2 className="underline">{t(locale, `body.form.title`)}:</h2>
-          <p>{trackerId}</p>
+          <p className="max-w-24 truncate">{trackerId}</p>
         </div>
-        <div className="text-gray-700">
-          <p className="underline">Last update:</p>
+        <div className="text-gray-700 flex flex-row gap-1 md:flex-col md:gap-0">
+          <p className="underline">{t(locale, `body.form.lastUpdate`)}:</p>
           <p>{trackerMeta?.updatedAt.replace("_", " ")}</p>
         </div>
       </div>

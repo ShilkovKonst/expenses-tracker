@@ -1,19 +1,12 @@
 import { TRACKER_IDS } from "@/constants";
-import { getMetadata } from "@/idb/CRUD/metaCRUD";
-import { getAllRecords } from "@/idb/CRUD/recordsCRUD";
-import { getAllTags } from "@/idb/CRUD/tagsCRUD";
 import { Dispatch, SetStateAction } from "react";
-import { populateYears } from "./yearsTransformer";
-import {
-  TrackerMeta,
-  TrackerTags,
-  TrackerYears,
-  Year,
-} from "../types/dataTypes";
+import { TrackerMeta, TrackerTags, TrackerYears } from "../types/dataTypes";
+import { TrackerId } from "../types/brand";
+import { getAllData } from "@/idb/massImportHelper";
 
 export function updateLocalTrackerIds(
-  newTrackerId: string,
-  setTrackerIds: Dispatch<SetStateAction<string[]>>
+  newTrackerId: TrackerId,
+  setTrackerIds: Dispatch<SetStateAction<TrackerId[]>>
 ) {
   const raw = localStorage.getItem(TRACKER_IDS);
   if (raw) {
@@ -30,28 +23,25 @@ export function updateLocalTrackerIds(
 }
 
 export async function populateTrackerContex(
-  activeTrackerId: string,
-  setTrackerId: Dispatch<SetStateAction<string>>,
+  activeTrackerId: TrackerId,
+  setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
   setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
 ) {
   if (!activeTrackerId) {
-    setTrackerId("");
+    setTrackerId("" as TrackerId);
     setTrackerMeta(null);
     setTrackerTags(null);
     setTrackerYears(null);
     return;
   }
 
-  const meta = await getMetadata(activeTrackerId);
-  const tags = await getAllTags(activeTrackerId);
-  const records = await getAllRecords(activeTrackerId);
-  if (meta && tags && records) {
-    const years: Record<number, Year> = populateYears(records);
+  const tracker = await getAllData(activeTrackerId);
+  if (tracker.meta && tracker.tags && tracker.years) {
     setTrackerId(activeTrackerId);
-    setTrackerMeta(meta);
-    setTrackerTags(tags);
-    setTrackerYears(years);
+    setTrackerMeta(tracker.meta);
+    setTrackerTags(tracker.tags);
+    setTrackerYears(tracker.years);
   }
 }

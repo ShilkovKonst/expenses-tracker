@@ -6,7 +6,6 @@ export type TrackerMonths = Record<MonthId, Month>;
 export type TrackerTags = Record<TagId, string>;
 
 export type Tracker = {
-  id: TrackerId;
   meta: TrackerMeta;
   tags: TrackerTags;
   years: TrackerYears;
@@ -43,6 +42,8 @@ export type MonthIdType = keyof typeof MONTHS;
 export type Months = (typeof MONTHS)[MonthIdType];
 
 export type TrackerMeta = {
+  id: TrackerId;
+  title: string;
   createdAt: string;
   updatedAt: string;
 };

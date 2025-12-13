@@ -18,13 +18,11 @@ import {
   updateTagById,
 } from "../CRUD/tagsCRUD";
 import { updateMetadata } from "../CRUD/metaCRUD";
+import { TrackerId } from "@/lib/types/brand";
 
-export async function createTrackerUtil(
-  tracker: Tracker,
-  id: string = tracker.id
-) {
+export async function createTrackerUtil(tracker: Tracker) {
   try {
-    await populateIDBFromFile(tracker, id);
+    await populateIDBFromFile(tracker);
   } catch (error) {
     console.error(error);
     throw new Error(
@@ -38,7 +36,7 @@ export async function deleteTrackerUtil(tracker: string) {
     await deleteDB(tracker);
   } catch (error) {
     console.error(error);
-    // throw new Error(`Something went wrong while deleting tracker '${tracker}'`);
+    throw new Error(`Something went wrong while deleting tracker '${tracker}'`);
   }
 }
 
@@ -91,7 +89,7 @@ export async function getByIdUtil(
 }
 
 export async function createUtil(
-  tracker: string,
+  tracker: TrackerId,
   entity: "records" | "tags",
   data: Partial<MonthRecord> | string
 ) {
@@ -129,7 +127,7 @@ export async function createUtil(
 }
 
 export async function updateByIdUtil(
-  tracker: string,
+  tracker: TrackerId,
   entity: string,
   data: MonthRecord | string,
   id?: number
@@ -165,7 +163,7 @@ export async function updateByIdUtil(
 }
 
 export async function deleteByIdUtil(
-  tracker: string,
+  tracker: TrackerId,
   entity: string,
   id: number
 ) {

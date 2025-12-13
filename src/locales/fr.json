@@ -77,7 +77,8 @@
       "description": "Ajoutez, supprimez et configurez vos étiquettes d'enregistrements."
     },
     "form": {
-      "title": "Un suivi actif",
+      "title": "Le suivi actif",
+      "lastUpdate": "Mis à jour",
       "valueMonth": {
         "january": "Janvier",
         "february": "Février",

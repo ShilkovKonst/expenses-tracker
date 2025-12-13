@@ -9,34 +9,36 @@ import {
 } from "@/lib/types/dataTypes";
 import { Dispatch, SetStateAction } from "react";
 import { createMetadata } from "@/idb/CRUD/metaCRUD";
-import { CURRENT_YEAR, TRACKER_IDS } from "@/constants";
+import { CURRENT_YEAR } from "@/constants";
 import { initEmptyMonths } from "./monthHelper";
 import { createTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { formatDatetoMeta } from "./dateParser";
-import { YearId } from "../types/brand";
+import { TrackerId, YearId } from "../types/brand";
+import { loadTrackers } from "@/context/GlobalContext";
 
 export function setParsedData(
   data: Tracker,
-  setTrackerId: Dispatch<SetStateAction<string>>,
+  setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
-  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
-  id: string = data.id
+  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
 ) {
-  setTrackerId(id);
+  setTrackerId(data.meta.id);
   setTrackerMeta({ ...data.meta });
   setTrackerTags({ ...data.tags });
   setTrackerYears({ ...data.years });
 }
 
 export async function setNewData(
-  newTrackerId: string,
-  setTrackerId: Dispatch<SetStateAction<string>>,
+  newTrackerId: TrackerId,
+  setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
   setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
 ) {
   const newMeta = {
+    id: newTrackerId,
+    title: newTrackerId,
     createdAt: formatDatetoMeta(new Date()),
     updatedAt: formatDatetoMeta(new Date()),
   };
@@ -58,30 +60,20 @@ export async function setNewData(
 
 export async function createNPopulate(
   data: Tracker,
-  setTrackerIds: Dispatch<SetStateAction<string[]>>,
-  setTrackerId: Dispatch<SetStateAction<string>>,
+  setAllTrackersMeta: Dispatch<SetStateAction<TrackerMeta[]>>,
+  setIsLoading: Dispatch<SetStateAction<boolean>>,
+  setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
-  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
-  id: string = data.id
+  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
 ) {
   try {
-    await createTrackerUtil(data, id);
+    await createTrackerUtil(data);
   } catch (error) {
     console.error(error);
     throw new Error("error createTrackerUtil");
   }
-  if (localStorage) {
-    const trackersString = localStorage.getItem(TRACKER_IDS);
-    if (trackersString) {
-      const trackerList: string[] = JSON.parse(trackersString);
-      if (trackerList.every((t) => t !== id)) {
-        const newIds = [...trackerList, id];
-        localStorage.setItem(TRACKER_IDS, JSON.stringify(newIds));
-        setTrackerIds(newIds);
-      }
-    }
-  }
+  loadTrackers(setAllTrackersMeta, setIsLoading);
   setParsedData(
     data,
     setTrackerId,

@@ -10,6 +10,7 @@ import {
   getRecordsByYearMonth,
 } from "@/idb/CRUD/recordsCRUD";
 import { createTag, getAllTags } from "@/idb/CRUD/tagsCRUD";
+import { TrackerId } from "@/lib/types/brand";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -43,7 +44,7 @@ export async function POST(
   const formData = await req.formData();
 
   try {
-    const data = await post(tracker, entity, formData);
+    const data = await post(tracker as TrackerId, entity, formData);
     return NextResponse.json({
       ...data,
       status: 201,
@@ -87,7 +88,7 @@ async function getAll(
   }
 }
 
-async function post(tracker: string, entity: string, form: FormData) {
+async function post(tracker: TrackerId, entity: string, form: FormData) {
   try {
     let id: number;
     let updatedAt: string;

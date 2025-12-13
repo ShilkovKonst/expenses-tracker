@@ -4,15 +4,26 @@ import { Locale, t } from "@/locales/locale";
 import { useTracker } from "@/context/TrackerContext";
 import { IconButton } from "../buttonComponents";
 import { populateTrackerContex } from "@/lib/utils/updateLocalTrackerIds";
+import { TrackerId } from "@/lib/types/brand";
+import { TrackerMeta } from "@/lib/types/dataTypes";
+import { parseMetaToDate } from "@/lib/utils/dateParser";
 
 const RegisteredTrackersBlock = () => {
-  const { locale, trackerIds } = useGlobal();
-
+  const { locale, allTrackersMeta, isLoading } = useGlobal();
   return (
     <section className="w-full col-span-3 flex gap-2">
       <div className="border-b-6 border-blue-400 w-full flex flex-col justify-between items-start gap-3 pb-3">
-        {trackerIds.length > 0 ? (
-          <RegisteredData locale={locale} trackerIds={trackerIds} />
+        {isLoading ? (
+          <p>loading data</p>
+        ) : allTrackersMeta.length > 0 ? (
+          <RegisteredData
+            locale={locale}
+            allTrackersMeta={allTrackersMeta.sort(
+              (a, b) =>
+                parseMetaToDate(b.updatedAt).getTime() -
+                parseMetaToDate(a.updatedAt).getTime()
+            )}
+          />
         ) : (
           <RegisteredPlaceholder locale={locale} />
         )}
@@ -26,9 +37,9 @@ export default RegisteredTrackersBlock;
 
 type RegisteredDataProps = {
   locale: Locale;
-  trackerIds: string[];
+  allTrackersMeta: TrackerMeta[];
 };
-const RegisteredData = ({ locale, trackerIds }: RegisteredDataProps) => {
+const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
   const {
     trackerId,
     setTrackerId,
@@ -39,7 +50,7 @@ const RegisteredData = ({ locale, trackerIds }: RegisteredDataProps) => {
 
   const handleChangeTrackerClick = async (id: string) => {
     await populateTrackerContex(
-      id,
+      id as TrackerId,
       setTrackerId,
       setTrackerMeta,
       setTrackerTags,
@@ -53,15 +64,15 @@ const RegisteredData = ({ locale, trackerIds }: RegisteredDataProps) => {
         {t(locale, `body.form.tracker.idsTitle`)}
       </h3>
       <div className="flex flex-wrap justify-start items-center gap-2">
-        {trackerIds.map((id, i) => (
+        {allTrackersMeta.map((meta, i) => (
           <IconButton
             key={i}
-            icon={id}
-            value={id}
-            title={`${t(locale, "body.buttons.select")} - ${id}`}
+            icon={meta.title}
+            value={meta.id}
+            title={`${t(locale, "body.buttons.select")} - ${meta.title}`}
             handleClick={handleChangeTrackerClick}
             customStyle="bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500 px-2 h-5 rounded-lg"
-            disabled={trackerId === id}
+            disabled={trackerId === meta.id}
           />
         ))}
       </div>

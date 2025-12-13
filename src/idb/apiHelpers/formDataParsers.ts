@@ -31,11 +31,13 @@ export function transformToTracker(form: FormData): Tracker {
   const metaString = form.get("meta");
   const tagsString = form.get("tags");
   const yearsString = form.get("years");
+  const id = createTrackerId(String(form.get("id")) ?? "");
   return {
-    id: createTrackerId(String(form.get("id")) ?? ""),
     meta: metaString
       ? parseToMeta(metaString.toString())
       : {
+          id,
+          title: id,
           createdAt: new Date().toLocaleString(),
           updatedAt: new Date().toLocaleString(),
         },

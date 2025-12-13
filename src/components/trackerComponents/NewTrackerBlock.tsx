@@ -2,42 +2,45 @@
 import { t } from "@/locales/locale";
 import { FormEvent, MouseEvent as RME, useState } from "react";
 import { AddIcon } from "@/lib/icons";
-import { useGlobal } from "@/context/GlobalContext";
+import { loadTrackers, useGlobal } from "@/context/GlobalContext";
 import { setNewData } from "@/lib/utils/trackerDataSetter";
 import { useTracker } from "@/context/TrackerContext";
-import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
+// import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
 import { SubmitButton } from "../buttonComponents";
 import { useFlash } from "@/context/FlashContext";
+import { TrackerId } from "@/lib/types/brand";
 
 const NewTrackerBlock = () => {
-  const { locale, trackerIds, setTrackerIds } = useGlobal();
+  const { locale, allTrackersMeta, setAllTrackersMeta, setIsLoading } =
+    useGlobal();
   const { addFlash } = useFlash();
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
 
-  const [newTrackerId, setNewTrackerId] = useState<string>("");
+  const [newTrackerId, setNewTrackerId] = useState<TrackerId>("" as TrackerId);
 
   const isDisabled =
-    newTrackerId.trim() === "" || trackerIds.includes(newTrackerId.trim());
+    newTrackerId.trim() === "" ||
+    allTrackersMeta.some(
+      (meta) => meta.id === (newTrackerId.trim() as TrackerId)
+    );
 
-  const handleSubmit = (
+  const handleSubmit = async (
     e: RME<HTMLButtonElement, MouseEvent> | FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     if (isDisabled) return;
 
-    if (localStorage && newTrackerId) {
-      updateLocalTrackerIds(newTrackerId, setTrackerIds);
-    }
-
-    setNewData(
+    await setNewData(
       newTrackerId,
       setTrackerId,
       setTrackerMeta,
       setTrackerTags,
       setTrackerYears
     );
-    setNewTrackerId("");
+
+    await loadTrackers(setAllTrackersMeta, setIsLoading);
+    setNewTrackerId("" as TrackerId);
     addFlash(
       "success",
       t(locale, "body.flash.newTrackerAdded", { trackerId: newTrackerId })
@@ -54,7 +57,7 @@ const NewTrackerBlock = () => {
         placeholder={t(locale, `body.form.tracker.typeCustomTitle`)}
         type="text"
         value={newTrackerId}
-        onChange={(e) => setNewTrackerId(e.target.value)}
+        onChange={(e) => setNewTrackerId(e.target.value as TrackerId)}
       />
       <SubmitButton
         icon={<AddIcon className="w-6 h-6 md:h-4 md:w-4" />}

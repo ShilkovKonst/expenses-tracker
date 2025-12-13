@@ -1,4 +1,4 @@
-import { TagId } from "@/lib/types/brand";
+import { TagId, TrackerId } from "@/lib/types/brand";
 import { ButtonHTMLAttributes, MouseEvent as RME, ReactNode } from "react";
 
 export type BaseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -41,12 +41,9 @@ export type LowLevelButtonProps = {
 
 export type IconButtonProps = {
   icon: ReactNode;
-  value: string;
+  value: string | TrackerId;
   title: string;
-  handleClick:
-    | ((value: string) => Promise<void>)
-    | ((value: string) => Promise<void>)
-    | (() => void);
+  handleClick: ((value: string) => Promise<void>) | (() => void);
   customStyle?: string;
   disabled?: boolean;
 };

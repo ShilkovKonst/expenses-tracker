@@ -12,6 +12,9 @@ import { TRACKER_IDS } from "@/constants";
 import { useModal } from "@/context/ModalContext";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
+import { useFlash } from "@/context/FlashContext";
+import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
+import { TrackerId } from "@/lib/types/brand";
 
 type TrackerMergeProps = {
   importTrackerBody: Tracker;
@@ -21,15 +24,11 @@ const TrackerMergeBlock = ({
   importTrackerBody,
   oldTrackerMeta,
 }: TrackerMergeProps) => {
-  const { locale, setTrackerIds } = useGlobal();
-  const {
-    trackerId,
-    setTrackerId,
-    setTrackerMeta,
-    setTrackerTags,
-    setTrackerYears,
-  } = useTracker();
+  const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
+  const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
+    useTracker();
   const { closeModal } = useModal();
+  const { addFlash } = useFlash();
 
   const isOutdated = useMemo(() => {
     if (!oldTrackerMeta) return false;
@@ -48,30 +47,30 @@ const TrackerMergeBlock = ({
 
   const handleReplaceClick = async () => {
     try {
-      await deleteTrackerUtil(trackerId);
-    } catch (error) {
-      console.error(
-        `Something went wrong while deleting tracker '${trackerId}'`,
-        error
+      await deleteTrackerUtil(importTrackerBody.meta.id);
+      await createNPopulate(
+        importTrackerBody,
+        setAllTrackersMeta,
+        setIsLoading,
+        setTrackerId,
+        setTrackerMeta,
+        setTrackerTags,
+        setTrackerYears
       );
-    } finally {
-      try {
-        await createNPopulate(
-          importTrackerBody,
-          setTrackerIds,
-          setTrackerId,
-          setTrackerMeta,
-          setTrackerTags,
-          setTrackerYears
-        );
-      } catch (error) {
-        console.error(
-          `Something went wrong while creating tracker '${trackerId}'`,
-          error
-        );
-      }
-      closeModal();
+      addFlash(
+        "success",
+        `${t(locale, "body.flash.trackerUpdated", {
+          trackerId: importTrackerBody.meta.id,
+        })}`
+      );
+    } catch (error) {
+      console.error(error);
+      addFlash(
+        "error",
+        getErrorMessage(error, "Something went wrong while replacing tracker")
+      );
     }
+    closeModal();
   };
 
   const handleDoubleClick = async () => {
@@ -81,18 +80,37 @@ const TrackerMergeBlock = ({
       const trackersString = localStorage.getItem(TRACKER_IDS);
       if (trackersString) {
         const trackerList: string[] = JSON.parse(trackersString);
-        while (trackerList.some((t) => t === importTrackerBody.id + count))
+        while (trackerList.some((t) => t === importTrackerBody.meta.id + count))
           ++count;
-        newId = importTrackerBody.id + count;
-        await createNPopulate(
-          importTrackerBody,
-          setTrackerIds,
-          setTrackerId,
-          setTrackerMeta,
-          setTrackerTags,
-          setTrackerYears,
-          newId
-        );
+        newId = (importTrackerBody.meta.id + count) as TrackerId;
+        importTrackerBody.meta.id = newId;
+        importTrackerBody.meta.title = newId;
+        try {
+          await createNPopulate(
+            importTrackerBody,
+            setAllTrackersMeta,
+            setIsLoading,
+            setTrackerId,
+            setTrackerMeta,
+            setTrackerTags,
+            setTrackerYears
+          );
+          addFlash(
+            "success",
+            `${t(locale, "body.flash.trackerUpdated", {
+              trackerId: importTrackerBody.meta.title,
+            })}`
+          );
+        } catch (error) {
+          console.error(error);
+          addFlash(
+            "error",
+            getErrorMessage(
+              error,
+              "Something went wrong while replacing tracker"
+            )
+          );
+        }
         closeModal();
       }
     }
@@ -106,7 +124,11 @@ const TrackerMergeBlock = ({
           titleStyle="col-span-2 my-auto font-medium p-1"
           valueStyle={`pr-6 text-xs py-1 mb-auto`}
           title={`${t(locale, `body.form.tracker.registeredDateTitle`)} `}
-          value={oldDateTime ? `${oldDateTime[0]} ${oldDateTime[1]}` : "It seems that registered data is corrupted"}
+          value={
+            oldDateTime
+              ? `${oldDateTime[0]} ${oldDateTime[1]}`
+              : "It seems that registered data is corrupted"
+          }
         />
         <DescDateBlock
           outerStyle="col-span-1 grid grid-cols-3 gap-2"

@@ -28,7 +28,7 @@ const ModalBase = ({
       className="fixed w-full h-full inset-0 bg-black/10 backdrop-blur-xs z-50 flex items-center justify-center"
     >
       <form
-        className={`relative w-full md:w-3/4 lg:w-2/3 2xl:w-1/2 bg-blue-50 p-3 rounded-lg grid grid-cols-${sectionGridCols} gap-2`}
+        className={`relative w-full md:w-3/4 lg:w-2/3 xl:w-1/2 2xl:w-1/3 bg-blue-50 p-3 rounded-lg grid grid-cols-${sectionGridCols} gap-2`}
       >
         <UtilButton
           icon={<CloseIcon className="h-7 w-7" />}

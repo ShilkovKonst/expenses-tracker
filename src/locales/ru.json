@@ -39,7 +39,7 @@
     },
     "flash": {
       "newTrackerAdded": "Новый трекер {{trackerId}} зарегистрирован.",
-      "trackerLoaded": "Трекер {{trackerId}} загружен. Импорт файла {{fileName}} завершён.",
+      "trackerLoaded": "Трекер {{trackerId}} загружен.",
       "trackerLoadedError": "Ошибка при чтении или парсинге JSON-файла.",
       "trackerDeleted": "Трекер {{trackerId}} удален.",
       "trackerUpdated": "Трекер {{trackerId}} обновлен.",
@@ -78,6 +78,7 @@
     },
     "form": {
       "title": "Активный трекер",
+      "lastUpdate": "Обновлено",
       "valueMonth": {
         "january": "Январь",
         "february": "Февраль",

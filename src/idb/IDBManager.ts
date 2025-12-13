@@ -7,16 +7,12 @@ import {
   YEARS_STORE,
 } from "@/constants";
 
-export let dbInstance: IDBDatabase | null = null;
+const dbCache = new Map<string, IDBDatabase>();
 
 export async function openDB(dbName: string): Promise<IDBDatabase> {
-  if (dbInstance && dbInstance.name === dbName) {
-    return dbInstance;
-  }
-
-  if (dbInstance) {
-    dbInstance.close();
-    dbInstance = null;
+  const cached = dbCache.get(dbName);
+  if (cached) {
+    return cached;
   }
 
   return new Promise((resolve, reject) => {
@@ -26,12 +22,13 @@ export async function openDB(dbName: string): Promise<IDBDatabase> {
 
     request.onsuccess = () => {
       const db = request.result;
+
       db.onversionchange = () => {
-        dbInstance?.close();
-        dbInstance = null;
+        dbCache.delete(dbName);
+        db.close();
       };
 
-      dbInstance = db;
+      dbCache.set(dbName, db);
       resolve(db);
     };
 
@@ -93,11 +90,14 @@ export async function openDB(dbName: string): Promise<IDBDatabase> {
 
 export async function deleteDB(dbName: string) {
   return new Promise<void>((resolve, reject) => {
-    if (dbInstance && dbInstance.name === dbName) {
+    const cached = dbCache.get(dbName);
+    if (cached) {
       try {
-        dbInstance.close();
-      } catch {}
-      dbInstance = null;
+        cached.close();
+      } catch (error) {
+        console.error(error);
+      }
+      dbCache.delete(dbName);
     }
 
     const request = indexedDB.deleteDatabase(dbName);

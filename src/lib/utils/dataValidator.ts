@@ -20,8 +20,8 @@ export function validate(data: unknown, locale: Locale): ValidationResult {
 
   const d = data as Partial<Tracker>;
 
-  if (typeof d.id !== "string")
-    return fail("id", t(locale, "body.flash.error.validator.string"));
+  // if (typeof d.id !== "string")
+  //   return fail("id", t(locale, "body.flash.error.validator.string"));
   if (!isObject(d.meta))
     return fail("meta", t(locale, "body.flash.error.validator.object"));
   if (!isObject(d.tags))
@@ -32,7 +32,7 @@ export function validate(data: unknown, locale: Locale): ValidationResult {
     return fail("totalAmount", t(locale, "body.flash.error.validator.number"));
 
   const meta = d.meta as Record<string, unknown>;
-  const allowedMetaKeys = ["createdAt", "updatedAt"];
+  const allowedMetaKeys = ["id", "title", "createdAt", "updatedAt"];
   for (const key of allowedMetaKeys) {
     if (!(key in meta))
       return fail(

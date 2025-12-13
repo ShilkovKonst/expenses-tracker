@@ -16,6 +16,7 @@ import TrackerDeleteBlock from "./TrackerDeleteBlock";
 import { ValidateButton } from "@/components/buttonComponents";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
+import { TrackerId } from "@/lib/types/brand";
 
 const DeleteModal = ({
   entityType,
@@ -48,7 +49,7 @@ const DeleteModal = ({
         if (localStorage) {
           const raw = localStorage.getItem(TRACKER_IDS);
           if (raw) {
-            const ids: string[] = JSON.parse(raw);
+            const ids: TrackerId[] = JSON.parse(raw);
             const newActiveId = ids[0] ?? "";
             populateTrackerContex(
               newActiveId,
@@ -61,8 +62,8 @@ const DeleteModal = ({
         }
       }
       if (entityType === "tag") {
+        //TODO: cleanse of deleted tag from records
       }
-      handleClose();
       addFlash(
         "info",
         t(locale, `body.flash.deleted`, {
@@ -74,15 +75,11 @@ const DeleteModal = ({
       console.error(error);
       addFlash("error", getErrorMessage(error, ""));
     }
+    handleClose();
   };
 
-  const handleClose = () => {
-    if (entityType === "tag") {
-      openModal("settings", { onClose: onClose });
-    } else {
-      onClose();
-    }
-  };
+  const handleClose = () =>
+    entityType === "tag" ? openModal("settings", { onClose }) : onClose();
 
   return (
     <ModalBase

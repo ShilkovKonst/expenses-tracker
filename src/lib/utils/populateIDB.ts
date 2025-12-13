@@ -2,14 +2,11 @@ import { createMetadata } from "@/idb/CRUD/metaCRUD";
 import { Tracker } from "../types/dataTypes";
 import { batchAddRecords, batchAddTags } from "@/idb/massImportHelper";
 
-export async function populateIDBFromFile(
-  data: Tracker,
-  id: string = data.id
-) {
-  await createMetadata(id, data.meta);
+export async function populateIDBFromFile(data: Tracker) {
+  await createMetadata(data.meta.id, data.meta);
 
   const tags = Object.values(data.tags);
-  await batchAddTags(id, tags);
+  await batchAddTags(data.meta.id, tags);
 
   const allRecords = Object.values(data.years).flatMap((year) =>
     Object.values(year.months).flatMap((month) =>
@@ -20,5 +17,5 @@ export async function populateIDBFromFile(
       })
     )
   );
-  await batchAddRecords(id, allRecords);
+  await batchAddRecords(data.meta.id, allRecords);
 }

@@ -78,6 +78,7 @@
     },
     "form": {
       "title": "Active tracker",
+      "lastUpdate": "Last update",
       "valueMonth": {
         "january": "January",
         "february": "February",

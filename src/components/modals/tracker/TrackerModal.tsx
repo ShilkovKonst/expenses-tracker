@@ -15,7 +15,7 @@ const TrackerModal = ({
     <ModalBase
       sectionGridCols={2}
       title={t(locale, `body.form.tracker.mergeTitle`, {
-        trackerId: importTrackerBody ? importTrackerBody?.id : "",
+        trackerId: importTrackerBody ? importTrackerBody.meta.id : "",
       })}
       closeButtonTitle={t(locale, "body.buttons.close")}
       cancelButtonTitle={t(locale, "body.buttons.cancel")}

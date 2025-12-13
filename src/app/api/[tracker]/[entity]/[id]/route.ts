@@ -9,6 +9,7 @@ import {
   updateRecordById,
 } from "@/idb/CRUD/recordsCRUD";
 import { getAllTags, getTagById, updateTagById } from "@/idb/CRUD/tagsCRUD";
+import { TrackerId } from "@/lib/types/brand";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -40,7 +41,7 @@ export async function PUT(
   const formData = await req.formData();
 
   try {
-    const data = await putById(tracker, entity, id, formData);
+    const data = await putById(tracker as TrackerId, entity, id, formData);
     return NextResponse.json({
       ...data,
       status: 202,
@@ -95,7 +96,7 @@ async function getById(tracker: string, entity: string, id: string) {
 }
 
 async function putById(
-  tracker: string,
+  tracker: TrackerId,
   entity: string,
   id: string,
   form: FormData

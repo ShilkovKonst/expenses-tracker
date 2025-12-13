@@ -1,12 +1,12 @@
 "use client";
 import { t } from "@/locales/locale";
 import { useRef } from "react";
-import { useGlobal } from "@/context/GlobalContext";
+import { loadTrackers, useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { useModal } from "@/context/ModalContext";
 import { LoadIcon } from "@/lib/icons";
 import { validate } from "@/lib/utils/dataValidator";
-import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
+// import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
 import { checkDBExists } from "@/idb/IDBManager";
 import { createNPopulate } from "@/lib/utils/trackerDataSetter";
 import { IconButton } from "../buttonComponents";
@@ -16,7 +16,7 @@ import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 
 const LoadTrackerBlock = () => {
-  const { locale, setTrackerIds } = useGlobal();
+  const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
   const { openModal } = useModal();
@@ -52,9 +52,9 @@ const LoadTrackerBlock = () => {
       }
 
       const data = validated.data;
-      const isExists = await checkDBExists(data.id);
+      const isExists = await checkDBExists(data.meta.id);
       if (isExists) {
-        const oldTrackerMeta = await getMetadata(data.id);
+        const oldTrackerMeta = await getMetadata(data.meta.id);
         if (oldTrackerMeta) {
           openModal("merge", {
             importTrackerBody: data,
@@ -62,7 +62,8 @@ const LoadTrackerBlock = () => {
             onConfirm: (data: Tracker) =>
               createNPopulate(
                 data,
-                setTrackerIds,
+                setAllTrackersMeta,
+                setIsLoading,
                 setTrackerId,
                 setTrackerMeta,
                 setTrackerTags,
@@ -76,7 +77,8 @@ const LoadTrackerBlock = () => {
             onConfirm: (data: Tracker) =>
               createNPopulate(
                 data,
-                setTrackerIds,
+                setAllTrackersMeta,
+                setIsLoading,
                 setTrackerId,
                 setTrackerMeta,
                 setTrackerTags,
@@ -87,21 +89,22 @@ const LoadTrackerBlock = () => {
       } else {
         await createNPopulate(
           data,
-          setTrackerIds,
+          setAllTrackersMeta,
+          setIsLoading,
           setTrackerId,
           setTrackerMeta,
           setTrackerTags,
           setTrackerYears
         );
+        addFlash(
+          "success",
+          `${t(locale, "body.flash.trackerLoaded", { fileName: file.name })}`
+        );
+        await loadTrackers(setAllTrackersMeta, setIsLoading);
       }
-      if (localStorage) {
-        updateLocalTrackerIds(data.id, setTrackerIds);
-      }
-
-      addFlash(
-        "success",
-        `${t(locale, "body.flash.trackerLoaded", { fileName: file.name })}`
-      );
+      // if (localStorage) {
+      //   updateLocalTrackerIds(data.meta.id, setTrackerIds);
+      // }
     } catch (err) {
       console.error("Import error:", err);
       addFlash(
