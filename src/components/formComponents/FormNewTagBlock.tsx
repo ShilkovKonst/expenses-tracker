@@ -17,6 +17,7 @@ import { createTag, updateTagById } from "@/idb/CRUD/tagsCRUD";
 import { TagId } from "@/lib/types/brand";
 import { createTagId } from "@/lib/types/dataTypes";
 import { TagObj } from "../modals/settings/SettingsBlock";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 
 type FormNewTagProps = {
   recordTags?: TagId[];
@@ -32,7 +33,13 @@ const FormNewTagBlock = ({
   setTag,
 }: FormNewTagProps) => {
   const { locale } = useGlobal();
-  const { trackerId, trackerTags, setTrackerTags } = useTracker();
+  const {
+    trackerId,
+    trackerMeta,
+    trackerTags,
+    setTrackerTags,
+    setTrackerMeta,
+  } = useTracker();
 
   const [newTag, setNewTag] = useState<string>("");
 
@@ -58,6 +65,8 @@ const FormNewTagBlock = ({
       setTrackerTags({ ...trackerTags, [id]: newTag });
       if (setTag) setTag(undefined);
       setNewTag("");
+      const updatedAt = await updateMetadata(trackerId);
+      if (trackerMeta) setTrackerMeta({ ...trackerMeta, updatedAt });
     },
     [
       tag,
@@ -67,6 +76,8 @@ const FormNewTagBlock = ({
       trackerTags,
       setTag,
       trackerId,
+      trackerMeta,
+      setTrackerMeta,
     ]
   );
 
@@ -79,7 +90,13 @@ const FormNewTagBlock = ({
 
   return (
     <div className={`relative flex gap-2 pb-3`}>
-      <label className={`flex min-w-${tag ? 20 : 16} justify-start items-center text-xs font-semibold`}>{t(locale, `body.buttons.${tag ? "update" : "add"}`)}</label>
+      <label
+        className={`flex min-w-${
+          tag ? 20 : 16
+        } justify-start items-center text-xs font-semibold`}
+      >
+        {t(locale, `body.buttons.${tag ? "update" : "add"}`)}
+      </label>
       <input
         id="tagInput"
         name="tagInput"

@@ -12,6 +12,7 @@ import { createTagId } from "@/lib/types/dataTypes";
 import { getAllRecords } from "@/idb/CRUD/recordsCRUD";
 import { populateYears } from "@/lib/utils/yearsTransformer";
 import { TagObj } from "./SettingsBlock";
+import { getMetadata } from "@/idb/CRUD/metaCRUD";
 
 type SettingsTagsProps = {
   tag?: TagObj;
@@ -19,17 +20,15 @@ type SettingsTagsProps = {
 };
 const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
   const { locale } = useGlobal();
-  const { trackerId, trackerTags, setTrackerTags, setTrackerYears } =
-    useTracker();
+  const {
+    trackerId,
+    trackerTags,
+    setTrackerTags,
+    setTrackerYears,
+  } = useTracker();
   const { openModal } = useModal();
 
-  const isDisabled = useMemo(
-    () => (id: number) => {
-      console.log(id, tag?.id);
-      return id === tag?.id;
-    },
-    [tag?.id]
-  );
+  const isDisabled = useMemo(() => (id: number) => id === tag?.id, [tag?.id]);
 
   const handleRemove = useCallback(
     (idx: number) => {
@@ -40,7 +39,8 @@ const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
         const records = await getAllRecords(trackerId);
         const years = populateYears(records);
         setTrackerYears(years);
-        return { updatedAt: "", message: "" };
+        const meta = await getMetadata(trackerId);
+        return { updatedAt: meta ? meta.updatedAt : "", message: "" };
       };
       if (trackerTags)
         openModal("delete", {

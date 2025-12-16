@@ -74,7 +74,7 @@ const ActiveTrackerData = () => {
       onConfirm: onDelete,
     });
   };
-
+  
   return (
     <>
       <div className="text-xs font-semibold w-full flex flex-wrap gap-0 md:gap-2 justify-between items-start">
