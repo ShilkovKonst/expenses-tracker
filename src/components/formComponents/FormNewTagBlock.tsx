@@ -1,49 +1,85 @@
 "use client";
 import React, {
+  ChangeEvent,
   Dispatch,
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { IconButton } from "../buttonComponents";
-import { AddIcon } from "@/lib/icons";
+import { AddIcon, UpdateIcon } from "@/lib/icons";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { useTracker } from "@/context/TrackerContext";
-import { createTag } from "@/idb/CRUD/tagsCRUD";
+import { createTag, updateTagById } from "@/idb/CRUD/tagsCRUD";
 import { TagId } from "@/lib/types/brand";
 import { createTagId } from "@/lib/types/dataTypes";
+import { TagObj } from "../modals/settings/SettingsBlock";
 
 type FormNewTagProps = {
   recordTags?: TagId[];
   setRecordTags?: Dispatch<SetStateAction<TagId[]>>;
+  tag?: TagObj;
+  setTag?: Dispatch<SetStateAction<TagObj | undefined>>;
 };
 
-const FormNewTagBlock = ({ recordTags, setRecordTags }: FormNewTagProps) => {
+const FormNewTagBlock = ({
+  recordTags,
+  setRecordTags,
+  tag,
+  setTag,
+}: FormNewTagProps) => {
   const { locale } = useGlobal();
   const { trackerId, trackerTags, setTrackerTags } = useTracker();
 
   const [newTag, setNewTag] = useState<string>("");
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   useEffect(() => {
-    setIsDisabled(Object.values(trackerTags ?? []).some((t) => t === newTag));
-  }, [newTag, trackerTags]);
+    if (tag) setNewTag(tag.title);
+  }, [tag]);
+
+  const isDisabled = useMemo(
+    () => Object.values(trackerTags ?? []).some((t) => t === newTag),
+    [newTag, trackerTags]
+  );
 
   const handleAddNewTag = useCallback(
     async (newTag: string) => {
-      const newId = await createTag(trackerId, newTag);
+      let id;
+      if (tag) {
+        id = await updateTagById(trackerId, tag.id, newTag);
+      } else {
+        id = await createTag(trackerId, newTag);
+      }
       if (recordTags && setRecordTags)
-        setRecordTags([...recordTags, createTagId(newId)]);
-      setTrackerTags({ ...trackerTags, [newId]: newTag });
+        setRecordTags([...recordTags, createTagId(id)]);
+      setTrackerTags({ ...trackerTags, [id]: newTag });
+      if (setTag) setTag(undefined);
       setNewTag("");
     },
-    [trackerId, setRecordTags, recordTags, setTrackerTags, trackerTags]
+    [
+      tag,
+      recordTags,
+      setRecordTags,
+      setTrackerTags,
+      trackerTags,
+      setTag,
+      trackerId,
+    ]
   );
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (tag && setTag && e.target.value.length === 0) {
+      setTag(undefined);
+    }
+    setNewTag(e.target.value);
+  };
+
   return (
-    <div className={`grid grid-cols-6 gap-2`}>
+    <div className={`relative flex gap-2 pb-3`}>
+      <label className={`flex min-w-${tag ? 20 : 16} justify-start items-center text-xs font-semibold`}>{t(locale, `body.buttons.${tag ? "update" : "add"}`)}</label>
       <input
         id="tagInput"
         name="tagInput"
@@ -51,18 +87,26 @@ const FormNewTagBlock = ({ recordTags, setRecordTags }: FormNewTagProps) => {
         value={newTag}
         className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-blue-300 rounded-md text-xs"
         placeholder={t(locale, `body.form.placeholders.newTag`)}
-        onChange={(e) => setNewTag(e.target.value)}
+        onChange={(e) => handleChange(e)}
       />
       <IconButton
         title={`create new tag`}
-        icon={<AddIcon className="w-5 h-5" />}
+        icon={
+          !tag ? (
+            <AddIcon className="w-5 h-5" />
+          ) : (
+            <UpdateIcon className="w-4 h-4" />
+          )
+        }
         value={newTag}
         handleClick={handleAddNewTag}
-        customStyle="col-span-2 w-6 h-6 my-auto rounded-sm bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
+        customStyle="col-span-1 min-w-6 w-6 h-6 my-auto rounded-sm bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
         disabled={isDisabled || newTag.length === 0}
       />
       {isDisabled && (
-        <p className="col-span-6 text-xs text-red-600 my-auto">
+        <p
+          className={`absolute -bottom-1 col-span-6 text-xs text-red-600 my-auto`}
+        >
           {t(locale, `body.form.tracker.typeDouble`)}
         </p>
       )}

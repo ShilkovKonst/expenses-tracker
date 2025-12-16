@@ -1,7 +1,8 @@
-import { RECORDS_STORE, TAGS_STORE } from "@/constants";
-import { MonthRecord, TrackerTags } from "@/lib/types/dataTypes";
+import { METADATA_STORE, RECORDS_STORE, TAGS_STORE } from "@/constants";
+import { MonthRecord, TrackerMeta, TrackerTags } from "@/lib/types/dataTypes";
 import { TagIDBType } from "../types";
 import { openDB, performDBOperation } from "../IDBManager";
+import { formatDatetoMeta } from "@/lib/utils/dateParser";
 
 export async function createTag(
   trackerId: string,
@@ -74,7 +75,10 @@ export async function deleteTagByIdRecordsCleanup(
 
   return new Promise((resolve, reject) => {
     // Создаем транзакцию для обоих store
-    const tx = db.transaction([TAGS_STORE, RECORDS_STORE], "readwrite");
+    const tx = db.transaction(
+      [TAGS_STORE, RECORDS_STORE, METADATA_STORE],
+      "readwrite"
+    );
 
     const tagStore = tx.objectStore(TAGS_STORE);
     tagStore.delete(tagId);
@@ -88,6 +92,14 @@ export async function deleteTagByIdRecordsCleanup(
         record.tags = record.tags.filter((id: number) => id !== tagId);
         recordStore.put(record);
       }
+    };
+
+    const metaStore = tx.objectStore(METADATA_STORE);
+    const metaRequest = metaStore.get("meta");
+    metaRequest.onsuccess = () => {
+      const timestamp = formatDatetoMeta(new Date());
+      const oldMeta: TrackerMeta = metaRequest.result;
+      metaStore.put({ ...oldMeta, updatedAt: timestamp }, "meta");
     };
 
     request.onerror = () => reject(request.error);

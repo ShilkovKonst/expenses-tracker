@@ -21,8 +21,8 @@ export function renderText(text: string, valueStyle = "") {
 }
 
 export function renderTextList(values: string[], valueStyle = "") {
-  return values.map((v) => (
-    <span key={v} className={`font-medium ${valueStyle} border px-1`}>
+  return values.map((v, i) => (
+    <span key={i} className={`font-medium ${valueStyle} border px-1`}>
       {v}
     </span>
   ));

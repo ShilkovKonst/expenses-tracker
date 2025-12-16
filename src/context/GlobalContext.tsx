@@ -91,7 +91,6 @@ export async function loadTrackers(
         }
       });
     const results = await Promise.all(metadataPromises);
-    console.log(results);
     const validMeta = results.filter(
       (meta): meta is TrackerMeta => meta !== undefined
     );
