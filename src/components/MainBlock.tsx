@@ -17,7 +17,7 @@ const MainBlock = () => {
   );
 
   return (
-    <main className="relative font-sans min-h-[calc(100vh-372px)] md:min-h-[calc(100vh-362px)] lg:min-h-[calc(100vh-290px)] pt-2.5 bg-blue-50/95 flex flex-col lg:flex-row">
+    <main className="relative font-sans min-h-[calc(100vh-372px)] md:min-h-[calc(100vh-358px)] lg:min-h-[calc(100vh-280px)] pt-2.5 bg-blue-50/95 flex flex-col lg:flex-row">
       <div className="hidden lg:block absolute -top-[calc(1.25rem-0.05rem)] right-[calc(50%-1rem)] border-6 p-2.5 rounded-full border-blue-400"></div>
       <div className="hidden 2xl:block absolute -top-[calc(1.25rem-0.05rem)] right-[calc(66.6%-0.9rem)] bg-blue-50 border-6 p-2.5 rounded-full border-blue-400"></div>
       <FlashBlock />
