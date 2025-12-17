@@ -15,8 +15,10 @@ import { t } from "@/locales/locale";
 import { useTracker } from "@/context/TrackerContext";
 import { createTag, updateTagById } from "@/idb/CRUD/tagsCRUD";
 import { TagId } from "@/lib/types/brand";
-import { createTagId } from "@/lib/types/dataTypes";
+import { createTagId, TrackerMeta } from "@/lib/types/dataTypes";
 import { TagObj } from "../modals/settings/SettingsBlock";
+import { formatDatetoMeta } from "@/lib/utils/dateParser";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 
 type FormNewTagProps = {
   recordTags?: TagId[];
@@ -32,7 +34,13 @@ const FormNewTagBlock = ({
   setTag,
 }: FormNewTagProps) => {
   const { locale } = useGlobal();
-  const { trackerId, trackerTags, setTrackerTags } = useTracker();
+  const {
+    trackerId,
+    trackerTags,
+    setTrackerTags,
+    trackerMeta,
+    setTrackerMeta,
+  } = useTracker();
 
   const [newTag, setNewTag] = useState<string>("");
 
@@ -63,6 +71,17 @@ const FormNewTagBlock = ({
       } else {
         id = await createTag(trackerId, newTag);
       }
+      if (trackerMeta) {
+        const updatedAt = formatDatetoMeta(new Date());
+        const newMeta: TrackerMeta = {
+          id: trackerMeta?.id ?? trackerId,
+          title: trackerMeta?.title ?? trackerId,
+          createdAt: trackerMeta?.createdAt ?? updatedAt,
+          updatedAt,
+        };
+        await updateMetadata(trackerId, newMeta);
+        setTrackerMeta(newMeta);
+      }
       if (recordTags && setRecordTags)
         setRecordTags([...recordTags, createTagId(id)]);
       setTrackerTags({ ...trackerTags, [id]: newTag });
@@ -71,12 +90,14 @@ const FormNewTagBlock = ({
     },
     [
       tag,
+      trackerMeta,
       recordTags,
       setRecordTags,
       setTrackerTags,
       trackerTags,
       setTag,
       trackerId,
+      setTrackerMeta,
     ]
   );
 

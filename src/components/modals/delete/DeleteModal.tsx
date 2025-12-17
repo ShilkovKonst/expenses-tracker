@@ -41,7 +41,9 @@ const DeleteModal = ({
     if (trackerMeta) {
       const updatedAt = formatDatetoMeta(new Date());
       const newMeta: TrackerMeta = {
-        ...trackerMeta,
+        id: trackerMeta.id ?? trackerId,
+        title: trackerMeta.title ?? trackerId,
+        createdAt: trackerMeta.createdAt ?? updatedAt,
         updatedAt,
       };
       await updateMetadata(trackerId, newMeta);

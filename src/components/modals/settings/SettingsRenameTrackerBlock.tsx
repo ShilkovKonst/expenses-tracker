@@ -30,8 +30,9 @@ const SettingsRenameTrackerBlock = () => {
     if (trackerMeta) {
       const updatedAt = formatDatetoMeta(new Date());
       const newMeta: TrackerMeta = {
-        ...trackerMeta,
+        id: trackerMeta.id ?? trackerId,
         title: value,
+        createdAt: updatedAt,
         updatedAt,
       };
       try {
