@@ -43,6 +43,7 @@
       "trackerLoadedError": "Erreur de lecture ou d'analyse du fichier JSON.",
       "trackerDeleted": "Le suivi {{trackerId}} supprimé",
       "trackerUpdated": "Le suivi {{trackerId}} mis à jour",
+      "trackerTitleUpdated": "Le nom de suivi {{trackerId}} mis à jour",
       "error": {
         "parseJson": "Les données du fichier ne correspondent pas à la structure attendue",
         "validator": {
@@ -52,7 +53,7 @@
           "array": "doit être un tableau",
           "meta": {
             "keyAbsent": "Clé de méta-données requise manquante",
-            "keyUnknown": "Les méta-données contiennent des clés inconnues (clés autorisées: 'createdAt', 'updatedAt')"
+            "keyUnknown": "Les méta-données contiennent des clés inconnues (clés autorisées: 'id', 'title', 'createdAt', 'updatedAt')"
           },
           "tag": "n'existe pas dans le pool de tags"
         }

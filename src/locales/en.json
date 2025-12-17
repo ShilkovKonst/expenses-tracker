@@ -43,6 +43,7 @@
       "trackerLoadedError": "Error reading or parsing JSON file.",
       "trackerDeleted": "Tracker {{trackerId}} deleted",
       "trackerUpdated": "Tracker {{trackerId}} updated",
+      "trackerTitleUpdated": "Tracker's {{trackerId}} name updated",
       "error": {
         "parseJson": "The file data does not match the expected structure",
         "validator": {
@@ -52,7 +53,7 @@
           "array": "must be an array",
           "meta": {
             "keyAbsent": "Missing required meta key",
-            "keyUnknown": "Meta contains unknown keys (allowed keys: 'createdAt', 'updatedAt')"
+            "keyUnknown": "Meta contains unknown keys (allowed keys: 'id', 'title', 'createdAt', 'updatedAt')"
           },
           "tag": "does not exist in tagsPool"
         }

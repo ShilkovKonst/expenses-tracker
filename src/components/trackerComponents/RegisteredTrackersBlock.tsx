@@ -60,7 +60,7 @@ const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
 
   return (
     <>
-      <h3 className={`block font-semibold uppercase text-sm`}>
+      <h3 className={`block font-semibold uppercase text-sm h-6`}>
         {t(locale, `body.form.tracker.idsTitle`)}
       </h3>
       <div className="flex flex-wrap justify-start items-center gap-2">
@@ -71,7 +71,7 @@ const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
             value={meta.id}
             title={`${t(locale, "body.buttons.select")} - ${meta.title}`}
             handleClick={handleChangeTrackerClick}
-            customStyle="bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500 px-2 h-5 rounded-lg"
+            customStyle="bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500 px-2 h-6 rounded-lg"
             disabled={trackerId === meta.id}
           />
         ))}

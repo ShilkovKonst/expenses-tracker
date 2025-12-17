@@ -39,6 +39,7 @@ const SettingsRenameTrackerBlock = () => {
         setTrackerMeta(newMeta);
         const validMetas = await getAllMeta();
         setAllTrackersMeta(validMetas);
+        addFlash("success", t(locale, `body.flash.trackerTitleUpdated`));
       } catch (error) {
         addFlash("error", getErrorMessage(error, ""));
       }
