@@ -13,7 +13,7 @@ const SettingsModal = ({
   return (
     <ModalBase
       title={t(locale, "body.personnalisation.title")}
-      desc={t(locale, "body.personnalisation.description")}
+      desc={t(locale, "body.personnalisation.descriptionTitle")}
       sectionGridCols={2}
       closeButtonTitle={t(locale, "body.buttons.close")}
       cancelButtonTitle={t(locale, "body.buttons.close")}

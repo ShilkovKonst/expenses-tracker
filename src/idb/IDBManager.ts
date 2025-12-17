@@ -6,6 +6,9 @@ import {
   TAGS_STORE,
   YEARS_STORE,
 } from "@/constants";
+import { getMetadata } from "./CRUD/metaCRUD";
+import { TrackerId } from "@/lib/types/brand";
+import { TrackerMeta } from "@/lib/types/dataTypes";
 
 const dbCache = new Map<string, IDBDatabase>();
 
@@ -115,6 +118,33 @@ export async function deleteDB(dbName: string) {
         )
       );
   });
+}
+
+export async function getAllMeta() {
+  const databases = await indexedDB.databases();
+  const metadataPromises = databases
+    .filter((db) => db.name)
+    .map(async (db) => {
+      try {
+        const meta = await getMetadata(db.name as TrackerId);
+        if (meta && (!("id" in meta) || !("title" in meta))) {
+          return {
+            ...(meta as TrackerMeta),
+            id: db.name as TrackerId,
+            title: db.name,
+          };
+        }
+        return meta;
+      } catch (error) {
+        console.warn(`Failed to load metadata for ${db.name}:`, error);
+        return undefined;
+      }
+    });
+  const results = await Promise.all(metadataPromises);
+  const validMetas = results.filter(
+    (meta): meta is TrackerMeta => meta !== undefined
+  );
+  return validMetas;
 }
 
 export async function performDBOperation<T>(

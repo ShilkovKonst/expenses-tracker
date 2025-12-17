@@ -8,7 +8,6 @@ import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { useMemo } from "react";
 import { deleteRecordById, updateRecordById } from "@/idb/CRUD/recordsCRUD";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 
 type RecordProps = {
   record: MonthRecord;
@@ -27,11 +26,6 @@ function RecordBlock({ record }: RecordProps) {
   const handleUpdate = () => {
     const onUpdate = async (record: MonthRecord) => {
       await updateRecordById(trackerId, record);
-      const updatedAt = await updateMetadata(trackerId);
-      return {
-        id: record.id,
-        updatedAt,
-      };
     };
     openModal("record", { record, onConfirm: onUpdate });
   };
@@ -39,8 +33,6 @@ function RecordBlock({ record }: RecordProps) {
   const handleDelete = () => {
     const onDelete = async () => {
       await deleteRecordById(trackerId, record.id);
-      const updatedAt = await updateMetadata(trackerId);
-      return { updatedAt, message: "" };
     };
     openModal("delete", {
       entityType: "record",

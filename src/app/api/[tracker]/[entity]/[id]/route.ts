@@ -2,7 +2,6 @@ import {
   transformToMonthRecord,
   transformToTagTitle,
 } from "@/idb/apiHelpers/formDataParsers";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import {
   getAllRecords,
   getRecordById,
@@ -10,6 +9,7 @@ import {
 } from "@/idb/CRUD/recordsCRUD";
 import { getAllTags, getTagById, updateTagById } from "@/idb/CRUD/tagsCRUD";
 import { TrackerId } from "@/lib/types/brand";
+import { formatDatetoMeta } from "@/lib/utils/dateParser";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -102,19 +102,17 @@ async function putById(
   form: FormData
 ) {
   try {
-    let updatedAt: string;
+    const updatedAt = formatDatetoMeta(new Date());
     switch (entity) {
       case "records":
         const record = transformToMonthRecord(form);
         await updateRecordById(tracker, record);
-        updatedAt = await updateMetadata(tracker);
         return {
           updatedAt,
         };
       case "tags":
         const title = transformToTagTitle(form);
         await updateTagById(tracker, Number(id), title);
-        updatedAt = await updateMetadata(tracker);
         return {
           updatedAt,
         };

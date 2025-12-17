@@ -17,8 +17,8 @@ import {
   getTagById,
   updateTagById,
 } from "../CRUD/tagsCRUD";
-import { updateMetadata } from "../CRUD/metaCRUD";
 import { TrackerId } from "@/lib/types/brand";
+import { formatDatetoMeta } from "@/lib/utils/dateParser";
 
 export async function createTrackerUtil(tracker: Tracker) {
   try {
@@ -95,12 +95,11 @@ export async function createUtil(
 ) {
   try {
     let id: number;
-    let updatedAt: string;
+    const updatedAt = formatDatetoMeta(new Date());
     switch (entity) {
       case "records":
         if (typeof data === "object") {
           id = await createRecord(tracker, data);
-          updatedAt = await updateMetadata(tracker);
           return {
             id,
             updatedAt,
@@ -109,7 +108,6 @@ export async function createUtil(
       case "tags":
         if (typeof data === "string") {
           id = await createTag(tracker, data);
-          updatedAt = await updateMetadata(tracker);
           return {
             id,
             updatedAt,
@@ -133,12 +131,11 @@ export async function updateByIdUtil(
   id?: number
 ) {
   try {
-    let updatedAt: string;
+    const updatedAt = formatDatetoMeta(new Date());
     switch (entity) {
       case "records":
         if (typeof data === "object") {
           await updateRecordById(tracker, data);
-          updatedAt = await updateMetadata(tracker);
           return {
             updatedAt,
           };
@@ -146,7 +143,6 @@ export async function updateByIdUtil(
       case "tags":
         if (typeof data === "string" && id) {
           await updateTagById(tracker, id, data);
-          updatedAt = await updateMetadata(tracker);
           return {
             updatedAt,
           };
@@ -168,15 +164,13 @@ export async function deleteByIdUtil(
   id: number
 ) {
   try {
-    let updatedAt;
+    const updatedAt = formatDatetoMeta(new Date());
     switch (entity) {
       case "records":
         await deleteRecordById(tracker, id);
-        updatedAt = await updateMetadata(tracker);
         return { updatedAt };
       case "tags":
         await deleteTagById(tracker, id);
-        updatedAt = await updateMetadata(tracker);
         return { updatedAt };
       default:
         return;

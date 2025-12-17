@@ -8,7 +8,6 @@ import RecordBlock from "./recordComponents/RecordBlock";
 import { useModal } from "@/context/ModalContext";
 import { compare } from "@/lib/utils/compareHelper";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { useTracker } from "@/context/TrackerContext";
 import { YearId } from "@/lib/types/brand";
 
@@ -36,9 +35,7 @@ const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
     const onCreate = async (record: MonthRecord) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, ...partRecord } = record;
-      const newId = await createRecord(trackerId, partRecord);
-      const updatedAt = await updateMetadata(trackerId);
-      return { id: newId, updatedAt };
+      await createRecord(trackerId, partRecord);
     };
     openModal("record", { record: newRecord, onConfirm: onCreate });
   }, [month.id, openModal, trackerId, yearId]);

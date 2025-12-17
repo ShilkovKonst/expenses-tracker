@@ -5,8 +5,7 @@ import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { getAllRecords } from "@/idb/CRUD/recordsCRUD";
 import { populateYears } from "@/lib/utils/yearsTransformer";
-import { Year } from "@/lib/types/dataTypes";
-import { TRACKER_IDS } from "@/constants";
+import { TrackerMeta, Year } from "@/lib/types/dataTypes";
 import { populateTrackerContex } from "@/lib/utils/updateLocalTrackerIds";
 import ModalBase from "../ModalBase";
 import { t } from "@/locales/locale";
@@ -16,7 +15,9 @@ import TrackerDeleteBlock from "./TrackerDeleteBlock";
 import { ValidateButton } from "@/components/buttonComponents";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
-import { TrackerId } from "@/lib/types/brand";
+import { getAllTags } from "@/idb/CRUD/tagsCRUD";
+import { formatDatetoMeta } from "@/lib/utils/dateParser";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 
 const DeleteModal = ({
   entityType,
@@ -24,7 +25,7 @@ const DeleteModal = ({
   onConfirm,
   onClose,
 }: ModalMap["delete"] & { onClose: () => void }) => {
-  const { locale } = useGlobal();
+  const { locale, allTrackersMeta } = useGlobal();
   const { openModal } = useModal();
   const { addFlash } = useFlash();
   const {
@@ -36,33 +37,44 @@ const DeleteModal = ({
     setTrackerYears,
   } = useTracker();
 
+  const updMeta = async () => {
+    if (trackerMeta) {
+      const updatedAt = formatDatetoMeta(new Date());
+      const newMeta: TrackerMeta = {
+        ...trackerMeta,
+        updatedAt,
+      };
+      await updateMetadata(trackerId, newMeta);
+      setTrackerMeta(newMeta);
+    }
+  };
+
   const handleConfirm = async () => {
     try {
-      const { updatedAt } = await onConfirm();
-      if (trackerMeta) setTrackerMeta({ ...trackerMeta, updatedAt });
+      await onConfirm();
+      if (entityType === "tracker") {
+        const newActiveTracker = allTrackersMeta[0] ?? null;
+        populateTrackerContex(
+          newActiveTracker?.id ?? "",
+          setTrackerId,
+          setTrackerMeta,
+          setTrackerTags,
+          setTrackerYears
+        );
+      }
       if (entityType === "record") {
         const records = await getAllRecords(trackerId);
         const years: Record<number, Year> = populateYears(records);
         setTrackerYears(years);
-      }
-      if (entityType === "tracker") {
-        if (localStorage) {
-          const raw = localStorage.getItem(TRACKER_IDS);
-          if (raw) {
-            const ids: TrackerId[] = JSON.parse(raw);
-            const newActiveId = ids[0] ?? "";
-            populateTrackerContex(
-              newActiveId,
-              setTrackerId,
-              setTrackerMeta,
-              setTrackerTags,
-              setTrackerYears
-            );
-          }
-        }
+        updMeta();
       }
       if (entityType === "tag") {
-        //TODO: cleanse of deleted tag from records
+        const tags = await getAllTags(trackerId);
+        setTrackerTags(tags);
+        const records = await getAllRecords(trackerId);
+        const years = populateYears(records);
+        setTrackerYears(years);
+        updMeta();
       }
       addFlash(
         "info",

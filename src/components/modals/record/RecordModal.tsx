@@ -4,7 +4,7 @@ import { ModalMap } from "../ModalRoot";
 import { useTracker } from "@/context/TrackerContext";
 import { useFlash } from "@/context/FlashContext";
 import { useMemo, useState } from "react";
-import { createRecordId, MonthRecord, Year } from "@/lib/types/dataTypes";
+import { MonthRecord, TrackerMeta, Year } from "@/lib/types/dataTypes";
 import {
   decimalToInputString,
   inputStringToDecimal,
@@ -16,6 +16,8 @@ import { t } from "@/locales/locale";
 import ModalBase from "../ModalBase";
 import { ValidateButton } from "@/components/buttonComponents";
 import RecordCreateUpdateBlock from "./RecordCreateUpdateBlock";
+import { formatDatetoMeta } from "@/lib/utils/dateParser";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 
 const RecordModal = ({
   record,
@@ -40,12 +42,20 @@ const RecordModal = ({
       amount: inputStringToDecimal(amountString),
     };
     try {
-      const { id, updatedAt } = await onConfirm(updRecord);
-      updRecord.id = createRecordId(id);
-      if (trackerMeta) setTrackerMeta({ ...trackerMeta, updatedAt });
+      await onConfirm(updRecord);
+      if (trackerMeta) {
+        const updatedAt = formatDatetoMeta(new Date());
+        const newMeta: TrackerMeta = {
+          ...trackerMeta,
+          updatedAt,
+        };
+        await updateMetadata(trackerId, newMeta);
+        setTrackerMeta(newMeta);
+      }
       const records = await getAllRecords(trackerId);
       const years: Record<number, Year> = populateYears(records);
       setTrackerYears(years);
+
       onClose();
       addFlash(
         "success",
@@ -55,7 +65,6 @@ const RecordModal = ({
             })
           : t(locale, "body.flash.updated", {
               entity: t(locale, `body.modal.deleteEntity.record`),
-              id,
             })
       );
     } catch (error) {

@@ -9,18 +9,12 @@ import TrackerModal from "./tracker/TrackerModal";
 export type ModalMap = {
   record: {
     record: MonthRecord;
-    onConfirm: (record: MonthRecord) => Promise<{
-      id: number;
-      updatedAt: string;
-    }>;
+    onConfirm: (record: MonthRecord) => Promise<void>;
   };
   delete: {
     entityType: "record" | "tag" | "tracker";
     entity: MonthRecord | { id: number; title: string } | { trackerId: string };
-    onConfirm: () => Promise<{
-      message: string;
-      updatedAt: string;
-    }>;
+    onConfirm: () => Promise<void>;
   };
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   settings: {};

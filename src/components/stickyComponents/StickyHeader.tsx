@@ -2,7 +2,6 @@
 import HeaderButtonBlock from "../accordionBlockComponents/HeaderButtonBlock";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
 import { MonthId, YearId } from "@/lib/types/brand";
 import { createRecordId, MonthRecord } from "@/lib/types/dataTypes";
@@ -48,9 +47,7 @@ const StickyHeader = ({
       const onCreate = async (record: MonthRecord) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id, ...partRecord } = record;
-        const newId = await createRecord(trackerId, partRecord);
-        const updatedAt = await updateMetadata(trackerId);
-        return { id: newId, updatedAt };
+        await createRecord(trackerId, partRecord);
       };
       openModal("record", { record: newRecord, onConfirm: onCreate });
     }

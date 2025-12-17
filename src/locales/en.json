@@ -73,8 +73,9 @@
       }
     },
     "personnalisation": {
-      "title": "Tags management",
-      "description": "Add, remove, and configure your record tags."
+      "title": "Tracker management",
+      "descriptionTitle": "Update tracker's name",
+      "descriptionTags": "Add, remove or update your record tags"
     },
     "form": {
       "title": "Active tracker",

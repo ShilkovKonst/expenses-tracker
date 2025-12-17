@@ -73,8 +73,9 @@
       }
     },
     "personnalisation": {
-      "title": "Gestion des étiquettes",
-      "description": "Ajoutez, supprimez et configurez vos étiquettes d'enregistrements."
+      "title": "Gestion des suivi",
+      "descriptionTitle": "Mettre à jour le nom de suivi",
+      "descriptionTags": "Ajouter, supprimer ou mettre à jour vos étiquettes d'enregistrements"
     },
     "form": {
       "title": "Le suivi actif",

@@ -66,7 +66,6 @@ const ActiveTrackerData = () => {
           )
         );
       }
-      return { updatedAt: "", message: "tracker was entirely deleted" };
     };
     openModal("delete", {
       entityType: "tracker",
@@ -74,13 +73,13 @@ const ActiveTrackerData = () => {
       onConfirm: onDelete,
     });
   };
-  
+
   return (
     <>
       <div className="text-xs font-semibold w-full flex flex-wrap gap-0 md:gap-2 justify-between items-start">
         <div className="text-blue-950 flex flex-row gap-1 md:flex-col md:gap-0">
           <h2 className="underline">{t(locale, `body.form.title`)}:</h2>
-          <p className="max-w-24 truncate">{trackerId}</p>
+          <p className="max-w-24 truncate">{trackerMeta?.title}</p>
         </div>
         <div className="text-gray-700 flex flex-row gap-1 md:flex-col md:gap-0">
           <p className="underline">{t(locale, `body.form.lastUpdate`)}:</p>

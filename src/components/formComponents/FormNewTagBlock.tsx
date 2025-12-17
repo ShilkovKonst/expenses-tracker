@@ -17,7 +17,6 @@ import { createTag, updateTagById } from "@/idb/CRUD/tagsCRUD";
 import { TagId } from "@/lib/types/brand";
 import { createTagId } from "@/lib/types/dataTypes";
 import { TagObj } from "../modals/settings/SettingsBlock";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 
 type FormNewTagProps = {
   recordTags?: TagId[];
@@ -33,13 +32,7 @@ const FormNewTagBlock = ({
   setTag,
 }: FormNewTagProps) => {
   const { locale } = useGlobal();
-  const {
-    trackerId,
-    trackerMeta,
-    trackerTags,
-    setTrackerTags,
-    setTrackerMeta,
-  } = useTracker();
+  const { trackerId, trackerTags, setTrackerTags } = useTracker();
 
   const [newTag, setNewTag] = useState<string>("");
 
@@ -47,8 +40,18 @@ const FormNewTagBlock = ({
     if (tag) setNewTag(tag.title);
   }, [tag]);
 
+  const isDoubled = useMemo(
+    () =>
+      Object.values(trackerTags ?? [])
+        .filter((t) => t !== tag?.title)
+        .includes(newTag),
+    [newTag, tag, trackerTags]
+  );
+
   const isDisabled = useMemo(
-    () => Object.values(trackerTags ?? []).some((t) => t === newTag),
+    () =>
+      Object.values(trackerTags ?? []).filter((t) => t === newTag).length > 0 ||
+      newTag.length === 0,
     [newTag, trackerTags]
   );
 
@@ -63,10 +66,8 @@ const FormNewTagBlock = ({
       if (recordTags && setRecordTags)
         setRecordTags([...recordTags, createTagId(id)]);
       setTrackerTags({ ...trackerTags, [id]: newTag });
-      if (setTag) setTag(undefined);
+      if (tag && setTag) setTag(undefined);
       setNewTag("");
-      const updatedAt = await updateMetadata(trackerId);
-      if (trackerMeta) setTrackerMeta({ ...trackerMeta, updatedAt });
     },
     [
       tag,
@@ -76,8 +77,6 @@ const FormNewTagBlock = ({
       trackerTags,
       setTag,
       trackerId,
-      trackerMeta,
-      setTrackerMeta,
     ]
   );
 
@@ -89,10 +88,10 @@ const FormNewTagBlock = ({
   };
 
   return (
-    <div className={`relative flex gap-2 pb-3`}>
+    <div className={`relative flex gap-2`}>
       <label
-        className={`flex min-w-${
-          tag ? 20 : 16
+        className={`flex ${
+          tag ? "min-w-20" : "min-w-16"
         } justify-start items-center text-xs font-semibold`}
       >
         {t(locale, `body.buttons.${tag ? "update" : "add"}`)}
@@ -101,13 +100,20 @@ const FormNewTagBlock = ({
         id="tagInput"
         name="tagInput"
         type="text"
+        title={isDoubled ? t(locale, `body.form.tracker.typeDouble`) : ""}
         value={newTag}
-        className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-blue-300 rounded-md text-xs"
+        className={`col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 ${
+          isDoubled ? "focus:outline-red-300" : "focus:outline-blue-300"
+        } rounded-md text-xs`}
         placeholder={t(locale, `body.form.placeholders.newTag`)}
         onChange={(e) => handleChange(e)}
       />
       <IconButton
-        title={`create new tag`}
+        title={
+          !tag
+            ? t(locale, `body.buttons.add`)
+            : t(locale, `body.buttons.update`)
+        }
         icon={
           !tag ? (
             <AddIcon className="w-5 h-5" />
@@ -118,15 +124,8 @@ const FormNewTagBlock = ({
         value={newTag}
         handleClick={handleAddNewTag}
         customStyle="col-span-1 min-w-6 w-6 h-6 my-auto rounded-sm bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
-        disabled={isDisabled || newTag.length === 0}
+        disabled={isDisabled}
       />
-      {isDisabled && (
-        <p
-          className={`absolute -bottom-1 col-span-6 text-xs text-red-600 my-auto`}
-        >
-          {t(locale, `body.form.tracker.typeDouble`)}
-        </p>
-      )}
     </div>
   );
 };
