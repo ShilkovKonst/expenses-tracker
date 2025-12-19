@@ -74,6 +74,8 @@ const ActiveTrackerData = () => {
     });
   };
 
+  const openCustomModal = () => openModal("share", {});
+
   return (
     <>
       <div className="text-xs font-semibold w-full flex flex-wrap gap-0 md:gap-2 justify-between items-start">
@@ -99,7 +101,9 @@ const ActiveTrackerData = () => {
           icon={<ShareIcon className={"w-6 h-6"} />}
           title={t(locale, `body.buttons.save`)}
           customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
-          handleClick={() => contentData && shareFile<"tracker">(contentData)}
+          handleClick={() =>
+            contentData && shareFile<"tracker">(contentData, openCustomModal)
+          }
         />
         <UtilButton
           icon={<SettingsIcon className={"w-6 h-6"} />}

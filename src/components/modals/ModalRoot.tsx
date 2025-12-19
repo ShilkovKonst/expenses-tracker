@@ -5,6 +5,7 @@ import RecordModal from "./record/RecordModal";
 import DeleteModal from "./delete/DeleteModal";
 import SettingsModal from "./settings/SettingsModal";
 import TrackerModal from "./tracker/TrackerModal";
+import ShareModal from "./share/ShareModal";
 
 export type ModalMap = {
   record: {
@@ -16,8 +17,8 @@ export type ModalMap = {
     entity: MonthRecord | { id: number; title: string } | { trackerId: string };
     onConfirm: () => Promise<void>;
   };
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  settings: {};
+  settings: object;
+  share: object;
   merge: {
     importTrackerBody: Tracker;
     oldTrackerMeta: TrackerMeta | null;
@@ -41,5 +42,6 @@ const modalRegistry: {
   record: RecordModal,
   delete: DeleteModal,
   settings: SettingsModal,
+  share: ShareModal,
   merge: TrackerModal,
 };

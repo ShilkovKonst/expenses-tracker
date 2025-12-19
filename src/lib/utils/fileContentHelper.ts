@@ -56,36 +56,78 @@ export function saveFiletoLocal<T extends keyof ContentTypes>(
   URL.revokeObjectURL(url);
 }
 
-export function shareFile<T extends keyof ContentTypes>(
-  contentData: ContentTypes[T]
+// export function shareFile<T extends keyof ContentTypes>(
+//   contentData: ContentTypes[T]
+// ) {
+//   if (!navigator.share) {
+//     alert("Web Share API не поддерживается в вашем браузере/ОС.");
+//     return;
+//   }
+//   const { blob, fileName } = generateFileContent<T>(contentData);
+//   const fileToShare = new File([blob], fileName, {
+//     type: "application/json",
+//   });
+//   const fileArray = [fileToShare];
+//   if (!navigator.canShare || !navigator.canShare({ files: fileArray })) {
+//     alert(
+//       "Ваш браузер/ОС не поддерживает расшаривание файлов через Web Share API."
+//     );
+//     return;
+//   }
+//   const json = JSON.stringify(contentData, null, 2);
+//   navigator
+//     .share({
+//       files: fileArray,
+//       title: fileName,
+//       // text: json,
+//     })
+//     .then(() => console.log("Файл успешно расшарен!"))
+//     .catch((error) => {
+//       if (error.name !== "AbortError") {
+//         console.error("Ошибка при расшаривании файла:", error);
+//       }
+//     });
+// }
+
+export async function shareFile<T extends keyof ContentTypes>(
+  data: ContentTypes[T],
+  openCustomModal: () => void
 ) {
-  if (!navigator.share) {
-    alert("Web Share API не поддерживается в вашем браузере/ОС.");
-    return;
-  }
-  const { blob, fileName } = generateFileContent<T>(contentData);
-  const fileToShare = new File([blob], fileName, {
+  const { blob, fileName } = generateFileContent<T>(data);
+  const file = new File([blob], `${fileName}.json`, {
     type: "application/json",
   });
-  const fileArray = [fileToShare];
-  if (!navigator.canShare || !navigator.canShare({ files: fileArray })) {
-    alert(
-      "Ваш браузер/ОС не поддерживает расшаривание файлов через Web Share API."
-    );
-    return;
-  }
-  const json = JSON.stringify(contentData, null, 2);
-  navigator
-    .share({
-      //   files: fileArray,
-
-      title: fileName,
-      text: json,
-    })
-    .then(() => console.log("Файл успешно расшарен!"))
-    .catch((error) => {
-      if (error.name !== "AbortError") {
-        console.error("Ошибка при расшаривании файла:", error);
+  console.log(canShareFiles(file));
+  if (canShareFiles(file)) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: fileName,
+        // text: json,
+      });
+      console.log("Успешно расшарено нативно");
+    } catch (error) {
+      if ((error as Error).name !== "AbortError") {
+        console.error("Ошибка нативного шеринга:", error);
+        openCustomModal();
       }
-    });
+    }
+  } else {
+    openCustomModal();
+  }
 }
+
+const isMobileDevice = () => {
+  if (typeof navigator === "undefined") return false;
+  return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
+
+export const canShareFiles = (file: File): boolean => {
+  const hasAPI =
+    typeof navigator !== "undefined" &&
+    !!navigator.share &&
+    !!navigator.canShare;
+  return hasAPI && isMobileDevice() && navigator.canShare({ files: [file] });
+};
