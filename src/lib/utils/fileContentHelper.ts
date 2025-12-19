@@ -95,7 +95,7 @@ export async function shareFile<T extends keyof ContentTypes>(
 ) {
   const { blob, fileName } = generateFileContent<T>(data);
   const file = new File([blob], `${fileName}.txt`, {
-    type: "application/json",
+    type: "text/plain",
   });
   // console.log(canShareFiles(file));
   // if (canShareFiles(file)) {
