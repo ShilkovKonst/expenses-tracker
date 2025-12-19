@@ -97,8 +97,8 @@ export async function shareFile<T extends keyof ContentTypes>(
   const file = new File([blob], `${fileName}.json`, {
     type: "application/json",
   });
-  console.log(canShareFiles(file));
-  if (canShareFiles(file)) {
+  // console.log(canShareFiles(file));
+  // if (canShareFiles(file)) {
     try {
       await navigator.share({
         files: [file],
@@ -112,9 +112,9 @@ export async function shareFile<T extends keyof ContentTypes>(
         // openCustomModal();
       }
     }
-  } else {
-    openCustomModal();
-  }
+  // } else {
+  //   openCustomModal();
+  // }
 }
 
 const isMobileDevice = () => {
