@@ -94,7 +94,7 @@ export async function shareFile<T extends keyof ContentTypes>(
   openCustomModal: () => void
 ) {
   const { blob, fileName } = generateFileContent<T>(data);
-  const file = new File([blob], `${fileName}.json`, {
+  const file = new File([blob], `${fileName}.txt`, {
     type: "application/json",
   });
   // console.log(canShareFiles(file));
