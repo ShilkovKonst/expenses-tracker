@@ -24,3 +24,23 @@ const ShareModal = ({
 };
 
 export default ShareModal;
+
+const shareLinks = {
+  telegram: (text: string, url: string) => 
+    `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+  
+  whatsapp: (text: string, url: string) => 
+    `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`,
+  
+  twitter: (text: string, url: string) => 
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+  
+  facebook: (url: string) => 
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+  
+  linkedin: (url: string, title: string) => 
+    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+  
+  reddit: (url: string, title: string) => 
+    `https://reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,
+};

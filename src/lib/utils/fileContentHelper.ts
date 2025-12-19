@@ -109,7 +109,7 @@ export async function shareFile<T extends keyof ContentTypes>(
     } catch (error) {
       if ((error as Error).name !== "AbortError") {
         console.error("Ошибка нативного шеринга:", error);
-        // openCustomModal();
+        openCustomModal();
       }
     }
   // } else {
