@@ -5,7 +5,7 @@ import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { getAllRecords } from "@/idb/CRUD/recordsCRUD";
 import { populateYears } from "@/lib/utils/yearsTransformer";
-import { TrackerMeta, Year } from "@/lib/types/dataTypes";
+import { MonthRecord, TrackerMeta, Year } from "@/lib/types/dataTypes";
 import { populateTrackerContex } from "@/lib/utils/updateLocalTrackerIds";
 import ModalBase from "../ModalBase";
 import { t } from "@/locales/locale";
@@ -18,6 +18,19 @@ import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 import { getAllTags } from "@/idb/CRUD/tagsCRUD";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
 import { updateMetadata } from "@/idb/CRUD/metaCRUD";
+import { TagId, TrackerId } from "@/lib/types/brand";
+
+type Entities = {
+  tag: {
+    id: TagId;
+    title: string;
+  };
+  tracker: {
+    id: TrackerId;
+    title: string;
+  };
+  record: MonthRecord;
+};
 
 const DeleteModal = ({
   entityType,
@@ -82,7 +95,7 @@ const DeleteModal = ({
         "info",
         t(locale, `body.flash.deleted`, {
           entity: t(locale, `body.modal.deleteEntity.${entityType}`),
-          id: "id" in entity ? entity.id : entity.trackerId,
+          id: "title" in entity ? entity.title : entity.id,
         })
       );
     } catch (error) {
@@ -106,10 +119,17 @@ const DeleteModal = ({
       cancelButtonTitle={t(locale, "body.buttons.cancel")}
       onClose={handleClose}
     >
-      {"title" in entity && <TagDeleteBlock entity={entity} />}
-      {"year" in entity && <RecordDeleteBlock entity={entity} />}
-      {"trackerId" in entity && (
-        <TrackerDeleteBlock entityType={entityType} entity={entity} />
+      {entityType === "tag" && (
+        <TagDeleteBlock entity={entity as Entities["tag"]} />
+      )}
+      {entityType === "record" && (
+        <RecordDeleteBlock entity={entity as Entities["record"]} />
+      )}
+      {entityType === "tracker" && (
+        <TrackerDeleteBlock
+          entityType={entityType}
+          entity={entity as Entities["tracker"]}
+        />
       )}
       <ValidateButton
         title={t(locale, "body.buttons.delete")}

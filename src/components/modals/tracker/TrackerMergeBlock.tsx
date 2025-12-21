@@ -8,7 +8,6 @@ import DescDateBlock from "../../descriptionComponents/DescDateBlock";
 import DescPBlock from "../../descriptionComponents/DescPBlock";
 import { ValidateButton } from "../../buttonComponents";
 import { Tracker, TrackerMeta } from "@/lib/types/dataTypes";
-import { TRACKER_IDS } from "@/constants";
 import { useModal } from "@/context/ModalContext";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
@@ -24,7 +23,8 @@ const TrackerMergeBlock = ({
   importTrackerBody,
   oldTrackerMeta,
 }: TrackerMergeProps) => {
-  const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
+  const { locale, allTrackersMeta, setAllTrackersMeta, setIsLoading } =
+    useGlobal();
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
   const { closeModal } = useModal();
@@ -74,45 +74,41 @@ const TrackerMergeBlock = ({
   };
 
   const handleDoubleClick = async () => {
-    if (localStorage) {
+    if (allTrackersMeta.length > 0) {
       let count = 0;
-      let newId;
-      const trackersString = localStorage.getItem(TRACKER_IDS);
-      if (trackersString) {
-        const trackerList: string[] = JSON.parse(trackersString);
-        while (trackerList.some((t) => t === importTrackerBody.meta.id + count))
-          ++count;
-        newId = (importTrackerBody.meta.id + count) as TrackerId;
-        importTrackerBody.meta.id = newId;
-        importTrackerBody.meta.title = newId;
-        try {
-          await createNPopulate(
-            importTrackerBody,
-            setAllTrackersMeta,
-            setIsLoading,
-            setTrackerId,
-            setTrackerMeta,
-            setTrackerTags,
-            setTrackerYears
-          );
-          addFlash(
-            "success",
-            `${t(locale, "body.flash.trackerUpdated", {
-              trackerId: importTrackerBody.meta.title,
-            })}`
-          );
-        } catch (error) {
-          console.error(error);
-          addFlash(
-            "error",
-            getErrorMessage(
-              error,
-              "Something went wrong while replacing tracker"
-            )
-          );
-        }
-        closeModal();
+      while (
+        allTrackersMeta.some((t) => t.id === importTrackerBody.meta.id + count)
+      )
+        ++count;
+      const newId = (importTrackerBody.meta.id + count) as TrackerId;
+      const newTitle = importTrackerBody.meta.title + count;
+      try {
+        await createNPopulate(
+          {
+            ...importTrackerBody,
+            meta: { ...importTrackerBody.meta, id: newId, title: newTitle },
+          },
+          setAllTrackersMeta,
+          setIsLoading,
+          setTrackerId,
+          setTrackerMeta,
+          setTrackerTags,
+          setTrackerYears
+        );
+        addFlash(
+          "success",
+          `${t(locale, "body.flash.trackerDoubled", {
+            trackerId: importTrackerBody.meta.title,
+          })} - ${newTitle}`
+        );
+      } catch (error) {
+        console.error(error);
+        addFlash(
+          "error",
+          getErrorMessage(error, "Something went wrong while replacing tracker")
+        );
       }
+      closeModal();
     }
   };
 

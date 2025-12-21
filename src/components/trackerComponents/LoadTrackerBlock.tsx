@@ -6,12 +6,10 @@ import { useTracker } from "@/context/TrackerContext";
 import { useModal } from "@/context/ModalContext";
 import { LoadIcon } from "@/lib/icons";
 import { validate } from "@/lib/utils/dataValidator";
-// import { updateLocalTrackerIds } from "@/lib/utils/updateLocalTrackerIds";
 import { checkDBExists } from "@/idb/IDBManager";
 import { createNPopulate } from "@/lib/utils/trackerDataSetter";
 import { IconButton } from "../buttonComponents";
 import { getMetadata } from "@/idb/CRUD/metaCRUD";
-import { Tracker } from "@/lib/types/dataTypes";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 
@@ -36,7 +34,6 @@ const LoadTrackerBlock = () => {
       return;
     }
     try {
-      // можно добавить проверку mime-type: file.type === "application/json"
       const text: string = await file.text();
       const validated = validate(JSON.parse(text), locale);
       if (!validated.success) {
@@ -46,8 +43,6 @@ const LoadTrackerBlock = () => {
             validated.message
           }`
         );
-        console.log(validated.message);
-        console.log(validated.path);
         return;
       }
 
@@ -59,31 +54,11 @@ const LoadTrackerBlock = () => {
           openModal("merge", {
             importTrackerBody: data,
             oldTrackerMeta,
-            onConfirm: (data: Tracker) =>
-              createNPopulate(
-                data,
-                setAllTrackersMeta,
-                setIsLoading,
-                setTrackerId,
-                setTrackerMeta,
-                setTrackerTags,
-                setTrackerYears
-              ),
           });
         } else {
           openModal("merge", {
             importTrackerBody: data,
             oldTrackerMeta: null,
-            onConfirm: (data: Tracker) =>
-              createNPopulate(
-                data,
-                setAllTrackersMeta,
-                setIsLoading,
-                setTrackerId,
-                setTrackerMeta,
-                setTrackerTags,
-                setTrackerYears
-              ),
           });
         }
       } else {
@@ -98,13 +73,12 @@ const LoadTrackerBlock = () => {
         );
         addFlash(
           "success",
-          `${t(locale, "body.flash.trackerLoaded", { fileName: file.name })}`
+          `${t(locale, "body.flash.trackerLoaded", {
+            trackerId: data.meta.title,
+          })}`
         );
         await loadTrackers(setAllTrackersMeta, setIsLoading);
       }
-      // if (localStorage) {
-      //   updateLocalTrackerIds(data.meta.id, setTrackerIds);
-      // }
     } catch (err) {
       console.error("Import error:", err);
       addFlash(
@@ -123,7 +97,7 @@ const LoadTrackerBlock = () => {
       </p>
       <IconButton
         value=""
-        icon={<LoadIcon className="w-4 h-4" />}
+        icon={<LoadIcon className="h-6 w-6 md:w-4 md:h-4" />}
         title={t(locale, `body.buttons.load`)}
         handleClick={handleOpenFileDialog}
         customStyle="ml-0.5 mr-auto h-8 w-8 md:h-6 md:w-6 rounded bg-green-400 hover:bg-green-500"
@@ -132,7 +106,7 @@ const LoadTrackerBlock = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept="application/json"
+        accept="plain/text"
         onChange={handleImport}
         hidden
       />

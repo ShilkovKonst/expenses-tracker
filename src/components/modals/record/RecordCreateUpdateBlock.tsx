@@ -32,7 +32,6 @@ const RecordCreateUpdateBlock = ({
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    console.log(name, value)
     const key = name as keyof MonthRecord;
     let normalizedValue: MonthRecord[keyof MonthRecord];
 

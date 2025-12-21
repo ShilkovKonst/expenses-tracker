@@ -19,6 +19,8 @@ import { createTagId, TrackerMeta } from "@/lib/types/dataTypes";
 import { TagObj } from "../modals/settings/SettingsBlock";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
 import { updateMetadata } from "@/idb/CRUD/metaCRUD";
+import { useFlash } from "@/context/FlashContext";
+import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 
 type FormNewTagProps = {
   recordTags?: TagId[];
@@ -41,6 +43,7 @@ const FormNewTagBlock = ({
     trackerMeta,
     setTrackerMeta,
   } = useTracker();
+  const { addFlash } = useFlash();
 
   const [newTag, setNewTag] = useState<string>("");
 
@@ -65,28 +68,38 @@ const FormNewTagBlock = ({
 
   const handleAddNewTag = useCallback(
     async (newTag: string) => {
-      let id;
-      if (tag) {
-        id = await updateTagById(trackerId, tag.id, newTag);
-      } else {
-        id = await createTag(trackerId, newTag);
+      try {
+        let id;
+        if (tag) {
+          id = await updateTagById(trackerId, tag.id, newTag);
+        } else {
+          id = await createTag(trackerId, newTag);
+        }
+        if (trackerMeta) {
+          const updatedAt = formatDatetoMeta(new Date());
+          const newMeta: TrackerMeta = {
+            id: trackerMeta?.id ?? trackerId,
+            title: trackerMeta?.title ?? trackerId,
+            createdAt: trackerMeta?.createdAt ?? updatedAt,
+            updatedAt,
+          };
+          await updateMetadata(trackerId, newMeta);
+          setTrackerMeta(newMeta);
+        }
+        if (recordTags && setRecordTags)
+          setRecordTags([...recordTags, createTagId(id)]);
+        setTrackerTags({ ...trackerTags, [id]: newTag });
+        if (tag && setTag) setTag(undefined);
+        setNewTag("");
+        addFlash(
+          "success",
+          `${t(locale, "body.flash.newAdded", {
+            entity: t(locale, "body.modal.deleteEntity.tag"),
+          })} - ${newTag}`
+        );
+      } catch (error) {
+        addFlash("error", getErrorMessage(error, ""));
       }
-      if (trackerMeta) {
-        const updatedAt = formatDatetoMeta(new Date());
-        const newMeta: TrackerMeta = {
-          id: trackerMeta?.id ?? trackerId,
-          title: trackerMeta?.title ?? trackerId,
-          createdAt: trackerMeta?.createdAt ?? updatedAt,
-          updatedAt,
-        };
-        await updateMetadata(trackerId, newMeta);
-        setTrackerMeta(newMeta);
-      }
-      if (recordTags && setRecordTags)
-        setRecordTags([...recordTags, createTagId(id)]);
-      setTrackerTags({ ...trackerTags, [id]: newTag });
-      if (tag && setTag) setTag(undefined);
-      setNewTag("");
     },
     [
       tag,
@@ -96,6 +109,8 @@ const FormNewTagBlock = ({
       setTrackerTags,
       trackerTags,
       setTag,
+      addFlash,
+      locale,
       trackerId,
       setTrackerMeta,
     ]

@@ -40,12 +40,13 @@
       }
     },
     "flash": {
-      "newTrackerAdded": "Новый трекер {{trackerId}} зарегистрирован.",
-      "trackerLoaded": "Трекер {{trackerId}} загружен.",
-      "trackerLoadedError": "Ошибка при чтении или парсинге JSON-файла.",
-      "trackerDeleted": "Трекер {{trackerId}} удален.",
-      "trackerUpdated": "Трекер {{trackerId}} обновлен.",
-      "trackerTitleUpdated": "Имя трекера {{trackerId}} обновлено.",
+      "newTrackerAdded": "Новый трекер {{trackerId}} зарегистрирован",
+      "trackerLoaded": "Трекер {{trackerId}} загружен",
+      "trackerLoadedError": "Ошибка при чтении или парсинге JSON-файла",
+      "trackerDeleted": "Трекер {{trackerId}} удален",
+      "trackerUpdated": "Трекер {{trackerId}} обновлен",
+      "trackerDoubled": "Трекер {{trackerId}} продублирован",
+      "trackerTitleUpdated": "Имя трекера {{trackerId}} обновлено",
       "error": {
         "parseJson": "Данные файла не соответствует ожидаемой структуре",
         "validator": {

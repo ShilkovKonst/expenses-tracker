@@ -19,10 +19,6 @@ const SettingsRenameTrackerBlock = () => {
   const [trackerTitle, setTrackerTitle] = useState(trackerMeta?.title ?? "");
 
   const isDisabled = useMemo(() => {
-    console.log(
-      trackerTitle,
-      allTrackersMeta.map((m) => m.title).filter((t) => t !== trackerTitle)
-    );
     return allTrackersMeta.some((m) => m.title === trackerTitle);
   }, [allTrackersMeta, trackerTitle]);
 

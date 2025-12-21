@@ -1,10 +1,11 @@
 "use client";
 import DescPBlock from "../../descriptionComponents/DescPBlock";
 import { useGlobal } from "@/context/GlobalContext";
+import { TagId } from "@/lib/types/brand";
 import { t } from "@/locales/locale";
 
 type TagDeleteProps = {
-  entity: { id: number; title: string };
+  entity: { id: TagId; title: string };
 };
 
 const TagDeleteBlock = ({ entity }: TagDeleteProps) => {

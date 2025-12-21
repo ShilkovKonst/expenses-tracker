@@ -7,22 +7,11 @@ import { UtilButton } from "../buttonComponents";
 import { DeleteIcon, SaveIcon, SettingsIcon, ShareIcon } from "@/lib/icons";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { saveFiletoLocal, shareFile } from "@/lib/utils/fileContentHelper";
-import { useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
-// import { getAllData } from "@/idb/massImportHelper";
 
 const ActiveTrackerBlock = () => {
-  return (
-    <div className="w-full pb-2 flex justify-between gap-2 items-center border-b-6 border-blue-400">
-      <ActiveTrackerData />
-    </div>
-  );
-};
-
-export default ActiveTrackerBlock;
-
-const ActiveTrackerData = () => {
   const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
   const { trackerId, trackerTags, trackerMeta, trackerYears } = useTracker();
   const { openModal } = useModal();
@@ -47,17 +36,17 @@ const ActiveTrackerData = () => {
     [trackerId, trackerTags, trackerMeta, trackerYears]
   );
 
-  const handleSettings = () => {
+  const handleSettings = useCallback(() => {
     openModal("settings", {});
-  };
+  }, [openModal]);
 
-  const handleRemove = () => {
+  const handleRemove = useCallback(() => {
     const onDelete = async () => {
       try {
         await deleteTrackerUtil(trackerId);
         await loadTrackers(setAllTrackersMeta, setIsLoading);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         addFlash(
           "error",
           getErrorMessage(
@@ -69,23 +58,57 @@ const ActiveTrackerData = () => {
     };
     openModal("delete", {
       entityType: "tracker",
-      entity: { trackerId },
+      entity: { id: trackerId, title: trackerMeta ? trackerMeta.title : "" },
       onConfirm: onDelete,
     });
-  };
+  }, [addFlash, openModal, setAllTrackersMeta, setIsLoading, trackerId, trackerMeta]);
 
-  const handleShareClick = async () => {
+  const handleSaveClick = useCallback(() => {
+    if (contentData) saveFiletoLocal<"tracker">(contentData);
+  }, [contentData]);
+
+  const handleShareClick = useCallback(async () => {
     if (contentData)
       try {
         await shareFile<"tracker">(contentData);
       } catch (error) {
         addFlash("error", getErrorMessage(error, ""));
       }
-  };
+  }, [addFlash, contentData]);
+
+  const buttons = useMemo(
+    () => [
+      {
+        icon: <SaveIcon className={"w-6 h-6"} />,
+        title: "body.buttons.save",
+        style: `bg-blue-400 hover:bg-blue-500 w-8 h-8`,
+        handleClick: handleSaveClick,
+      },
+      {
+        icon: <ShareIcon className={"w-6 h-6"} />,
+        title: "body.buttons.share",
+        style: `bg-blue-400 hover:bg-blue-500 w-8 h-8`,
+        handleClick: handleShareClick,
+      },
+      {
+        icon: <SettingsIcon className={"w-6 h-6"} />,
+        title: "body.buttons.settings",
+        style: `bg-blue-400 hover:bg-blue-500 w-8 h-8`,
+        handleClick: handleSettings,
+      },
+      {
+        icon: <DeleteIcon className={"w-6 h-6"} />,
+        title: "body.buttons.delete",
+        style: `bg-red-400 hover:bg-red-500 w-8 h-8`,
+        handleClick: handleRemove,
+      },
+    ],
+    [handleRemove, handleSaveClick, handleSettings, handleShareClick]
+  );
 
   return (
-    <>
-      <div className="text-xs font-semibold w-full flex flex-wrap gap-0 md:gap-2 justify-between items-start">
+    <div className="w-full pb-2 flex justify-between gap-2 items-center border-b-6 border-blue-400">
+      <div className="text-xs font-semibold w-full flex flex-col md:flex-row gap-0 md:gap-2 justify-between items-start">
         <div className="text-blue-950 flex flex-row gap-1 md:flex-col md:gap-0">
           <h2 className="underline">{t(locale, `body.form.title`)}:</h2>
           <p className="max-w-24 truncate">{trackerMeta?.title}</p>
@@ -96,33 +119,18 @@ const ActiveTrackerData = () => {
         </div>
       </div>
       <div className={`gap-2 flex flex-row justify-between items-center`}>
-        <UtilButton
-          icon={<SaveIcon className={"w-6 h-6"} />}
-          title={t(locale, `body.buttons.save`)}
-          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
-          handleClick={() =>
-            contentData && saveFiletoLocal<"tracker">(contentData)
-          }
-        />
-        <UtilButton
-          icon={<ShareIcon className={"w-6 h-6"} />}
-          title={t(locale, `body.buttons.share`)}
-          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
-          handleClick={handleShareClick}
-        />
-        <UtilButton
-          icon={<SettingsIcon className={"w-6 h-6"} />}
-          title={t(locale, `body.buttons.settings`)}
-          customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
-          handleClick={handleSettings}
-        />
-        <UtilButton
-          icon={<DeleteIcon className={"w-6 h-6"} />}
-          title={t(locale, `body.buttons.delete`)}
-          customStyle={`bg-red-400 hover:bg-red-500 ${"w-8 h-8"}`}
-          handleClick={handleRemove}
-        />
+        {buttons.map((button, index) => (
+          <UtilButton
+            key={index}
+            icon={button.icon}
+            title={t(locale, button.title)}
+            customStyle={button.style}
+            handleClick={button.handleClick}
+          />
+        ))}
       </div>
-    </>
+    </div>
   );
 };
+
+export default memo(ActiveTrackerBlock);

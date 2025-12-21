@@ -5,6 +5,7 @@ import RecordModal from "./record/RecordModal";
 import DeleteModal from "./delete/DeleteModal";
 import SettingsModal from "./settings/SettingsModal";
 import TrackerModal from "./tracker/TrackerModal";
+import { TagId, TrackerId } from "@/lib/types/brand";
 
 export type ModalMap = {
   record: {
@@ -13,15 +14,16 @@ export type ModalMap = {
   };
   delete: {
     entityType: "record" | "tag" | "tracker";
-    entity: MonthRecord | { id: number; title: string } | { trackerId: string };
+    entity:
+      | MonthRecord
+      | { id: TagId; title: string }
+      | { id: TrackerId; title: string };
     onConfirm: () => Promise<void>;
   };
   settings: object;
-  // share: object;
   merge: {
     importTrackerBody: Tracker;
     oldTrackerMeta: TrackerMeta | null;
-    onConfirm: (data: Tracker) => Promise<void>;
   };
 };
 

@@ -15,6 +15,7 @@ import { createTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { formatDatetoMeta } from "./dateParser";
 import { TrackerId, YearId } from "../types/brand";
 import { loadTrackers } from "@/context/GlobalContext";
+import { getErrorMessage } from "./parseErrorMessage";
 
 export function setParsedData(
   data: Tracker,
@@ -71,7 +72,7 @@ export async function createNPopulate(
     await createTrackerUtil(data);
   } catch (error) {
     console.error(error);
-    throw new Error("error createTrackerUtil");
+    throw new Error(getErrorMessage(error, ""));
   }
   loadTrackers(setAllTrackersMeta, setIsLoading);
   setParsedData(

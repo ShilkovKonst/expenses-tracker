@@ -40,11 +40,12 @@
       }
     },
     "flash": {
-      "newTrackerAdded": "Nouveau suivi {{trackerId}} enregistré",
-      "trackerLoaded": "Le suivi {{trackerId}} a été téléchargé. Importation de {{fileName}} terminée.",
-      "trackerLoadedError": "Erreur de lecture ou d'analyse du fichier JSON.",
-      "trackerDeleted": "Le suivi {{trackerId}} supprimé",
+      "newTrackerAdded": "Nouveau suivi {{trackerId}} est enregistré",
+      "trackerLoaded": "Le suivi {{trackerId}} est téléchargé",
+      "trackerLoadedError": "Erreur de lecture ou d'analyse du fichier JSON",
+      "trackerDeleted": "Le suivi {{trackerId}} est supprimé",
       "trackerUpdated": "Le suivi {{trackerId}} mis à jour",
+      "trackerDoubled": "Le suivi {{trackerId}} est dupliqué",
       "trackerTitleUpdated": "Le nom de suivi {{trackerId}} mis à jour",
       "error": {
         "parseJson": "Les données du fichier ne correspondent pas à la structure attendue",

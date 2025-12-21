@@ -19,6 +19,7 @@ import {
 } from "../CRUD/tagsCRUD";
 import { TrackerId } from "@/lib/types/brand";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
+import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 
 export async function createTrackerUtil(tracker: Tracker) {
   try {
@@ -26,7 +27,10 @@ export async function createTrackerUtil(tracker: Tracker) {
   } catch (error) {
     console.error(error);
     throw new Error(
-      `Something went wrong while creating new tracker '${tracker}'`
+      `Something went wrong while creating new tracker: '${getErrorMessage(
+        error,
+        ""
+      )}'`
     );
   }
 }

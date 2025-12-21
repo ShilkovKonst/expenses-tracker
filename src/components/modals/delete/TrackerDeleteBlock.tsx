@@ -2,10 +2,11 @@
 import { useGlobal } from "@/context/GlobalContext";
 import DescPBlock from "../../descriptionComponents/DescPBlock";
 import { t } from "@/locales/locale";
+import { TrackerId } from "@/lib/types/brand";
 
 type TrackerDeleteProps = {
   entityType: string;
-  entity: { trackerId: string };
+  entity: { id: TrackerId; title: string };
 };
 
 const TrackerDeleteBlock = ({ entityType, entity }: TrackerDeleteProps) => {
@@ -18,7 +19,7 @@ const TrackerDeleteBlock = ({ entityType, entity }: TrackerDeleteProps) => {
         valueStyle={`font-semibold text-xs truncate`}
         title={`${t(locale, `body.modal.descDelete`, {
           deleteEntity: t(locale, `body.modal.deleteEntity.${entityType}`),
-          deleteEntityId: entity.trackerId,
+          deleteEntityId: entity.title,
         })}`}
         value={""}
       />

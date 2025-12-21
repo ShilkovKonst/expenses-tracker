@@ -124,7 +124,6 @@ export function calcExpressionAlg(amount: string) {
     if (op === "+") result += parseFloat(next);
     if (op === "-") result -= parseFloat(next);
   }
-  console.log(result);
   return Math.round(result * 100);
 }
 
