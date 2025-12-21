@@ -5,7 +5,6 @@ import RecordModal from "./record/RecordModal";
 import DeleteModal from "./delete/DeleteModal";
 import SettingsModal from "./settings/SettingsModal";
 import TrackerModal from "./tracker/TrackerModal";
-import ShareModal from "./share/ShareModal";
 
 export type ModalMap = {
   record: {
@@ -18,7 +17,7 @@ export type ModalMap = {
     onConfirm: () => Promise<void>;
   };
   settings: object;
-  share: object;
+  // share: object;
   merge: {
     importTrackerBody: Tracker;
     oldTrackerMeta: TrackerMeta | null;
@@ -42,6 +41,5 @@ const modalRegistry: {
   record: RecordModal,
   delete: DeleteModal,
   settings: SettingsModal,
-  share: ShareModal,
   merge: TrackerModal,
 };

@@ -74,7 +74,14 @@ const ActiveTrackerData = () => {
     });
   };
 
-  const openCustomModal = () => openModal("share", {});
+  const handleShareClick = async () => {
+    if (contentData)
+      try {
+        await shareFile<"tracker">(contentData);
+      } catch (error) {
+        addFlash("error", getErrorMessage(error, ""));
+      }
+  };
 
   return (
     <>
@@ -99,15 +106,13 @@ const ActiveTrackerData = () => {
         />
         <UtilButton
           icon={<ShareIcon className={"w-6 h-6"} />}
-          title={t(locale, `body.buttons.save`)}
+          title={t(locale, `body.buttons.share`)}
           customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
-          handleClick={() =>
-            contentData && shareFile<"tracker">(contentData, openCustomModal)
-          }
+          handleClick={handleShareClick}
         />
         <UtilButton
           icon={<SettingsIcon className={"w-6 h-6"} />}
-          title={t(locale, `body.buttons.update`)}
+          title={t(locale, `body.buttons.settings`)}
           customStyle={`sm:h-auto bg-blue-400 hover:bg-blue-500 ${"w-8 h-8"}`}
           handleClick={handleSettings}
         />

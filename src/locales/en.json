@@ -20,6 +20,8 @@
       "create": "Create new tracker",
       "load": "Import data",
       "save": "Export data",
+      "share": "Share data",
+      "settings": "Tracker settings",
       "select": "Select active tracker",
       "confirm": "Confirm",
       "delete": "Delete",

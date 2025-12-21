@@ -19,7 +19,9 @@
     "buttons": {
       "create": "Créer un nouveau suivi",
       "load": "Importer les données",
-      "save": "Exporter des données",
+      "save": "Exporter les données",
+      "share": "Partager les données",
+      "settings": "Paramètres de suivi",
       "select": "Selectionner un suivi actif",
       "confirm": "Confirmer",
       "delete": "Supprimer",
