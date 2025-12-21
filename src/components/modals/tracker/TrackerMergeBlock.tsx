@@ -60,7 +60,7 @@ const TrackerMergeBlock = ({
       addFlash(
         "success",
         `${t(locale, "body.flash.trackerUpdated", {
-          trackerId: importTrackerBody.meta.id,
+          trackerId: importTrackerBody.meta.title,
         })}`
       );
     } catch (error) {
