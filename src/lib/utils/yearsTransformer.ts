@@ -1,4 +1,4 @@
-import { CURRENT_YEAR } from "@/constants";
+import { CURRENT_YEAR, EMPTY_MONTHS } from "@/constants";
 import {
   createMonthId,
   createYearId,
@@ -52,7 +52,7 @@ export function populateYears(allRecords: MonthRecord[]) {
 function populateEmptyYear(): Year {
   return {
     id: createYearId(CURRENT_YEAR),
-    months: {},
+    months: EMPTY_MONTHS,
     totalAmount: 0,
   };
 }
