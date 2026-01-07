@@ -36,8 +36,8 @@ export function populateYears(allRecords: MonthRecord[]) {
     years[CURRENT_YEAR] = populateEmptyYear();
   }
 
-  let monthId = createMonthId(1);
   for (const y of Object.values(years)) {
+    let monthId = createMonthId(1);
     while (monthId <= 12) {
       if (!y.months[monthId]) {
         y.months[monthId] = populateEmptyMonth(monthId, getMonthById(monthId));
