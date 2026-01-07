@@ -43,7 +43,7 @@ function RecordBlock({ record }: RecordProps) {
 
   return (
     <div className="cost grid gap-2 w-full">
-      <div className="px-2 py-2 grid grid-cols-6 gap-2 w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-150">
+      <div className="px-2 py-2 grid grid-cols-6 gap-1 md:gap-2 w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-150">
         <RecordDescriptionBlock
           outerStyle="col-span-5 grid grid-cols-4 gap-2 my-auto"
           labelRecordTags={`${t(locale, `body.form.operations.labelTags`)}: `}
@@ -73,8 +73,8 @@ function RecordBlock({ record }: RecordProps) {
         />
         <ButtonBlock
           outerStyle={`col-span-1`}
-          iconSize={"h-4 w-4"}
-          buttonSize={"h-6 w-8"}
+          iconSize={"h-6 w-6 md:h-4 md:w-4"}
+          buttonSize={"h-7.5 w-7.5 md:h-6 md:w-6"}
           handleUpdate={handleUpdate}
           handleDelete={handleDelete}
         />

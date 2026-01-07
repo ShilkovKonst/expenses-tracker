@@ -100,14 +100,16 @@ const StickyDescH3Block: React.FC<StickyDescH3BlockProps> = ({
   recordsLength,
   label,
 }) => {
-  const { trackerId } = useTracker();
+  const { trackerMeta } = useTracker();
   return (
     <div className={`col-span-2 flex justify-start items-center`}>
       <h3
         className={`text-xs sm:text-sm font-bold text-blue-800 capitalize flex flex-row justify-start items-center gap-1`}
       >
         {!isMonth && (
-          <span className="max-w-20 truncate lg:max-w-max">{trackerId}</span>
+          <span className="max-w-20 truncate lg:max-w-max">
+            {trackerMeta?.title}
+          </span>
         )}
         <span>
           {label} {recordsLength && `(${recordsLength})`}

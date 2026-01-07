@@ -12,7 +12,7 @@ const RegisteredTrackersBlock = () => {
   const { locale, allTrackersMeta, isLoading } = useGlobal();
   return (
     <section className="w-full col-span-3 flex gap-2">
-      <div className="border-b-6 border-blue-400 w-full flex flex-col justify-between items-start gap-3 pb-3">
+      <div className="border-b-6 border-blue-400 w-full flex flex-col justify-between items-start md:gap-3 pb-3">
         {isLoading ? (
           <p>loading data</p>
         ) : allTrackersMeta.length > 0 ? (

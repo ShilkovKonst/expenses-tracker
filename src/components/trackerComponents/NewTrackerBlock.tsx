@@ -49,7 +49,7 @@ const NewTrackerBlock = () => {
 
   return (
     <form
-      className="relative grid grid-cols-5 w-full transition-[height] duration-300 ease-in-out overflow-visible"
+      className="relative grid grid-cols-5 gap-3 w-full transition-[height] duration-300 ease-in-out overflow-visible"
       onSubmit={(e) => handleSubmit(e)}
     >
       <input
@@ -60,9 +60,9 @@ const NewTrackerBlock = () => {
         onChange={(e) => setNewTrackerId(e.target.value as TrackerId)}
       />
       <SubmitButton
-        icon={<AddIcon className="w-6 h-6 md:h-4 md:w-4" />}
+        icon={<AddIcon className="w-6 h-6" />}
         title={t(locale, "body.buttons.create")}
-        customStyle="ml-2 mr-auto h-8 w-8 md:h-6 md:w-6 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
+        customStyle="h-7.5 w-full lg:w-7.5 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
         disabled={isDisabled}
       />
       {newTrackerId.trim() === "" ||

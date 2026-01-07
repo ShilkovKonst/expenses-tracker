@@ -91,16 +91,16 @@ const LoadTrackerBlock = () => {
   };
 
   return (
-    <div className="grid grid-cols-5 gap-2 w-full overflow-hidden transition-[height] duration-300 ease-in-out">
-      <p className="ml-0.5 col-span-4 text-sm flex items-center">
+    <div className="grid grid-cols-5 gap-3 w-full overflow-hidden transition-[height] duration-300 ease-in-out">
+      <p className="col-span-4 text-sm flex items-center">
         {t(locale, `body.form.tracker.loadTitle`)}
       </p>
       <IconButton
         value=""
-        icon={<LoadIcon className="h-6 w-6 md:w-4 md:h-4" />}
+        icon={<LoadIcon className="h-6 w-6" />}
         title={t(locale, `body.buttons.load`)}
         handleClick={handleOpenFileDialog}
-        customStyle="ml-0.5 mr-auto h-8 w-8 md:h-6 md:w-6 rounded bg-green-400 hover:bg-green-500"
+        customStyle="h-7.5 w-full lg:w-7.5 rounded bg-green-400 hover:bg-green-500"
       />
 
       <input

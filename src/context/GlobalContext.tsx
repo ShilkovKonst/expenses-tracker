@@ -19,6 +19,8 @@ interface GlobalContextType {
   setAllTrackersMeta: Dispatch<SetStateAction<TrackerMeta[]>>;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  isCharts: boolean;
+  setIsCharts: Dispatch<SetStateAction<boolean>>;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -29,22 +31,11 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
   const [allTrackersMeta, setAllTrackersMeta] = useState<TrackerMeta[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const loadTrackers = async (cancelled?: boolean) => {
-    if (cancelled) return;
-    try {
-      const validMetas = await getAllMeta();
-      setAllTrackersMeta(validMetas);
-    } catch (error) {
-      console.error("Failed to load trackers:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [isCharts, setIsCharts] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    loadTrackers(cancelled);
+    loadTrackers(setAllTrackersMeta, setIsLoading, cancelled);
     return () => {
       cancelled = true;
     };
@@ -58,6 +49,8 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
         setAllTrackersMeta,
         isLoading,
         setIsLoading,
+        isCharts,
+        setIsCharts,
       }}
     >
       {children}

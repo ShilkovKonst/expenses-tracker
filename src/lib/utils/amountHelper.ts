@@ -86,7 +86,7 @@ export function calcExpression(amount: string) {
     if (op === "*") result *= parseFloat(next);
     if (op === "/") result /= parseFloat(next);
   }
-  return result;
+  return Math.round(result * 100) / 100;
 }
 
 export function calcExpressionAlg(amount: string) {
