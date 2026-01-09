@@ -45,7 +45,7 @@ function RecordBlock({ record }: RecordProps) {
     <div className="cost grid gap-2 w-full">
       <div className="px-2 py-2 grid grid-cols-6 gap-1 md:gap-2 w-full bg-blue-50 hover:bg-blue-100 border-2 border-blue-150">
         <RecordDescriptionBlock
-          outerStyle="col-span-5 grid grid-cols-4 gap-2 my-auto"
+          outerStyle="col-span-5 grid md:grid-cols-4 lg:grid-cols-5 gap-2 my-auto"
           labelRecordTags={`${t(locale, `body.form.operations.labelTags`)}: `}
           labelRecordDescription={`${t(
             locale,

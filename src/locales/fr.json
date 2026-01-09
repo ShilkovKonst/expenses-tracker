@@ -138,6 +138,13 @@
         "cost": "Dépenses",
         "income": "Revenu"
       }
+    },
+    "charts": {
+      "totalRecords": "Opérations totaux",
+      "totalCosts": "Coûts totaux",
+      "totalIncome": "Revenu total",
+      "mostUsedTags": "Étiquettes les plus utilisées",
+      "mostExpensiveTag": "Étiquette la plus chère"
     }
   }
 }

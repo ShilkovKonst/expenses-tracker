@@ -28,7 +28,7 @@ const RecordDescriptionBlock: React.FC<RecordDescriptionBlockProps> = ({
 }) => {
   return (
     <div className={outerStyle}>
-      <div className="col-span-2 md:row-span-2 md:col-span-1 grid gap-2">
+      <div className="col-span-2 md:row-span-2 md:col-span-1 lg:col-span-2 grid gap-2">
         {recordDate && (
           <DescPBlock
             outerStyle="col-span-1 flex flex-row gap-2 justify-start items-start"

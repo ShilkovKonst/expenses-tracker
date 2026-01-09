@@ -35,8 +35,8 @@
       "expand": "Детализация",
       "update": "Обновить",
       "popups": {
-        "addRecordTag": "Добавить тэг к записи",
-        "removeRecordTag": "Убрать тэг из записи"
+        "addRecordTag": "Добавить тег к записи",
+        "removeRecordTag": "Убрать тег из записи"
       }
     },
     "flash": {
@@ -72,7 +72,7 @@
       "descDelete": "{{deleteEntity}} '{{deleteEntityId}}' будет полностью удален!",
       "deleteEntity": {
         "record": "запись",
-        "tag": "тэг",
+        "tag": "тег",
         "tracker": "трекер"
       }
     },
@@ -107,15 +107,15 @@
         "income": "доход",
         "cost": "расход",
         "withoutDate": "без даты",
-        "withoutTags": "без тэгов",
+        "withoutTags": "без тегов",
         "withoutDesc": "без описания"
       },
       "placeholders": {
         "recordDay": "Выберите день (опционально)",
-        "recordTags": "Выберите тэги из списка ниже или добавьте свой.",
+        "recordTags": "Выберите теги из списка ниже или добавьте свой.",
         "recordDesc": "Дайте дополнительное описание записи (опционально)",
         "tagsListEmpty": "Список тегов пуст. Добавьте тег для классификации записей.",
-        "newTag": "Введите имя тэга"
+        "newTag": "Введите имя тега"
       },
       "tracker": {
         "idsTitle": "Выберите трекер из списка ниже",
@@ -138,6 +138,13 @@
         "cost": "Расход",
         "income": "Доход"
       }
+    },
+    "charts": {
+      "totalRecords": "Всего записей",
+      "totalCosts": "Всего расходов",
+      "totalIncome": "Всего доходов",
+      "mostUsedTags": "Самые частые тего",
+      "mostExpensiveTag": "Самый дорогой тег"
     }
   }
 }
