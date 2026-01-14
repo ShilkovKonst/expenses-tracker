@@ -1,27 +1,21 @@
 "use client";
 import { useTracker } from "@/context/TrackerContext";
 import { TagId } from "@/lib/types/brand";
-import {
-  createTagId,
-  MonthRecord,
-  TrackerTags,
-  TrackerYears,
-} from "@/lib/types/dataTypes";
+import { createTagId, MonthRecord, TrackerTags } from "@/lib/types/dataTypes";
 import { decimalToInputString } from "@/lib/utils/amountHelper";
 import { memo, useMemo } from "react";
 import OverviewCard from "./OverviewCard";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
+import TotalCard from "./TotalCard";
 
-const OverviewBlock = () => {
+type OverviewProps = {
+  rawRecords: MonthRecord[];
+};
+
+const OverviewBlock = ({ rawRecords }: OverviewProps) => {
   const { locale } = useGlobal();
-  const { trackerTags, trackerYears } = useTracker();
-
-  const rawRecords = useMemo(
-    () => (trackerYears ? transformYearsToRecords(trackerYears) : []),
-    [trackerYears]
-  );
-  const rawRecordsCount = useMemo(() => rawRecords.length, [rawRecords.length]);
+  const { trackerTags } = useTracker();
 
   const [cost, income] = useMemo(
     () =>
@@ -46,26 +40,22 @@ const OverviewBlock = () => {
     [rawRecords, trackerTags]
   );
 
-  const totalCards = useMemo(
-    () => [
-      {
-        title: t(locale, "body.charts.totalRecords"),
-        value: rawRecordsCount,
-        valueStyle: "font-semibold text-blue-800",
-        isRecords: true,
-      },
-      {
-        title: t(locale, "body.charts.totalCosts"),
-        value: decimalToInputString(cost),
-        valueStyle: "font-semibold text-red-800",
-      },
-      {
-        title: t(locale, "body.charts.totalIncome"),
-        value: decimalToInputString(income),
-        valueStyle: "font-semibold text-green-800",
-      },
-    ],
-    [cost, income, locale, rawRecordsCount]
+  const totals = useMemo(
+    () => ({
+      title: [
+        t(locale, "body.charts.records"),
+        t(locale, "body.charts.tags"),
+        t(locale, "body.charts.costs"),
+        t(locale, "body.charts.income"),
+      ],
+      value: [
+        rawRecords.length,
+        trackerTags ? Object.keys(trackerTags).length : 0,
+        decimalToInputString(cost),
+        decimalToInputString(income),
+      ],
+    }),
+    [cost, income, locale, rawRecords.length, trackerTags]
   );
 
   const tagCards = useMemo(
@@ -73,12 +63,12 @@ const OverviewBlock = () => {
       {
         title: t(locale, "body.charts.mostUsedTags"),
         value: mostUsedTags,
-        valueStyle: "font-semibold text-blue-800",
+        valueStyle: "text-blue-800",
       },
       {
         title: t(locale, "body.charts.mostExpensiveTag"),
         value: mostExpensiveTags,
-        valueStyle: "font-semibold text-red-800",
+        valueStyle: "text-red-800",
         parseToDecimal: true,
       },
     ],
@@ -86,13 +76,9 @@ const OverviewBlock = () => {
   );
 
   return (
-    <div className="grid md:grid-cols-2 gap-2">
-      <div className="grid gap-2 2xl:grid-cols-3">
-        {totalCards.map((card, i) => (
-          <OverviewCard key={i} card={card} />
-        ))}
-      </div>
-      <div className="grid gap-2 2xl:grid-cols-2">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-2">
+      <TotalCard card={totals} />
+      <div className="sm:col-span-2 lg:col-span-1 xl:col-span-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
         {tagCards.map((card, i) => (
           <OverviewCard key={i} card={card} />
         ))}
@@ -102,16 +88,6 @@ const OverviewBlock = () => {
 };
 
 export default memo(OverviewBlock);
-
-function transformYearsToRecords(years: TrackerYears): MonthRecord[] {
-  const records: MonthRecord[] = [];
-  for (const year of Object.values(years)) {
-    for (const month of Object.values(year.months)) {
-      records.push(...month.records);
-    }
-  }
-  return records;
-}
 
 export type TagObj = {
   tagId: TagId;
@@ -124,12 +100,14 @@ function getMostUsedTags(tags: TrackerTags, records: MonthRecord[]): TagObj[] {
     const count = records.filter((r) => r.tags.includes(tagId)).length;
     tCount.push({ tagId, value: count });
   }
+
   const mostUsedTags: TagObj[] = [];
   const maxCount = Math.max(...tCount.map((t) => t.value));
   for (const t of tCount) {
     if (t.value === maxCount) mostUsedTags.push(t);
   }
-  return mostUsedTags;
+  // return mostUsedTags;
+  return tCount.sort((a, b) => b.value - a.value).slice(0, 3);
 }
 
 function getMostExpensiveTags(
@@ -152,5 +130,6 @@ function getMostExpensiveTags(
   for (const t of tCount) {
     if (t.value === maxAmount) mostExpensiveTags.push(t);
   }
-  return mostExpensiveTags;
+  // return mostExpensiveTags;
+  return tCount.sort((a, b) => b.value - a.value).slice(0, 3);
 }

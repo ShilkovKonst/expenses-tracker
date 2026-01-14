@@ -140,9 +140,11 @@
       }
     },
     "charts": {
-      "totalRecords": "Opérations totaux",
-      "totalCosts": "Coûts totaux",
-      "totalIncome": "Revenu total",
+      "total": "Total",
+      "records": "opérations",
+      "tags": "étiquettes",
+      "costs": "coûts",
+      "income": "revenu",
       "mostUsedTags": "Étiquettes les plus utilisées",
       "mostExpensiveTag": "Étiquette la plus chère"
     }

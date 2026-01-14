@@ -140,9 +140,11 @@
       }
     },
     "charts": {
-      "totalRecords": "Total records",
-      "totalCosts": "Total costs",
-      "totalIncome": "Total income",
+      "total": "Total",
+      "records": "records",
+      "tags": "tags",
+      "costs": "costs",
+      "income": "income",
       "mostUsedTags": "Most used tags",
       "mostExpensiveTag": "Most expensive tag"
     }

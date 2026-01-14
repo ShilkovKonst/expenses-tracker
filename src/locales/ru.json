@@ -140,11 +140,13 @@
       }
     },
     "charts": {
-      "totalRecords": "Всего записей",
-      "totalCosts": "Всего расходов",
-      "totalIncome": "Всего доходов",
-      "mostUsedTags": "Самые частые тего",
-      "mostExpensiveTag": "Самый дорогой тег"
+      "total": "Всего",
+      "records": "записей",
+      "tags": "тегов",
+      "costs": "расходов",
+      "income": "доходов",
+      "mostUsedTags": "Самые частые теги",
+      "mostExpensiveTag": "Самые дорогие теги"
     }
   }
 }
