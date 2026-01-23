@@ -1,10 +1,6 @@
-import {
-  createMonthId,
-  Month,
-  MonthIdType,
-  Months,
-} from "@/lib/types/dataTypes";
+import { Month, MonthIdType, Months } from "@/lib/types/dataTypes";
 import { MONTHS } from "../../constants";
+import { createMonthId } from "../types/brand";
 
 export function getMonthById<ID extends MonthIdType>(id: ID): Months {
   return MONTHS[id];

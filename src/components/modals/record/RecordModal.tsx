@@ -31,7 +31,7 @@ const RecordModal = ({
 
   const [currentRecord, setCurrentRecord] = useState<MonthRecord>(record);
   const [amountString, setAmountString] = useState<string>(
-    decimalToInputString(record.amount ?? 0)
+    decimalToInputString(locale, record.amount ?? 0),
   );
 
   const isCreate = useMemo(() => record.id === -1, [record.id]);
@@ -67,7 +67,7 @@ const RecordModal = ({
             })
           : t(locale, "body.flash.updated", {
               entity: t(locale, `body.modal.deleteEntity.record`),
-            })
+            }),
       );
     } catch (error) {
       console.error(error);

@@ -1,3 +1,4 @@
+import { Locale } from "@/locales/locale";
 import { OP_REGEX } from "../../constants";
 
 export function trimLeadingZeros(num: string): string {
@@ -127,8 +128,10 @@ export function calcExpressionAlg(amount: string) {
   return Math.round(result * 100);
 }
 
-export function decimalToInputString(amount: number): string {
-  return (amount / 100).toString();
+export function decimalToInputString(locale: Locale, amount: number): string {
+  return (amount / 100).toLocaleString(locale, {
+    minimumFractionDigits: 2,
+  });
 }
 
 export function inputStringToDecimal(value: string): number {

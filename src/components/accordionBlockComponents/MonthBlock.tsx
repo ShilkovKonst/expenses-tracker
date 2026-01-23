@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useMemo } from "react";
-import { createRecordId, Month, MonthRecord } from "@/lib/types/dataTypes";
+import { Month, MonthRecord } from "@/lib/types/dataTypes";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
@@ -9,7 +9,7 @@ import { useModal } from "@/context/ModalContext";
 import { compare } from "@/lib/utils/compareHelper";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
 import { useTracker } from "@/context/TrackerContext";
-import { YearId } from "@/lib/types/brand";
+import { createRecordId, YearId } from "@/lib/types/brand";
 
 type MonthProps = {
   yearId: YearId;

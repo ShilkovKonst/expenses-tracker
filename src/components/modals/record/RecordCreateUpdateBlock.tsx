@@ -1,6 +1,5 @@
 "use client";
 import { MonthRecord } from "@/lib/types/dataTypes";
-import FormInputBlock from "../../formComponents/FormInputBlock";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
@@ -11,6 +10,7 @@ import FormSelectBlock from "../../formComponents/FormSelectBlock";
 import { getMonthDays } from "@/lib/utils/monthHelper";
 import { calcExpression, trimLeadingZeros } from "@/lib/utils/amountHelper";
 import DescPBlock from "../../descriptionComponents/DescPBlock";
+import FormAmountBlock from "../../formComponents/FormAmountBlock";
 
 type RecordCreateUpdateProps = {
   currentRecord: MonthRecord;
@@ -29,7 +29,7 @@ const RecordCreateUpdateBlock = ({
   const [isCalcMode, setIsCalcMode] = useState<boolean>(false);
 
   const handleOperationChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     const key = name as keyof MonthRecord;
@@ -82,7 +82,7 @@ const RecordCreateUpdateBlock = ({
           title={`${t(locale, `body.form.labels.year`)}: `}
           value={`${currentRecord.year}, ${t(
             locale,
-            `body.form.valueMonth.${MONTHS[currentRecord.month]}`
+            `body.form.valueMonth.${MONTHS[currentRecord.month]}`,
           )}`}
         />
         <FormRadioBlock
@@ -108,7 +108,7 @@ const RecordCreateUpdateBlock = ({
           options={getMonthDays(currentRecord.year, currentRecord.month)}
           onChange={handleOperationChange}
         />
-        <FormInputBlock
+        <FormAmountBlock
           name={"amount"}
           title={`${t(locale, `body.form.operations.amount`)}:`}
           id={"operationAmountInput" + currentRecord?.id}
@@ -142,8 +142,8 @@ const RecordCreateUpdateBlock = ({
           name="description"
           type="text"
           value={currentRecord.description}
-          className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-blue-300 rounded-md text-xs"
-          placeholder={t(locale, `body.form.placeholders.newTag`)}
+          className="col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-0 focus:border-blue-300 rounded-md text-xs"
+          placeholder={t(locale, `body.form.placeholders.recordDesc`)}
           onChange={(e) => handleOperationChange(e)}
         />
       </div>

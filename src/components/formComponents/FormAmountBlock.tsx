@@ -17,7 +17,7 @@ type FormInputProps = {
   handleCalc?: (value: string) => void;
 };
 
-const FormInputBlock: React.FC<FormInputProps> = ({
+const FormAmountBlock: React.FC<FormInputProps> = ({
   name,
   title,
   outerStyle,
@@ -49,7 +49,7 @@ const FormInputBlock: React.FC<FormInputProps> = ({
       )}
       <input
         id={id}
-        className={`w-full border-2 border-blue-100 focus:outline-blue-300 rounded-md text-sm bg-white pl-2 ${styleInput}`}
+        className={`w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-0 focus:border-blue-300 rounded-md text-xs ${styleInput}`}
         type={"text"}
         placeholder={withoutLabel && title ? title : ""}
         name={name}
@@ -70,4 +70,4 @@ const FormInputBlock: React.FC<FormInputProps> = ({
   );
 };
 
-export default FormInputBlock;
+export default FormAmountBlock;

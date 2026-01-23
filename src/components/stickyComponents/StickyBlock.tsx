@@ -26,13 +26,13 @@ const StickyBlock = () => {
   useEffect(() => {
     if (trackerYears) {
       const years = document.querySelectorAll<HTMLElement>(
-        `[data-year-body="${trackerId}"]`
+        `[data-year-body="${trackerId}"]`,
       );
 
       const onScroll = () => {
         const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
           years,
-          setExpandYearDataType
+          setExpandYearDataType,
         );
         if (newActiveYear) {
           if (activeYearRef.current?.id !== newActiveYear) {
@@ -46,17 +46,17 @@ const StickyBlock = () => {
 
         if (activeYearBodyEl && newActiveYear) {
           const months = activeYearBodyEl.querySelectorAll<HTMLElement>(
-            `[data-month-body="${newActiveYear}"]`
+            `[data-month-body="${newActiveYear}"]`,
           );
           const { newActiveMonth } = onScrollMonthHelper(
             months,
             newActiveYear,
-            setExpandMonthDataType
+            setExpandMonthDataType,
           );
           if (newActiveMonth) {
             if (activeMonthRef.current?.id !== newActiveMonth) {
               setActiveMonth(
-                trackerYears[newActiveYear].months[newActiveMonth]
+                trackerYears[newActiveYear].months[newActiveMonth],
               );
             }
           } else {
@@ -99,7 +99,7 @@ const StickyBlock = () => {
           isMonth={false}
           yearId={activeYear.id}
           labelMain={activeYear.id.toString()}
-          totalAmount={decimalToInputString(activeYear.totalAmount)}
+          totalAmount={decimalToInputString(locale, activeYear.totalAmount)}
           expandDataType={expandYearDataType}
           expandDisabled={false}
         />
@@ -108,7 +108,7 @@ const StickyBlock = () => {
         <StickyHeader
           isMonth={true}
           labelMain={t(locale, `body.form.valueMonth.${activeMonth.title}`)}
-          totalAmount={decimalToInputString(activeMonth.totalAmount)}
+          totalAmount={decimalToInputString(locale, activeMonth.totalAmount)}
           expandDataType={expandMonthDataType}
           expandDisabled={activeMonth.records?.length === 0}
           yearId={activeYear.id}

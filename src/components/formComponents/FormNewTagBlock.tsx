@@ -14,8 +14,8 @@ import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { useTracker } from "@/context/TrackerContext";
 import { createTag, updateTagById } from "@/idb/CRUD/tagsCRUD";
-import { TagId } from "@/lib/types/brand";
-import { createTagId, TrackerMeta } from "@/lib/types/dataTypes";
+import { createTagId, TagId } from "@/lib/types/brand";
+import { TrackerMeta } from "@/lib/types/dataTypes";
 import { TagObj } from "../modals/settings/SettingsBlock";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
 import { updateMetadata } from "@/idb/CRUD/metaCRUD";
@@ -56,14 +56,14 @@ const FormNewTagBlock = ({
       Object.values(trackerTags ?? [])
         .filter((t) => t !== tag?.title)
         .includes(newTag),
-    [newTag, tag, trackerTags]
+    [newTag, tag, trackerTags],
   );
 
   const isDisabled = useMemo(
     () =>
       Object.values(trackerTags ?? []).filter((t) => t === newTag).length > 0 ||
       newTag.length === 0,
-    [newTag, trackerTags]
+    [newTag, trackerTags],
   );
 
   const handleAddNewTag = useCallback(
@@ -95,7 +95,7 @@ const FormNewTagBlock = ({
           "success",
           `${t(locale, "body.flash.newAdded", {
             entity: t(locale, "body.modal.deleteEntity.tag"),
-          })} - ${newTag}`
+          })} - ${newTag}`,
         );
       } catch (error) {
         addFlash("error", getErrorMessage(error, ""));
@@ -113,7 +113,7 @@ const FormNewTagBlock = ({
       locale,
       trackerId,
       setTrackerMeta,
-    ]
+    ],
   );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -138,8 +138,8 @@ const FormNewTagBlock = ({
         type="text"
         title={isDoubled ? t(locale, `body.form.tracker.typeDouble`) : ""}
         value={newTag}
-        className={`col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 ${
-          isDoubled ? "focus:outline-red-300" : "focus:outline-blue-300"
+        className={`col-span-4 w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-0 ${
+          isDoubled ? "focus:border-red-500" : "focus:border-blue-300"
         } rounded-md text-xs`}
         placeholder={t(locale, `body.form.placeholders.newTag`)}
         onChange={(e) => handleChange(e)}

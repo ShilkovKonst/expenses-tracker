@@ -3,6 +3,7 @@ import { useTracker } from "@/context/TrackerContext";
 import { MoneyIcon, RecordsIcon } from "@/lib/icons";
 import { decimalToInputString } from "@/lib/utils/amountHelper";
 import { TagObj } from "./OverviewBlock";
+import { useGlobal } from "@/context/GlobalContext";
 
 type OverviewCardProps = {
   card: {
@@ -15,6 +16,7 @@ type OverviewCardProps = {
 };
 
 const OverviewCard = ({ card }: OverviewCardProps) => {
+  const { locale } = useGlobal();
   const { trackerTags } = useTracker();
 
   return (
@@ -26,11 +28,11 @@ const OverviewCard = ({ card }: OverviewCardProps) => {
             key={i}
             className={`${card.valueStyle} *:font-semibold *:text-xs`}
           >
-            <p className="truncate sm:max-w-16 md:max-w-none xl:max-w-20 2xl:max-w-40">
+            <p className="truncate max-w-16 md:max-w-none xl:max-w-20 2xl:max-w-40">
               {trackerTags ? trackerTags[v.tagId] : v.tagId}
             </p>
             <p>
-              - {card.parseToDecimal ? decimalToInputString(v.value) : v.value}
+              - {card.parseToDecimal ? decimalToInputString(locale, v.value) : v.value}
             </p>
             {card.parseToDecimal ? (
               <MoneyIcon className="h-5 w-5" />

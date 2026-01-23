@@ -1,14 +1,16 @@
 import {
+  createMonthId,
+  createRecordId,
+  createTagId,
+  createTrackerId,
+  createYearId,
+} from "@/lib/types/brand";
+import {
   Tracker,
   MonthRecord,
   TrackerMeta,
   TrackerTags,
   TrackerYears,
-  createRecordId,
-  createTagId,
-  createTrackerId,
-  createYearId,
-  createMonthId,
 } from "@/lib/types/dataTypes";
 export function transformToMonthRecord(form: FormData): MonthRecord {
   return {

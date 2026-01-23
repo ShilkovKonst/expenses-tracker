@@ -1,6 +1,5 @@
 "use client";
 import {
-  createYearId,
   Tracker,
   TrackerMeta,
   TrackerTags,
@@ -13,7 +12,7 @@ import { CURRENT_YEAR } from "@/constants";
 import { initEmptyMonths } from "./monthHelper";
 import { createTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { formatDatetoMeta } from "./dateParser";
-import { TrackerId, YearId } from "../types/brand";
+import { createYearId, TrackerId, YearId } from "../types/brand";
 import { loadTrackers } from "@/context/GlobalContext";
 import { getErrorMessage } from "./parseErrorMessage";
 
@@ -22,7 +21,7 @@ export function setParsedData(
   setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
-  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
+  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
 ) {
   setTrackerId(data.meta.id);
   setTrackerMeta({ ...data.meta });
@@ -35,7 +34,7 @@ export async function setNewData(
   setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
-  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
+  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
 ) {
   const newMeta = {
     id: newTrackerId,
@@ -66,7 +65,7 @@ export async function createNPopulate(
   setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
-  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
+  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
 ) {
   try {
     await createTrackerUtil(data);
@@ -80,6 +79,6 @@ export async function createNPopulate(
     setTrackerId,
     setTrackerMeta,
     setTrackerTags,
-    setTrackerYears
+    setTrackerYears,
   );
 }

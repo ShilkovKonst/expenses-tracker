@@ -3,8 +3,8 @@ import HeaderButtonBlock from "../accordionBlockComponents/HeaderButtonBlock";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
-import { MonthId, YearId } from "@/lib/types/brand";
-import { createRecordId, MonthRecord } from "@/lib/types/dataTypes";
+import { createRecordId, MonthId, YearId } from "@/lib/types/brand";
+import { MonthRecord } from "@/lib/types/dataTypes";
 import Link from "next/link";
 import { useCallback } from "react";
 

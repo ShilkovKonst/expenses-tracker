@@ -8,7 +8,7 @@ import {
   TextRoundedButtonProps,
   LowLevelButtonProps,
 } from "./types";
-import { createTagId } from "@/lib/types/dataTypes";
+import { createTagId } from "@/lib/types/brand";
 
 const BaseButton = ({
   children,
@@ -122,7 +122,7 @@ export const IconButton = memo(function IconButton({
       title={title}
       className={`${customStyle}`}
       onClick={(e) => {
-        e.preventDefault()
+        e.preventDefault();
         handleClick(value);
       }}
       disabled={disabled}

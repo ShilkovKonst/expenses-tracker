@@ -1,17 +1,20 @@
+"use client";
+import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
-import { MonthId, TagId, YearId } from "@/lib/types/brand";
 import {
   createMonthId,
   createYearId,
-  MonthRecord,
-} from "@/lib/types/dataTypes";
+  MonthId,
+  TagId,
+  YearId,
+} from "@/lib/types/brand";
+import { MonthRecord } from "@/lib/types/dataTypes";
 import { decimalToInputString } from "@/lib/utils/amountHelper";
 import { useCallback, useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   Legend,
   Tooltip,
   XAxis,
@@ -25,12 +28,13 @@ type RecordsChartsProps = {
 type ChartDataType = { id: number; qnty: number; cost: number; income: number };
 
 const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
+  const { locale } = useGlobal();
   const { trackerId, trackerYears } = useTracker();
   const [selectedYearId, setSelectedYearId] = useState<YearId>(
-    createYearId(-1)
+    createYearId(-1),
   );
   const [selectedMonthId, setSelectedMonthId] = useState<MonthId>(
-    createMonthId(-1)
+    createMonthId(-1),
   );
 
   useEffect(() => {
@@ -43,7 +47,7 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
       tag === -1
         ? records
         : records.filter((r) => r.tags.includes(selectedTag as TagId)),
-    [selectedTag]
+    [selectedTag],
   );
 
   const getChartsData = useCallback(() => {
@@ -56,24 +60,27 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
       groupByKey = "day";
     } else if (selectedYearId !== -1) {
       rawRecords = Object.values(trackerYears[selectedYearId].months).flatMap(
-        (m) => m.records
+        (m) => m.records,
       );
       groupByKey = "month";
     } else {
       rawRecords = Object.values(trackerYears).flatMap((y) =>
-        Object.values(y.months).flatMap((m) => m.records)
+        Object.values(y.months).flatMap((m) => m.records),
       );
       groupByKey = "year";
     }
 
-    return filteredRecords(selectedTag, rawRecords).reduce((acc, cur) => {
-      const id = cur[groupByKey] as number;
-      acc[id] ??= { id, qnty: 0, cost: 0, income: 0 };
-      acc[id].qnty += 1;
-      acc[id].cost += cur.type === "cost" ? cur.amount : 0;
-      acc[id].income += cur.type === "income" ? cur.amount : 0;
-      return acc;
-    }, {} as Record<number, ChartDataType>);
+    return filteredRecords(selectedTag, rawRecords).reduce(
+      (acc, cur) => {
+        const id = cur[groupByKey] as number;
+        acc[id] ??= { id, qnty: 0, cost: 0, income: 0 };
+        acc[id].qnty += 1;
+        acc[id].cost += cur.type === "cost" ? cur.amount : 0;
+        acc[id].income += cur.type === "income" ? cur.amount : 0;
+        return acc;
+      },
+      {} as Record<number, ChartDataType>,
+    );
   }, [
     filteredRecords,
     selectedMonthId,
@@ -95,9 +102,21 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
 
   return (
     <div>
-      <div>
-        <button onClick={handleUndo}>Вернуться</button>
-        <p>{selectedYearId !== -1 ? selectedYearId : ""}  {selectedMonthId !== -1 ? selectedMonthId : ""}</p>
+      <div className="w-full h-7 flex justify-between items-center border-2 bg-blue-200 border-blue-300 px-1 mb-2">
+        {selectedYearId !== -1 && (
+          <>
+            <div className="flex justify-start items-center gap-2">
+              <p>{selectedYearId !== -1 ? selectedYearId : ""}</p>
+              {selectedMonthId !== -1 && (
+                <>
+                  <p>&#8594;</p>
+                  <p>{selectedMonthId !== -1 ? selectedMonthId : ""}</p>
+                </>
+              )}
+            </div>
+            <button onClick={handleUndo}>Вернуться</button>
+          </>
+        )}
       </div>
 
       <BarChart
@@ -110,8 +129,8 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
         data={Object.values(getChartsData()).map((d) => ({
           id: d.id,
           qnty: d.qnty,
-          cost: decimalToInputString(d.cost),
-          income: decimalToInputString(d.income),
+          cost: d.cost,
+          income: d.income,
         }))}
         margin={{
           top: 5,
@@ -123,37 +142,57 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="id" />
         <YAxis
-          yAxisId="left"
+          allowDecimals={false}
+          tickCount={10}
+          yAxisId="qnty"
           orientation="left"
-          stroke="oklch(57.7% 0.245 27.325)"
-        />
-        <YAxis
-          yAxisId="right"
-          orientation="right"
           stroke="oklch(54.6% 0.245 262.881)"
         />
-        <Tooltip />
+        <YAxis
+          width={90}
+          tick={{ fontSize: 12 }}
+          tickCount={10}
+          tickFormatter={(value: string) =>
+            decimalToInputString(locale, Number(value))
+          }
+          yAxisId="cost"
+          orientation="right"
+          stroke="oklch(57.7% 0.245 27.325)"
+        />
+        <Tooltip
+          formatter={(value, name) => {
+            if (!value) return;
+            if (name === "cost" || name === "income") {
+              return [
+                decimalToInputString(locale, Number(value)),
+                name === "cost" ? "Расход" : "Доход",
+              ];
+            }
+
+            return [value, "Количество"];
+          }}
+        />
         <Legend />
         {[
           {
             dataKey: "qnty",
-            fill: "oklch(54.6% 0.245 262.881)",
-            activeFill: "oklch(48.8% 0.243 264.376)",
+            fill: "oklch(70.7% 0.165 254.624)",
+            activeFill: "oklch(62.3% 0.214 259.815)",
           },
           {
             dataKey: "cost",
-            fill: "oklch(57.7% 0.245 27.325)",
-            activeFill: "oklch(50.5% 0.213 27.518)",
+            fill: "oklch(70.4% 0.191 22.216)",
+            activeFill: "oklch(63.7% 0.237 25.331)",
           },
           {
             dataKey: "income",
-            fill: "oklch(62.7% 0.194 149.214)",
-            activeFill: "oklch(52.7% 0.154 150.069)",
+            fill: "oklch(79.2% 0.209 151.711)",
+            activeFill: "oklch(72.3% 0.219 149.579)",
           },
         ].map((v, i) => (
           <Bar
             key={i}
-            yAxisId={v.dataKey === "qnty" ? "right" : "left"}
+            yAxisId={v.dataKey === "qnty" ? "qnty" : "cost"}
             dataKey={v.dataKey}
             fill={v.fill}
             onClick={(data) => handleClick(Number(data.id))}

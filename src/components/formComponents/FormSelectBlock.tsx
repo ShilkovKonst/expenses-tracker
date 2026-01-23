@@ -37,7 +37,7 @@ const FormSelectBlock: React.FC<FormSelectBlockPropsType> = ({
       </p>
       <select
         id={id}
-        className={`border-2 border-blue-100 focus:outline-blue-300 focus:border-blue-300 rounded-md text-sm bg-white ${style} w-full`}
+        className={`${value === -1 ? "text-gray-600" : ""} border-2 p-1 border-blue-100 focus:outline-0 focus:border-blue-300 rounded-md text-sm bg-white ${style} w-full`}
         required
         name={name}
         value={value}
@@ -47,7 +47,7 @@ const FormSelectBlock: React.FC<FormSelectBlockPropsType> = ({
           {t(locale, `body.form.placeholders.recordDay`)}
         </option>
         {options.map((o, i) => (
-          <option key={i} value={o}>
+          <option className="text-black" key={i} value={o}>
             {o}
           </option>
         ))}

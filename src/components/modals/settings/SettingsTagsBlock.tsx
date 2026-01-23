@@ -8,8 +8,8 @@ import { IconButton, TextRoundedButton } from "../../buttonComponents";
 import { useModal } from "@/context/ModalContext";
 import { deleteTagByIdRecordsCleanup } from "@/idb/CRUD/tagsCRUD";
 import { useTracker } from "@/context/TrackerContext";
-import { createTagId } from "@/lib/types/dataTypes";
 import { TagObj } from "./SettingsBlock";
+import { createTagId } from "@/lib/types/brand";
 
 type SettingsTagsProps = {
   tag?: TagObj;
@@ -37,7 +37,7 @@ const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
           onConfirm: onDelete,
         });
     },
-    [trackerTags, openModal, trackerId]
+    [trackerTags, openModal, trackerId],
   );
 
   const tagsArray: TagObj[] | null = useMemo(
@@ -46,7 +46,7 @@ const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
       Object.entries(trackerTags)
         .map((vals) => ({ id: createTagId(Number(vals[0])), title: vals[1] }))
         .sort((a, b) => compare(a.title, b.title)),
-    [trackerTags]
+    [trackerTags],
   );
 
   return (

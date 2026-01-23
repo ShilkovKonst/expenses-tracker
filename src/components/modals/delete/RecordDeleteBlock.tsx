@@ -45,7 +45,7 @@ const RecordDeleteBlock = ({ entity }: ModalDeleteProps) => {
             entity.type === "income" ? "text-green-600" : "text-red-500"
           }`}
           title={`${t(locale, `body.form.operations.amount`)}: `}
-          value={decimalToInputString(entity.amount)}
+          value={decimalToInputString(locale, entity.amount)}
         />
         {trackerTags && (
           <DescPBlock

@@ -1,4 +1,5 @@
-import { createMonthId, TrackerMonths } from "@/lib/types/dataTypes";
+import { createMonthId } from "@/lib/types/brand";
+import { TrackerMonths } from "@/lib/types/dataTypes";
 
 export const MONTHS: Record<number, string> = {
   1: "january",

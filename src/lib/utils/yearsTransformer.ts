@@ -1,12 +1,7 @@
 import { CURRENT_YEAR, EMPTY_MONTHS } from "@/constants";
-import {
-  createMonthId,
-  createYearId,
-  Month,
-  MonthRecord,
-  Year,
-} from "../types/dataTypes";
+import { Month, MonthRecord, Year } from "../types/dataTypes";
 import { getMonthById } from "./monthHelper";
+import { createMonthId, createYearId } from "../types/brand";
 
 export function populateYears(allRecords: MonthRecord[]) {
   const years: Record<number, Year> = {};
@@ -20,7 +15,7 @@ export function populateYears(allRecords: MonthRecord[]) {
     if (!year.months[record.month]) {
       year.months[record.month] = populateEmptyMonth(
         record.month,
-        getMonthById(record.month)
+        getMonthById(record.month),
       );
     }
 

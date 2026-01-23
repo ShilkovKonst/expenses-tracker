@@ -1,7 +1,7 @@
 "use client";
 import { useTracker } from "@/context/TrackerContext";
-import { TagId } from "@/lib/types/brand";
-import { createTagId, MonthRecord, TrackerTags } from "@/lib/types/dataTypes";
+import { createTagId, TagId } from "@/lib/types/brand";
+import { MonthRecord, TrackerTags } from "@/lib/types/dataTypes";
 import { decimalToInputString } from "@/lib/utils/amountHelper";
 import { memo, useMemo } from "react";
 import OverviewCard from "./OverviewCard";
@@ -10,34 +10,49 @@ import { t } from "@/locales/locale";
 import TotalCard from "./TotalCard";
 
 type OverviewProps = {
+  selectedTag: TagId;
   rawRecords: MonthRecord[];
 };
 
-const OverviewBlock = ({ rawRecords }: OverviewProps) => {
+const OverviewBlock = ({ selectedTag, rawRecords }: OverviewProps) => {
   const { locale } = useGlobal();
   const { trackerTags } = useTracker();
 
-  const [cost, income] = useMemo(
+  const filteredeRecords = useMemo(
     () =>
-      rawRecords.reduce(
-        (acc, cur) => {
-          if (cur.type === "cost") acc[0] += cur.amount;
-          else acc[1] += cur.amount;
-          return acc;
-        },
-        [0, 0]
-      ),
-    [rawRecords]
+      selectedTag === -1
+        ? rawRecords
+        : rawRecords.filter((r) => r.tags.includes(selectedTag)),
+    [rawRecords, selectedTag],
   );
+
+  const values = useMemo(() => {
+    return rawRecords.reduce(
+      (acc, cur) => {
+        const matchesTag = selectedTag === -1 || cur.tags.includes(selectedTag);
+
+        if (matchesTag) {
+          if (cur.type === "cost") {
+            acc[0] += cur.amount;
+          } else {
+            acc[1] += cur.amount;
+          }
+        }
+
+        return acc;
+      },
+      [0, 0],
+    );
+  }, [rawRecords, selectedTag]);
 
   const mostUsedTags = useMemo(
     () => (trackerTags ? getMostUsedTags(trackerTags, rawRecords) : []),
-    [rawRecords, trackerTags]
+    [rawRecords, trackerTags],
   );
 
   const mostExpensiveTags = useMemo(
     () => (trackerTags ? getMostExpensiveTags(trackerTags, rawRecords) : []),
-    [rawRecords, trackerTags]
+    [rawRecords, trackerTags],
   );
 
   const totals = useMemo(
@@ -49,13 +64,13 @@ const OverviewBlock = ({ rawRecords }: OverviewProps) => {
         t(locale, "body.charts.income"),
       ],
       value: [
-        rawRecords.length,
-        trackerTags ? Object.keys(trackerTags).length : 0,
-        decimalToInputString(cost),
-        decimalToInputString(income),
+        filteredeRecords.length,
+        selectedTag === -1 && trackerTags ? Object.keys(trackerTags).length : 0,
+        decimalToInputString(locale, values[0]),
+        decimalToInputString(locale, values[1]),
       ],
     }),
-    [cost, income, locale, rawRecords.length, trackerTags]
+    [filteredeRecords.length, locale, selectedTag, trackerTags, values],
   );
 
   const tagCards = useMemo(
@@ -72,16 +87,17 @@ const OverviewBlock = ({ rawRecords }: OverviewProps) => {
         parseToDecimal: true,
       },
     ],
-    [locale, mostExpensiveTags, mostUsedTags]
+    [locale, mostExpensiveTags, mostUsedTags],
   );
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-2">
-      <TotalCard card={totals} />
+    <div
+      className={`grid pt-2 ${selectedTag === -1 ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-2" : "grid-cols-1"}`}
+    >
+      <TotalCard selectedTag={selectedTag} card={totals} />
       <div className="sm:col-span-2 lg:col-span-1 xl:col-span-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-        {tagCards.map((card, i) => (
-          <OverviewCard key={i} card={card} />
-        ))}
+        {selectedTag === -1 &&
+          tagCards.map((card, i) => <OverviewCard key={i} card={card} />)}
       </div>
     </div>
   );
@@ -112,7 +128,7 @@ function getMostUsedTags(tags: TrackerTags, records: MonthRecord[]): TagObj[] {
 
 function getMostExpensiveTags(
   tags: TrackerTags,
-  records: MonthRecord[]
+  records: MonthRecord[],
 ): TagObj[] {
   const tCount: TagObj[] = [];
   for (const tag of Object.keys(tags)) {
@@ -121,7 +137,7 @@ function getMostExpensiveTags(
       .filter((r) => r.tags.includes(tagId))
       .reduce(
         (acc, cur) => acc + cur.amount * (cur.type === "cost" ? 1 : 0),
-        0
+        0,
       );
     tCount.push({ tagId, value: amount });
   }

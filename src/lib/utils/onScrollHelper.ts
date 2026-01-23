@@ -1,12 +1,6 @@
-import {
-  createMonthId,
-  createYearId,
-  Month,
-  MonthIdType,
-  Year,
-} from "@/lib/types/dataTypes";
+import { Month, MonthIdType, Year } from "@/lib/types/dataTypes";
 import { Dispatch, RefObject, SetStateAction } from "react";
-import { MonthId, YearId } from "../types/brand";
+import { createMonthId, createYearId, MonthId, YearId } from "../types/brand";
 
 type OnScrollYearHelperOutput = {
   newActiveYear: YearId | undefined;
@@ -15,7 +9,7 @@ type OnScrollYearHelperOutput = {
 
 export function onScrollYearHelper(
   yearNodes: NodeListOf<HTMLElement>,
-  setExpandYearDataType: Dispatch<SetStateAction<string>>
+  setExpandYearDataType: Dispatch<SetStateAction<string>>,
 ): OnScrollYearHelperOutput {
   for (const yearBodyEl of yearNodes) {
     const yearId = yearBodyEl.getAttribute("data-year-id");
@@ -49,13 +43,13 @@ type OnScrollMonthHelperOutput = { newActiveMonth: MonthId | undefined };
 export function onScrollMonthHelper(
   months: NodeListOf<HTMLElement>,
   newActiveYear: number,
-  setExpandMonthDataType: Dispatch<SetStateAction<string>>
+  setExpandMonthDataType: Dispatch<SetStateAction<string>>,
 ): OnScrollMonthHelperOutput {
   for (const monthBodyEl of months) {
     const monthHeaderEl = monthBodyEl?.getElementsByClassName("header")[0];
     if (!monthBodyEl || !monthHeaderEl) {
       throw new Error(
-        `Month body ${newActiveYear} is missing or has no header`
+        `Month body ${newActiveYear} is missing or has no header`,
       );
     }
 
@@ -79,7 +73,7 @@ export function onScrollMonthHelper(
 export function onScrollSetter<T extends Year | Month>(
   newActive: T | undefined,
   activeRef: RefObject<T | undefined>,
-  setActive: Dispatch<SetStateAction<T | undefined>>
+  setActive: Dispatch<SetStateAction<T | undefined>>,
 ) {
   if (newActive) {
     if (activeRef.current?.id !== newActive.id) {
