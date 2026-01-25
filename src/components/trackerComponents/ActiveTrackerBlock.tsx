@@ -4,13 +4,7 @@ import { useTracker } from "@/context/TrackerContext";
 import { t } from "@/locales/locale";
 import { useModal } from "@/context/ModalContext";
 import { UtilButton } from "../buttonComponents";
-import {
-  ChartsIcon,
-  DeleteIcon,
-  SaveIcon,
-  SettingsIcon,
-  ShareIcon,
-} from "@/lib/icons";
+import { DeleteIcon, SaveIcon, SettingsIcon, ShareIcon } from "@/lib/icons";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import {
   isMobileDevice,
@@ -25,7 +19,7 @@ import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { TrackerMeta } from "@/lib/types/dataTypes";
 
 const ActiveTrackerBlock = () => {
-  const { locale, setAllTrackersMeta, setIsLoading, setIsCharts } = useGlobal();
+  const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
   const { trackerId, trackerTags, trackerMeta, setTrackerMeta, trackerYears } =
     useTracker();
   const { openModal } = useModal();
@@ -55,10 +49,6 @@ const ActiveTrackerBlock = () => {
     [trackerId, trackerTags, trackerMeta, trackerYears],
   );
 
-  const handleCharts = useCallback(() => {
-    setIsCharts((prev) => !prev);
-  }, [setIsCharts]);
-
   const handleSettings = useCallback(() => {
     openModal("settings", {});
   }, [openModal]);
@@ -67,6 +57,7 @@ const ActiveTrackerBlock = () => {
     const onDelete = async () => {
       try {
         await deleteTrackerUtil(trackerId);
+        console.log("tracker deleted");
         await loadTrackers(setAllTrackersMeta, setIsLoading);
       } catch (error) {
         console.error(error);
@@ -139,12 +130,6 @@ const ActiveTrackerBlock = () => {
 
   const buttons = useMemo(
     () => [
-      // {
-      //   icon: <ChartsIcon className={"w-6 h-6"} />,
-      //   title: "body.buttons.delete",
-      //   style: `bg-green-400 hover:bg-green-500`,
-      //   handleClick: handleCharts,
-      // },
       {
         icon: <SaveIcon className={"w-6 h-6"} />,
         title: "body.buttons.save",
@@ -170,13 +155,7 @@ const ActiveTrackerBlock = () => {
         handleClick: handleRemove,
       },
     ],
-    [
-      handleCharts,
-      handleRemove,
-      handleSaveClick,
-      handleSettings,
-      handleShareClick,
-    ],
+    [handleRemove, handleSaveClick, handleSettings, handleShareClick],
   );
 
   return (

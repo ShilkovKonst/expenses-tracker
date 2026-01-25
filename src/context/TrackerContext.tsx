@@ -25,7 +25,7 @@ interface TrackerContextType {
 }
 
 export const TrackerContext = createContext<TrackerContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function TrackerProvider({ children }: { children: ReactNode }) {
@@ -36,7 +36,7 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
   const [trackerYears, setTrackerYears] = useState<TrackerYears | null>(null);
 
   useEffect(() => {
-    if (allTrackersMeta.length > 0) {
+    if (allTrackersMeta.length > 0 && !trackerId) {
       const activeTrackerId = allTrackersMeta[0].id;
       let cancelled = false;
 
@@ -47,7 +47,7 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
             setTrackerId,
             setTrackerMeta,
             setTrackerTags,
-            setTrackerYears
+            setTrackerYears,
           );
         }
       }
@@ -58,7 +58,7 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
         cancelled = true;
       };
     }
-  }, [allTrackersMeta]);
+  }, [allTrackersMeta, trackerId]);
 
   return (
     <TrackerContext.Provider

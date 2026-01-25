@@ -29,7 +29,7 @@ const HeaderBlock: React.FC<DescriptionPropsType> = ({
       id={dataId}
       data-month-id={dataId}
       data-month-header={dataHeader}
-      className={`header col-span-6 grid grid-cols-6 gap-3 w-full border-2 ${
+      className={`header py-1 col-span-6 grid grid-cols-6 gap-3 w-full border-2 ${
         isMonth ? "bg-blue-150 border-blue-200" : "bg-blue-200 border-blue-300"
       }`}
     >

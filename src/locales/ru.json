@@ -143,11 +143,15 @@
       }
     },
     "charts": {
+      "title": "Выберите тэг для обзора",
+      "allTags": "Общий обзор",
       "total": "Всего",
       "records": "записей",
       "tags": "тегов",
       "costs": "расходов",
       "income": "доходов",
+      "overview": "Весь период: {{from}} {{to}}",
+      "year": "Год",
       "mostUsedTags": "Самые частые теги",
       "mostExpensiveTag": "Самые дорогие теги"
     }

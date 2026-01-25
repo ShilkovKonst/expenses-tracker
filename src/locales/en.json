@@ -143,11 +143,15 @@
       }
     },
     "charts": {
+      "title": "Select a tag for an overview",
+      "allTags": "General overview",
       "total": "Total",
       "records": "records",
       "tags": "tags",
       "costs": "costs",
       "income": "income",
+      "overview": "Whole period: {{from}} {{to}}",
+      "year": "Year",
       "mostUsedTags": "Most used tags",
       "mostExpensiveTag": "Most expensive tag"
     }

@@ -143,11 +143,15 @@
       }
     },
     "charts": {
+      "title": "Sélectionnez une étiquette pour un aperçu",
+      "allTags": "Aperçu général",
       "total": "Total",
       "records": "opérations",
       "tags": "étiquettes",
       "costs": "coûts",
       "income": "revenu",
+      "overview": "Période entière: {{from}} {{to}}",
+      "year": "Année",
       "mostUsedTags": "Étiquettes les plus utilisées",
       "mostExpensiveTag": "Étiquette la plus chère"
     }

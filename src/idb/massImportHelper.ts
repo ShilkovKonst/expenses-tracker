@@ -18,7 +18,7 @@ export async function batchAddTags(trackerId: string, tags: string[]) {
 
 export async function batchAddRecords(
   trackerId: string,
-  records: Omit<MonthRecord, "id">[]
+  records: Omit<MonthRecord, "id">[],
 ) {
   const db = await openDB(trackerId);
   const tx = db.transaction(RECORDS_STORE, "readwrite");
@@ -34,7 +34,13 @@ export async function batchAddRecords(
 export async function getAllData(trackerId: string) {
   const db = await openDB(trackerId);
   const trackerData: Tracker = {
-    meta: { id: "" as TrackerId, title: "", createdAt: "", updatedAt: "", backupAt: "" },
+    meta: {
+      id: "" as TrackerId,
+      title: "",
+      createdAt: "",
+      updatedAt: "",
+      backupAt: "",
+    },
     tags: {},
     years: {},
     totalAmount: 0,
@@ -69,13 +75,12 @@ export async function getAllData(trackerId: string) {
         trackerData["years"] = years;
         trackerData["totalAmount"] = Object.values(years).reduce(
           (acc, curr) => acc + curr.totalAmount,
-          0
+          0,
         );
         break;
     }
   });
   await awaitTransaction(tx);
-
   return trackerData;
 }
 

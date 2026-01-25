@@ -24,7 +24,7 @@ interface GlobalContextType {
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function GlobalProvider({ children }: { children: ReactNode }) {
@@ -69,7 +69,7 @@ export function useGlobal() {
 export async function loadTrackers(
   setAllTrackersMeta: Dispatch<SetStateAction<TrackerMeta[]>>,
   setIsLoading: Dispatch<SetStateAction<boolean>>,
-  cancelled?: boolean
+  cancelled?: boolean,
 ) {
   if (cancelled) return;
   try {

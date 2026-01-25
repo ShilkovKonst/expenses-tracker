@@ -1,5 +1,5 @@
 "use client";
-import { useGlobal } from "@/context/GlobalContext";
+import { loadTrackers, useGlobal } from "@/context/GlobalContext";
 import { ModalMap } from "../ModalRoot";
 import { useModal } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
@@ -38,7 +38,8 @@ const DeleteModal = ({
   onConfirm,
   onClose,
 }: ModalMap["delete"] & { onClose: () => void }) => {
-  const { locale, allTrackersMeta } = useGlobal();
+  const { locale, allTrackersMeta, setAllTrackersMeta, setIsLoading } =
+    useGlobal();
   const { openModal } = useModal();
   const { addFlash } = useFlash();
   const {
@@ -69,14 +70,11 @@ const DeleteModal = ({
     try {
       await onConfirm();
       if (entityType === "tracker") {
-        const newActiveTracker = allTrackersMeta[0] ?? null;
-        populateTrackerContex(
-          newActiveTracker?.id ?? "",
-          setTrackerId,
-          setTrackerMeta,
-          setTrackerTags,
-          setTrackerYears,
-        );
+        await loadTrackers(setAllTrackersMeta, setIsLoading);
+        setTrackerId("" as TrackerId);
+        setTrackerMeta(null);
+        setTrackerTags(null);
+        setTrackerYears(null);
       }
       if (entityType === "record") {
         const records = await getAllRecords(trackerId);

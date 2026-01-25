@@ -1,13 +1,13 @@
 "use client";
-import ChartsHeader from "./chartsBlock/ChartsHeader";
-import OverviewBlock from "./chartsBlock/OverviewBlock";
+import ChartsHeader from "./ChartsHeader";
+import OverviewBlock from "./OverviewBlock";
 import { useMemo, useState } from "react";
-import RecordsCharts from "./chartsBlock/RecordsCharts";
+import RecordsCharts from "./RecordsCharts";
 import { useTracker } from "@/context/TrackerContext";
 import { MonthRecord, TrackerYears } from "@/lib/types/dataTypes";
 import { createTagId, TagId } from "@/lib/types/brand";
 import { useGlobal } from "@/context/GlobalContext";
-import LoadingSkeleton from "./LoadingSkeleton";
+import LoadingSkeleton from "../LoadingSkeleton";
 import Image from "next/image";
 
 const ChartsBlock = () => {

@@ -76,7 +76,7 @@ export async function createNPopulate(
     console.error(error);
     throw new Error(getErrorMessage(error, ""));
   }
-  loadTrackers(setAllTrackersMeta, setIsLoading);
+  await loadTrackers(setAllTrackersMeta, setIsLoading);
   setParsedData(
     data,
     setTrackerId,

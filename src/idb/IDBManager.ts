@@ -108,14 +108,14 @@ export async function deleteDB(dbName: string) {
     request.onerror = () =>
       reject(
         new Error(
-          `Failed to delete database ${dbName}: ${request.error?.message}`
-        )
+          `Failed to delete database ${dbName}: ${request.error?.message}`,
+        ),
       );
     request.onblocked = () =>
       reject(
         new Error(
-          `Cannot delete database ${dbName}: it's still open somewhere.`
-        )
+          `Cannot delete database ${dbName}: it's still open somewhere.`,
+        ),
       );
   });
 }
@@ -142,7 +142,7 @@ export async function getAllMeta() {
     });
   const results = await Promise.all(metadataPromises);
   const validMetas = results.filter(
-    (meta): meta is TrackerMeta => meta !== undefined
+    (meta): meta is TrackerMeta => meta !== undefined,
   );
   return validMetas;
 }
@@ -151,7 +151,7 @@ export async function performDBOperation<T>(
   trackerId: string,
   storeName: string,
   mode: IDBTransactionMode,
-  callback: (store: IDBObjectStore) => IDBRequest
+  callback: (store: IDBObjectStore) => IDBRequest,
 ): Promise<T> {
   const db = await openDB(trackerId);
   return new Promise((resolve, reject) => {
@@ -167,7 +167,7 @@ export async function performDBOperation<T>(
 export async function checkDBExists(dbName: string): Promise<boolean> {
   if (!("databases" in indexedDB)) {
     console.warn(
-      "indexedDB.databases() не поддерживается. Использование fallback."
+      "indexedDB.databases() не поддерживается. Использование fallback.",
     );
     return checkDBExistsFallback(dbName);
   }

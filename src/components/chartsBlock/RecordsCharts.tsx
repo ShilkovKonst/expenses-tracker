@@ -9,21 +9,18 @@ import {
   YearId,
 } from "@/lib/types/brand";
 import { MonthRecord } from "@/lib/types/dataTypes";
-import { decimalToInputString } from "@/lib/utils/amountHelper";
-import { useCallback, useEffect, useState } from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Charts from "./Charts";
+import { UndoIcon } from "@/lib/icons";
+import { IconButton } from "../buttonComponents";
+import { t } from "@/locales/locale";
+import { getMonthById } from "@/lib/utils/monthHelper";
 
 type RecordsChartsProps = {
   selectedTag: number;
 };
+
+export type DataKeyType = "qnty" | "cost" | "income";
 
 type ChartDataType = { id: number; qnty: number; cost: number; income: number };
 
@@ -50,7 +47,7 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
     [selectedTag],
   );
 
-  const getChartsData = useCallback(() => {
+  const chartsData = useMemo(() => {
     if (!trackerYears) return {};
     let rawRecords: MonthRecord[] = [];
     let groupByKey: keyof Pick<MonthRecord, "day" | "month" | "year"> = "year";
@@ -89,6 +86,18 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
     trackerYears,
   ]);
 
+  const formattedChartsData = (name: DataKeyType) => {
+    return Object.values(chartsData).map((d) => ({
+      id: d.id,
+      value:
+        (name as DataKeyType) === "qnty"
+          ? d.qnty
+          : (name as DataKeyType) === "cost"
+            ? d.cost
+            : d.income,
+    }));
+  };
+
   const handleClick = (id: number) => {
     if (selectedYearId !== -1 && selectedMonthId === -1)
       setSelectedMonthId(createMonthId(id));
@@ -102,107 +111,64 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
 
   return (
     <div>
-      <div className="w-full h-7 flex justify-between items-center border-2 bg-blue-200 border-blue-300 px-1 mb-2">
+      <div className="w-full h-10 lg:h-8.5 px-1 mb-2 flex justify-between items-center border-2 border-t-0 bg-blue-200 border-blue-300">
+        <div className="flex justify-start items-center">
+          <p>
+            {selectedYearId === -1
+              ? t(locale, "body.charts.overview", {
+                  from: Object.keys(chartsData)[0],
+                  to: `- ${Object.keys(chartsData)[Object.keys(chartsData).length - 1]}`,
+                })
+              : `${t(locale, "body.charts.year")}: ${selectedYearId}`}
+          </p>
+          {selectedYearId !== -1 && selectedMonthId !== -1 && (
+            <p>
+              {`, ${t(
+                locale,
+                `body.form.valueMonth.${getMonthById(selectedMonthId)}`,
+              )}`}
+            </p>
+          )}
+        </div>
         {selectedYearId !== -1 && (
-          <>
-            <div className="flex justify-start items-center gap-2">
-              <p>{selectedYearId !== -1 ? selectedYearId : ""}</p>
-              {selectedMonthId !== -1 && (
-                <>
-                  <p>&#8594;</p>
-                  <p>{selectedMonthId !== -1 ? selectedMonthId : ""}</p>
-                </>
-              )}
-            </div>
-            <button onClick={handleUndo}>Вернуться</button>
-          </>
+          <button
+            className="bg-blue-400 hover:bg-blue-500 disabled:text-gray-600 disabled:bg-blue-300 disabled:hover:bg-blue-300 h-7.5 w-7.5 md:h-6 md:w-6 p-1 rounded flex justify-center items-center transition-colors duration-200 ease-in-out cursor-pointer"
+            onClick={handleUndo}
+          >
+            <UndoIcon />
+          </button>
         )}
       </div>
-
-      <BarChart
-        style={{
-          width: "100%",
-          maxHeight: "70vh",
-          aspectRatio: 1.618,
-        }}
-        responsive
-        data={Object.values(getChartsData()).map((d) => ({
-          id: d.id,
-          qnty: d.qnty,
-          cost: d.cost,
-          income: d.income,
-        }))}
-        margin={{
-          top: 5,
-          right: 0,
-          left: 0,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="id" />
-        {/* <YAxis
-          // allowDecimals={false}
-          tickCount={10}
-          yAxisId="qnty"
-          orientation="left"
-          stroke="oklch(54.6% 0.245 262.881)"
-        />
-        <YAxis
-          width={90}
-          tick={{ fontSize: 12 }}
-          tickCount={10}
-          tickFormatter={(value: string) =>
-            decimalToInputString(locale, Number(value))
-          }
-          yAxisId="cost"
-          orientation="right"
-          stroke="oklch(57.7% 0.245 27.325)"
-        /> */}
-        <Tooltip
-          formatter={(value, name) => {
-            if (!value) return;
-            if (name === "cost" || name === "income") {
-              return [
-                decimalToInputString(locale, Number(value)),
-                name === "cost" ? "Расход" : "Доход",
-              ];
-            }
-
-            return [value, "Количество"];
-          }}
-        />
-        <Legend />
+      <div className="flex flex-col 2xl:flex-row gap-2">
         {[
           {
-            dataKey: "qnty",
+            name: "qnty",
             fill: "oklch(70.7% 0.165 254.624)",
             activeFill: "oklch(62.3% 0.214 259.815)",
           },
           {
-            dataKey: "cost",
+            name: "cost",
             fill: "oklch(70.4% 0.191 22.216)",
             activeFill: "oklch(63.7% 0.237 25.331)",
           },
           {
-            dataKey: "income",
+            name: "income",
             fill: "oklch(79.2% 0.209 151.711)",
             activeFill: "oklch(72.3% 0.219 149.579)",
           },
         ].map((v, i) => (
-          <Bar
+          <Charts
             key={i}
-            yAxisId={v.dataKey === "qnty" ? "qnty" : v.dataKey === "cost" ? "cost" : "income"}
-            dataKey={v.dataKey}
+            name={v.name as DataKeyType}
+            selectedYearId={selectedYearId}
+            selectedMonthId={selectedMonthId}
             fill={v.fill}
-            onClick={(data) => handleClick(Number(data.id))}
-            style={{ cursor: "pointer" }}
-            activeBar={{ fill: v.activeFill }}
-            // label={{ position: "top", fontSize: 14 }}
-            radius={[10, 10, 0, 0]}
-          ></Bar>
+            activeFill={v.activeFill}
+            handleClick={handleClick}
+            data={formattedChartsData(v.name as DataKeyType)}
+          />
         ))}
-      </BarChart>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@
 import ModalRoot from "./modals/ModalRoot";
 import FlashBlock from "./flash/FlashBlock";
 import TrackerDataBlock from "./TrackerDataBlock";
-import ChartsBlock from "./ChartsBlock";
+import ChartsBlock from "./chartsBlock/ChartsBlock";
 
 const MainBlock = () => {
   return (
