@@ -141,8 +141,8 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="id" />
-        <YAxis
-          allowDecimals={false}
+        {/* <YAxis
+          // allowDecimals={false}
           tickCount={10}
           yAxisId="qnty"
           orientation="left"
@@ -158,7 +158,7 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
           yAxisId="cost"
           orientation="right"
           stroke="oklch(57.7% 0.245 27.325)"
-        />
+        /> */}
         <Tooltip
           formatter={(value, name) => {
             if (!value) return;
@@ -192,7 +192,7 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
         ].map((v, i) => (
           <Bar
             key={i}
-            yAxisId={v.dataKey === "qnty" ? "qnty" : "cost"}
+            yAxisId={v.dataKey === "qnty" ? "qnty" : v.dataKey === "cost" ? "cost" : "income"}
             dataKey={v.dataKey}
             fill={v.fill}
             onClick={(data) => handleClick(Number(data.id))}

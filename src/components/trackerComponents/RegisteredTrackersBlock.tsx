@@ -7,25 +7,29 @@ import { populateTrackerContex } from "@/lib/utils/updateLocalTrackerIds";
 import { TrackerId } from "@/lib/types/brand";
 import { TrackerMeta } from "@/lib/types/dataTypes";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
+import LoadingSkeleton from "../LoadingSkeleton";
+import NoDataPlaceholder from "../NoDataPlaceholder";
 
 const RegisteredTrackersBlock = () => {
   const { locale, allTrackersMeta, isLoading } = useGlobal();
   return (
-    <section className="w-full col-span-3 flex gap-2">
+    <section className="w-full col-span-3 flex gap-2 h-20">
       <div className="border-b-6 border-blue-400 w-full flex flex-col justify-between items-start md:gap-3 pb-3">
         {isLoading ? (
-          <p>loading data</p>
+          <LoadingSkeleton rowNo={2} />
         ) : allTrackersMeta.length > 0 ? (
           <RegisteredData
             locale={locale}
             allTrackersMeta={allTrackersMeta.sort(
               (a, b) =>
                 parseMetaToDate(b.updatedAt).getTime() -
-                parseMetaToDate(a.updatedAt).getTime()
+                parseMetaToDate(a.updatedAt).getTime(),
             )}
           />
         ) : (
-          <RegisteredPlaceholder locale={locale} />
+          <NoDataPlaceholder withArrows
+            text={t(locale, "body.form.tracker.idsTitleEmpty")}
+          />
         )}
       </div>
       <div className="hidden lg:block mb-4 lg:border-r-3 border-blue-400"></div>
@@ -54,7 +58,7 @@ const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
       setTrackerId,
       setTrackerMeta,
       setTrackerTags,
-      setTrackerYears
+      setTrackerYears,
     );
   };
 
@@ -77,19 +81,5 @@ const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
         ))}
       </div>
     </>
-  );
-};
-
-const RegisteredPlaceholder = ({ locale }: { locale: Locale }) => {
-  return (
-    <div className="flex justify-between items-start lg:items-center gap-2">
-      <p className="block lg:hidden text-xl font-bold">&#8593;</p>
-      <p className="hidden lg:block text-xl font-bold">&#8594;</p>
-      <p className="text-xs md:text-sm">
-        {t(locale, "body.form.tracker.idsTitleEmpty")}
-      </p>
-      <p className="block lg:hidden text-xl font-bold">&#8593;</p>
-      <p className="hidden lg:block text-xl font-bold">&#8594;</p>
-    </div>
   );
 };

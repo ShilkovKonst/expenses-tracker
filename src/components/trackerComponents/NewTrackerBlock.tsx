@@ -62,7 +62,7 @@ const NewTrackerBlock = () => {
       <SubmitButton
         icon={<AddIcon className="w-6 h-6" />}
         title={t(locale, "body.buttons.create")}
-        customStyle="h-7.5 w-full lg:w-7.5 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
+        customStyle="h-7.5 w-full lg:w-7 lg:h-6 bg-green-400 hover:bg-green-500 disabled:bg-green-300 disabled:hover:bg-green-300 disabled:text-gray-600"
         disabled={isDisabled}
       />
       {newTrackerId.trim() === "" ||
