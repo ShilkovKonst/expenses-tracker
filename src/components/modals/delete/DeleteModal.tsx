@@ -57,6 +57,7 @@ const DeleteModal = ({
         id: trackerMeta.id ?? trackerId,
         title: trackerMeta.title ?? trackerId,
         createdAt: trackerMeta.createdAt ?? updatedAt,
+        backupAt: trackerMeta.backupAt ?? updatedAt,
         updatedAt,
       };
       await updateMetadata(trackerId, newMeta);
@@ -74,7 +75,7 @@ const DeleteModal = ({
           setTrackerId,
           setTrackerMeta,
           setTrackerTags,
-          setTrackerYears
+          setTrackerYears,
         );
       }
       if (entityType === "record") {
@@ -96,7 +97,7 @@ const DeleteModal = ({
         t(locale, `body.flash.deleted`, {
           entity: t(locale, `body.modal.deleteEntity.${entityType}`),
           id: "title" in entity ? entity.title : entity.id,
-        })
+        }),
       );
     } catch (error) {
       console.error(error);

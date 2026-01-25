@@ -34,7 +34,7 @@ export async function batchAddRecords(
 export async function getAllData(trackerId: string) {
   const db = await openDB(trackerId);
   const trackerData: Tracker = {
-    meta: { id: "" as TrackerId, title: "", createdAt: "", updatedAt: "" },
+    meta: { id: "" as TrackerId, title: "", createdAt: "", updatedAt: "", backupAt: "" },
     tags: {},
     years: {},
     totalAmount: 0,

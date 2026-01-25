@@ -42,6 +42,7 @@ export function transformToTracker(form: FormData): Tracker {
           title: id,
           createdAt: new Date().toLocaleString(),
           updatedAt: new Date().toLocaleString(),
+          backupAt: new Date().toLocaleString(),
         },
     tags: tagsString ? parseToTags(tagsString.toString()) : {},
     years: yearsString ? parseToYears(yearsString.toString()) : {},

@@ -49,6 +49,7 @@ const RecordModal = ({
           id: trackerMeta.id ?? trackerId,
           title: trackerMeta.title ?? trackerId,
           createdAt: trackerMeta.createdAt ?? updatedAt,
+          backupAt: trackerMeta.backupAt ?? updatedAt,
           updatedAt,
         };
         await updateMetadata(trackerId, newMeta);

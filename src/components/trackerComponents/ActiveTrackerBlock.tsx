@@ -12,20 +12,26 @@ import {
   ShareIcon,
 } from "@/lib/icons";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
-import { saveFiletoLocal, shareFile } from "@/lib/utils/fileContentHelper";
+import {
+  isMobileDevice,
+  saveWithConfirmation,
+  shareFile,
+} from "@/lib/utils/fileContentHelper";
 import { memo, useCallback, useMemo } from "react";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
+import { formatDatetoMeta } from "@/lib/utils/dateParser";
 
 const ActiveTrackerBlock = () => {
   const { locale, setAllTrackersMeta, setIsLoading, setIsCharts } = useGlobal();
-  const { trackerId, trackerTags, trackerMeta, trackerYears } = useTracker();
+  const { trackerId, trackerTags, trackerMeta, setTrackerMeta, trackerYears } =
+    useTracker();
   const { openModal } = useModal();
   const { addFlash } = useFlash();
 
   const updatedAt = useMemo(
     () => trackerMeta?.updatedAt.replace("_", " "),
-    [trackerMeta]
+    [trackerMeta],
   );
 
   const contentData = useMemo(
@@ -39,12 +45,12 @@ const ActiveTrackerBlock = () => {
             totalAmount: trackerYears
               ? Object.values(trackerYears).reduce(
                   (acc, y) => acc + y.totalAmount,
-                  0
+                  0,
                 )
               : 0,
           }
         : null,
-    [trackerId, trackerTags, trackerMeta, trackerYears]
+    [trackerId, trackerTags, trackerMeta, trackerYears],
   );
 
   const handleCharts = useCallback(() => {
@@ -66,8 +72,8 @@ const ActiveTrackerBlock = () => {
           "error",
           getErrorMessage(
             error,
-            `Something went wrong while deleting tracker ${trackerId}`
-          )
+            `Something went wrong while deleting tracker ${trackerId}`,
+          ),
         );
       }
     };
@@ -85,18 +91,52 @@ const ActiveTrackerBlock = () => {
     trackerMeta,
   ]);
 
-  const handleSaveClick = useCallback(() => {
-    if (contentData) saveFiletoLocal<"tracker">(contentData);
-  }, [contentData]);
+  const handleSaveClick = useCallback(async () => {
+    if (contentData) {
+      try {
+        const isSaved = await saveWithConfirmation(contentData);
+        if (isSaved) {
+          setTrackerMeta((prev) => {
+            if (prev)
+              return {
+                ...prev,
+                backupAt: formatDatetoMeta(new Date()),
+              };
+            else return null;
+          });
+          addFlash(
+            "success",
+            t(locale, "body.flash.trackerSaved", { trackerId }),
+          );
+        }
+      } catch (error) {
+        addFlash("error", getErrorMessage(error, ""));
+      }
+    }
+  }, [addFlash, contentData, locale, setTrackerMeta, trackerId]);
 
   const handleShareClick = useCallback(async () => {
     if (contentData)
       try {
-        await shareFile<"tracker">(contentData);
+        const isSaved = await shareFile<"tracker">(contentData);
+        if (isSaved) {
+          setTrackerMeta((prev) => {
+            if (prev)
+              return {
+                ...prev,
+                backupAt: formatDatetoMeta(new Date()),
+              };
+            else return null;
+          });
+          addFlash(
+            "success",
+            t(locale, "body.flash.trackerSaved", { trackerId }),
+          );
+        }
       } catch (error) {
         addFlash("error", getErrorMessage(error, ""));
       }
-  }, [addFlash, contentData]);
+  }, [addFlash, contentData, locale, setTrackerMeta, trackerId]);
 
   const buttons = useMemo(
     () => [
@@ -137,7 +177,7 @@ const ActiveTrackerBlock = () => {
       handleSaveClick,
       handleSettings,
       handleShareClick,
-    ]
+    ],
   );
 
   return (
@@ -155,15 +195,18 @@ const ActiveTrackerBlock = () => {
         </div>
       </div>
       <div className={`gap-2 flex flex-row justify-between items-center`}>
-        {buttons.map((button, index) => (
-          <UtilButton
-            key={index}
-            icon={button.icon}
-            title={t(locale, button.title)}
-            customStyle={`${button.style} w-7.5 h-7.5`}
-            handleClick={button.handleClick}
-          />
-        ))}
+        {buttons.map(
+          (button, index) =>
+            (!button.title.includes("share") || isMobileDevice()) && (
+              <UtilButton
+                key={index}
+                icon={button.icon}
+                title={t(locale, button.title)}
+                customStyle={`${button.style} w-7.5 h-7.5`}
+                handleClick={button.handleClick}
+              />
+            ),
+        )}
       </div>
     </div>
   );

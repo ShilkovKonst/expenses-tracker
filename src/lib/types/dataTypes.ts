@@ -46,4 +46,5 @@ export type TrackerMeta = {
   title: string;
   createdAt: string;
   updatedAt: string;
+  backupAt: string;
 };

@@ -28,7 +28,8 @@ const SettingsRenameTrackerBlock = () => {
       const newMeta: TrackerMeta = {
         id: trackerMeta.id ?? trackerId,
         title: value,
-        createdAt: updatedAt,
+        createdAt: trackerMeta.createdAt ?? updatedAt,
+        backupAt: trackerMeta.backupAt ?? updatedAt,
         updatedAt,
       };
       try {

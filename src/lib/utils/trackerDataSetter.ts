@@ -36,11 +36,12 @@ export async function setNewData(
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
   setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
 ) {
-  const newMeta = {
+  const newMeta: TrackerMeta = {
     id: newTrackerId,
     title: newTrackerId,
     createdAt: formatDatetoMeta(new Date()),
     updatedAt: formatDatetoMeta(new Date()),
+    backupAt: formatDatetoMeta(new Date()),
   };
   await createMetadata(newTrackerId, newMeta);
 

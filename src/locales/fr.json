@@ -42,6 +42,7 @@
     "flash": {
       "newTrackerAdded": "Nouveau suivi {{trackerId}} est enregistré",
       "trackerLoaded": "Le suivi {{trackerId}} est téléchargé",
+      "trackerSaved": "Le suivi {{trackerId}} est sauvegardé",
       "trackerLoadedError": "Erreur de lecture ou d'analyse du fichier JSON",
       "trackerDeleted": "Le suivi {{trackerId}} est supprimé",
       "trackerUpdated": "Le suivi {{trackerId}} mis à jour",
