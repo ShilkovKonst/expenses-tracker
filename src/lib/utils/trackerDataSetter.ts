@@ -69,6 +69,8 @@ export async function createNPopulate(
   setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
 ) {
   try {
+    const backupAt = formatDatetoMeta(new Date());
+    data.meta = { ...data.meta, backupAt };
     await createTrackerUtil(data);
   } catch (error) {
     console.error(error);

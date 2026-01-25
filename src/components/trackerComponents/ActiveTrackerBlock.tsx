@@ -21,6 +21,8 @@ import { memo, useCallback, useMemo } from "react";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
+import { updateMetadata } from "@/idb/CRUD/metaCRUD";
+import { TrackerMeta } from "@/lib/types/dataTypes";
 
 const ActiveTrackerBlock = () => {
   const { locale, setAllTrackersMeta, setIsLoading, setIsCharts } = useGlobal();
@@ -95,15 +97,13 @@ const ActiveTrackerBlock = () => {
     if (contentData) {
       try {
         const isSaved = await saveWithConfirmation(contentData);
-        if (isSaved) {
-          setTrackerMeta((prev) => {
-            if (prev)
-              return {
-                ...prev,
-                backupAt: formatDatetoMeta(new Date()),
-              };
-            else return null;
-          });
+        if (isSaved && trackerMeta) {
+          const newMeta: TrackerMeta = {
+            ...trackerMeta,
+            backupAt: formatDatetoMeta(new Date()),
+          };
+          setTrackerMeta(newMeta);
+          await updateMetadata(trackerId, newMeta);
           addFlash(
             "success",
             t(locale, "body.flash.trackerSaved", { trackerId }),
@@ -113,21 +113,20 @@ const ActiveTrackerBlock = () => {
         addFlash("error", getErrorMessage(error, ""));
       }
     }
-  }, [addFlash, contentData, locale, setTrackerMeta, trackerId]);
+  }, [addFlash, contentData, locale, setTrackerMeta, trackerId, trackerMeta]);
 
   const handleShareClick = useCallback(async () => {
     if (contentData)
       try {
         const isSaved = await shareFile<"tracker">(contentData);
-        if (isSaved) {
-          setTrackerMeta((prev) => {
-            if (prev)
-              return {
-                ...prev,
-                backupAt: formatDatetoMeta(new Date()),
-              };
-            else return null;
-          });
+
+        if (isSaved && trackerMeta) {
+          const newMeta: TrackerMeta = {
+            ...trackerMeta,
+            backupAt: formatDatetoMeta(new Date()),
+          };
+          setTrackerMeta(newMeta);
+          await updateMetadata(trackerId, newMeta);
           addFlash(
             "success",
             t(locale, "body.flash.trackerSaved", { trackerId }),
@@ -136,16 +135,16 @@ const ActiveTrackerBlock = () => {
       } catch (error) {
         addFlash("error", getErrorMessage(error, ""));
       }
-  }, [addFlash, contentData, locale, setTrackerMeta, trackerId]);
+  }, [addFlash, contentData, locale, setTrackerMeta, trackerId, trackerMeta]);
 
   const buttons = useMemo(
     () => [
-      {
-        icon: <ChartsIcon className={"w-6 h-6"} />,
-        title: "body.buttons.delete",
-        style: `bg-green-400 hover:bg-green-500`,
-        handleClick: handleCharts,
-      },
+      // {
+      //   icon: <ChartsIcon className={"w-6 h-6"} />,
+      //   title: "body.buttons.delete",
+      //   style: `bg-green-400 hover:bg-green-500`,
+      //   handleClick: handleCharts,
+      // },
       {
         icon: <SaveIcon className={"w-6 h-6"} />,
         title: "body.buttons.save",

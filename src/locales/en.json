@@ -43,6 +43,7 @@
       "newTrackerAdded": "New tracker {{trackerId}} is registered",
       "trackerLoaded": "Tracker {{trackerId}} is uploaded",
       "trackerSaved": "Tracker {{trackerId}} is saved",
+      "trackerNeedToSave": "Last save was: {{backupDelay}}. Save the tracker to prevent data loss",
       "trackerLoadedError": "Error reading or parsing JSON file",
       "trackerDeleted": "Tracker {{trackerId}} is deleted",
       "trackerUpdated": "Tracker {{trackerId}} is updated",

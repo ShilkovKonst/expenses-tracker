@@ -27,7 +27,7 @@ const LoadTrackerBlock = () => {
   };
 
   const handleImport = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
     const file: File | undefined = e.target.files?.[0];
     if (!file) {
@@ -41,7 +41,7 @@ const LoadTrackerBlock = () => {
           "error",
           `${t(locale, "body.flash.error.parseJson")}: ${validated.path} - ${
             validated.message
-          }`
+          }`,
         );
         return;
       }
@@ -69,13 +69,13 @@ const LoadTrackerBlock = () => {
           setTrackerId,
           setTrackerMeta,
           setTrackerTags,
-          setTrackerYears
+          setTrackerYears,
         );
         addFlash(
           "success",
           `${t(locale, "body.flash.trackerLoaded", {
             trackerId: data.meta.title,
-          })}`
+          })}`,
         );
         await loadTrackers(setAllTrackersMeta, setIsLoading);
       }
@@ -83,7 +83,7 @@ const LoadTrackerBlock = () => {
       console.error("Import error:", err);
       addFlash(
         "error",
-        getErrorMessage(err, t(locale, "body.flash.trackerLoadedError"))
+        getErrorMessage(err, t(locale, "body.flash.trackerLoadedError")),
       );
     } finally {
       if (e.target) e.target.value = "";

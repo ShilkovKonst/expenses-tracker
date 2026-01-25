@@ -8,8 +8,6 @@ import { MonthRecord, TrackerYears } from "@/lib/types/dataTypes";
 import { createTagId, TagId } from "@/lib/types/brand";
 import { useGlobal } from "@/context/GlobalContext";
 import LoadingSkeleton from "./LoadingSkeleton";
-// import NoDataPlaceholder from "./NoDataPlaceholder";
-// import { t } from "@/locales/locale";
 import Image from "next/image";
 
 const ChartsBlock = () => {

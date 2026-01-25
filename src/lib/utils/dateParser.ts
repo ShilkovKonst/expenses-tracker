@@ -17,7 +17,8 @@ export function formatDatetoMeta(d: Date): string {
   return `${dd}/${mm}/${yyyy}_${hh}:${min}:${sec}`;
 }
 
-export function parseMetaToDate(str: string): Date {
+export function parseMetaToDate(str?: string): Date {
+  if (!str) return new Date();
   const { 0: datePart, 1: timePart } = str.split("_");
   if (!datePart || !timePart) throw new Error("Invalid meta date format");
 
