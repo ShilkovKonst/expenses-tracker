@@ -5,7 +5,7 @@ import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import { useTracker } from "@/context/TrackerContext";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function FlashBlock() {
   const { locale } = useGlobal();
@@ -19,7 +19,6 @@ export default function FlashBlock() {
     if (!trackerMeta) return;
 
     const backupDate = parseMetaToDate(trackerMeta?.backupAt);
-    console.log("backupDate", backupDate);
     if (!backupDate) return t(locale, "body.flash.never");
 
     const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
@@ -41,7 +40,10 @@ export default function FlashBlock() {
     if (abs >= 3) return rtf.format(diffInDays, "day");
     return false;
   }, [locale, showBackupDelay, trackerMeta]);
-  console.log("backupDelay", backupDelay);
+
+  useEffect(() => {
+    setShowBackupDelay(true);
+  }, [setShowBackupDelay, trackerMeta]);
 
   if (flash.length === 0 && !backupDelay) return null;
 
