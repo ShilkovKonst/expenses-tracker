@@ -19,15 +19,16 @@ export default function FlashBlock() {
     if (!trackerMeta) return;
 
     const backupDate = parseMetaToDate(trackerMeta?.backupAt);
+    console.log("backupDate", backupDate);
     if (!backupDate) return t(locale, "body.flash.never");
-    
-    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
-    const now = new Date();
 
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+
+    const now = new Date();
     const diffInMs = backupDate.getTime() - now.getTime();
     const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
-    const abs = Math.abs(diffInDays);
 
+    const abs = Math.abs(diffInDays);
     if (abs > 7)
       return new Intl.DateTimeFormat(locale, {
         day: "numeric",
@@ -37,10 +38,10 @@ export default function FlashBlock() {
             ? "numeric"
             : undefined,
       }).format(backupDate);
-
     if (abs >= 3) return rtf.format(diffInDays, "day");
+    return false;
   }, [locale, showBackupDelay, trackerMeta]);
-  console.log(backupDelay);
+  console.log("backupDelay", backupDelay);
 
   if (flash.length === 0 && !backupDelay) return null;
 
