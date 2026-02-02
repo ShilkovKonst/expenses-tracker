@@ -49,6 +49,7 @@
       "trackerUpdated": "Трекер {{trackerId}} обновлен",
       "trackerDoubled": "Трекер {{trackerId}} продублирован",
       "trackerTitleUpdated": "Имя трекера {{trackerId}} обновлено",
+      "never": "никогда",
       "error": {
         "parseJson": "Данные файла не соответствует ожидаемой структуре",
         "validator": {

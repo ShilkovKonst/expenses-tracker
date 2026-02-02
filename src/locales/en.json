@@ -49,6 +49,7 @@
       "trackerUpdated": "Tracker {{trackerId}} is updated",
       "trackerDoubled": "Tracker {{trackerId}} is duplicated",
       "trackerTitleUpdated": "Tracker's {{trackerId}} name updated",
+      "never": "never",
       "error": {
         "parseJson": "The file data does not match the expected structure",
         "validator": {

@@ -18,12 +18,12 @@ export default function FlashBlock() {
     if (!showBackupDelay) return;
     if (!trackerMeta) return;
 
+    const backupDate = parseMetaToDate(trackerMeta?.backupAt);
+    if (!backupDate) return t(locale, "body.flash.never");
+    
     const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
     const now = new Date();
-    const backupDate = parseMetaToDate(
-      trackerMeta?.backupAt ?? trackerMeta.createdAt,
-    );
-    console.log(now, backupDate);
+
     const diffInMs = backupDate.getTime() - now.getTime();
     const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
     const abs = Math.abs(diffInDays);

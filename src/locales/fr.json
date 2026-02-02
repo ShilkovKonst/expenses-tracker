@@ -49,6 +49,7 @@
       "trackerUpdated": "Le suivi {{trackerId}} mis à jour",
       "trackerDoubled": "Le suivi {{trackerId}} est dupliqué",
       "trackerTitleUpdated": "Le nom de suivi {{trackerId}} mis à jour",
+      "never": "jamais",
       "error": {
         "parseJson": "Les données du fichier ne correspondent pas à la structure attendue",
         "validator": {
