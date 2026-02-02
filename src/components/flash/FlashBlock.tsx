@@ -23,7 +23,7 @@ export default function FlashBlock() {
     const backupDate = parseMetaToDate(
       trackerMeta?.backupAt ?? trackerMeta.createdAt,
     );
-
+    console.log(now, backupDate);
     const diffInMs = backupDate.getTime() - now.getTime();
     const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
     const abs = Math.abs(diffInDays);
@@ -40,6 +40,7 @@ export default function FlashBlock() {
 
     if (abs >= 3) return rtf.format(diffInDays, "day");
   }, [locale, showBackupDelay, trackerMeta]);
+  console.log(backupDelay);
 
   if (flash.length === 0 && !backupDelay) return null;
 
