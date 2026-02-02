@@ -32,8 +32,9 @@ const TrackerMergeBlock = ({
 
   const isOutdated = useMemo(() => {
     if (!oldTrackerMeta) return false;
-    const oldDate = parseMetaToDate(oldTrackerMeta.updatedAt);
-    const newDate = parseMetaToDate(importTrackerBody.meta.updatedAt);
+    const oldDate = parseMetaToDate(oldTrackerMeta.updatedAt) ?? new Date();
+    const newDate =
+      parseMetaToDate(importTrackerBody.meta.updatedAt) ?? new Date();
     return oldDate > newDate;
   }, [oldTrackerMeta, importTrackerBody]);
 
@@ -55,19 +56,19 @@ const TrackerMergeBlock = ({
         setTrackerId,
         setTrackerMeta,
         setTrackerTags,
-        setTrackerYears
+        setTrackerYears,
       );
       addFlash(
         "success",
         `${t(locale, "body.flash.trackerUpdated", {
           trackerId: importTrackerBody.meta.title,
-        })}`
+        })}`,
       );
     } catch (error) {
       console.error(error);
       addFlash(
         "error",
-        getErrorMessage(error, "Something went wrong while replacing tracker")
+        getErrorMessage(error, "Something went wrong while replacing tracker"),
       );
     }
     closeModal();
@@ -93,19 +94,22 @@ const TrackerMergeBlock = ({
           setTrackerId,
           setTrackerMeta,
           setTrackerTags,
-          setTrackerYears
+          setTrackerYears,
         );
         addFlash(
           "success",
           `${t(locale, "body.flash.trackerDoubled", {
             trackerId: importTrackerBody.meta.title,
-          })} - ${newTitle}`
+          })} - ${newTitle}`,
         );
       } catch (error) {
         console.error(error);
         addFlash(
           "error",
-          getErrorMessage(error, "Something went wrong while replacing tracker")
+          getErrorMessage(
+            error,
+            "Something went wrong while replacing tracker",
+          ),
         );
       }
       closeModal();

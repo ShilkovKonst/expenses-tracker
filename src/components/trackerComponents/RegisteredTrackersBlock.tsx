@@ -9,9 +9,16 @@ import { TrackerMeta } from "@/lib/types/dataTypes";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
 import LoadingSkeleton from "../LoadingSkeleton";
 import NoDataPlaceholder from "../NoDataPlaceholder";
+import { useCallback } from "react";
 
 const RegisteredTrackersBlock = () => {
   const { locale, allTrackersMeta, isLoading } = useGlobal();
+
+  const time = useCallback(
+    (s: string) => (parseMetaToDate(s) ?? new Date()).getTime(),
+    [],
+  );
+
   return (
     <section className="w-full col-span-3 flex gap-2 h-20">
       <div className="border-b-6 border-blue-400 w-full flex flex-col justify-between items-start md:gap-3 pb-3">
@@ -21,13 +28,12 @@ const RegisteredTrackersBlock = () => {
           <RegisteredData
             locale={locale}
             allTrackersMeta={allTrackersMeta.sort(
-              (a, b) =>
-                parseMetaToDate(b.updatedAt).getTime() -
-                parseMetaToDate(a.updatedAt).getTime(),
+              (a, b) => time(b.updatedAt) - time(a.updatedAt),
             )}
           />
         ) : (
-          <NoDataPlaceholder withArrows
+          <NoDataPlaceholder
+            withArrows
             text={t(locale, "body.form.tracker.idsTitleEmpty")}
           />
         )}
