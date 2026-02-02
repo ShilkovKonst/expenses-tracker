@@ -135,7 +135,7 @@ export function decimalToInputString(locale: Locale, amount: number): string {
 }
 
 export function inputStringToDecimal(value: string): number {
-  const num = Number(value);
+  const num = Number.parseInt(value);
   if (isNaN(num)) return 0;
   return Math.round(num * 100);
 }

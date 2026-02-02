@@ -20,7 +20,9 @@ export default function FlashBlock() {
 
     const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
     const now = new Date();
-    const backupDate = parseMetaToDate(trackerMeta?.backupAt);
+    const backupDate = parseMetaToDate(
+      trackerMeta?.backupAt ?? trackerMeta.createdAt,
+    );
 
     const diffInMs = backupDate.getTime() - now.getTime();
     const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));

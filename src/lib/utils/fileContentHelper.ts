@@ -66,6 +66,14 @@ export async function saveWithConfirmation<T extends keyof ContentTypes>(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const handle = await (window as any).showSaveFilePicker({
         suggestedName: fileName,
+        types: [
+          {
+            description: "Text Document",
+            accept: {
+              "text/plain": [".txt"],
+            },
+          },
+        ],
       });
       const writable = await handle.createWritable();
       await writable.write(blob);
