@@ -22,6 +22,20 @@ const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
 
   const isDisabled = useMemo(() => (id: number) => id === tag?.id, [tag?.id]);
 
+  const handleClick = useCallback(
+    (tg: TagObj) => {
+      console.log(tag?.id, tag?.title, tg.id, tg.title);
+      if (tag && tag.id === tg.id) {
+        console.log("unset tag");
+        setTag(undefined);
+      } else {
+        console.log("set tag");
+        setTag(tg);
+      }
+    },
+    [setTag, tag],
+  );
+
   const handleRemove = useCallback(
     (idx: number) => {
       const onDelete = async () => {
@@ -55,12 +69,12 @@ const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
         tagsArray.map((tg, i) => (
           <div key={i} className="relative flex">
             <TextRoundedButton
-              handleClick={() => setTag(tg)}
+              handleClick={() => handleClick(tg)}
               title={`${t(locale, "body.buttons.update")} '${tg.title}'`}
               value={tg.title}
               id={tg.id}
-              disabled={isDisabled(tg.id)}
-              customStyle={`bg-blue-300 hover:bg-blue-400 disabled:bg-blue-400 disabled:hover:bg-blue-400 rounded-r-lg pr-8 h-7`}
+              // disabled={isDisabled(tg.id)}
+              customStyle={`bg-blue-300 hover:bg-blue-400 ${isDisabled(tg.id) ? "bg-blue-400 hover:bg-blue-400" : ""} rounded-r-lg pr-8 h-7`}
             />
             <IconButton
               icon={<DeleteIcon className="h-5 w-5" />}

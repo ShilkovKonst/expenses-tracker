@@ -81,7 +81,7 @@ const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
             value={meta.id}
             title={`${t(locale, "body.buttons.select")} - ${meta.title}`}
             handleClick={handleChangeTrackerClick}
-            customStyle="bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500 px-2 h-6 rounded-lg"
+            customStyle="bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500 px-2 h-6 rounded"
             disabled={trackerId === meta.id}
           />
         ))}

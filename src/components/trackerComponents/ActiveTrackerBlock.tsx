@@ -160,13 +160,14 @@ const ActiveTrackerBlock = () => {
 
   return (
     <div className="w-full pb-2 flex justify-between gap-1 md:gap-2 items-center border-b-6 border-blue-400 cursor-default">
-      <div className="text-xs shrink font-semibold w-full flex flex-col md:flex-row gap-0 md:gap-2 justify-between items-start">
+      <div className="relative text-xs pl-1 pr-2 font-semibold w-full flex flex-col md:flex-row gap-0 md:gap-2 justify-between items-start rounded-l bg-blue-500 *:text-white">
+        <div className="absolute right-0 rounded-l z-10 bg-blue-50/95 h-8 pr-1"></div>
         <div className="text-blue-950 flex flex-row gap-1 md:flex-col md:gap-0">
-          <h2 className="underline">{t(locale, `body.form.title`)}:</h2>
+          <h2 className="">{t(locale, `body.form.title`)}:</h2>
           <p className="max-w-24 truncate">{trackerMeta?.title}</p>
         </div>
-        <div className="text-gray-700 flex flex-row gap-1 md:flex-col md:gap-0">
-          <p className="underline">{t(locale, `body.form.lastUpdate`)}:</p>
+        <div className="text-gray-700 flex flex-row gap-1 md:flex-col md:text-right md:gap-0">
+          <p className="">{t(locale, `body.form.lastUpdate`)}:</p>
           <p title={updatedAt} className="font-normal">
             {updatedAt}
           </p>

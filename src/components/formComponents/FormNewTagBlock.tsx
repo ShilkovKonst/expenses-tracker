@@ -49,6 +49,7 @@ const FormNewTagBlock = ({
 
   useEffect(() => {
     if (tag) setNewTag(tag.title);
+    if (!tag) setNewTag("")
   }, [tag]);
 
   const isDoubled = useMemo(
@@ -118,18 +119,16 @@ const FormNewTagBlock = ({
   );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (tag && setTag && e.target.value.length === 0) {
-      setTag(undefined);
-    }
+    // if (tag && setTag && e.target.value.length === 0) {
+    //   setTag(undefined);
+    // }
     setNewTag(e.target.value);
   };
 
   return (
     <div className={`relative flex gap-2`}>
       <label
-        className={`flex ${
-          tag ? "min-w-20" : "min-w-16"
-        } justify-start items-center text-xs font-semibold`}
+        className={`flex w-20 justify-start items-center text-xs font-semibold`}
       >
         {t(locale, `body.buttons.${tag ? "update" : "add"}`)}
       </label>
