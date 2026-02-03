@@ -36,7 +36,7 @@ const FormAmountBlock: React.FC<FormInputProps> = ({
     e.preventDefault();
     if (handleCalc) handleCalc(value);
   };
-  
+
   return (
     <div className={`${outerStyle} relative`}>
       {!withoutLabel && (
@@ -61,9 +61,9 @@ const FormAmountBlock: React.FC<FormInputProps> = ({
       {isCalcMode && handleCalc && (
         <button
           onClick={handleClick}
-          className="absolute cursor-pointer top-2 right-1 rounded-sm h-4 w-4 bg-green-500 text-center flex justify-center items-center"
+          className="absolute cursor-pointer top-2.25 right-0.5 rounded-r-sm h-6 w-6 bg-blue-300 font-bold text-base text-center flex justify-center items-center"
         >
-          <p>=</p>
+          <p className="my-auto">=</p>
         </button>
       )}
     </div>

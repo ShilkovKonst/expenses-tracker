@@ -59,7 +59,7 @@
           "array": "must be an array",
           "meta": {
             "keyAbsent": "Missing required meta key",
-            "keyUnknown": "Meta contains unknown keys (allowed keys: 'id', 'title', 'createdAt', 'updatedAt')"
+            "keyUnknown": "Meta contains unknown keys (allowed keys: 'id', 'title', 'createdAt', 'updatedAt', 'backupAt')"
           },
           "tag": "does not exist in tagsPool"
         }

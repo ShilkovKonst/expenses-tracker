@@ -32,28 +32,28 @@ export function validate(data: unknown, locale: Locale): ValidationResult {
     return fail("totalAmount", t(locale, "body.flash.error.validator.number"));
 
   const meta = d.meta as Record<string, unknown>;
-  const allowedMetaKeys = ["id", "title", "createdAt", "updatedAt"];
+  const allowedMetaKeys = ["id", "title", "createdAt", "updatedAt", "backupAt"];
   for (const key of allowedMetaKeys) {
     if (!(key in meta))
       return fail(
         `meta.${key}`,
-        `${t(locale, "body.flash.error.validator.meta.keyAbsent")} '${key}'`
+        `${t(locale, "body.flash.error.validator.meta.keyAbsent")} '${key}'`,
       );
   }
   if (Object.keys(meta).some((key) => !allowedMetaKeys.includes(key)))
     return fail(
       "meta",
-      t(locale, "body.flash.error.validator.meta.keyUnknown")
+      t(locale, "body.flash.error.validator.meta.keyUnknown"),
     );
   if (typeof meta.createdAt !== "string")
     return fail(
       "meta.createdAt",
-      t(locale, "body.flash.error.validator.string")
+      t(locale, "body.flash.error.validator.string"),
     );
   if (typeof meta.updatedAt !== "string")
     return fail(
       "meta.updatedAt",
-      t(locale, "body.flash.error.validator.string")
+      t(locale, "body.flash.error.validator.string"),
     );
 
   const tags: Record<number, string> = d.tags;
@@ -61,7 +61,7 @@ export function validate(data: unknown, locale: Locale): ValidationResult {
     if (typeof value !== "string")
       return fail(
         `tagsPool.${key}`,
-        t(locale, "body.flash.error.validator.string")
+        t(locale, "body.flash.error.validator.string"),
       );
   }
 
@@ -69,39 +69,39 @@ export function validate(data: unknown, locale: Locale): ValidationResult {
     if (typeof year.id !== "number")
       return fail(
         "year.id",
-        `'${year.id}' ${t(locale, "body.flash.error.validator.number")}`
+        `'${year.id}' ${t(locale, "body.flash.error.validator.number")}`,
       );
     if (typeof year.totalAmount !== "number")
       return fail(
         `year(${year.id}).totalAmount`,
-        t(locale, "body.flash.error.validator.number")
+        t(locale, "body.flash.error.validator.number"),
       );
     if (!isObject(year.months))
       return fail(
         `year(${year.id}).months`,
-        t(locale, "body.flash.error.validator.object")
+        t(locale, "body.flash.error.validator.object"),
       );
 
     for (const month of Object.values(year.months)) {
       if (typeof month.id !== "number")
         return fail(
           `month(${month.id}).id`,
-          t(locale, "body.flash.error.validator.number")
+          t(locale, "body.flash.error.validator.number"),
         );
       if (typeof month.title !== "string")
         return fail(
           `month(${month.id}).title`,
-          t(locale, "body.flash.error.validator.string")
+          t(locale, "body.flash.error.validator.string"),
         );
       if (!Array.isArray(month.records))
         return fail(
           `month(${month.id}).records`,
-          t(locale, "body.flash.error.validator.array")
+          t(locale, "body.flash.error.validator.array"),
         );
       if (typeof month.totalAmount !== "number")
         return fail(
           `month(${month.id}).totalAmount`,
-          t(locale, "body.flash.error.validator.number")
+          t(locale, "body.flash.error.validator.number"),
         );
 
       for (const record of month.records) {
@@ -110,39 +110,39 @@ export function validate(data: unknown, locale: Locale): ValidationResult {
         if (typeof record.id !== "number")
           return fail(
             `${rPath}.id`,
-            t(locale, "body.flash.error.validator.number")
+            t(locale, "body.flash.error.validator.number"),
           );
         if (!["income", "cost"].includes(record.type))
           return fail(`${rPath}.type`, "type must be 'income' or 'cost'");
         if (typeof record.day !== "number")
           return fail(
             `${rPath}.day`,
-            t(locale, "body.flash.error.validator.number")
+            t(locale, "body.flash.error.validator.number"),
           );
         if (typeof record.month !== "number")
           return fail(
             `${rPath}.month`,
-            t(locale, "body.flash.error.validator.number")
+            t(locale, "body.flash.error.validator.number"),
           );
         if (typeof record.year !== "number")
           return fail(
             `${rPath}.year`,
-            t(locale, "body.flash.error.validator.number")
+            t(locale, "body.flash.error.validator.number"),
           );
         if (typeof record.amount !== "number")
           return fail(
             `${rPath}.amount`,
-            t(locale, "body.flash.error.validator.number")
+            t(locale, "body.flash.error.validator.number"),
           );
         if (typeof record.description !== "string")
           return fail(
             `${rPath}.description`,
-            t(locale, "body.flash.error.validator.string")
+            t(locale, "body.flash.error.validator.string"),
           );
         if (!Array.isArray(record.tags))
           return fail(
             `${rPath}.tags`,
-            t(locale, "body.flash.error.validator.array")
+            t(locale, "body.flash.error.validator.array"),
           );
 
         for (const tag of record.tags) {
@@ -151,13 +151,13 @@ export function validate(data: unknown, locale: Locale): ValidationResult {
               `${rPath}.tags`,
               `'${String(tag)}' ${t(
                 locale,
-                "body.flash.error.validator.number"
-              )}`
+                "body.flash.error.validator.number",
+              )}`,
             );
           if (!(tag in tags))
             return fail(
               `${rPath}.tags`,
-              `'${tag}' ${t(locale, "body.flash.error.validator.tag")}`
+              `'${tag}' ${t(locale, "body.flash.error.validator.tag")}`,
             );
         }
       }
@@ -177,11 +177,10 @@ const isObject = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null && !Array.isArray(v);
 
 export function tryValidate(json: string, locale: Locale): ValidationResult {
-  let parsed: unknown;
   try {
-    parsed = JSON.parse(json);
+    const parsed = JSON.parse(json);
+    return validate(parsed, locale);
   } catch {
-    return fail("parse", "Invalid JSON format");
+    return fail("parse", "Invalid format");
   }
-  return validate(parsed, locale);
 }

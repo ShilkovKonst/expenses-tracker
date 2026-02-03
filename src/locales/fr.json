@@ -59,7 +59,7 @@
           "array": "doit être un tableau",
           "meta": {
             "keyAbsent": "Clé de méta-données requise manquante",
-            "keyUnknown": "Les méta-données contiennent des clés inconnues (clés autorisées: 'id', 'title', 'createdAt', 'updatedAt')"
+            "keyUnknown": "Les méta-données contiennent des clés inconnues (clés autorisées: 'id', 'title', 'createdAt', 'updatedAt', 'backupAt')"
           },
           "tag": "n'existe pas dans le pool de tags"
         }
