@@ -6,7 +6,6 @@ import { useTracker } from "@/context/TrackerContext";
 import { getAllRecords } from "@/idb/CRUD/recordsCRUD";
 import { populateYears } from "@/lib/utils/yearsTransformer";
 import { MonthRecord, TrackerMeta, Year } from "@/lib/types/dataTypes";
-import { populateTrackerContex } from "@/lib/utils/updateLocalTrackerIds";
 import ModalBase from "../ModalBase";
 import { t } from "@/locales/locale";
 import TagDeleteBlock from "./TagDeleteBlock";
@@ -38,8 +37,7 @@ const DeleteModal = ({
   onConfirm,
   onClose,
 }: ModalMap["delete"] & { onClose: () => void }) => {
-  const { locale, allTrackersMeta, setAllTrackersMeta, setIsLoading } =
-    useGlobal();
+  const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
   const { openModal } = useModal();
   const { addFlash } = useFlash();
   const {

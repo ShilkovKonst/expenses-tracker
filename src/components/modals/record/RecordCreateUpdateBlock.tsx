@@ -54,9 +54,8 @@ const RecordCreateUpdateBlock = ({
         normalizedValue = currentRecord.tags ?? [];
         break;
       default:
-        return;
+        throw new Error("key error");
     }
-
     if (currentRecord) {
       setCurrentRecord({
         ...currentRecord,

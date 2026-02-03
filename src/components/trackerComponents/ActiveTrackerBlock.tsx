@@ -57,7 +57,6 @@ const ActiveTrackerBlock = () => {
     const onDelete = async () => {
       try {
         await deleteTrackerUtil(trackerId);
-        console.log("tracker deleted");
         await loadTrackers(setAllTrackersMeta, setIsLoading);
       } catch (error) {
         console.error(error);

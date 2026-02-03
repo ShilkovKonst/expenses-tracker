@@ -24,12 +24,9 @@ const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
 
   const handleClick = useCallback(
     (tg: TagObj) => {
-      console.log(tag?.id, tag?.title, tg.id, tg.title);
       if (tag && tag.id === tg.id) {
-        console.log("unset tag");
         setTag(undefined);
       } else {
-        console.log("set tag");
         setTag(tg);
       }
     },

@@ -42,7 +42,7 @@ const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
 
   const isExpandDisabled = useMemo(
     () => month.records?.length === 0,
-    [month.records]
+    [month.records],
   );
 
   return (
@@ -72,7 +72,7 @@ const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
       >
         {month.records
           .sort((a, b) =>
-            a.day !== b.day ? a.day - b.day : compare(a.id, b.id)
+            a.day !== b.day ? a.day - b.day : compare(a.id, b.id),
           )
           .map((record, index) => (
             <RecordBlock key={index} record={record} />

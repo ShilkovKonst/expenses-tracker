@@ -27,7 +27,7 @@ const DescriptionBlock: React.FC<DescriptionProps> = ({
         value={decimalToInputString(locale, totalAmount)}
         valueStyle={`font-semibold
           ${
-            totalAmount > 0 ? `text-green-600 text-sm` : `text-red-600 text-sm`
+            totalAmount >= 0 ? `text-green-600 text-sm` : `text-red-600 text-sm`
           }`}
       />
     </div>

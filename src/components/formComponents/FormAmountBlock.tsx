@@ -53,7 +53,7 @@ const FormAmountBlock: React.FC<FormInputProps> = ({
         type={"text"}
         placeholder={withoutLabel && title ? title : ""}
         name={name}
-        value={name === "amount" ? sanitizeAmountExpression(value) : value}
+        value={sanitizeAmountExpression(value)}
         onChange={(e) => handleChange(e)}
         disabled={disabled}
         required={required}

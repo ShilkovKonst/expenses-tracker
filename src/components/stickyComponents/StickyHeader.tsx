@@ -52,7 +52,7 @@ const StickyHeader = ({
       openModal("record", { record: newRecord, onConfirm: onCreate });
     }
   }, [monthId, openModal, trackerId, yearId]);
-  console.log(totalAmount);
+  
   return (
     <div
       className={`header col-span-6 grid grid-cols-7 gap-2 w-full border-2 ${

@@ -61,7 +61,6 @@ export async function saveWithConfirmation<T extends keyof ContentTypes>(
 ) {
   const { blob, fileName } = generateFileContent<T>(contentData);
   if ("showSaveFilePicker" in window) {
-    console.log("showSaveFilePicker");
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const handle = await (window as any).showSaveFilePicker({
@@ -80,7 +79,6 @@ export async function saveWithConfirmation<T extends keyof ContentTypes>(
       await writable.close();
       return true;
     } catch (error) {
-      console.log("AbortError");
       if ((error as Error).name !== "AbortError") {
         console.error("Native sharing error:", error);
       }
@@ -88,7 +86,6 @@ export async function saveWithConfirmation<T extends keyof ContentTypes>(
     }
   }
 
-  console.log("no showSaveFilePicker");
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -106,17 +103,13 @@ export async function shareFile<T extends keyof ContentTypes>(
   const file = new File([blob], `${fileName}.txt`, {
     type: "text/plain",
   });
-  console.log("Starting share...");
   try {
     await navigator.share({
       files: [file],
       title: fileName,
     });
-    console.log("Share completed successfully");
     return true;
   } catch (error) {
-    console.log("Share failed, error name:", (error as Error).name);
-    console.log("Full error:", error);
     if ((error as Error).name !== "AbortError") {
       console.error("Native sharing error:", error);
     }

@@ -12,7 +12,6 @@ import { MonthRecord } from "@/lib/types/dataTypes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Charts from "./Charts";
 import { UndoIcon } from "@/lib/icons";
-import { IconButton } from "../buttonComponents";
 import { t } from "@/locales/locale";
 import { getMonthById } from "@/lib/utils/monthHelper";
 
