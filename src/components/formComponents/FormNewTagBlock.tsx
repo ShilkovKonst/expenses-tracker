@@ -15,11 +15,10 @@ import { t } from "@/locales/locale";
 import { useTracker } from "@/context/TrackerContext";
 import { createTag, updateTagById } from "@/idb/CRUD/tagsCRUD";
 import { createTagId, TagId } from "@/lib/types/brand";
-import { TrackerMeta } from "@/lib/types/dataTypes";
 import { TagObj } from "../modals/settings/SettingsBlock";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { useFlash } from "@/context/FlashContext";
+import { useTrackerMetaUpdate } from "@/hooks/useTrackerMetaUpdate";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 
 type FormNewTagProps = {
@@ -36,14 +35,9 @@ const FormNewTagBlock = ({
   setTag,
 }: FormNewTagProps) => {
   const { locale } = useGlobal();
-  const {
-    trackerId,
-    trackerTags,
-    setTrackerTags,
-    trackerMeta,
-    setTrackerMeta,
-  } = useTracker();
+  const { trackerId, trackerTags, setTrackerTags } = useTracker();
   const { addFlash } = useFlash();
+  const updateTrackerMeta = useTrackerMetaUpdate();
 
   const [newTag, setNewTag] = useState<string>("");
 
@@ -76,18 +70,7 @@ const FormNewTagBlock = ({
         } else {
           id = await createTag(trackerId, newTag);
         }
-        if (trackerMeta) {
-          const updatedAt = formatDatetoMeta(new Date());
-          const newMeta: TrackerMeta = {
-            id: trackerMeta?.id ?? trackerId,
-            title: trackerMeta?.title ?? trackerId,
-            createdAt: trackerMeta?.createdAt ?? updatedAt,
-            backupAt: trackerMeta.backupAt ?? updatedAt,
-            updatedAt,
-          };
-          await updateMetadata(trackerId, newMeta);
-          setTrackerMeta(newMeta);
-        }
+        await updateTrackerMeta({ updatedAt: formatDatetoMeta(new Date()) });
         if (recordTags && setRecordTags)
           setRecordTags([...recordTags, createTagId(id)]);
         setTrackerTags({ ...trackerTags, [id]: newTag });
@@ -100,12 +83,11 @@ const FormNewTagBlock = ({
           })} - ${newTag}`,
         );
       } catch (error) {
-        addFlash("error", getErrorMessage(error, ""));
+        addFlash("error", getErrorMessage(error, "Failed to save tag"));
       }
     },
     [
       tag,
-      trackerMeta,
       recordTags,
       setRecordTags,
       setTrackerTags,
@@ -114,7 +96,7 @@ const FormNewTagBlock = ({
       addFlash,
       locale,
       trackerId,
-      setTrackerMeta,
+      updateTrackerMeta,
     ],
   );
 

@@ -6,22 +6,15 @@ import { useModal } from "@/context/ModalContext";
 import { UtilButton } from "../buttonComponents";
 import { DeleteIcon, SaveIcon, SettingsIcon, ShareIcon } from "@/lib/icons";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
-import {
-  isMobileDevice,
-  saveWithConfirmation,
-  shareFile,
-} from "@/lib/utils/fileContentHelper";
+import { isMobileDevice } from "@/lib/utils/fileContentHelper";
 import { memo, useCallback, useMemo } from "react";
 import { useFlash } from "@/context/FlashContext";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
-import { formatDatetoMeta } from "@/lib/utils/dateParser";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
-import { TrackerMeta } from "@/lib/types/dataTypes";
+import { useTrackerBackup } from "@/hooks/useTrackerBackup";
 
 const ActiveTrackerBlock = () => {
   const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
-  const { trackerId, trackerTags, trackerMeta, setTrackerMeta, trackerYears } =
-    useTracker();
+  const { trackerId, trackerTags, trackerMeta, trackerYears } = useTracker();
   const { openModal } = useModal();
   const { addFlash } = useFlash();
 
@@ -48,6 +41,9 @@ const ActiveTrackerBlock = () => {
         : null,
     [trackerId, trackerTags, trackerMeta, trackerYears],
   );
+
+  const { handleSave: handleSaveClick, handleShare: handleShareClick } =
+    useTrackerBackup(contentData);
 
   const handleSettings = useCallback(() => {
     openModal("settings", {});
@@ -83,50 +79,6 @@ const ActiveTrackerBlock = () => {
     trackerMeta,
   ]);
 
-  const handleSaveClick = useCallback(async () => {
-    if (contentData) {
-      try {
-        const isSaved = await saveWithConfirmation(contentData);
-        if (isSaved && trackerMeta) {
-          const newMeta: TrackerMeta = {
-            ...trackerMeta,
-            backupAt: formatDatetoMeta(new Date()),
-          };
-          setTrackerMeta(newMeta);
-          await updateMetadata(trackerId, newMeta);
-          addFlash(
-            "success",
-            t(locale, "body.flash.trackerSaved", { trackerId }),
-          );
-        }
-      } catch (error) {
-        addFlash("error", getErrorMessage(error, ""));
-      }
-    }
-  }, [addFlash, contentData, locale, setTrackerMeta, trackerId, trackerMeta]);
-
-  const handleShareClick = useCallback(async () => {
-    if (contentData)
-      try {
-        const isSaved = await shareFile<"tracker">(contentData);
-
-        if (isSaved && trackerMeta) {
-          const newMeta: TrackerMeta = {
-            ...trackerMeta,
-            backupAt: formatDatetoMeta(new Date()),
-          };
-          setTrackerMeta(newMeta);
-          await updateMetadata(trackerId, newMeta);
-          addFlash(
-            "success",
-            t(locale, "body.flash.trackerSaved", { trackerId }),
-          );
-        }
-      } catch (error) {
-        addFlash("error", getErrorMessage(error, ""));
-      }
-  }, [addFlash, contentData, locale, setTrackerMeta, trackerId, trackerMeta]);
-
   const buttons = useMemo(
     () => [
       {
@@ -158,21 +110,21 @@ const ActiveTrackerBlock = () => {
   );
 
   return (
-    <div className="w-full pb-2 flex justify-between gap-1 md:gap-2 items-center border-b-6 border-blue-400 cursor-default">
-      <div className="relative text-xs pl-1 pr-2 font-semibold w-full flex flex-col md:flex-row gap-0 md:gap-2 justify-between items-start rounded-l bg-blue-500 *:text-white">
-        <div className="absolute right-0 rounded-l z-10 bg-blue-50/95 h-8 pr-1"></div>
-        <div className="text-blue-950 flex flex-row gap-1 md:flex-col md:gap-0">
+    <div className="w-full flex justify-between items-center rounded border-b-2 border-t-2 border-r-2 bg-blue-500 border-blue-500 cursor-default overflow-hidden">
+      <div className="relative text-sm pl-1 pr-2 font-semibold w-full flex flex-col gap-0 justify-between items-start *:text-white">
+        {/* <div className="absolute right-0 rounded-l z-10 bg-blue-50/95 h-10 pr-1"></div> */}
+        <div className="text-blue-950 flex flex-row gap-1">
           <h2 className="">{t(locale, `body.form.title`)}:</h2>
           <p className="max-w-24 truncate">{trackerMeta?.title}</p>
         </div>
-        <div className="text-gray-700 flex flex-row gap-1 md:flex-col md:text-right md:gap-0">
+        <div className="text-gray-700 flex flex-row gap-1">
           <p className="">{t(locale, `body.form.lastUpdate`)}:</p>
           <p title={updatedAt} className="font-normal">
             {updatedAt}
           </p>
         </div>
       </div>
-      <div className={`gap-2 flex flex-row justify-between items-center`}>
+      <div className={`gap-2 flex flex-row justify-between items-center py-1.5 bg-blue-50/95 px-2 rounded`}>
         {buttons.map(
           (button, index) =>
             (!button.title.includes("share") || isMobileDevice()) && (

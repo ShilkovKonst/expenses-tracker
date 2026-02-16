@@ -1,112 +1,28 @@
 "use client";
 import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
-import {
-  createMonthId,
-  createYearId,
-  MonthId,
-  TagId,
-  YearId,
-} from "@/lib/types/brand";
-import { MonthRecord } from "@/lib/types/dataTypes";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import Charts from "./Charts";
 import { UndoIcon } from "@/lib/icons";
 import { t } from "@/locales/locale";
 import { getMonthById } from "@/lib/utils/monthHelper";
+import { useChartNavigation } from "@/hooks/useChartNavigation";
+import { useChartData, DataKeyType } from "@/hooks/useChartData";
 
 type RecordsChartsProps = {
   selectedTag: number;
 };
 
-export type DataKeyType = "qnty" | "cost" | "income";
-
-type ChartDataType = { id: number; qnty: number; cost: number; income: number };
-
 const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
   const { locale } = useGlobal();
   const { trackerId, trackerYears } = useTracker();
-  const [selectedYearId, setSelectedYearId] = useState<YearId>(
-    createYearId(-1),
-  );
-  const [selectedMonthId, setSelectedMonthId] = useState<MonthId>(
-    createMonthId(-1),
-  );
-
-  useEffect(() => {
-    setSelectedYearId(createYearId(-1));
-    setSelectedMonthId(createMonthId(-1));
-  }, [trackerId]);
-
-  const filteredRecords = useCallback(
-    (tag: number, records: MonthRecord[]) =>
-      tag === -1
-        ? records
-        : records.filter((r) => r.tags.includes(selectedTag as TagId)),
-    [selectedTag],
-  );
-
-  const chartsData = useMemo(() => {
-    if (!trackerYears) return {};
-    let rawRecords: MonthRecord[] = [];
-    let groupByKey: keyof Pick<MonthRecord, "day" | "month" | "year"> = "year";
-
-    if (selectedYearId !== -1 && selectedMonthId !== -1) {
-      rawRecords = trackerYears[selectedYearId].months[selectedMonthId].records;
-      groupByKey = "day";
-    } else if (selectedYearId !== -1) {
-      rawRecords = Object.values(trackerYears[selectedYearId].months).flatMap(
-        (m) => m.records,
-      );
-      groupByKey = "month";
-    } else {
-      rawRecords = Object.values(trackerYears).flatMap((y) =>
-        Object.values(y.months).flatMap((m) => m.records),
-      );
-      groupByKey = "year";
-    }
-
-    return filteredRecords(selectedTag, rawRecords).reduce(
-      (acc, cur) => {
-        const id = cur[groupByKey] as number;
-        acc[id] ??= { id, qnty: 0, cost: 0, income: 0 };
-        acc[id].qnty += 1;
-        acc[id].cost += cur.type === "cost" ? cur.amount : 0;
-        acc[id].income += cur.type === "income" ? cur.amount : 0;
-        return acc;
-      },
-      {} as Record<number, ChartDataType>,
-    );
-  }, [
-    filteredRecords,
+  const { selectedYearId, selectedMonthId, handleClick, handleUndo } =
+    useChartNavigation(trackerId);
+  const { chartsData, formattedChartsData } = useChartData(
+    trackerYears,
+    selectedYearId,
     selectedMonthId,
     selectedTag,
-    selectedYearId,
-    trackerYears,
-  ]);
-
-  const formattedChartsData = (name: DataKeyType) => {
-    return Object.values(chartsData).map((d) => ({
-      id: d.id,
-      value:
-        (name as DataKeyType) === "qnty"
-          ? d.qnty
-          : (name as DataKeyType) === "cost"
-            ? d.cost
-            : d.income,
-    }));
-  };
-
-  const handleClick = (id: number) => {
-    if (selectedYearId !== -1 && selectedMonthId === -1)
-      setSelectedMonthId(createMonthId(id));
-    if (selectedYearId === -1) setSelectedYearId(createYearId(id));
-  };
-
-  const handleUndo = () => {
-    if (selectedMonthId !== -1) setSelectedMonthId(createMonthId(-1));
-    else setSelectedYearId(createYearId(-1));
-  };
+  );
 
   return (
     <div>

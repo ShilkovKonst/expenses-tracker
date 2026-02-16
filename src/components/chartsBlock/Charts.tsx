@@ -1,7 +1,7 @@
 import { useGlobal } from "@/context/GlobalContext";
 import { decimalToInputString } from "@/lib/utils/amountHelper";
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
-import { DataKeyType } from "./RecordsCharts";
+import { DataKeyType } from "@/hooks/useChartData";
 import { getMonthById } from "@/lib/utils/monthHelper";
 import { t } from "@/locales/locale";
 import { MonthId, YearId } from "@/lib/types/brand";

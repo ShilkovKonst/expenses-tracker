@@ -74,7 +74,7 @@ export async function createNPopulate(
     await createTrackerUtil(data);
   } catch (error) {
     console.error(error);
-    throw new Error(getErrorMessage(error, ""));
+    throw new Error(getErrorMessage(error, "Failed to create tracker"));
   }
   await loadTrackers(setAllTrackersMeta, setIsLoading);
   setParsedData(

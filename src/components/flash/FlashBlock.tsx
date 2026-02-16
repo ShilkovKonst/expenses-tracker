@@ -48,7 +48,7 @@ export default function FlashBlock() {
   if (flash.length === 0 && !backupDelay) return null;
 
   return (
-    <div className="fixed w-full md:w-fit top-0 md:top-1 md:right-1 z-1000 md:space-y-2">
+    <div className="fixed w-full md:w-fit top-0 left-0 right-0 md:top-1 md:left-auto md:right-1 z-1000 md:space-y-2">
       {backupDelay && (
         <FlashMessage
           flash={{

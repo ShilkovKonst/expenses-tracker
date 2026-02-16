@@ -97,7 +97,7 @@ const DeleteModal = ({
       );
     } catch (error) {
       console.error(error);
-      addFlash("error", getErrorMessage(error, ""));
+      addFlash("error", getErrorMessage(error, "Failed to delete"));
     }
     handleClose();
   };

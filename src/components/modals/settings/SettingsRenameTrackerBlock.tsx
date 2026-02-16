@@ -2,19 +2,19 @@ import { IconButton } from "@/components/buttonComponents";
 import { useFlash } from "@/context/FlashContext";
 import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
 import { getAllMeta } from "@/idb/IDBManager";
 import { UpdateIcon } from "@/lib/icons";
-import { TrackerMeta } from "@/lib/types/dataTypes";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
 import { getErrorMessage } from "@/lib/utils/parseErrorMessage";
 import { t } from "@/locales/locale";
 import React, { useMemo, useState } from "react";
+import { useTrackerMetaUpdate } from "@/hooks/useTrackerMetaUpdate";
 
 const SettingsRenameTrackerBlock = () => {
   const { locale, allTrackersMeta, setAllTrackersMeta } = useGlobal();
   const { addFlash } = useFlash();
-  const { trackerId, trackerMeta, setTrackerMeta } = useTracker();
+  const { trackerMeta } = useTracker();
+  const updateTrackerMeta = useTrackerMetaUpdate();
 
   const [trackerTitle, setTrackerTitle] = useState(trackerMeta?.title ?? "");
 
@@ -23,24 +23,16 @@ const SettingsRenameTrackerBlock = () => {
   }, [allTrackersMeta, trackerTitle]);
 
   const handleUpdateTrackerTitle = async (value: string) => {
-    if (trackerMeta) {
-      const updatedAt = formatDatetoMeta(new Date());
-      const newMeta: TrackerMeta = {
-        id: trackerMeta.id ?? trackerId,
+    try {
+      await updateTrackerMeta({
         title: value,
-        createdAt: trackerMeta.createdAt ?? updatedAt,
-        backupAt: trackerMeta.backupAt ?? updatedAt,
-        updatedAt,
-      };
-      try {
-        await updateMetadata(trackerId, newMeta);
-        setTrackerMeta(newMeta);
-        const validMetas = await getAllMeta();
-        setAllTrackersMeta(validMetas);
-        addFlash("success", t(locale, `body.flash.trackerTitleUpdated`));
-      } catch (error) {
-        addFlash("error", getErrorMessage(error, ""));
-      }
+        updatedAt: formatDatetoMeta(new Date()),
+      });
+      const validMetas = await getAllMeta();
+      setAllTrackersMeta(validMetas);
+      addFlash("success", t(locale, `body.flash.trackerTitleUpdated`));
+    } catch (error) {
+      addFlash("error", getErrorMessage(error, "Failed to rename tracker"));
     }
   };
 

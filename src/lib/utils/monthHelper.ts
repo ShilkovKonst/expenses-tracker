@@ -8,7 +8,7 @@ export function getMonthById<ID extends MonthIdType>(id: ID): Months {
 
 export function initEmptyMonths(): Record<number, Month> {
   const emptyMonths: Month[] = [];
-  for (let i = 1 as MonthIdType; i <= 12; i++) {
+  for (let i = 1; i <= 12; i++) {
     emptyMonths[i - 1] = {
       id: createMonthId(i),
       title: getMonthById(i),

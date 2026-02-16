@@ -4,7 +4,7 @@ import { ModalMap } from "../ModalRoot";
 import { useTracker } from "@/context/TrackerContext";
 import { useFlash } from "@/context/FlashContext";
 import { useMemo, useState } from "react";
-import { MonthRecord, TrackerMeta, Year } from "@/lib/types/dataTypes";
+import { MonthRecord, Year } from "@/lib/types/dataTypes";
 import {
   decimalToInputString,
   inputStringToDecimal,
@@ -17,7 +17,7 @@ import ModalBase from "../ModalBase";
 import { ValidateButton } from "@/components/buttonComponents";
 import RecordCreateUpdateBlock from "./RecordCreateUpdateBlock";
 import { formatDatetoMeta } from "@/lib/utils/dateParser";
-import { updateMetadata } from "@/idb/CRUD/metaCRUD";
+import { useTrackerMetaUpdate } from "@/hooks/useTrackerMetaUpdate";
 
 const RecordModal = ({
   record,
@@ -25,9 +25,9 @@ const RecordModal = ({
   onConfirm,
 }: ModalMap["record"] & { onClose: () => void }) => {
   const { locale } = useGlobal();
-  const { trackerId, trackerMeta, setTrackerMeta, setTrackerYears } =
-    useTracker();
+  const { trackerId, setTrackerYears } = useTracker();
   const { addFlash } = useFlash();
+  const updateTrackerMeta = useTrackerMetaUpdate();
 
   const [currentRecord, setCurrentRecord] = useState<MonthRecord>(record);
   const [amountString, setAmountString] = useState<string>(
@@ -43,18 +43,7 @@ const RecordModal = ({
     };
     try {
       await onConfirm(updRecord);
-      if (trackerMeta) {
-        const updatedAt = formatDatetoMeta(new Date());
-        const newMeta: TrackerMeta = {
-          id: trackerMeta.id ?? trackerId,
-          title: trackerMeta.title ?? trackerId,
-          createdAt: trackerMeta.createdAt ?? updatedAt,
-          backupAt: trackerMeta.backupAt ?? updatedAt,
-          updatedAt,
-        };
-        await updateMetadata(trackerId, newMeta);
-        setTrackerMeta(newMeta);
-      }
+      await updateTrackerMeta({ updatedAt: formatDatetoMeta(new Date()) });
       const records = await getAllRecords(trackerId);
       const years: Record<number, Year> = populateYears(records);
       setTrackerYears(years);
@@ -72,7 +61,7 @@ const RecordModal = ({
       );
     } catch (error) {
       console.error(error);
-      addFlash("error", getErrorMessage(error, ""));
+      addFlash("error", getErrorMessage(error, "Failed to save record"));
     }
   };
 

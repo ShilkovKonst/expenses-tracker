@@ -1,6 +1,13 @@
 "use client";
 import ModalRoot, { ModalMap } from "@/components/modals/ModalRoot";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 export type ModalType = keyof ModalMap;
 
@@ -20,14 +27,22 @@ const ModalContext = createContext<ModalContextValue>(null!);
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [modal, setModal] = useState<ModalItem | null>(null);
 
-  const openModal = <T extends ModalType>(type: T, props: ModalMap[T]) => {
-    setModal({ type, props });
-  };
+  const openModal = useCallback(
+    <T extends ModalType>(type: T, props: ModalMap[T]) => {
+      setModal({ type, props });
+    },
+    [],
+  );
 
-  const closeModal = () => setModal(null);
+  const closeModal = useCallback(() => setModal(null), []);
+
+  const value = useMemo(
+    () => ({ modal, openModal, closeModal }),
+    [modal, openModal, closeModal],
+  );
 
   return (
-    <ModalContext.Provider value={{ modal, openModal, closeModal }}>
+    <ModalContext.Provider value={value}>
       {children}
       <ModalRoot />
     </ModalContext.Provider>

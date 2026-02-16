@@ -14,7 +14,12 @@ SpendObserver — a local-first expense tracking web app. All data is stored in 
 - `npm run start` — start production server
 - `npm run lint` — ESLint (flat config, extends next/core-web-vitals and next/typescript)
 
-No test framework is configured.
+- `npm run test` — run all tests once (Vitest)
+- `npm run test:watch` — run tests in watch mode
+
+### Testing
+
+Vitest + React Testing Library (happy-dom environment). Config in `vitest.config.mts`. Tests live alongside source in `__tests__/` directories following the pattern `*.test.{ts,tsx}`. Setup file at `src/tests/setup.ts` (imports `fake-indexeddb/auto` for IDB tests). Use `vi.fn()` for mocks and `@testing-library/user-event` for interaction simulation. 198 tests across 25 files covering utilities, locale, contexts, form components, and the full IndexedDB CRUD layer.
 
 ## Architecture
 

@@ -29,8 +29,8 @@ export async function createTrackerUtil(tracker: Tracker) {
     throw new Error(
       `Something went wrong while creating new tracker: '${getErrorMessage(
         error,
-        ""
-      )}'`
+        "unknown error",
+      )}'`,
     );
   }
 }
@@ -40,7 +40,12 @@ export async function deleteTrackerUtil(tracker: string) {
     await deleteDB(tracker);
   } catch (error) {
     console.error(error);
-    throw new Error(`Something went wrong while deleting tracker '${tracker}'`);
+    throw new Error(
+      `Something went wrong while deleting tracker '${tracker}': '${getErrorMessage(
+        error,
+        "unknown error",
+      )}'`,
+    );
   }
 }
 
@@ -48,7 +53,7 @@ export async function getAllUtil(
   tracker: string,
   entity: "records" | "tags",
   year?: number,
-  month?: number
+  month?: number,
 ) {
   try {
     switch (entity) {
@@ -65,7 +70,10 @@ export async function getAllUtil(
   } catch (error) {
     console.error(error);
     throw new Error(
-      `Internal server error while fetching '${entity}' for '${tracker}'`
+      `Internal server error while fetching '${entity}' for '${tracker}': '${getErrorMessage(
+        error,
+        "unknown error",
+      )}'`,
     );
   }
 }
@@ -73,7 +81,7 @@ export async function getAllUtil(
 export async function getByIdUtil(
   tracker: string,
   entity: "records" | "tags",
-  id: number
+  id: number,
 ) {
   try {
     switch (entity) {
@@ -87,7 +95,10 @@ export async function getByIdUtil(
   } catch (error) {
     console.error(error);
     throw new Error(
-      `Internal server error while fetching '${id}' of '${entity}' for '${tracker}'`
+      `Internal server error while fetching '${id}' of '${entity}' for '${tracker}': '${getErrorMessage(
+        error,
+        "unknown error",
+      )}'`,
     );
   }
 }
@@ -95,7 +106,7 @@ export async function getByIdUtil(
 export async function createUtil(
   tracker: TrackerId,
   entity: "records" | "tags",
-  data: Partial<MonthRecord> | string
+  data: Partial<MonthRecord> | string,
 ) {
   try {
     let id: number;
@@ -123,7 +134,7 @@ export async function createUtil(
   } catch (error) {
     console.error(error);
     throw new Error(
-      `Internal server error while creating ${entity} for ${tracker}`
+      `Internal server error while creating ${entity} for ${tracker}`,
     );
   }
 }
@@ -132,7 +143,7 @@ export async function updateByIdUtil(
   tracker: TrackerId,
   entity: string,
   data: MonthRecord | string,
-  id?: number
+  id?: number,
 ) {
   try {
     const updatedAt = formatDatetoMeta(new Date());
@@ -157,7 +168,7 @@ export async function updateByIdUtil(
   } catch (error) {
     console.error(error);
     throw new Error(
-      `Something went wrong while updating '${id}' of '${entity}' for '${tracker}'`
+      `Something went wrong while updating '${id}' of '${entity}' for '${tracker}'`,
     );
   }
 }
@@ -165,7 +176,7 @@ export async function updateByIdUtil(
 export async function deleteByIdUtil(
   tracker: TrackerId,
   entity: string,
-  id: number
+  id: number,
 ) {
   try {
     const updatedAt = formatDatetoMeta(new Date());
@@ -182,7 +193,7 @@ export async function deleteByIdUtil(
   } catch (error) {
     console.error(error);
     throw new Error(
-      `Internal server error while deleting ${id} from ${entity} for ${tracker}`
+      `Internal server error while deleting ${id} from ${entity} for ${tracker}`,
     );
   }
 }

@@ -10,6 +10,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -19,8 +20,6 @@ interface GlobalContextType {
   setAllTrackersMeta: Dispatch<SetStateAction<TrackerMeta[]>>;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
-  isCharts: boolean;
-  setIsCharts: Dispatch<SetStateAction<boolean>>;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -31,28 +30,42 @@ export function GlobalProvider({ children }: { children: ReactNode }) {
   const { locale } = useParams<{ locale: Locale }>();
   const [allTrackersMeta, setAllTrackersMeta] = useState<TrackerMeta[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isCharts, setIsCharts] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    loadTrackers(setAllTrackersMeta, setIsLoading, cancelled);
+    async function init() {
+      try {
+        const validMetas = await getAllMeta();
+        if (!cancelled) {
+          setAllTrackersMeta(validMetas);
+        }
+      } catch (error) {
+        console.error("Failed to load trackers:", error);
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+    init();
     return () => {
       cancelled = true;
     };
   }, []);
 
+  const value = useMemo(
+    () => ({
+      locale,
+      allTrackersMeta,
+      setAllTrackersMeta,
+      isLoading,
+      setIsLoading,
+    }),
+    [locale, allTrackersMeta, isLoading],
+  );
+
   return (
-    <GlobalContext.Provider
-      value={{
-        locale,
-        allTrackersMeta,
-        setAllTrackersMeta,
-        isLoading,
-        setIsLoading,
-        isCharts,
-        setIsCharts,
-      }}
-    >
+    <GlobalContext.Provider value={value}>
       {children}
     </GlobalContext.Provider>
   );
@@ -69,9 +82,7 @@ export function useGlobal() {
 export async function loadTrackers(
   setAllTrackersMeta: Dispatch<SetStateAction<TrackerMeta[]>>,
   setIsLoading: Dispatch<SetStateAction<boolean>>,
-  cancelled?: boolean,
 ) {
-  if (cancelled) return;
   try {
     const validMetas = await getAllMeta();
     setAllTrackersMeta(validMetas);

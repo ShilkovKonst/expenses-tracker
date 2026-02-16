@@ -6,17 +6,17 @@ import { CloseIcon } from "@/lib/icons";
 const DURATION = 5000;
 
 const styleMap: Record<FlashType, string> = {
-  success: "bg-green-500 border-green-700",
-  error: "bg-red-500 border-red-700",
-  warning: "bg-yellow-500 border-yellow-700",
-  info: "bg-blue-500 border-blue-700",
+  success: "bg-green-500/75 border-green-700",
+  error: "bg-red-500/75 border-red-700",
+  warning: "bg-yellow-500/75 border-yellow-700",
+  info: "bg-blue-500/75 border-blue-700",
 };
 
 const styleButtonMap: Record<FlashType, string> = {
-  success: "bg-green-700 hover:bg-green-800",
-  error: "bg-red-700 border-red-800",
-  warning: "bg-yellow-700 border-yellow-800",
-  info: "bg-blue-700 border-blue-800",
+  success: "bg-green-700 hover:bg-green-800 border-red-800",
+  error: "bg-red-700 hover:bg-red-800 border-red-800",
+  warning: "bg-yellow-700 hover:bg-yellow-800 border-yellow-800",
+  info: "bg-blue-700 hover:bg-blue-800 border-blue-800",
 };
 
 type FlashMessageProps = {
@@ -54,7 +54,7 @@ const FlashMessage = ({
 
   return (
     <div
-      className={`relative w-full px-2 py-1 md:rounded-lg text-white shadow-lg border-l-4 border-b md:border-b-0 transition-all duration-300 transform translate-x-0 opacity-90 ${typeStyle}`}
+      className={`relative w-full px-2 py-1 md:rounded text-white text-shadow-md shadow-lg border-l-4 border-b md:border-b-0 transition-all duration-300 transform translate-x-0 ${typeStyle}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

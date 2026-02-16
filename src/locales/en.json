@@ -64,9 +64,9 @@
           "tag": "does not exist in tagsPool"
         }
       },
-      "newAdded": "Добавлено новое: {{entity}}",
-      "updated": "Обновлено: {{entity}} {{id}}",
-      "deleted": "Удалено: {{entity}} {{id}}"
+      "newAdded": "Added new {{entity}}",
+      "updated": "Updated {{entity}} {{id}}",
+      "deleted": "Deleted {{entity}} {{id}}"
     },
     "modal": {
       "titleCreate": "Create new record",

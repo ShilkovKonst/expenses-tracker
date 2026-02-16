@@ -1,7 +1,7 @@
 "use client";
 import { TrackerId } from "@/lib/types/brand";
 import { TrackerMeta, TrackerTags, TrackerYears } from "@/lib/types/dataTypes";
-import { populateTrackerContex } from "@/lib/utils/updateLocalTrackerIds";
+import { getAllData } from "@/idb/massImportHelper";
 import {
   createContext,
   Dispatch,
@@ -9,6 +9,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useGlobal } from "./GlobalContext";
@@ -41,14 +42,16 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
       let cancelled = false;
 
       async function getDataFromDB() {
-        if (!cancelled) {
-          await populateTrackerContex(
-            activeTrackerId,
-            setTrackerId,
-            setTrackerMeta,
-            setTrackerTags,
-            setTrackerYears,
-          );
+        try {
+          const tracker = await getAllData(activeTrackerId);
+          if (!cancelled && tracker.meta && tracker.tags && tracker.years) {
+            setTrackerId(activeTrackerId);
+            setTrackerMeta(tracker.meta);
+            setTrackerTags(tracker.tags);
+            setTrackerYears(tracker.years);
+          }
+        } catch (error) {
+          console.error("Failed to load tracker data:", error);
         }
       }
 
@@ -60,19 +63,22 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
     }
   }, [allTrackersMeta, trackerId]);
 
+  const value = useMemo(
+    () => ({
+      trackerId,
+      setTrackerId,
+      trackerMeta,
+      setTrackerMeta,
+      trackerTags,
+      setTrackerTags,
+      trackerYears,
+      setTrackerYears,
+    }),
+    [trackerId, trackerMeta, trackerTags, trackerYears],
+  );
+
   return (
-    <TrackerContext.Provider
-      value={{
-        trackerId,
-        setTrackerId,
-        trackerMeta,
-        setTrackerMeta,
-        trackerTags,
-        setTrackerTags,
-        trackerYears,
-        setTrackerYears,
-      }}
-    >
+    <TrackerContext.Provider value={value}>
       {children}
     </TrackerContext.Provider>
   );
