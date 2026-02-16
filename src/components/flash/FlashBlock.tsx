@@ -54,7 +54,10 @@ export default function FlashBlock() {
           flash={{
             id: "",
             type: "warning",
-            message: t(locale, "body.flash.trackerNeedToSave", { backupDelay }),
+            message: [
+              t(locale, "body.flash.lastSaveDate", { backupDelay }),
+              t(locale, "body.flash.trackerNeedToSave"),
+            ],
           }}
           closeFlash={() => setShowBackupDelay(false)}
           closeButtonTitle={t(locale, "body.buttons.close")}

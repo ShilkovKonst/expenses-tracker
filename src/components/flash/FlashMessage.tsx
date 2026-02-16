@@ -34,12 +34,12 @@ const FlashMessage = ({
 
   const isErrorWarning = useMemo(
     () => flash.type === "error" || flash.type === "warning",
-    [flash.type]
+    [flash.type],
   );
   const typeStyle = useMemo(() => styleMap[flash.type], [flash.type]);
   const typeStyleButton = useMemo(
     () => styleButtonMap[flash.type],
-    [flash.type]
+    [flash.type],
   );
 
   useEffect(() => {
@@ -64,7 +64,15 @@ const FlashMessage = ({
         customStyle={`absolute top-1 right-2 col-span-2 md:col-span-1 h-6 w-6 ${typeStyleButton}`}
         handleClick={() => closeFlash(flash.id)}
       />
-      <p className="font-semibold mr-8">{flash.message}</p>
+      {Array.isArray(flash.message) ? (
+        flash.message.map((m, i) => (
+          <p key={i} className="font-semibold mr-8">
+            {m}
+          </p>
+        ))
+      ) : (
+        <p className="font-semibold mr-8">{flash.message}</p>
+      )}
     </div>
   );
 };

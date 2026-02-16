@@ -10,7 +10,13 @@ import {
 import { createRecord } from "../recordsCRUD";
 import { createMetadata } from "../metaCRUD";
 import { openDB, deleteDB } from "../../IDBManager";
-import { createTrackerId, createYearId, createMonthId, createTagId } from "@/lib/types/brand";
+import {
+  createTrackerId,
+  createYearId,
+  createMonthId,
+  createTagId,
+  TagId,
+} from "@/lib/types/brand";
 import { TrackerMeta } from "@/lib/types/dataTypes";
 
 const trackerId = createTrackerId("test-tags-crud");
@@ -32,8 +38,8 @@ describe("tagsCRUD", () => {
     const id1 = await createTag(trackerId, "food");
     const id2 = await createTag(trackerId, "transport");
     const tags = await getAllTags(trackerId);
-    expect(tags[id1]).toBe("food");
-    expect(tags[id2]).toBe("transport");
+    expect(tags[id1 as TagId]).toBe("food");
+    expect(tags[id2 as TagId]).toBe("transport");
   });
 
   it("getTagById returns tag object", async () => {

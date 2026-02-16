@@ -1,35 +1,51 @@
 "use client";
-import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 export type FlashType = "success" | "error" | "warning" | "info";
 
 export type Flash = {
   id: string;
   type: FlashType;
-  message: string;
+  message: string | string[];
 };
 
 interface FlashContextType {
   flash: Flash[];
-  addFlash: (type: FlashType, message: string) => void;
+  addFlash: (type: FlashType, message: string | string[]) => void;
   closeFlash: (idx: string) => void;
 }
 
 export const FlashContext = createContext<FlashContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function FlashProvider({ children }: { children: ReactNode }) {
   const [flash, setFlash] = useState<Flash[]>([]);
 
-  const addFlash = useCallback((type: FlashType, message: string) => {
-    setFlash((prevFlash) => {
-      return [...prevFlash, { id: generateUniqueId(prevFlash), type, message }];
-    });
-  }, []);
+  const addFlash = useCallback(
+    (type: FlashType, message: string | string[]) => {
+      setFlash((prevFlash) => {
+        return [
+          ...prevFlash,
+          { id: generateUniqueId(prevFlash), type, message },
+        ];
+      });
+    },
+    [],
+  );
 
-  const closeFlash = useCallback((id: string) =>
-    setFlash((prevFlash) => prevFlash.filter((f) => f.id !== id)), []);
+  const closeFlash = useCallback(
+    (id: string) =>
+      setFlash((prevFlash) => prevFlash.filter((f) => f.id !== id)),
+    [],
+  );
 
   const value = useMemo(
     () => ({ flash, addFlash, closeFlash }),
@@ -37,9 +53,7 @@ export function FlashProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <FlashContext.Provider value={value}>
-      {children}
-    </FlashContext.Provider>
+    <FlashContext.Provider value={value}>{children}</FlashContext.Provider>
   );
 }
 

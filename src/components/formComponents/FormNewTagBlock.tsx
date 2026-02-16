@@ -43,7 +43,7 @@ const FormNewTagBlock = ({
 
   useEffect(() => {
     if (tag) setNewTag(tag.title);
-    if (!tag) setNewTag("")
+    if (!tag) setNewTag("");
   }, [tag]);
 
   const isDoubled = useMemo(
