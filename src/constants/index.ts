@@ -91,7 +91,7 @@ export const EMPTY_MONTHS: TrackerMonths = {
   },
 };
 
-export const BASE_URL = "https://expenses-tracker-shilkov.vercel.app/";
+export const BASE_URL = "https://expenses-tracker-shilkov.vercel.app";
 export const CURRENT_YEAR = new Date().getFullYear();
 
 export const AMOUNT_REGEX = /^0+|[^\d.+\-*/=]+|[^\d]+$/g;

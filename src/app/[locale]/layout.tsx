@@ -37,9 +37,12 @@ export async function generateMetadata({
       template: `%s | ${t(locale as Locale, "meta.titleFull")}`,
     },
     description: t(locale as Locale, "meta.description"),
+    verification: {
+      google: "vupSTkuQmh-5xpQ1UoVfkq73QvvjpXf5GXxn5J83WgU",
+    },
     metadataBase: new URL(BASE_URL),
     alternates: {
-      canonical: `${BASE_URL}/`,
+      canonical: `${BASE_URL}/${locale}/`,
       languages: {
         en: `${BASE_URL}/en/`,
         fr: `${BASE_URL}/fr/`,
@@ -53,16 +56,15 @@ export async function generateMetadata({
     openGraph: {
       title: t(locale as Locale, "meta.titleFull"),
       description: t(locale as Locale, "meta.description"),
-      url: BASE_URL,
+      url: `${BASE_URL}/${locale}/`,
       siteName: t(locale as Locale, "meta.titleFull"),
       locale: localeMap[locale],
       type: "website",
     },
     twitter: {
-      card: "summary_large_image",
+      card: "summary",
       title: t(locale as Locale, "meta.titleFull"),
       description: t(locale as Locale, "meta.description"),
-      creator: "@yourhandle",
     },
     other: {
       "mobile-web-app-capable": "yes",
