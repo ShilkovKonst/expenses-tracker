@@ -34,7 +34,9 @@ const ChartsHeader = ({ setSelectedTag }: ChartsHeaderProps) => {
 
   return (
     <div className="w-full flex justify-between items-center h-10 border-2 bg-blue-200 border-blue-300 px-1">
-      <p>{t(locale, "body.charts.title")}</p>
+      <p className="text-base font-semibold text-blue-800">
+        {t(locale, "body.charts.title")}
+      </p>
       <select
         className="cursor-pointer h-7.5 border-2 border-blue-300 focus:outline-0 focus:border-blue-300 rounded-md text-sm bg-blue-50/95"
         onChange={(e) => handleSelect(e)}

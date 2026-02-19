@@ -10,10 +10,10 @@
     "footer": {
       "title": "SpendObserver",
       "copyright": "© 2025 Tous droits réservés",
-      "about": "A propos",
-      "confidentiality": "Confidentialité",
-      "conditions": "Conditions",
-      "contact": "Contact",
+      "about": "Sur l'appli",
+      "confidentiality": "Votre vie privée",
+      "conditions": "Comment ça marche",
+      "contact": "Nous écrire",
       "author": "Konstantin Shilkov"
     },
     "buttons": {
@@ -79,6 +79,45 @@
         "record": "cet enregistrement",
         "tag": "cette étiquette",
         "tracker": "ce suivi"
+      },
+      "about": {
+        "title": "À propos de SpendObserver",
+        "features": {
+          "1": "Vos données restent sur votre appareil — tout est sauvegardé dans votre navigateur, sans compte requis",
+          "2": "Créez autant de suivis séparés que vous voulez — un pour le perso, un pour le travail, etc.",
+          "3": "Enregistrez vos revenus et dépenses, avec une répartition claire par mois et par année",
+          "4": "Organisez vos entrées avec des étiquettes — comme 'alimentation', 'loyer', ou ce qui vous parle",
+          "5": "Des graphiques simples pour voir où va votre argent en un coup d'œil",
+          "6": "Le champ de montant fonctionne comme une calculatrice — tapez 15+8.50 et le total se calcule tout seul",
+          "7": "Disponible en français, anglais et russe",
+          "8": "Exportez vos données à tout moment dans un fichier, et réimportez-les facilement si besoin",
+          "9": "Si vous voulez vous pouvez installer l'appli sur votre téléphone ou ordinateur comme n'importe quelle application"
+        }
+      },
+      "confidentiality": {
+        "title": "Votre vie privée",
+        "content": {
+          "1": "Vos données sont enregistrées uniquement sur votre appareil, dans le stockage de votre navigateur. Nous n'y avons aucun accès.",
+          "2": "Rien n'est jamais envoyé à un serveur — vos données sont traitées et stockées entièrement dans votre navigateur.",
+          "3": "Aucun cookie, aucun suivi, aucune analyse. Votre utilisation reste totalement privée.",
+          "4": "Nous ne partageons rien avec personne — il n'y a simplement rien à partager.",
+          "5": "Vous avez le contrôle total : exportez vos données quand vous voulez, ou effacez tout en un clic."
+        }
+      },
+      "conditions": {
+        "title": "Comment ça marche",
+        "content": {
+          "1": "SpendObserver est entièrement gratuit — sans abonnement, sans frais cachés, sans inscription.",
+          "2": "Nous vous conseillons d'exporter vos données régulièrement en guise de sauvegarde. Les navigateurs peuvent parfois effacer leur propre stockage.",
+          "3": "Pour la meilleure expérience — y compris un stockage de données plus fiable — installez SpendObserver comme une appli sur votre appareil (deux clics suffisent).",
+          "4": "C'est un projet personnel réalisé avec soin, mais proposé sans garanties formelles. Votre confiance nous touche."
+        }
+      },
+      "contact": {
+        "title": "Nous écrire",
+        "intro": "Une question ou juste envie de dire bonjour ? Contactez-nous via l'un des canaux ci-dessous.",
+        "email": "E-mail",
+        "linkedin": "Se connecter sur LinkedIn"
       }
     },
     "personnalisation": {

@@ -1,11 +1,13 @@
 "use client";
 
 import { useGlobal } from "@/context/GlobalContext";
+import { useModal } from "@/context/ModalContext";
 import { t } from "@/locales/locale";
-import Link from "next/link";
 
 const Footer = () => {
   const { locale } = useGlobal();
+  const { openModal } = useModal();
+
   return (
     <>
       <footer className="w-full bg-blue-950 text-white p-4 md:p-6">
@@ -19,18 +21,34 @@ const Footer = () => {
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-4 text-xs md:text-sm text-blue-200">
-            <Link href="#" className="hover:text-white transition-colors">
+            <button
+              type="button"
+              className="hover:text-white transition-colors cursor-pointer"
+              onClick={() => openModal("info", { page: "about" })}
+            >
               {t(locale, "body.footer.about")}
-            </Link>
-            <Link href="#" className="hover:text-white transition-colors">
+            </button>
+            <button
+              type="button"
+              className="hover:text-white transition-colors cursor-pointer"
+              onClick={() => openModal("info", { page: "confidentiality" })}
+            >
               {t(locale, "body.footer.confidentiality")}
-            </Link>
-            <Link href="#" className="hover:text-white transition-colors">
+            </button>
+            <button
+              type="button"
+              className="hover:text-white transition-colors cursor-pointer"
+              onClick={() => openModal("info", { page: "conditions" })}
+            >
               {t(locale, "body.footer.conditions")}
-            </Link>
-            <Link href="#" className="hover:text-white transition-colors">
+            </button>
+            <button
+              type="button"
+              className="hover:text-white transition-colors cursor-pointer"
+              onClick={() => openModal("info", { page: "contact" })}
+            >
               {t(locale, "body.footer.contact")}
-            </Link>
+            </button>
           </div>
           <p className="text-xs text-blue-300 text-center md:text-right">
             {t(locale, "body.footer.author")}

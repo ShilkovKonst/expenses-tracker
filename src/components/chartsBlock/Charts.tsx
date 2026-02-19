@@ -30,10 +30,9 @@ const Charts = ({
   if (data.reduce((acc, curr) => acc + curr.value, 0) === 0) return null;
   return (
     <BarChart
-      className="border-b border-l border-blue-300 max-h-[30vh] xl:max-h-[40vh]"
+      className="border-b border-l border-blue-300 max-h-[20vh] xl:max-h-[30vh]"
       style={{
         width: "100%",
-        // maxHeight: "20vh",
         aspectRatio: 2,
       }}
       responsive
@@ -56,7 +55,6 @@ const Charts = ({
         }
       />
       <YAxis
-        // width={90}
         tickCount={2}
         tick={{ fontSize: 12 }}
         tickFormatter={(value: string) =>
@@ -66,8 +64,7 @@ const Charts = ({
         stroke={activeFill}
       />
       <Tooltip
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        formatter={(value, _) => {
+        formatter={(value) => {
           if (!value) return;
           if (name === "cost" || name === "income") {
             return [
@@ -87,7 +84,6 @@ const Charts = ({
         onClick={(data) => handleClick(Number(data.id))}
         style={{ cursor: "pointer" }}
         activeBar={{ fill: activeFill }}
-        // label={{ position: "top", fontSize: 12 }}
         radius={[10, 10, 0, 0]}
       />
     </BarChart>

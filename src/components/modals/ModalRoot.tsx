@@ -5,6 +5,7 @@ import RecordModal from "./record/RecordModal";
 import DeleteModal from "./delete/DeleteModal";
 import SettingsModal from "./settings/SettingsModal";
 import TrackerModal from "./tracker/TrackerModal";
+import InfoModal from "./info/InfoModal";
 import { TagId, TrackerId } from "@/lib/types/brand";
 
 export type ModalMap = {
@@ -25,6 +26,7 @@ export type ModalMap = {
     importTrackerBody: Tracker;
     oldTrackerMeta: TrackerMeta | null;
   };
+  info: { page: "about" | "confidentiality" | "conditions" | "contact" };
 };
 
 export default function ModalRoot() {
@@ -44,4 +46,5 @@ const modalRegistry: {
   delete: DeleteModal,
   settings: SettingsModal,
   merge: TrackerModal,
+  info: InfoModal,
 };

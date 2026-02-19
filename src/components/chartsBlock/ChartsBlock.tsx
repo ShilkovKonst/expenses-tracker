@@ -41,7 +41,7 @@ const ChartsBlock = () => {
         <>
           <ChartsHeader setSelectedTag={setSelectedTag} />
           <OverviewBlock selectedTag={selectedTag} rawRecords={rawRecords} />
-          <div className="pt-4 border-b-6 border-blue-400"></div>
+          {/* <div className="pt-4 border-b-6 border-blue-400"></div> */}
           {rawRecords.length > 0 && <RecordsCharts selectedTag={selectedTag} />}
         </>
       )}

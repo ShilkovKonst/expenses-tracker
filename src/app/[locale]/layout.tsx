@@ -91,7 +91,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-lvh w-full antialiased relative my-auto`}
+        className={`${geistSans.variable} ${geistMono.variable} w-full antialiased relative`}
       >
         <AppProviders>
           <PwaInit />

@@ -35,5 +35,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|.*\\..*).*)"], // пропускаем служебные пути и статические файлы
+  matcher: ["/((?!_next|api|.*\\..*).*)"], // пропускаем служебные пути, API и статические файлы
 };

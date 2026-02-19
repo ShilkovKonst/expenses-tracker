@@ -2,8 +2,9 @@
 import { useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
 import Charts from "./Charts";
-import { UndoIcon } from "@/lib/icons";
+import { ChartsIcon, ExpandIcon, UndoIcon } from "@/lib/icons";
 import { t } from "@/locales/locale";
+import { transformElement } from "@/lib/utils/transformElement";
 import { getMonthById } from "@/lib/utils/monthHelper";
 import { useChartNavigation } from "@/hooks/useChartNavigation";
 import { useChartData, DataKeyType } from "@/hooks/useChartData";
@@ -25,10 +26,11 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
   );
 
   return (
-    <div>
-      <div className="w-full h-10 lg:h-8.5 px-1 mb-2 flex justify-between items-center border-2 border-t-0 bg-blue-200 border-blue-300">
-        <div className="flex justify-start items-center">
-          <p>
+    <>
+      <div className="w-full h-10 lg:h-8.5 px-1 my-2 flex justify-between items-center border-2 bg-blue-200 border-blue-300">
+        <div className="flex justify-start items-center gap-1 text-blue-800">
+          <ChartsIcon />
+          <p className="text-base font-semibold">
             {selectedYearId === -1
               ? t(locale, "body.charts.overview", {
                   from: Object.keys(chartsData)[0],
@@ -45,16 +47,29 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
             </p>
           )}
         </div>
-        {selectedYearId !== -1 && (
+        <div className="flex items-center gap-2">
+          {selectedYearId !== -1 && (
+            <button
+              className="bg-blue-400 hover:bg-blue-500 disabled:text-gray-600 disabled:bg-blue-300 disabled:hover:bg-blue-300 h-7.5 w-7.5 md:h-6 md:w-6 p-1 rounded flex justify-center items-center transition-colors duration-200 ease-in-out cursor-pointer"
+              onClick={handleUndo}
+            >
+              <UndoIcon />
+            </button>
+          )}
           <button
-            className="bg-blue-400 hover:bg-blue-500 disabled:text-gray-600 disabled:bg-blue-300 disabled:hover:bg-blue-300 h-7.5 w-7.5 md:h-6 md:w-6 p-1 rounded flex justify-center items-center transition-colors duration-200 ease-in-out cursor-pointer"
-            onClick={handleUndo}
+            className="bg-blue-400 hover:bg-blue-500 h-7.5 w-7.5 md:h-6 md:w-6 p-1 rounded flex justify-center items-center transition-colors duration-200 ease-in-out cursor-pointer"
+            data-type="records-charts"
+            onClick={(e) => transformElement(e.currentTarget, "data-type")}
           >
-            <UndoIcon />
+            <ExpandIcon className="h-6 w-6 md:h-4 md:w-4" />
           </button>
-        )}
+        </div>
       </div>
-      <div className="flex flex-col 2xl:flex-row gap-2">
+      <div
+        id="records-charts"
+        style={{ height: 0 }}
+        className="transition-[height] duration-300 ease-in-out overflow-hidden flex flex-col 2xl:flex-row gap-2"
+      >
         {[
           {
             name: "qnty",
@@ -84,7 +99,7 @@ const RecordsCharts = ({ selectedTag }: RecordsChartsProps) => {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
