@@ -45,6 +45,7 @@
       "trackerSaved": "Tracker {{trackerId}} is saved",
       "lastSaveDate": "Last save was: {{backupDelay}}.",
       "trackerNeedToSave": "Save the tracker to prevent data loss",
+      "storagePersistDenied": "Your browser may delete your data when storage is low. Export your trackers regularly to avoid data loss.",
       "trackerLoadedError": "Error reading or parsing JSON file",
       "trackerDeleted": "Tracker {{trackerId}} is deleted",
       "trackerUpdated": "Tracker {{trackerId}} is updated",

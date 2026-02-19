@@ -3,49 +3,16 @@ import { Flash, useFlash } from "@/context/FlashContext";
 import FlashMessage from "./FlashMessage";
 import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
-import { useTracker } from "@/context/TrackerContext";
-import { parseMetaToDate } from "@/lib/utils/dateParser";
-import { useEffect, useMemo, useState } from "react";
+import { useBackupDelay } from "@/hooks/useBackupDelay";
+import { useStoragePersistence } from "@/hooks/useStoragePersistence";
 
 export default function FlashBlock() {
   const { locale } = useGlobal();
-  const { trackerMeta } = useTracker();
   const { flash, closeFlash } = useFlash();
+  const { backupDelay, dismissBackupDelay } = useBackupDelay();
+  const { showWarning: showPersistWarning, dismissWarning: dismissPersistWarning } = useStoragePersistence();
 
-  const { 0: showBackupDelay, 1: setShowBackupDelay } = useState(true);
-
-  const backupDelay = useMemo(() => {
-    if (!showBackupDelay) return;
-    if (!trackerMeta) return;
-
-    const backupDate = parseMetaToDate(trackerMeta?.backupAt);
-    if (!backupDate) return t(locale, "body.flash.never");
-
-    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
-
-    const now = new Date();
-    const diffInMs = backupDate.getTime() - now.getTime();
-    const diffInDays = Math.round(diffInMs / (1000 * 60 * 60 * 24));
-
-    const abs = Math.abs(diffInDays);
-    if (abs > 7)
-      return new Intl.DateTimeFormat(locale, {
-        day: "numeric",
-        month: "short",
-        year:
-          now.getFullYear() !== backupDate.getFullYear()
-            ? "numeric"
-            : undefined,
-      }).format(backupDate);
-    if (abs >= 3) return rtf.format(diffInDays, "day");
-    return false;
-  }, [locale, showBackupDelay, trackerMeta]);
-
-  useEffect(() => {
-    setShowBackupDelay(true);
-  }, [setShowBackupDelay, trackerMeta]);
-
-  if (flash.length === 0 && !backupDelay) return null;
+  if (flash.length === 0 && !backupDelay && !showPersistWarning) return null;
 
   return (
     <div className="fixed w-full md:w-fit top-0 left-0 right-0 md:top-1 md:left-auto md:right-1 z-1000 md:space-y-2">
@@ -59,7 +26,18 @@ export default function FlashBlock() {
               t(locale, "body.flash.trackerNeedToSave"),
             ],
           }}
-          closeFlash={() => setShowBackupDelay(false)}
+          closeFlash={dismissBackupDelay}
+          closeButtonTitle={t(locale, "body.buttons.close")}
+        />
+      )}
+      {showPersistWarning && (
+        <FlashMessage
+          flash={{
+            id: "",
+            type: "warning",
+            message: t(locale, "body.flash.storagePersistDenied"),
+          }}
+          closeFlash={dismissPersistWarning}
           closeButtonTitle={t(locale, "body.buttons.close")}
         />
       )}

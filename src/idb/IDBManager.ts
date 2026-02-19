@@ -12,6 +12,13 @@ import { TrackerMeta } from "@/lib/types/dataTypes";
 
 const dbCache = new Map<string, IDBDatabase>();
 
+export async function requestPersistentStorage(): Promise<boolean> {
+  if (navigator.storage && navigator.storage.persist) {
+    return navigator.storage.persist();
+  }
+  return false;
+}
+
 export async function openDB(dbName: string): Promise<IDBDatabase> {
   const cached = dbCache.get(dbName);
   if (cached) {

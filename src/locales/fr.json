@@ -45,6 +45,7 @@
       "trackerSaved": "Le suivi {{trackerId}} est sauvegardé",
       "lastSaveDate": "Dernière sauvegarde : {{backupDelay}}",
       "trackerNeedToSave": "Veuillez sauvegarder le suivi pour éviter toute perte de données",
+      "storagePersistDenied": "Votre navigateur peut supprimer vos données lorsque l'espace de stockage est insuffisant. Exportez régulièrement vos suivis pour éviter toute perte de données.",
       "trackerLoadedError": "Erreur de lecture ou d'analyse du fichier JSON",
       "trackerDeleted": "Le suivi {{trackerId}} est supprimé",
       "trackerUpdated": "Le suivi {{trackerId}} mis à jour",

@@ -45,6 +45,7 @@
       "trackerSaved": "Трекер {{trackerId}} сохранен",
       "lastSaveDate": "Последнее сохранение было: {{backupDelay}}",
       "trackerNeedToSave": "Сохраните трекер, чтобы предотвратить потерю данных",
+      "storagePersistDenied": "Браузер может удалить ваши данные при нехватке памяти. Регулярно экспортируйте трекеры, чтобы избежать потери данных.",
       "trackerLoadedError": "Ошибка при чтении или парсинге JSON-файла",
       "trackerDeleted": "Трекер {{trackerId}} удален",
       "trackerUpdated": "Трекер {{trackerId}} обновлен",
