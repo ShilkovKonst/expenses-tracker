@@ -6,9 +6,17 @@ export function useStoragePersistence() {
   const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
-    requestPersistentStorage().then((granted) => {
+    async function check() {
+      // If already persisted, no warning needed
+      if (navigator.storage && navigator.storage.persisted) {
+        const already = await navigator.storage.persisted();
+        if (already) return;
+      }
+
+      const granted = await requestPersistentStorage();
       if (!granted) setShowWarning(true);
-    });
+    }
+    check();
   }, []);
 
   return { showWarning, dismissWarning: () => setShowWarning(false) };

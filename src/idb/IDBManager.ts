@@ -14,7 +14,8 @@ const dbCache = new Map<string, IDBDatabase>();
 
 export async function requestPersistentStorage(): Promise<boolean> {
   if (navigator.storage && navigator.storage.persist) {
-    return navigator.storage.persist();
+    const isPersist = await navigator.storage.persist();
+    return isPersist;
   }
   return false;
 }

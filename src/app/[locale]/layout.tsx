@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { BASE_URL } from "@/constants";
 import NavBlock from "@/components/NavBlock";
 import { AppProviders } from "@/context/AppProviders";
+import PwaInit from "@/components/PwaInit";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,6 +64,17 @@ export async function generateMetadata({
       description: t(locale as Locale, "meta.description"),
       creator: "@yourhandle",
     },
+    other: {
+      "mobile-web-app-capable": "yes",
+    },
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "SpendObserver",
+    },
+    icons: {
+      apple: "/icons/icon-192.png",
+    },
   };
 }
 
@@ -80,6 +92,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} min-h-lvh w-full antialiased relative my-auto`}
       >
         <AppProviders>
+          <PwaInit />
           <Header />
           <NavBlock />
           {children}
