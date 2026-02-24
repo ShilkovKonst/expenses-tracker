@@ -39,7 +39,7 @@ export function useBackupDelay() {
 
   useEffect(() => {
     setShowBackupDelay(true);
-  }, [setShowBackupDelay, trackerMeta]);
+  }, [trackerMeta?.id]);
 
   return { backupDelay, dismissBackupDelay: () => setShowBackupDelay(false) };
 }

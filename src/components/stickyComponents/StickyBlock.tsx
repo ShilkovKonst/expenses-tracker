@@ -22,6 +22,7 @@ const StickyBlock = () => {
 
   const activeYearRef = useRef<Year | undefined>(undefined);
   const activeMonthRef = useRef<Month | undefined>(undefined);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (trackerYears) {
@@ -30,45 +31,56 @@ const StickyBlock = () => {
       );
 
       const onScroll = () => {
-        const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
-          years,
-          setExpandYearDataType,
-        );
-        if (newActiveYear) {
-          if (activeYearRef.current?.id !== newActiveYear) {
-            setActiveYear(trackerYears[newActiveYear]);
-          }
-        } else {
-          if (activeYearRef.current !== undefined) {
-            setActiveYear(undefined);
-          }
-        }
+        if (rafRef.current !== null) return;
+        rafRef.current = requestAnimationFrame(() => {
+          rafRef.current = null;
 
-        if (activeYearBodyEl && newActiveYear) {
-          const months = activeYearBodyEl.querySelectorAll<HTMLElement>(
-            `[data-month-body="${newActiveYear}"]`,
+          const { newActiveYear, activeYearBodyEl } = onScrollYearHelper(
+            years,
+            setExpandYearDataType,
           );
-          const { newActiveMonth } = onScrollMonthHelper(
-            months,
-            newActiveYear,
-            setExpandMonthDataType,
-          );
-          if (newActiveMonth) {
-            if (activeMonthRef.current?.id !== newActiveMonth) {
-              setActiveMonth(
-                trackerYears[newActiveYear].months[newActiveMonth],
-              );
+          if (newActiveYear) {
+            if (activeYearRef.current?.id !== newActiveYear) {
+              setActiveYear(trackerYears[newActiveYear]);
             }
           } else {
-            if (activeMonthRef.current !== undefined) {
-              setActiveMonth(undefined);
+            if (activeYearRef.current !== undefined) {
+              setActiveYear(undefined);
             }
           }
-        }
+
+          if (activeYearBodyEl && newActiveYear) {
+            const months = activeYearBodyEl.querySelectorAll<HTMLElement>(
+              `[data-month-body="${newActiveYear}"]`,
+            );
+            const { newActiveMonth } = onScrollMonthHelper(
+              months,
+              newActiveYear,
+              setExpandMonthDataType,
+            );
+            if (newActiveMonth) {
+              if (activeMonthRef.current?.id !== newActiveMonth) {
+                setActiveMonth(
+                  trackerYears[newActiveYear].months[newActiveMonth],
+                );
+              }
+            } else {
+              if (activeMonthRef.current !== undefined) {
+                setActiveMonth(undefined);
+              }
+            }
+          }
+        });
       };
 
-      window.addEventListener("scroll", onScroll);
-      return () => window.removeEventListener("scroll", onScroll);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        if (rafRef.current !== null) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        }
+      };
     }
   }, [trackerId, trackerYears]);
 

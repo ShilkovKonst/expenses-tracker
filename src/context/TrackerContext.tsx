@@ -11,6 +11,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useTransition,
 } from "react";
 import { useGlobal } from "./GlobalContext";
 
@@ -35,6 +36,7 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
   const [trackerMeta, setTrackerMeta] = useState<TrackerMeta | null>(null);
   const [trackerTags, setTrackerTags] = useState<TrackerTags | null>(null);
   const [trackerYears, setTrackerYears] = useState<TrackerYears | null>(null);
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     if (allTrackersMeta.length > 0 && !trackerId) {
@@ -45,10 +47,12 @@ export function TrackerProvider({ children }: { children: ReactNode }) {
         try {
           const tracker = await getAllData(activeTrackerId);
           if (!cancelled && tracker.meta && tracker.tags && tracker.years) {
-            setTrackerId(activeTrackerId);
-            setTrackerMeta(tracker.meta);
-            setTrackerTags(tracker.tags);
-            setTrackerYears(tracker.years);
+            startTransition(() => {
+              setTrackerId(activeTrackerId);
+              setTrackerMeta(tracker.meta!);
+              setTrackerTags(tracker.tags!);
+              setTrackerYears(tracker.years!);
+            });
           }
         } catch (error) {
           console.error("Failed to load tracker data:", error);

@@ -1,7 +1,7 @@
 "use client";
 import { loadTrackers, useGlobal } from "@/context/GlobalContext";
 import { ModalMap } from "../ModalRoot";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { getAllRecords } from "@/idb/CRUD/recordsCRUD";
 import { populateYears } from "@/lib/utils/yearsTransformer";
@@ -38,7 +38,7 @@ const DeleteModal = ({
   onClose,
 }: ModalMap["delete"] & { onClose: () => void }) => {
   const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
   const { addFlash } = useFlash();
   const {
     trackerId,

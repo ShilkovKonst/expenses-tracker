@@ -27,7 +27,8 @@ export async function populateTrackerContex(
   setTrackerId: Dispatch<SetStateAction<TrackerId>>,
   setTrackerMeta: Dispatch<SetStateAction<TrackerMeta | null>>,
   setTrackerTags: Dispatch<SetStateAction<TrackerTags | null>>,
-  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>
+  setTrackerYears: Dispatch<SetStateAction<TrackerYears | null>>,
+  startTransition?: (callback: () => void) => void
 ) {
   if (!activeTrackerId) {
     setTrackerId("" as TrackerId);
@@ -39,9 +40,16 @@ export async function populateTrackerContex(
 
   const tracker = await getAllData(activeTrackerId);
   if (tracker.meta && tracker.tags && tracker.years) {
-    setTrackerId(activeTrackerId);
-    setTrackerMeta(tracker.meta);
-    setTrackerTags(tracker.tags);
-    setTrackerYears(tracker.years);
+    const applyUpdates = () => {
+      setTrackerId(activeTrackerId);
+      setTrackerMeta(tracker.meta!);
+      setTrackerTags(tracker.tags!);
+      setTrackerYears(tracker.years!);
+    };
+    if (startTransition) {
+      startTransition(applyUpdates);
+    } else {
+      applyUpdates();
+    }
   }
 }

@@ -8,7 +8,7 @@ import DescDateBlock from "../../descriptionComponents/DescDateBlock";
 import DescPBlock from "../../descriptionComponents/DescPBlock";
 import { ValidateButton } from "../../buttonComponents";
 import { Tracker, TrackerMeta } from "@/lib/types/dataTypes";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
 import { useFlash } from "@/context/FlashContext";
@@ -27,7 +27,7 @@ const TrackerMergeBlock = ({
     useGlobal();
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
-  const { closeModal } = useModal();
+  const { closeModal } = useModalActions();
   const { addFlash } = useFlash();
 
   const isOutdated = useMemo(() => {

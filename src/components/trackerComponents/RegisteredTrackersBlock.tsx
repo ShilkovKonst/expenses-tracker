@@ -9,7 +9,7 @@ import { TrackerMeta } from "@/lib/types/dataTypes";
 import { parseMetaToDate } from "@/lib/utils/dateParser";
 import LoadingSkeleton from "../LoadingSkeleton";
 import NoDataPlaceholder from "../NoDataPlaceholder";
-import { useCallback } from "react";
+import { useCallback, useRef, useState, useTransition } from "react";
 
 const RegisteredTrackersBlock = () => {
   const { locale, allTrackersMeta, isLoading } = useGlobal();
@@ -58,14 +58,28 @@ const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
     setTrackerTags,
   } = useTracker();
 
+  const [, startTransition] = useTransition();
+  const [loadingId, setLoadingId] = useState<string | null>(null);
+  // Tracks the most recent request so stale results from slower requests are ignored.
+  const latestRequestId = useRef(0);
+
   const handleChangeTrackerClick = async (id: string) => {
+    const requestId = ++latestRequestId.current;
+    setLoadingId(id);
+
     await populateTrackerContex(
       id as TrackerId,
       setTrackerId,
       setTrackerMeta,
       setTrackerTags,
       setTrackerYears,
+      // Guard: only apply state if this is still the latest request
+      (cb) => {
+        if (latestRequestId.current === requestId) startTransition(cb);
+      },
     );
+
+    if (latestRequestId.current === requestId) setLoadingId(null);
   };
 
   return (
@@ -74,17 +88,25 @@ const RegisteredData = ({ locale, allTrackersMeta }: RegisteredDataProps) => {
         {t(locale, `body.form.tracker.idsTitle`)}
       </h3>
       <div className="flex flex-wrap justify-start items-center gap-2">
-        {allTrackersMeta.map((meta, i) => (
-          <IconButton
-            key={i}
-            icon={meta.title}
-            value={meta.id}
-            title={`${t(locale, "body.buttons.select")} - ${meta.title}`}
-            handleClick={handleChangeTrackerClick}
-            customStyle="bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500 px-2 h-6 rounded"
-            disabled={trackerId === meta.id}
-          />
-        ))}
+        {allTrackersMeta.map((meta, i) => {
+          const isActive = trackerId === meta.id && loadingId === null;
+          const isLoading = loadingId === meta.id;
+          return (
+            <IconButton
+              key={i}
+              icon={meta.title}
+              value={meta.id}
+              title={`${t(locale, "body.buttons.select")} - ${meta.title}`}
+              handleClick={handleChangeTrackerClick}
+              customStyle={`px-2 h-6 rounded transition-colors duration-300 ${
+                isLoading
+                  ? "bg-blue-400 animate-pulse"
+                  : "bg-blue-300 hover:bg-blue-400 disabled:bg-green-500 disabled:hover:bg-green-500"
+              }`}
+              disabled={isActive || isLoading}
+            />
+          );
+        })}
       </div>
     </>
   );

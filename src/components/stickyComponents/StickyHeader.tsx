@@ -1,6 +1,6 @@
 "use client";
 import HeaderButtonBlock from "../accordionBlockComponents/HeaderButtonBlock";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
 import { createRecordId, MonthId, YearId } from "@/lib/types/brand";
@@ -29,7 +29,7 @@ const StickyHeader = ({
   monthId,
   recordsLength,
 }: StickyHeaderProps) => {
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
   const { trackerId } = useTracker();
 
   const handleAddOperation = useCallback(() => {

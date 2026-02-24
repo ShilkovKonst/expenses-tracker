@@ -5,7 +5,7 @@ import { t } from "@/locales/locale";
 import { useGlobal } from "@/context/GlobalContext";
 import { compare } from "@/lib/utils/compareHelper";
 import { IconButton, TextRoundedButton } from "../../buttonComponents";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { deleteTagByIdRecordsCleanup } from "@/idb/CRUD/tagsCRUD";
 import { useTracker } from "@/context/TrackerContext";
 import { TagObj } from "./SettingsBlock";
@@ -18,7 +18,7 @@ type SettingsTagsProps = {
 const SettingsTagsBlock = ({ tag, setTag }: SettingsTagsProps) => {
   const { locale } = useGlobal();
   const { trackerId, trackerTags } = useTracker();
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
   const isDisabled = useMemo(() => (id: number) => id === tag?.id, [tag?.id]);
 

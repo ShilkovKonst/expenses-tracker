@@ -3,7 +3,7 @@ import { t } from "@/locales/locale";
 import { useRef } from "react";
 import { loadTrackers, useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { LoadIcon } from "@/lib/icons";
 import { validate } from "@/lib/utils/dataValidator";
 import { checkDBExists } from "@/idb/IDBManager";
@@ -17,7 +17,7 @@ const LoadTrackerBlock = () => {
   const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
   const { setTrackerId, setTrackerMeta, setTrackerTags, setTrackerYears } =
     useTracker();
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
   const { addFlash } = useFlash();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);

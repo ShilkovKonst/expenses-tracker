@@ -5,7 +5,7 @@ import { useGlobal } from "@/context/GlobalContext";
 import { t } from "@/locales/locale";
 import HeaderBlock from "./HeaderBlock";
 import RecordBlock from "./recordComponents/RecordBlock";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { compare } from "@/lib/utils/compareHelper";
 import { createRecord } from "@/idb/CRUD/recordsCRUD";
 import { useTracker } from "@/context/TrackerContext";
@@ -19,7 +19,7 @@ type MonthProps = {
 const MonthBlock: React.FC<MonthProps> = ({ yearId, month }) => {
   const { locale } = useGlobal();
   const { trackerId } = useTracker();
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
   const handleAddOperation = useCallback(() => {
     const newRecord: MonthRecord = {

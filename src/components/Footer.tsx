@@ -1,12 +1,12 @@
 "use client";
 
 import { useGlobal } from "@/context/GlobalContext";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { t } from "@/locales/locale";
 
 const Footer = () => {
   const { locale } = useGlobal();
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
   return (
     <>

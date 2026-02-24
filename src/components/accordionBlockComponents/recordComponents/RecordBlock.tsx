@@ -2,7 +2,7 @@
 import { MonthRecord } from "@/lib/types/dataTypes";
 import RecordDescriptionBlock from "./RecordDescriptionBlock";
 import ButtonBlock from "@/components/accordionBlockComponents/recordComponents/ButtonBlock";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { deleteRecordById, updateRecordById } from "@/idb/CRUD/recordsCRUD";
 
@@ -12,7 +12,7 @@ type RecordProps = {
 
 function RecordBlock({ record }: RecordProps) {
   const { trackerId } = useTracker();
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
 
   const handleUpdate = () => {
     const onUpdate = async (record: MonthRecord) => {

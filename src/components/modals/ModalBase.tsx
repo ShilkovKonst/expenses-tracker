@@ -25,7 +25,7 @@ const ModalBase = ({
     <dialog
       open
       id="foreground"
-      className="fixed w-full h-full inset-0 bg-black/10 backdrop-blur-xs z-50 flex items-center justify-center"
+      className="fixed w-full h-full inset-0 bg-black/30 z-50 flex items-center justify-center"
     >
       <form
         onSubmit={(e) => e.preventDefault()}

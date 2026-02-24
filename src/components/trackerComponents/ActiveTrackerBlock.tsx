@@ -2,7 +2,7 @@
 import { loadTrackers, useGlobal } from "@/context/GlobalContext";
 import { useTracker } from "@/context/TrackerContext";
 import { t } from "@/locales/locale";
-import { useModal } from "@/context/ModalContext";
+import { useModalActions } from "@/context/ModalContext";
 import { UtilButton } from "../buttonComponents";
 import { DeleteIcon, SaveIcon, SettingsIcon, ShareIcon } from "@/lib/icons";
 import { deleteTrackerUtil } from "@/idb/apiHelpers/entityApiUtil";
@@ -15,7 +15,7 @@ import { useTrackerBackup } from "@/hooks/useTrackerBackup";
 const ActiveTrackerBlock = () => {
   const { locale, setAllTrackersMeta, setIsLoading } = useGlobal();
   const { trackerId, trackerTags, trackerMeta, trackerYears } = useTracker();
-  const { openModal } = useModal();
+  const { openModal } = useModalActions();
   const { addFlash } = useFlash();
 
   const updatedAt = useMemo(
