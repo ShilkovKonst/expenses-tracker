@@ -64,6 +64,25 @@ const Charts = ({
         stroke={activeFill}
       />
       <Tooltip
+        labelFormatter={(label) => {
+          if (selectedYearId !== -1 && selectedMonthId !== -1) {
+            const date = new Date(
+              selectedYearId,
+              selectedMonthId - 1,
+              Number(label),
+            );
+            const weekday = date.toLocaleDateString(locale, {
+              weekday: "short",
+            });
+            return `${label}, ${weekday}`;
+          }
+          if (selectedYearId !== -1) {
+            const monthTitle = getMonthById(Number(label));
+            if (monthTitle)
+              return t(locale, `body.form.valueMonth.${monthTitle}`);
+          }
+          return label;
+        }}
         formatter={(value) => {
           if (!value) return;
           if (name === "cost" || name === "income") {
