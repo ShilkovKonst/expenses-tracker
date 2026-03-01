@@ -38,7 +38,7 @@ const FormAmountBlock: React.FC<FormInputProps> = ({
   };
 
   return (
-    <div className={`${outerStyle} relative`}>
+    <div className={outerStyle}>
       {!withoutLabel && (
         <label
           className={`block font-semibold uppercase ${styleLabel}`}
@@ -47,25 +47,27 @@ const FormAmountBlock: React.FC<FormInputProps> = ({
           {title}
         </label>
       )}
-      <input
-        id={id}
-        className={`w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-0 focus:border-blue-300 rounded-md text-xs ${styleInput}`}
-        type={"text"}
-        placeholder={withoutLabel && title ? title : ""}
-        name={name}
-        value={sanitizeAmountExpression(value)}
-        onChange={(e) => handleChange(e)}
-        disabled={disabled}
-        required={required}
-      />
-      {isCalcMode && handleCalc && (
-        <button
-          onClick={handleClick}
-          className="absolute cursor-pointer top-2.25 right-0.5 rounded-r-sm h-6 w-6 bg-blue-300 font-bold text-base text-center flex justify-center items-center"
-        >
-          <p className="my-auto">=</p>
-        </button>
-      )}
+      <div className="relative w-full">
+        <input
+          id={id}
+          className={`w-full px-2 py-1 border-2 bg-white border-blue-100 focus:outline-0 focus:border-blue-300 rounded-md text-xs ${styleInput}`}
+          type={"text"}
+          placeholder={withoutLabel && title ? title : ""}
+          name={name}
+          value={sanitizeAmountExpression(value)}
+          onChange={(e) => handleChange(e)}
+          disabled={disabled}
+          required={required}
+        />
+        {isCalcMode && handleCalc && (
+          <button
+            onClick={handleClick}
+            className="absolute cursor-pointer top-1/2 -translate-y-1/2 right-0.5 rounded-r-sm h-6 w-6 bg-blue-300 hover:bg-blue-400 transition-colors ease-in-out duration-200 font-bold text-base text-center flex justify-center items-center"
+          >
+            <p className="my-auto">=</p>
+          </button>
+        )}
+      </div>
     </div>
   );
 };
