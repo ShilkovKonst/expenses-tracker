@@ -188,4 +188,9 @@ describe("inputStringToDecimal", () => {
     expect(inputStringToDecimal("abc")).toBe(0);
     expect(inputStringToDecimal("")).toBe(0);
   });
+
+  it("handles locale-formatted strings with comma decimal separator", () => {
+    expect(inputStringToDecimal("10,50")).toBe(1050);
+    expect(inputStringToDecimal("1\u00a0000,50")).toBe(100050);
+  });
 });
