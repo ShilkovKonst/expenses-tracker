@@ -40,7 +40,7 @@ const ChartsBlock = () => {
         <>
           <ChartsHeader setSelectedTag={setSelectedTag} />
           <OverviewBlock selectedTag={selectedTag} rawRecords={rawRecords} />
-          {rawRecords.length > 0 && <RecordsCharts selectedTag={selectedTag} />}
+          {rawRecords.length > 0 && <RecordsCharts key={trackerId} selectedTag={selectedTag} />}
         </>
       )}
     </section>

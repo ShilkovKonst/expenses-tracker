@@ -9,7 +9,7 @@ const AccordionBlock = () => {
     <div className="w-full mt-2 border-t-6 border-blue-400">
       {trackerYears &&
         Object.values(trackerYears).map((year, index) => (
-          <YearBlock dataId={trackerId} key={index} year={year} />
+          <YearBlock dataId={trackerId} key={`${trackerId}-${year.id}`} year={year} />
         ))}
     </div>
   );
