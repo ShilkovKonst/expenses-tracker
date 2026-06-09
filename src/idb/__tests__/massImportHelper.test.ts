@@ -16,7 +16,11 @@ describe("massImportHelper", () => {
   });
 
   it("batchAddTags adds multiple tags in one transaction", async () => {
-    await batchAddTags(trackerId, ["food", "transport", "rent"]);
+    await batchAddTags(trackerId, [
+      { id: 1, title: "food" },
+      { id: 2, title: "transport" },
+      { id: 3, title: "rent" },
+    ]);
     const tags = await getAllTags(trackerId);
     const titles = Object.values(tags);
     expect(titles).toContain("food");
@@ -61,7 +65,7 @@ describe("massImportHelper", () => {
       backupAt: "01/01/2025_00:00:00",
     };
     await createMetadata(trackerId, meta);
-    await batchAddTags(trackerId, ["food"]);
+    await batchAddTags(trackerId, [{ id: 1, title: "food" }]);
     await batchAddRecords(trackerId, [
       {
         year: createYearId(2025),
