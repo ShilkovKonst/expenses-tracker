@@ -56,6 +56,7 @@ const FormAmountBlock: React.FC<FormInputProps> = ({
           name={name}
           value={sanitizeAmountExpression(value)}
           onChange={(e) => handleChange(e)}
+          onFocus={(e) => e.target.select()}
           disabled={disabled}
           required={required}
         />

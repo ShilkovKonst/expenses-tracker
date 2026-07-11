@@ -4,13 +4,16 @@ import { METADATA_STORE, RECORDS_STORE, TAGS_STORE } from "@/constants";
 import { populateYears } from "@/lib/utils/yearsTransformer";
 import { TrackerId } from "@/lib/types/brand";
 
-export async function batchAddTags(trackerId: string, tags: string[]) {
+export async function batchAddTags(
+  trackerId: string,
+  tags: { id: number; title: string }[],
+) {
   const db = await openDB(trackerId);
   const tx = db.transaction(TAGS_STORE, "readwrite");
   const store = tx.objectStore(TAGS_STORE);
 
-  for (const title of tags) {
-    store.add({ title });
+  for (const tag of tags) {
+    store.put(tag);
   }
 
   await awaitTransaction(tx);

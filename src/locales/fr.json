@@ -66,9 +66,9 @@
           "tag": "n'existe pas dans le pool de tags"
         }
       },
-      "newAdded": "Добавлено новое: {{entity}}",
-      "updated": "Обновлено: {{entity}} {{id}}",
-      "deleted": "Удалено: {{entity}} {{id}}"
+      "newAdded": "Nouveau ajouté : {{entity}}",
+      "updated": "Mis à jour : {{entity}} {{id}}",
+      "deleted": "Supprimé : {{entity}} {{id}}"
     },
     "modal": {
       "titleCreate": "Créer nouvel enregistrement",
@@ -76,9 +76,9 @@
       "titleDelete": "Etes-vous sûr de vouloir supprimer {{deleteEntity}} ?",
       "descDelete": "{{deleteEntity}} '{{deleteEntityId}}' sera complètement supprimé!",
       "deleteEntity": {
-        "record": "cet enregistrement",
-        "tag": "cette étiquette",
-        "tracker": "ce suivi"
+        "record": "l'enregistrement",
+        "tag": "l'étiquette",
+        "tracker": "le suivi"
       },
       "about": {
         "title": "À propos de SpendObserver",
@@ -188,7 +188,7 @@
       "title": "Sélectionnez une étiquette pour un aperçu",
       "allTags": "Aperçu général",
       "total": "Total",
-      "records": "opérations",
+      "records": "enregistrements",
       "tags": "étiquettes",
       "costs": "coûts",
       "income": "revenu",

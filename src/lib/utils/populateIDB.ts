@@ -7,7 +7,10 @@ export async function populateIDBFromFile(data: Tracker) {
   try {
     await createMetadata(data.meta.id, data.meta);
 
-    const tags = Object.values(data.tags);
+    const tags = Object.entries(data.tags).map(([id, title]) => ({
+      id: Number(id),
+      title,
+    }));
     await batchAddTags(data.meta.id, tags);
 
     const allRecords = Object.values(data.years).flatMap((year) =>
