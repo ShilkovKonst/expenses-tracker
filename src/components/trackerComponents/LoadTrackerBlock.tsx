@@ -106,7 +106,7 @@ const LoadTrackerBlock = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept="plain/text"
+        accept=".txt,text/plain"
         onChange={handleImport}
         hidden
       />
